@@ -1,0 +1,46 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="com.psk.pms.controller" />
+
+	<bean class="com.psk.pms.validator.EmployeeValidator" />
+	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.SignUpValidator" />
+	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
+	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
+	<bean class="com.psk.pms.validator.EditDetailValidator" />
+
+
+	<!-- Register the Employee.properties -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="com/psk/psm/employee/properties/Employee" />
+	</bean>
+
+	<bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">
+		<property name="order" value="1" />
+		<property name="location" value="/WEB-INF/views.xml" />
+	</bean>
+
+	<bean id="viewResolver2"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="prefix">
+			<value>/WEB-INF/pages/</value>
+		</property>
+		<property name="suffix">
+			<value>.jsp</value>
+		</property>
+	</bean>
+	<mvc:resources mapping="/resources/**" location="/resources/mytheme/" />
+
+	<mvc:annotation-driven />
+</beans>

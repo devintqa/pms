@@ -1,0 +1,28 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+<!-- 	<http auto-config="true"> -->
+<!-- 		<intercept-url pattern="/emp/myapp/**" access="ROLE_USER" /> -->
+<!-- 		<intercept-url pattern="/emp/myapp/**" access="ROLE_ADMIN" /> -->
+		<http use-expressions="true">
+			<intercept-url pattern="/emp/pms/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
+			<form-login login-processing-url="/login.do" login-page="/emp/login"
+				username-parameter="empId" password-parameter="empPassword"
+				default-target-url="/emp/myview" authentication-failure-url="/emp/login?auth=fail" />
+			<logout logout-url="/logout" logout-success-url="/emp/login" />
+		</http>
+
+		<authentication-manager>
+			<authentication-provider>
+				<jdbc-user-service data-source-ref="dataSource"
+					users-by-username-query="select empId,empPassword,enabled from employee where empId=?"
+					authorities-by-username-query="select e.empId, ur.userRole from employee e, userroles ur
+        where e.empId = ur.empId and e.empId =?" />
+			</authentication-provider>
+		</authentication-manager>
+
+</beans:beans>
