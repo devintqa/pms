@@ -78,15 +78,15 @@ public class EmployeeController {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
 				dateFormat, true));
 	}
-
-	@ModelAttribute("roleList")
-	public Map<String, String> populateRoleList() {
+	
+	@ModelAttribute("teamList")
+	public Map<String, String> populateTeamList() {
 		Map<String, String> role = new LinkedHashMap<String, String>();
 		role.put("Admin", "Admin");
-		role.put("Manager", "Manager");
-		role.put("Supervisor", "Supervisor");
-		role.put("Super", "Super");
-		role.put("User", "User");
+		role.put("Account", "Account");
+		role.put("Management", "Management");
+		role.put("Purchase", "Purchase");
+		role.put("Technical", "Technical");
 		return role;
 	}
 

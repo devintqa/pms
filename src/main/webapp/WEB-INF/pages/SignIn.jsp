@@ -59,8 +59,8 @@
 							</tr>
 							
 							<tr>
-								<td>Role :</td>
-								<td><form:select path="empRole" cssClass="inputText" items="${roleList}"/></td>
+								<td>Team :</td>
+								<td><form:select path="empRole" cssClass="inputText" items="${teamList}"/></td>
 								<td><form:errors path="empRole" cssClass="error" /></td>
 							</tr>
 							

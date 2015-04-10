@@ -22,7 +22,7 @@
 	<!-- Register the Employee.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
-		<property name="basename" value="com/psk/psm/employee/properties/Employee" />
+		<property name="basename" value="com/psk/pms/employee/properties/Employee" />
 	</bean>
 
 	<bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">

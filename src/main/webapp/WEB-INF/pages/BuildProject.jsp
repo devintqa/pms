@@ -21,7 +21,6 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<a id="logout" href="${pageContext.request.contextPath}/logout">Logout</a>
 	<div>
 		<div>
 			<form:form method="POST" commandName="createProjectForm"

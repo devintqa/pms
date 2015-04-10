@@ -7,8 +7,10 @@
 <head>
 <title>PMS :: SignUp</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
@@ -21,8 +23,7 @@
 	<div>
 		<div>
 			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
-				Employee SignUp</h1>
-			<!-- <h3 style="text-align:center;font-size:18px;">Please provide the following details to register.</h3> -->
+				User SignUp</h1>
 			<br>
 			<form:form method="POST" commandName="signupForm" action="signup.do">
 
@@ -32,8 +33,8 @@
 						<tr>
 							<td>UserName <span id="colon">:</span>
 							</td>
-							<td><form:input path="empId"
-									placeholder="Enter Employee ID" cssClass="inputText" /></td>
+							<td><form:input path="empId" placeholder="Enter Employee ID"
+									cssClass="inputText" /></td>
 							<td><form:errors path="empId" cssClass="error" /></td>
 						</tr>
 						<tr>
@@ -106,6 +107,17 @@
 							<td><form:errors path="employeeMotherMaidenName"
 									cssClass="error" /></td>
 						</tr>
+						<tr>
+							<td>Team <span id="colon">:</span>
+							</td>
+							<td><form:select path="employeeTeam" cssClass="inputText">
+									<form:options items="${teamList}" />
+								</form:select></td>
+							<td><form:errors path="employeeTeam"
+									cssClass="error" /></td>
+						</tr>
+
+
 						<tr></tr>
 						<tr>
 							<td></td>
