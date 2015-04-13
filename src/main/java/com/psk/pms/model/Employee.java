@@ -4,7 +4,6 @@ public class Employee {
 	
 	private String empId;
 	private String empPassword;
-	private String empRole;
 	private String employeeConfirmPWD;
 	private String employeeFName;
 	private String employeeLName;
@@ -94,12 +93,6 @@ public class Employee {
 	}
 	public void setEmployeeMotherMaidenName(String employeeMotherMaidenName) {
 		this.employeeMotherMaidenName = employeeMotherMaidenName;
-	}
-	public String getEmpRole() {
-		return empRole;
-	}
-	public void setEmpRole(String empRole) {
-		this.empRole = empRole;
 	}
 	
 }

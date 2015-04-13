@@ -32,31 +32,29 @@ public class EmployeeController {
 	EmployeeService employeeService;
 
 	@RequestMapping(value = "/emp/login.do", method = RequestMethod.POST)
-	public String saveEmployeeAction(
-			@ModelAttribute("employeeForm") Employee employee,
-			BindingResult result, Model model, SessionStatus status) {
+	public String logIn(@ModelAttribute("employeeForm") Employee employee, BindingResult result, Model model, SessionStatus status) {
 		boolean isEmployeeAvailable = false;
 		employeeValidator.validate(employee, result);
+		System.out.println("EMPLOYEE");
 		if (!result.hasErrors()) {
-			isEmployeeAvailable = employeeService.isValidLogin(
-					employee.getEmpId(), employee.getEmpPassword());
+			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmpId(), employee.getEmpPassword());
 		}
 		if (result.hasErrors()) {
 			return "SignIn";
 		} else if (!isEmployeeAvailable) {
-			model.addAttribute("loginMessage",
-					"User Details Not Found. Please Sign Up.");
+			model.addAttribute("loginMessage", "User Details Not Found. Please Sign Up.");
 			return "SignIn";
 		} else {
 			status.setComplete();
 			model.addAttribute("employee", employee);
+			System.out.println("checkpoint:"+employee.getEmployeeTeam());
 			return "Welcome";
 		}
 	}
 
 	@RequestMapping("/emp/myview")
 	public String mypage(Model model, Principal principal) {
-		System.out.println("Entering" + principal.getName());
+		System.out.println("MyView" + principal.getName());
 		Employee employee = new Employee();
 		String userRole = employeeService.getUserRole(principal.getName());
 		employee.setEmpId(principal.getName());
@@ -79,15 +77,15 @@ public class EmployeeController {
 				dateFormat, true));
 	}
 	
-	@ModelAttribute("teamList")
+	@ModelAttribute("employeeTeamList")
 	public Map<String, String> populateTeamList() {
-		Map<String, String> role = new LinkedHashMap<String, String>();
-		role.put("Admin", "Admin");
-		role.put("Account", "Account");
-		role.put("Management", "Management");
-		role.put("Purchase", "Purchase");
-		role.put("Technical", "Technical");
-		return role;
+		Map<String, String> employeeTeam = new LinkedHashMap<String, String>();
+		employeeTeam.put("Admin", "Admin");
+		employeeTeam.put("Account", "Account");
+		employeeTeam.put("Management", "Management");
+		employeeTeam.put("Purchase", "Purchase");
+		employeeTeam.put("Technical", "Technical");
+		return employeeTeam;
 	}
 
 }

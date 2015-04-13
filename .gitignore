@@ -16,8 +16,5 @@ target
 output
 
 # IDE #
-.settings
-.project
-.classpath
 .idea
 *.iml

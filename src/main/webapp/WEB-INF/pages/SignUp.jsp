@@ -110,11 +110,11 @@
 						<tr>
 							<td>Team <span id="colon">:</span>
 							</td>
-							<td><form:select path="employeeTeam" cssClass="inputText">
-									<form:options items="${teamList}" />
+							<td><form:select path="employeeTeam" >
+									<form:option value="NONE" label="--- Select ---" />
+									<form:options items="${employeeTeamList}" />
 								</form:select></td>
-							<td><form:errors path="employeeTeam"
-									cssClass="error" /></td>
+							<td><form:errors path="employeeTeam" cssClass="error" /></td>
 						</tr>
 
 

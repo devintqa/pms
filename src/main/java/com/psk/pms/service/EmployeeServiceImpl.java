@@ -8,6 +8,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 
 	public boolean isValidLogin(String userName, String password){	
+		System.out.println("in dao userName: "+userName);
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
 		if(total == 0){
 			return false;

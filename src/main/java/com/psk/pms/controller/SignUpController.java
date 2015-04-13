@@ -51,21 +51,20 @@ public class SignUpController {
 		} else {
 			status.setComplete();
 			Employee emp = new Employee();
-			System.out.println("----"+emp.getEmployeeTeam());
 			model.addAttribute("employeeForm", emp);
 			model.addAttribute("loginMessage", "Signup successful. Please login to continue.");
 			return "SignIn";
 		}
     }
 
-	@ModelAttribute("teamList")
+	@ModelAttribute("employeeTeamList")
 	public Map<String, String> populateTeamList() {
-		Map<String, String> role = new LinkedHashMap<String, String>();
-		role.put("Admin", "Admin");
-		role.put("Account", "Account");
-		role.put("Management", "Management");
-		role.put("Purchase", "Purchase");
-		role.put("Technical", "Technical");
-		return role;
+		Map<String, String> employeeTeam = new LinkedHashMap<String, String>();
+		employeeTeam.put("Admin", "Admin");
+		employeeTeam.put("Account", "Account");
+		employeeTeam.put("Management", "Management");
+		employeeTeam.put("Purchase", "Purchase");
+		employeeTeam.put("Technical", "Technical");
+		return employeeTeam;
 	}
 }

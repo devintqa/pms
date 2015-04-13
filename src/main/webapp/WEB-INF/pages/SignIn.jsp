@@ -57,13 +57,16 @@
 										placeholder="Enter Password" cssClass="inputText" /></td>
 								<td><form:errors path="empPassword" cssClass="error" /></td>
 							</tr>
-							
+
 							<tr>
 								<td>Team :</td>
-								<td><form:select path="empRole" cssClass="inputText" items="${teamList}"/></td>
-								<td><form:errors path="empRole" cssClass="error" /></td>
+								<td><form:select path="employeeTeam" >
+									<form:option value="NONE" label="--- Select ---" />
+									<form:options items="${employeeTeamList}" />
+								</form:select></td>
+								<td></td>
 							</tr>
-							
+
 							<tr></tr>
 							<tr>
 								<td></td>
