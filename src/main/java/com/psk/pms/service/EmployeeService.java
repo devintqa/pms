@@ -16,8 +16,6 @@ public interface EmployeeService {
 
 	public String getUserRole(String empId);
 	
-	public boolean isEmployeeDOJExisting(String userName,String DOJ);
-	
 	public boolean isEmployeeMotherMaidenExisting(String userName,String motherMaiden);
 
 	public boolean resetPassword(String userName, String password);

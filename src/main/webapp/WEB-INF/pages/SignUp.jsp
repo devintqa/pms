@@ -9,8 +9,7 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <link rel="stylesheet" type="text/css"
 	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
@@ -31,27 +30,6 @@
 				<center>
 					<table>
 						<tr>
-							<td>UserName <span id="colon">:</span>
-							</td>
-							<td><form:input path="empId" placeholder="Enter Employee ID"
-									cssClass="inputText" /></td>
-							<td><form:errors path="empId" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>Password <span id="colon">:</span>
-							</td>
-							<td><form:password path="empPassword"
-									placeholder="Enter Password" cssClass="inputText" /></td>
-							<td><form:errors path="empPassword" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>Confirm Password <span id="colon">:</span>
-							</td>
-							<td><form:password path="employeeConfirmPWD"
-									placeholder="Confirm Password" cssClass="inputText" /></td>
-							<td><form:errors path="employeeConfirmPWD" cssClass="error" /></td>
-						</tr>
-						<tr>
 							<td>First Name <span id="colon">:</span>
 							</td>
 							<td><form:input path="employeeFName"
@@ -66,6 +44,25 @@
 							<td><form:errors path="employeeLName" cssClass="error" /></td>
 						</tr>
 						<tr>
+							<td>Password <span id="colon">:</span>
+							</td>
+							<td><form:password path="employeePwd"
+									placeholder="Enter Password" cssClass="inputText" /></td>
+							<td><form:errors path="employeePwd" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Confirm Password <span id="colon">:</span>
+							</td>
+							<td><form:password path="employeeConfirmPwd"
+									placeholder="Confirm Password" cssClass="inputText" /></td>
+							<td><form:errors path="employeeConfirmPwd" cssClass="error" /></td>
+						</tr>
+						<tr>
+								<td>Team <span id="colon">:</span> </td>
+								<td><form:select path="employeeTeam" cssClass="inputText" items="${employeeTeamList}"/></td>
+								<td><form:errors path="employeeTeam" cssClass="error" /></td>
+						</tr>
+						<tr>
 							<td>Address <span id="colon">:</span>
 							</td>
 							<td><form:textarea path="employeeAddress"
@@ -77,13 +74,6 @@
 							<td><form:radiobutton path="employeeGender" value="M" />Male
 								<form:radiobutton path="employeeGender" value="F" />Female</td>
 							<td><form:errors path="employeeGender" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>Date Of Joining <span id="colon">:</span>
-							</td>
-							<td><form:input path="employeeDOJ" placeholder="DD-MM-YYYY"
-									id="doj" cssClass="inputText" /></td>
-							<td><form:errors path="employeeDOJ" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Mobile Number <span id="colon">:</span>
@@ -107,17 +97,6 @@
 							<td><form:errors path="employeeMotherMaidenName"
 									cssClass="error" /></td>
 						</tr>
-						<tr>
-							<td>Team <span id="colon">:</span>
-							</td>
-							<td><form:select path="employeeTeam" >
-									<form:option value="NONE" label="--- Select ---" />
-									<form:options items="${employeeTeamList}" />
-								</form:select></td>
-							<td><form:errors path="employeeTeam" cssClass="error" /></td>
-						</tr>
-
-
 						<tr></tr>
 						<tr>
 							<td></td>

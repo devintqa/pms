@@ -16,8 +16,6 @@ public interface EmployeeDAO {
 
 	public String getUserRole(String empId);
 
-	public boolean isEmployeeDOJExisting(String userName, String DOJ);
-
 	public boolean isEmployeeMotherMaidenExisting(String userName,	String motherMaiden);
 
 	public boolean resetpassword(String userName, String password);

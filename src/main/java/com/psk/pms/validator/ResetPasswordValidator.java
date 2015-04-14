@@ -16,15 +16,15 @@ public class ResetPasswordValidator  implements Validator{
 		@Override
 		public void validate(Object target, Errors errors) {
 	 
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empPassword",
-					"required.empPassword", "Field name is required.");		
-				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeConfirmPWD",
-						"required.employeeConfirmPWD", "Field name is required.");
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeePwd",
+					"required.employeePwd", "Field name is required.");		
+				ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeConfirmPwd",
+						"required.employeeConfirmPwd", "Field name is required.");
 			
 
 				Employee employee = (Employee)target;
 				 
-				if(!(employee.getEmpPassword().equals(employee.getEmployeeConfirmPWD()))){
+				if(!(employee.getEmployeePwd().equals(employee.getEmployeeConfirmPwd()))){
 					errors.rejectValue("empPassword", "notmatch.password");
 				}
 		}

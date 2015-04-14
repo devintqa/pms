@@ -36,7 +36,6 @@ public class ForgotPasswordController {
 	public String userValidationWithDB(
 			@ModelAttribute("forgotPasswordForm") Employee employee,
 			BindingResult result, Model model, SessionStatus status) {
-		boolean isDOJValid = false;
 		boolean isMotherMaidenValid = false;
 		forgotPasswordValidator.validate(employee, result);
 		if (!result.hasErrors()) {
@@ -47,28 +46,15 @@ public class ForgotPasswordController {
 						result, true);
 				return "ForgotPassword";
 			} else {
-				isDOJValid = employeeService.isEmployeeDOJExisting(
-						employee.getEmpId(),
-
-						employee.getEmployeeDOJ());
 				isMotherMaidenValid = employeeService
-						.isEmployeeMotherMaidenExisting(employee.getEmpId(),
-
-						employee.getEmployeeMotherMaidenName());
-				if (!isDOJValid) {
-					forgotPasswordValidator.validateForgotPwdDOJ(employee,
-							result, true);
-					return "ForgotPassword";
-				}
+						.isEmployeeMotherMaidenExisting(employee.getEmpId(), employee.getEmployeeMotherMaidenName());
 				if (!isMotherMaidenValid) {
 					forgotPasswordValidator.validateForgotPwdMotherMaiden(
 							employee, result, true);
 					return "ForgotPassword";
 				}
 			}
-
 		}
-
 		if (result.hasErrors()) {
 			return "ForgotPassword";
 		} else {
@@ -87,7 +73,7 @@ public class ForgotPasswordController {
 
 		if (!result.hasErrors()) {
 			isPwdResetSuccessful = employeeService.resetPassword(
-					employee.getEmpId(), employee.getEmpPassword());
+					employee.getEmpId(), employee.getEmployeePwd());
 		}
 		if (result.hasErrors() || !isPwdResetSuccessful) {
 

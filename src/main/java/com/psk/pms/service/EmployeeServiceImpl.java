@@ -39,14 +39,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			employee.setEmployeeGender("Female");
 		}
+		employee.setEmpId("112233");
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
 		return isInsertSuccessful;
-	}
-	
-	  public boolean isEmployeeDOJExisting(String userName,String DOJ){
-		boolean isAvailable = false;
-		isAvailable = employeeDAO.isEmployeeDOJExisting(userName, DOJ);
-		return isAvailable;
 	}
 	
 	public boolean isEmployeeMotherMaidenExisting(String userName,String motherMaiden){

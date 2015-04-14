@@ -39,11 +39,6 @@ public class SignUpController {
 		boolean isSignUpSuccessful = false;
 		signupValidator.validate(employee, result);
 		if(!result.hasErrors()){
-			boolean isEmployeeExisting = employeeService.isEmployeeExisting(employee.getEmpId()); 
-			if(isEmployeeExisting){
-				signupValidator.validateSignUp(employee, result, true);
-				return "SignUp";
-			}
 			isSignUpSuccessful = employeeService.signupEmployee(employee);
 		}
 		if(result.hasErrors() || !isSignUpSuccessful) {
@@ -52,7 +47,7 @@ public class SignUpController {
 			status.setComplete();
 			Employee emp = new Employee();
 			model.addAttribute("employeeForm", emp);
-			model.addAttribute("loginMessage", "Signup successful. Please login to continue.");
+			model.addAttribute("loginMessage", "Signup successful. Awaiting Admin Approval. You will be able to login to application on approval.");
 			return "SignIn";
 		}
     }

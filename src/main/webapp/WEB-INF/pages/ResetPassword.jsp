@@ -44,16 +44,16 @@
 						<tr>
 							<td>Password <span id="colon">:</span>
 							</td>
-							<td><form:password path="empPassword"
+							<td><form:password path="employeePwd"
 									placeholder="Create new Password" cssClass="inputText" /></td>
-							<td><form:errors path="empPassword" cssClass="error" /></td>
+							<td><form:errors path="employeePwd" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Confirm Password<span id="colon">:</span>
 							</td>
-							<td><form:password path="employeeConfirmPWD"
+							<td><form:password path="employeeConfirmPwd"
 									placeholder="Confirm new Password" cssClass="inputText" /></td>
-							<td><form:errors path="employeeConfirmPWD" cssClass="error" /></td>
+							<td><form:errors path="employeeConfirmPwd" cssClass="error" /></td>
 						</tr>
 						<form:hidden path="empId" />
 						<tr></tr>

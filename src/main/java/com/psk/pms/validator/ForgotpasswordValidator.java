@@ -18,8 +18,6 @@ public class ForgotpasswordValidator  implements Validator{
 	 
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empId",
 				"required.empId", "Field name is required.");
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDOJ",
-					"required.employeeDOJ", "Field name is required.");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeMotherMaidenName",
 					"required.employeeMotherMaidenName", "Field name is required.");
 			
@@ -27,11 +25,6 @@ public class ForgotpasswordValidator  implements Validator{
 		public void validateForgotPwdEmpId(Object target, Errors errors, boolean status) {	 
 			if(status){
 				errors.rejectValue("empId", "employee.notexisting");
-			}		
-		}
-		public void validateForgotPwdDOJ(Object target, Errors errors, boolean status) {	 
-			if(status){
-				errors.rejectValue("employeeDOJ", "employee.DOJ");
 			}		
 		}
 		public void validateForgotPwdMotherMaiden(Object target, Errors errors, boolean status) {	 

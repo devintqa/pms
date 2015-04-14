@@ -53,18 +53,9 @@
 							</tr>
 							<tr>
 								<td>Password :</td>
-								<td><form:password path="empPassword"
+								<td><form:password path="employeePwd"
 										placeholder="Enter Password" cssClass="inputText" /></td>
-								<td><form:errors path="empPassword" cssClass="error" /></td>
-							</tr>
-
-							<tr>
-								<td>Team :</td>
-								<td><form:select path="employeeTeam" >
-									<form:option value="NONE" label="--- Select ---" />
-									<form:options items="${employeeTeamList}" />
-								</form:select></td>
-								<td></td>
+								<td><form:errors path="employeePwd" cssClass="error" /></td>
 							</tr>
 
 							<tr></tr>

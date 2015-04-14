@@ -37,16 +37,23 @@
 						<tr>
 							<td>UserName<span id="colon">:</span>
 							</td>
-							<td><form:input path="empId" placeholder="TCS ID"
+							<td><form:input path="empId" placeholder="PSK User Name"
 									cssClass="inputText" value="${employee.empId}" readonly="true" /></td>
 							<td><form:errors path="empId" cssClass="error" /></td>
 						</tr>
 						<tr>
+							<td>Team<span id="colon">:</span>
+							</td>
+							<td><form:input path="employeeTeam" placeholder="PSK User Name"
+									cssClass="inputText" value="${employee.employeeTeam}" readonly="true" /></td>
+							<td><form:errors path="employeeTeam" cssClass="error" /></td>
+						</tr>
+						<tr>
 							<td>Password<span id="colon">:</span>
 							</td>
-							<td><form:password path="empPassword" cssClass="inputText"
-									value="${employee.empPassword}" /></td>
-							<td><form:errors path="empPassword" cssClass="error" /></td>
+							<td><form:password path="employeePwd" cssClass="inputText"
+									value="${employee.employeePwd}" /></td>
+							<td><form:errors path="employeePwd" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>First Name<span id="colon">:</span>
@@ -70,13 +77,6 @@
 							<td><form:errors path="employeeAddress" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td>Date Of Joining<span id="colon">:</span>
-							</td>
-							<td><form:input path="employeeDOJ" placeholder="DD-MM-YYYY"
-									id="doj" cssClass="inputText" value="${employee.employeeDOJ}" /></td>
-							<td><form:errors path="employeeDOJ" cssClass="error" /></td>
-						</tr>
-						<tr>
 							<td>Mobile Number<span id="colon">:</span>
 							</td>
 							<td><form:input path="employeeMobile" cssClass="inputText"
@@ -89,14 +89,6 @@
 							<td><form:input path="employeeMail" cssClass="inputText"
 									value="${employee.employeeMail}" /></td>
 							<td><form:errors path="employeeMail" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>Team<span id="colon">:</span>
-							</td>
-							<td><form:select path="employeeTeam" cssClass="inputText">
-									<form:options items="${teamList}" />
-								</form:select></td>
-							<td><form:errors path="employeeTeam" cssClass="error" /></td>
 						</tr>
 						<tr></tr>
 						<tr>

@@ -37,13 +37,6 @@
 							<td><form:errors path="empId" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td>Date Of Joining <span id="colon">:</span>
-							</td>
-							<td><form:input path="employeeDOJ" placeholder="DD-MM-YYYY"
-									id="doj" cssClass="inputText" /></td>
-							<td><form:errors path="employeeDOJ" cssClass="error" /></td>
-						</tr>
-						<tr>
 							<td>Mother's Maiden Name<span id="colon">:</span></td>
 							<td><form:input path="employeeMotherMaidenName"
 									placeholder="Mother's maiden name" cssClass="inputText" /></td>

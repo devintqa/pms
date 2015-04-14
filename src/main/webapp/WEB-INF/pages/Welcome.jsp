@@ -17,7 +17,7 @@
 	</header>
 	<div>
 		<div>
-			<h3 id="welcomeMessage">Welcome, ${employee.empId}&nbsp!</h3>
+			<h3 id="welcomeMessage">Welcome, ${employee.empId}&nbsp! ${employee.employeeTeam}</h3>
 		</div>
 
 	</div>

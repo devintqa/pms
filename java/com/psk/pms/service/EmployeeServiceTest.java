@@ -1,4 +1,4 @@
-package com.psk.pms.service;
+/*package com.psk.pms.service;
 
 import java.util.Random;
 
@@ -30,12 +30,11 @@ public class EmployeeServiceTest {
 	    	Employee employee = new Employee();
 	    	System.out.println("Employee Signup for emp ID: " + empId);
 	    	employee.setEmpId(empId);
-	    	employee.setEmpPassword("password");
+	    	employee.setEmployeePwd("password");
 	    	employee.setEmployeeFName("Sriram");
 	    	employee.setEmployeeLName("Kumar");
 	    	employee.setEmployeeAddress("address");
 	    	employee.setEmployeeGender("M");
-	    	employee.setEmployeeDOJ("11-11-2014");
 	    	employee.setEmployeeMobile("123456789");
 	    	employee.setEmployeeMail("a@b.com");
 	    	employee.setEmployeeMotherMaidenName("Mother");
@@ -73,3 +72,4 @@ public class EmployeeServiceTest {
 	 	}
 
 }
+*/

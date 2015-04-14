@@ -95,7 +95,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>PMS</finalName>
+		<finalName>pms</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

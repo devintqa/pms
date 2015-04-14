@@ -11,7 +11,7 @@
 		<http use-expressions="true">
 			<intercept-url pattern="/emp/pms/**" access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
 			<form-login login-processing-url="/login.do" login-page="/emp/login"
-				username-parameter="empId" password-parameter="empPassword"
+				username-parameter="empId" password-parameter="employeePwd"
 				default-target-url="/emp/myview" authentication-failure-url="/emp/login?auth=fail" />
 			<logout logout-url="/logout" logout-success-url="/emp/login" />
 		</http>

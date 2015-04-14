@@ -36,8 +36,9 @@ public class EmployeeController {
 		boolean isEmployeeAvailable = false;
 		employeeValidator.validate(employee, result);
 		System.out.println("EMPLOYEE");
+		System.out.println(employee.getEmployeeTeam());
 		if (!result.hasErrors()) {
-			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmpId(), employee.getEmpPassword());
+			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmpId(), employee.getEmployeePwd());
 		}
 		if (result.hasErrors()) {
 			return "SignIn";
@@ -55,8 +56,9 @@ public class EmployeeController {
 	@RequestMapping("/emp/myview")
 	public String mypage(Model model, Principal principal) {
 		System.out.println("MyView" + principal.getName());
-		Employee employee = new Employee();
+		Employee employee;
 		String userRole = employeeService.getUserRole(principal.getName());
+		employee = employeeService.getEmployeeDetails(principal.getName());
 		employee.setEmpId(principal.getName());
 		employee.setEmployeeRole(userRole);
 		model.addAttribute("employee", employee);

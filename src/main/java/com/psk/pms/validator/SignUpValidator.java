@@ -16,22 +16,20 @@ public class SignUpValidator implements Validator{
 	@Override
 	public void validate(Object target, Errors errors) {
  
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empId",
-			"required.empId", "Field name is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empPassword",
-			"required.empPassword", "Field name is required.");		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeConfirmPWD",
-				"required.employeeConfirmPWD", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeFName",
 				"required.employeeFName", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeLName",
 				"required.employeeLName", "Field name is required.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeePwd",
+			"required.employeePwd", "Field name is required.");		
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeConfirmPwd",
+				"required.employeeConfirmPwd", "Field name is required.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeTeam",
+				"required.employeeTeam", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeAddress",
 				"required.employeeAddress", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeGender",
 				"required.employeeGender", "Field name is required.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeDOJ",
-				"required.employeeDOJ", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeMobile",
 				"required.employeeMobile", "Field name is required.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeMail",
@@ -41,16 +39,8 @@ public class SignUpValidator implements Validator{
 		
 		Employee employee = (Employee)target;
 		 
-		if(!(employee.getEmpPassword().equals(employee.getEmployeeConfirmPWD()))){
+		if(!(employee.getEmployeePwd().equals(employee.getEmployeeConfirmPwd()))){
 			errors.rejectValue("empPassword", "notmatch.password");
-		}
-		
-	}
-	
-	public void validateSignUp(Object target, Errors errors, boolean status) {	 
-		if(status){
-			errors.rejectValue("empId", "employee.existing");
-		}
-		
+		}	
 	}
 }
