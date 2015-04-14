@@ -1,5 +1,7 @@
 package com.psk.pms.service;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
 
@@ -39,6 +41,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			employee.setEmployeeGender("Female");
 		}
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		String hashedPassword = passwordEncoder.encode(employee.getEmployeePwd());
+		employee.setEmployeePwd(hashedPassword);
 		employee.setEmpId("112233");
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
 		return isInsertSuccessful;

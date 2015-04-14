@@ -18,11 +18,17 @@
 
 		<authentication-manager>
 			<authentication-provider>
+				<password-encoder ref="encoder" />
 				<jdbc-user-service data-source-ref="dataSource"
 					users-by-username-query="select empId,empPassword,enabled from employee where empId=?"
 					authorities-by-username-query="select e.empId, ur.userRole from employee e, userroles ur
         where e.empId = ur.empId and e.empId =?" />
 			</authentication-provider>
 		</authentication-manager>
+		
+		<beans:bean id="encoder" 
+			class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+		<beans:constructor-arg name="strength" value="11" />
+  		</beans:bean>
 
 </beans:beans>
