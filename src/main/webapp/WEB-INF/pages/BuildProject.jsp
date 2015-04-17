@@ -129,7 +129,7 @@
 						</table>
 					</fieldset>
 
-					<form:hidden path="empId" />
+					<form:hidden path="employeeId" />
 					<table>
 						<tr>
 							<td></td>

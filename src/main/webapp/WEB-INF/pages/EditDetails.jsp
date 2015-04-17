@@ -37,9 +37,9 @@
 						<tr>
 							<td>UserName<span id="colon">:</span>
 							</td>
-							<td><form:input path="empId" placeholder="PSK User Name"
-									cssClass="inputText" value="${employee.empId}" readonly="true" /></td>
-							<td><form:errors path="empId" cssClass="error" /></td>
+							<td><form:input path="employeeId" placeholder="PSK User Name"
+									cssClass="inputText" value="${employee.employeeId}" readonly="true" /></td>
+							<td><form:errors path="employeeId" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Team<span id="colon">:</span>

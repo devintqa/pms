@@ -1,16 +1,16 @@
 package com.psk.pms.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.List;
 
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
+import com.psk.pms.utils.Encryption;
 
 public class EmployeeServiceImpl implements EmployeeService {
 		
 	private EmployeeDAO employeeDAO;
 
 	public boolean isValidLogin(String userName, String password){	
-		System.out.println("in dao userName: "+userName);
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
 		if(total == 0){
 			return false;
@@ -18,6 +18,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return true;
 	}
 	
+	public List<Employee> getNewRegistrationRequest(String fromDate){
+		
+		List<Employee> newRequests= employeeDAO.getNewRegistrationRequest(fromDate);
+		return newRequests;
+		
+	}
 	public String getUserRole(String empId){
 		return employeeDAO.getUserRole(empId);
 	}
@@ -41,10 +47,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			employee.setEmployeeGender("Female");
 		}
-		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-		String hashedPassword = passwordEncoder.encode(employee.getEmployeePwd());
-		employee.setEmployeePwd(hashedPassword);
-		employee.setEmpId("112233");
+		employee.setEmployeePwd(Encryption.doPasswordEncode(employee.getEmployeePwd()));
+		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
 		return isInsertSuccessful;
 	}
@@ -58,7 +62,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public boolean resetPassword(String userName, String password)
 	{
 		boolean isAvailable = false;
-		isAvailable = employeeDAO.resetpassword(userName, password);
+		String hashedPassword = Encryption.doPasswordEncode(password);
+		isAvailable = employeeDAO.resetpassword(userName, hashedPassword);
 		return isAvailable;
 	}
 	public boolean updateEmployee(Employee employee){
@@ -67,9 +72,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return isInsertSuccessful;
 	}
 	
-	
 	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
 		this.employeeDAO = employeeDAO;
+	}
+	
+	public String getUserName(String employeeFName, String employeeLName) {
+		String fname ="";
+		String userName ="";
+		fname = employeeFName.substring(0, 1);
+		userName = fname.concat(employeeLName);
+		int total = employeeDAO.isUserNameExists(userName);
+		for(int x = 1; total != 0; x++) {
+			String tempUserName = new StringBuilder(userName).append(x).toString();
+			total = employeeDAO.isUserNameExists(tempUserName);
+			if (total == 0){
+				userName = tempUserName;	
+			}
+		}
+		return userName;
 	}
 
 }

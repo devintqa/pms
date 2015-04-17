@@ -10,16 +10,16 @@
 </head>
 <body>
 	<nav id="desktop"> <c:choose>
-		<c:when test="${employee.empId > '0'}">
+		<c:when test="${employee.employeeId > '0'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/myhome/${employee.empId}" class="active">Home</a>
+					href="/pms/emp/myview/myhome/${employee.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="about"
-					href="/pms/emp/myview/buildProject/${employee.empId}">Build
+					href="/pms/emp/myview/buildProject/${employee.employeeId}">Build
 						Project</a></li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.empId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>

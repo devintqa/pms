@@ -27,7 +27,7 @@ public class ProjectController {
 		projectDetail.setEmpId(empId);
 		model.addAttribute("createProjectForm", projectDetail);
 		Employee employee = new Employee();
-		employee.setEmpId(empId);
+		employee.setEmployeeId(empId);
 		model.addAttribute("employee", employee);
 		return "BuildProject";
 	}

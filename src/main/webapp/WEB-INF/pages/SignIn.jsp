@@ -47,9 +47,9 @@
 						<table>
 							<tr>
 								<td>UserName :</td>
-								<td><form:input path="empId"
+								<td><form:input path="employeeId"
 										placeholder="Enter Employee ID" cssClass="inputText" /></td>
-								<td><form:errors path="empId" cssClass="error" /></td>
+								<td><form:errors path="employeeId" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Password :</td>

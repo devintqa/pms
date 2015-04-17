@@ -1,5 +1,7 @@
 package com.psk.pms.dao;
 
+import java.util.List;
+
 import com.psk.pms.model.Employee;
 
 public interface EmployeeDAO {
@@ -19,5 +21,9 @@ public interface EmployeeDAO {
 	public boolean isEmployeeMotherMaidenExisting(String userName,	String motherMaiden);
 
 	public boolean resetpassword(String userName, String password);
+	
+	public int isUserNameExists(String username) ;
+
+	public List<Employee> getNewRegistrationRequest(String fromDate);
 
 }

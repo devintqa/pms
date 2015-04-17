@@ -33,7 +33,7 @@ public class EditDetailsController {
 	public String getHomePage(@PathVariable String empId, Model model) {
 		Employee employee = new Employee();
 		String userRole = employeeService.getUserRole(empId);
-		employee.setEmpId(empId);
+		employee.setEmployeeId(empId);
 		employee.setEmployeeRole(userRole);
 		model.addAttribute("employee", employee);
 		return "Welcome";

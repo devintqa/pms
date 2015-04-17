@@ -2,7 +2,7 @@ package com.psk.pms.model;
 
 public class Employee {
 	
-	private String empId;
+	private String employeeId;
 	private String employeePwd;
 	private String employeeConfirmPwd;
 	private String employeeFName;
@@ -14,13 +14,8 @@ public class Employee {
 	private String employeeMail;
 	private String employeeMotherMaidenName;
 	private String employeeRole;
+	private String enabled;
 	
-	public String getEmpId() {
-		return empId;
-	}
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
 	public String getEmployeePwd() {
 		return employeePwd;
 	}
@@ -86,6 +81,18 @@ public class Employee {
 	}
 	public void setEmployeeRole(String employeeRole) {
 		this.employeeRole = employeeRole;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	public String getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(String enabled) {
+		this.enabled = enabled;
 	}
 	
 }

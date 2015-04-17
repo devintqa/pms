@@ -16,15 +16,15 @@ public class ForgotpasswordValidator  implements Validator{
 		@Override
 		public void validate(Object target, Errors errors) {
 	 
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "empId",
-				"required.empId", "Field name is required.");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeId",
+				"required.employeeId", "Field name is required.");
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "employeeMotherMaidenName",
 					"required.employeeMotherMaidenName", "Field name is required.");
 			
 		}
 		public void validateForgotPwdEmpId(Object target, Errors errors, boolean status) {	 
 			if(status){
-				errors.rejectValue("empId", "employee.notexisting");
+				errors.rejectValue("employeeId", "employee.notexisting");
 			}		
 		}
 		public void validateForgotPwdMotherMaiden(Object target, Errors errors, boolean status) {	 

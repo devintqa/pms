@@ -32,9 +32,9 @@
 						<tr>
 							<td>UserName <span id="colon">:</span>
 							</td>
-							<td><form:input path="empId" placeholder="Employee ID"
+							<td><form:input path="employeeId" placeholder="Employee ID"
 									cssClass="inputText" /></td>
-							<td><form:errors path="empId" cssClass="error" /></td>
+							<td><form:errors path="employeeId" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Mother's Maiden Name<span id="colon">:</span></td>

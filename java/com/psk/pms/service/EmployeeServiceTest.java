@@ -17,7 +17,7 @@ public class EmployeeServiceTest {
 	
 	ApplicationContext context = 
 		new ClassPathXmlApplicationContext("applicationContextTest.xml");
-	String empId = "";
+	StringemployeeId = "";
 		
 	@Before
     public void setUp() {
@@ -28,7 +28,7 @@ public class EmployeeServiceTest {
 	    public void aTestSignupEmployee() { 
 	 		EmployeeService employeeService = (EmployeeService) context.getBean("employeeService");
 	    	Employee employee = new Employee();
-	    	System.out.println("Employee Signup for emp ID: " + empId);
+	    	System.out.println("Employee Signup for emp ID: " +employeeId);
 	    	employee.setEmpId(empId);
 	    	employee.setEmployeePwd("password");
 	    	employee.setEmployeeFName("Sriram");
@@ -46,7 +46,7 @@ public class EmployeeServiceTest {
 	 	public void bTestUpdateEmployeeDetails(){
 	 		EmployeeService employeeService = (EmployeeService) context.getBean("employeeService");
 	 		Employee employee = new Employee();
-	 		System.out.println("Employee Update for emp ID: " + empId);
+	 		System.out.println("Employee Update for emp ID: " +employeeId);
 	 		employee.setEmpId(empId);
 	 		employee.setEmpPassword("test1");
 	    	employee.setEmployeeFName("Maharaja");

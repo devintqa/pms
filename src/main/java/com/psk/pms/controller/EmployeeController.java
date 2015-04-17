@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,36 +31,41 @@ public class EmployeeController {
 	EmployeeValidator employeeValidator;
 	@Autowired
 	EmployeeService employeeService;
-
+	
 	@RequestMapping(value = "/emp/login.do", method = RequestMethod.POST)
-	public String logIn(@ModelAttribute("employeeForm") Employee employee, BindingResult result, Model model, SessionStatus status) {
+    public String saveEmployeeAction(
+            @ModelAttribute("employeeForm") Employee employee,
+            BindingResult result, Model model, SessionStatus status) {
 		boolean isEmployeeAvailable = false;
 		employeeValidator.validate(employee, result);
-		System.out.println("EMPLOYEE");
-		System.out.println(employee.getEmployeeTeam());
-		if (!result.hasErrors()) {
-			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmpId(), employee.getEmployeePwd());
+		if(!result.hasErrors()){
+		isEmployeeAvailable = employeeService.isValidLogin(employee.getEmployeeId(), employee.getEmployeePwd());
 		}
 		if (result.hasErrors()) {
-			return "SignIn";
-		} else if (!isEmployeeAvailable) {
-			model.addAttribute("loginMessage", "User Details Not Found. Please Sign Up.");
-			return "SignIn";
+			return "EmployeeForm";
+		} else if(!isEmployeeAvailable){
+				model.addAttribute("loginMessage", "User Details Not Found. Please Sign Up.");
+				return "EmployeeForm";
 		} else {
 			status.setComplete();
 			model.addAttribute("employee", employee);
-			System.out.println("checkpoint:"+employee.getEmployeeTeam());
-			return "Welcome";
+			return "EmployeeSuccess";
 		}
-	}
-
+    }
+	
 	@RequestMapping("/emp/myview")
 	public String mypage(Model model, Principal principal) {
 		System.out.println("MyView" + principal.getName());
+        
+        List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
+		if(!newSignupRequestList.isEmpty()){
+			model.addAttribute("newSignupRequestList", newSignupRequestList);
+		}
+		
 		Employee employee;
 		String userRole = employeeService.getUserRole(principal.getName());
 		employee = employeeService.getEmployeeDetails(principal.getName());
-		employee.setEmpId(principal.getName());
+		employee.setEmployeeId(principal.getName());
 		employee.setEmployeeRole(userRole);
 		model.addAttribute("employee", employee);
 		return "Welcome";
@@ -89,5 +95,5 @@ public class EmployeeController {
 		employeeTeam.put("Technical", "Technical");
 		return employeeTeam;
 	}
-
+	
 }

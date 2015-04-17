@@ -1,15 +1,19 @@
 package com.psk.pms.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.psk.pms.model.Employee;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
-	
+
 	private DriverManagerDataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
-	
+
 	public void setDataSource(DriverManagerDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -20,7 +24,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		int total = jdbcTemplate.queryForInt(sql, new Object[] { userName, password  });
 		return total;
 	}
-	
+
 	public String getUserRole(String empId){
 		String sql = "SELECT userRole FROM userroles where empId = ?";	 
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -28,52 +32,51 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 				sql, String.class, empId);
 		return role;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Employee getEmployeeDetails(String empId){
-		System.out.println(empId);
 		String sql = "SELECT * FROM employee where empId = ?";	 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		Employee employee = (Employee)jdbcTemplate.queryForObject(sql, new Object[] { empId }, new EmployeeRowMapper());	 
 		return employee;
 	}
-	
+
 	public int isEmployeeExisting(String userName){
 		String sql = "SELECT COUNT(*) FROM employee where empId = ?";	 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForInt(sql, new Object[] { userName });
 		return total;
 	}
-	
+
 	public boolean signupEmployee(Employee employee){
-	String sql = "INSERT INTO employee" +
-		"(empId, empPassword, empFirstName, empLastName, empTeam, empAddress, empGender, empMobNum, empMail, empMotherName) " +
-		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
-	jdbcTemplate = new JdbcTemplate(dataSource);
-	jdbcTemplate.update(sql, new Object[] { employee.getEmpId(),
-		employee.getEmployeePwd(),employee.getEmployeeFName(), employee.getEmployeeLName(), employee.getEmployeeTeam(),
-		employee.getEmployeeAddress(), employee.getEmployeeGender(),
-		employee.getEmployeeMobile(),
-		employee.getEmployeeMail(), employee.getEmployeeMotherMaidenName()
-	});
-	String sql2 = "INSERT INTO userroles" +
-	"(empId, userRole) " +
-	"VALUES (?, ?)";
-	jdbcTemplate = new JdbcTemplate(dataSource);
-	jdbcTemplate.update(sql2, new Object[] { employee.getEmpId(),"ROLE_USER"});
-	
-	return true;
+		String sql = "INSERT INTO employee" +
+				"(empId, empPassword, empFirstName, empLastName, empTeam, empAddress, empGender, empMobNum, empMail, empMotherName) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update(sql, new Object[] { employee.getEmployeeId(),
+				employee.getEmployeePwd(),employee.getEmployeeFName(), employee.getEmployeeLName(), employee.getEmployeeTeam(),
+				employee.getEmployeeAddress(), employee.getEmployeeGender(),
+				employee.getEmployeeMobile(),
+				employee.getEmployeeMail(), employee.getEmployeeMotherMaidenName()
+		});
+		String sql2 = "INSERT INTO userroles" +
+				"(empId, userRole) " +
+				"VALUES (?, ?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update(sql2, new Object[] { employee.getEmployeeId(),"ROLE_USER"});
+
+		return true;
 	}
-	
+
 	public boolean updateEmployee(Employee employee){
 		String sql = "UPDATE employee set empPassword = ?, empFirstName = ?, empLastName = ?, empAddress  = ?, empMobNum = ?, empMail = ? WHERE empId = ? "; 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcTemplate.update(sql, new Object[] {
-			employee.getEmployeePwd(),employee.getEmployeeFName(), employee.getEmployeeLName(),
-			employee.getEmployeeAddress(), employee.getEmployeeMobile(),
-			employee.getEmployeeMail()
+				employee.getEmployeePwd(),employee.getEmployeeFName(), employee.getEmployeeLName(),
+				employee.getEmployeeAddress(), employee.getEmployeeMobile(),
+				employee.getEmployeeMail(), employee.getEmployeeId()
 		});		
-			return true;
+		return true;
 	}
 
 
@@ -90,7 +93,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 
 	public boolean resetpassword(String userName, String password) {
-		
+
 		String sql = "UPDATE employee set empPassword = ? WHERE empId = ? "; 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int count = jdbcTemplate.update(sql, new Object[] {password,userName
@@ -100,6 +103,44 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		return true;
 	}
-	
-	
+
+	public int isUserNameExists(String username) {
+
+		String sql = "SELECT COUNT(*) FROM employee where empId = ? ";	 
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForInt(sql, new Object[] { username });
+		return total;	
+	}
+
+	@Override
+	public List<Employee> getNewRegistrationRequest(String fromDate) {
+		
+			String sql = "SELECT employee.empId, employee.empPassword, employee.empFirstName, "
+					+ "employee.empLastName, employee.empAddress, employee.empGender, "
+					+ "employee.empMobNum, employee.empMail, employee.empMotherName, employee.enabled, "
+					+ "employee.empTeam FROM pms.employee where employee.enabled = 1";
+			
+			jdbcTemplate = new JdbcTemplate(dataSource);             
+			
+			List<Employee> newRequestList = new ArrayList<Employee>();
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			 
+			for (Map<String, Object> row : rows) {
+				Employee employee = new Employee();
+				employee.setEmployeeId((String) row.get("empId"));
+				employee.setEmployeePwd((String) row.get("empPassword"));
+				employee.setEmployeeFName((String) row.get("empFirstName"));
+				employee.setEmployeeLName((String) row.get("empLastName"));
+				employee.setEmployeeAddress((String) row.get("empAddress"));
+				employee.setEmployeeTeam((String) row.get("empTeam"));
+				employee.setEmployeeGender((String) row.get("empGender"));
+				employee.setEmployeeMobile((String) row.get("empMobNum"));
+				employee.setEmployeeMail((String) row.get("empMail"));
+				employee.setEnabled(row.get("enabled").toString());
+				newRequestList.add(employee);
+			} 
+			return newRequestList;
+	}
+
+
 }

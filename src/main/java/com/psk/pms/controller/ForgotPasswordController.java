@@ -40,14 +40,14 @@ public class ForgotPasswordController {
 		forgotPasswordValidator.validate(employee, result);
 		if (!result.hasErrors()) {
 			boolean isEmployeeExisting = employeeService
-					.isEmployeeExisting(employee.getEmpId());
+					.isEmployeeExisting(employee.getEmployeeId());
 			if (!isEmployeeExisting) {
 				forgotPasswordValidator.validateForgotPwdEmpId(employee,
 						result, true);
 				return "ForgotPassword";
 			} else {
 				isMotherMaidenValid = employeeService
-						.isEmployeeMotherMaidenExisting(employee.getEmpId(), employee.getEmployeeMotherMaidenName());
+						.isEmployeeMotherMaidenExisting(employee.getEmployeeId(), employee.getEmployeeMotherMaidenName());
 				if (!isMotherMaidenValid) {
 					forgotPasswordValidator.validateForgotPwdMotherMaiden(
 							employee, result, true);
@@ -73,7 +73,7 @@ public class ForgotPasswordController {
 
 		if (!result.hasErrors()) {
 			isPwdResetSuccessful = employeeService.resetPassword(
-					employee.getEmpId(), employee.getEmployeePwd());
+					employee.getEmployeeId(), employee.getEmployeePwd());
 		}
 		if (result.hasErrors() || !isPwdResetSuccessful) {
 

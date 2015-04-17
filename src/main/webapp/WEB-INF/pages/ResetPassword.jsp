@@ -37,8 +37,8 @@
 						<tr>
 							<td>UserName <span id="colon">:</span>
 							</td>
-							<td><form:label path="empId" placeholder="Employee ID"
-									cssClass="inputText">${ResetForm.empId}</form:label></td>
+							<td><form:label path="employeeId" placeholder="Employee ID"
+									cssClass="inputText">${ResetForm.employeeId}</form:label></td>
 
 						</tr>
 						<tr>
@@ -55,7 +55,7 @@
 									placeholder="Confirm new Password" cssClass="inputText" /></td>
 							<td><form:errors path="employeeConfirmPwd" cssClass="error" /></td>
 						</tr>
-						<form:hidden path="empId" />
+						<form:hidden path="employeeId" />
 						<tr></tr>
 						<tr>
 							<td></td>

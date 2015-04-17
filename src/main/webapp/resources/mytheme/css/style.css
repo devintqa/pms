@@ -235,22 +235,22 @@ font-family:arial;color:#E08B14;text-decoration: none;
 	color: white; /* a color that is readeable with the color above */
 }
 /* Css for view cab detail page starts here */
-	#cabDetailsTable{
+	#newSignUpRequests{
 		    border-collapse: collapse;
 		    width: 90%;
 		    margin:auto;
 		}
-	#cabDetailsTable, #cabDetailsTable td, #cabDetailsTable th {
+	#newSignUpRequests, #newSignUpRequests td, #newSignUpRequests th {
 		    border: 1px solid #E08B14;
 		}
-		#cabDetailsTable th {
-		    background-color: #E08B14;
-		    color: white;
-		}
-		#cabDetailsTable td {
-		    background-color: white;
-		    color: #000000;
-		}
+	#newSignUpRequests th {
+	    background-color: #E08B14;
+	    color: white;
+	}
+	#newSignUpRequests td {
+	    background-color: white;
+	    color: #000000;
+	}
 /* Css for view cab detail page ends here */		
 
 
