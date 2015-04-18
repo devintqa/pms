@@ -22,7 +22,7 @@ public interface EmployeeDAO {
 
 	public boolean resetpassword(String userName, String password);
 	
-	public int isUserNameExists(String username) ;
+	public List<String> getUserNames(String userName);
 
 	public List<Employee> getNewRegistrationRequest(String fromDate);
 

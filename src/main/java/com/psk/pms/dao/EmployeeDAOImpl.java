@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,13 +104,19 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		return true;
 	}
-
-	public int isUserNameExists(String username) {
-
-		String sql = "SELECT COUNT(*) FROM employee where empId = ? ";	 
-		jdbcTemplate = new JdbcTemplate(dataSource);
-		int total = jdbcTemplate.queryForInt(sql, new Object[] { username });
-		return total;	
+	
+	@Override
+	public List<String> getUserNames(String userName) {
+			String name = userName+"%";
+			String sql = "SELECT employee.empId FROM employee where employee.enabled = 1 and employee.empId like ? order by employee.empId asc";		
+			jdbcTemplate = new JdbcTemplate(dataSource);			
+			List<String> employeeList = new ArrayList<String>();
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] { name });		 
+			for (Map<String, Object> row : rows) {
+				String empID = (String) row.get("empId");
+				employeeList.add(empID);
+			}
+			return employeeList;
 	}
 
 	@Override

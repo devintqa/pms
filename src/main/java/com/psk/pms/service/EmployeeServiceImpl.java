@@ -77,17 +77,24 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 	
 	public String getUserName(String employeeFName, String employeeLName) {
-		String fname ="";
-		String userName ="";
-		fname = employeeFName.substring(0, 1);
-		userName = fname.concat(employeeLName);
-		int total = employeeDAO.isUserNameExists(userName);
-		for(int x = 1; total != 0; x++) {
-			String tempUserName = new StringBuilder(userName).append(x).toString();
-			total = employeeDAO.isUserNameExists(tempUserName);
-			if (total == 0){
-				userName = tempUserName;	
+		String firstChar = employeeFName.substring(0, 1).toLowerCase();
+		String userLastName = employeeLName.toLowerCase();
+		String userName = firstChar.concat(userLastName);
+		String loopUserName = userName;
+		List<String> existingEmpList = employeeDAO.getUserNames(userName);
+		if(existingEmpList.size()>0){
+			System.out.println("Employee User Name Pattern Exists!");
+			int i = 1;
+			for(String empName : existingEmpList){
+				if(loopUserName.equalsIgnoreCase(empName)){
+					System.out.println("Existing Employee Name :" + empName);
+					loopUserName = new StringBuilder(userName).append(i).toString();
+					System.out.println("Appended Employee Name :" + empName);
+					i++;
+				}
 			}
+			i = i-1;
+			userName = new StringBuilder(userName).append(i).toString();
 		}
 		return userName;
 	}
