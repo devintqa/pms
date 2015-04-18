@@ -21,10 +21,10 @@
 				${employee.employeeTeam}</h3>
 		</div>
 
-		<table id="newSignUpRequests">
+		<!--<table id="newSignUpRequests">
 			<thead>
 				<tr>
-					<th>Id</th>
+					<th>User Name</th>
 					<th>First Name</th>
 					<th>Last Name</th>
 					<th>Gender</th>
@@ -53,7 +53,7 @@
 				</c:if>
 			</tbody>
 		</table>
-		<br>
+		--><br>
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />

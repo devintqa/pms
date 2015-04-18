@@ -53,15 +53,16 @@ public class EmployeeController {
 		}
     }
 	
+	@RequestMapping(value = "/emp/myview/enableAccess", method = RequestMethod.GET)
+	public String enableAccess(ModelMap model){ 
+		Employee employee = new Employee();
+		model.addAttribute("access", employee);
+		return "Access";
+	}
+	
 	@RequestMapping("/emp/myview")
 	public String mypage(Model model, Principal principal) {
 		System.out.println("MyView" + principal.getName());
-        
-        List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
-		if(!newSignupRequestList.isEmpty()){
-			model.addAttribute("newSignupRequestList", newSignupRequestList);
-		}
-		
 		Employee employee;
 		String userRole = employeeService.getUserRole(principal.getName());
 		employee = employeeService.getEmployeeDetails(principal.getName());
@@ -69,6 +70,15 @@ public class EmployeeController {
 		employee.setEmployeeRole(userRole);
 		model.addAttribute("employee", employee);
 		return "Welcome";
+	}
+	
+	@RequestMapping("/emp/myview/enableAccessRequest.do")
+	public String enableAccessRequest(Model model, Principal principal) {
+	    List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
+		if(!newSignupRequestList.isEmpty()){
+			model.addAttribute("newSignupRequestList", newSignupRequestList);
+		}
+		return "EnableAccess";
 	}
 
 	@RequestMapping(value = "/emp/login", method = RequestMethod.GET)
