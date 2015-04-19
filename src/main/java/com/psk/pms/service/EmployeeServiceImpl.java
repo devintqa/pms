@@ -5,10 +5,12 @@ import java.util.List;
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
 import com.psk.pms.utils.Encryption;
+import com.psk.pms.utils.PMSMail;
 
 public class EmployeeServiceImpl implements EmployeeService {
 		
 	private EmployeeDAO employeeDAO;
+	private PMSMail pmsMail;
 
 	public boolean isValidLogin(String userName, String password){	
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
@@ -50,6 +52,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmployeePwd(Encryption.doPasswordEncode(employee.getEmployeePwd()));
 		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
+		if(isInsertSuccessful){
+			pmsMail.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
+		}
 		return isInsertSuccessful;
 	}
 	
@@ -72,11 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return isInsertSuccessful;
 	}
 	
-	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
-		this.employeeDAO = employeeDAO;
-	}
-	
-	public String getUserName(String employeeFName, String employeeLName) {
+	private String getUserName(String employeeFName, String employeeLName) {
 		String firstChar = employeeFName.substring(0, 1).toLowerCase();
 		String userLastName = employeeLName.toLowerCase();
 		String userName = firstChar.concat(userLastName);
@@ -97,6 +98,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 			userName = new StringBuilder(userName).append(i).toString();
 		}
 		return userName;
+	}
+	
+	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
+		this.employeeDAO = employeeDAO;
+	}
+	
+	public void setPmsMail(PMSMail pmsMail) {
+		this.pmsMail = pmsMail;
 	}
 
 }
