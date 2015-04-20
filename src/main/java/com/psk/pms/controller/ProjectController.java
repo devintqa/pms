@@ -21,13 +21,13 @@ public class ProjectController {
 	@Autowired
 	ProjectService projectService;
 
-	@RequestMapping(value = "/emp/myview/buildProject/{empId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String empId, Model model) {
+	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
+	public String buildProject(@PathVariable String employeeId, Model model) {
 		ProjectDetail projectDetail = new ProjectDetail();
-		projectDetail.setEmpId(empId);
+		projectDetail.setEmployeeId(employeeId);
 		model.addAttribute("createProjectForm", projectDetail);
 		Employee employee = new Employee();
-		employee.setEmployeeId(empId);
+		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
 		return "BuildProject";
 	}

@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
 		if(isInsertSuccessful){
-			pmsMail.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
+			//pmsMail.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
 		}
 		return isInsertSuccessful;
 	}

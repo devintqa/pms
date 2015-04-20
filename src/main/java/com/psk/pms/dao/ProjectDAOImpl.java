@@ -21,7 +21,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 	
 	public boolean saveProject(final List<ProjectDetail> cabDetails){
-		String sql = "INSERT INTO cabdetail" +
+		/*String sql = "INSERT INTO cabdetail" +
 		"(empId, project, subProject, won, requestDate, dropRequestDate, pickupTime, dropTime, area) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 	jdbcTemplate = new JdbcTemplate(dataSource);	
@@ -51,12 +51,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 		public int getBatchSize() {
 			return cabDetails.size();
 		}
-	  });		
+	  });		*/
 		return true;
 	}
 	
 	public boolean editProject(final List<ProjectDetail> cabDetails){
-		String sql = "update cabdetail set subProject = ?, won = ?, pickupTime = ?, dropTime = ?, area = ?, dropRequestDate =? where empId = ? and requestDate = ?";
+		/*String sql = "update cabdetail set subProject = ?, won = ?, pickupTime = ?, dropTime = ?, area = ?, dropRequestDate =? where empId = ? and requestDate = ?";
 	jdbcTemplate = new JdbcTemplate(dataSource);	
 	jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){	 
 		@Override
@@ -83,7 +83,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		public int getBatchSize() {
 			return cabDetails.size();
 		}
-	  });		
+	  });		*/
 		return true;
 	}
 }
