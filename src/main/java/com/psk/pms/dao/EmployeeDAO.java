@@ -25,5 +25,7 @@ public interface EmployeeDAO {
 	public List<String> getUserNames(String userName);
 
 	public List<Employee> getNewRegistrationRequest(String fromDate);
+	
+	public int manageUserAccess(Employee employee);
 
 }

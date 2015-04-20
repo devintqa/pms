@@ -23,5 +23,7 @@ public interface EmployeeService {
 	public boolean resetPassword(String userName, String password);
 	
 	public List<Employee> getNewRegistrationRequest(String fromDate);
+	
+	public int manageUserAccess(Employee employee);
 
 }

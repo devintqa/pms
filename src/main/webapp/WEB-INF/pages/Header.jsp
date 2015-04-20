@@ -15,8 +15,6 @@
 				<li><a id="emphome"
 					href="/pms/emp/myview/myhome/${employee.employeeId}" class="active">Home</a>
 				</li>
-				<li><a id="access"
-					href="/pms/emp/myview/enableAccess">Enable Access</a></li>
 				<li><a id="about"
 					href="/pms/emp/myview/buildProject/${employee.employeeId}">Build Project</a></li>
 				<li><a id="profile"

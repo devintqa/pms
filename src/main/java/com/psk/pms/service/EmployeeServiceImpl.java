@@ -5,12 +5,12 @@ import java.util.List;
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
 import com.psk.pms.utils.Encryption;
-import com.psk.pms.utils.PMSMail;
+import com.psk.pms.utils.MailClient;
 
 public class EmployeeServiceImpl implements EmployeeService {
 		
 	private EmployeeDAO employeeDAO;
-	private PMSMail pmsMail;
+	private MailClient mailClient;
 
 	public boolean isValidLogin(String userName, String password){	
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
@@ -53,7 +53,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
 		if(isInsertSuccessful){
-			pmsMail.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
+			mailClient.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
 		}
 		return isInsertSuccessful;
 	}
@@ -104,8 +104,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.employeeDAO = employeeDAO;
 	}
 	
-	public void setPmsMail(PMSMail pmsMail) {
-		this.pmsMail = pmsMail;
+	public void setPmsMail(MailClient pmsMail) {
+		this.mailClient = pmsMail;
+	}
+
+	@Override
+	public int manageUserAccess(Employee employee) {
+		int status = employeeDAO.manageUserAccess(employee);
+		return status;
 	}
 
 }
