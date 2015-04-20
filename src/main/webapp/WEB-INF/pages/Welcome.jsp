@@ -19,6 +19,7 @@
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employee.employeeId}&nbsp!
 				${employee.employeeTeam}</h3>
+			<h2 style="text-align:left;font-family:arial;color:#E08B14;font-size:14px;">${projectCreationMessage}</h2>
 		</div>
 
 		<!--<table id="newSignUpRequests">

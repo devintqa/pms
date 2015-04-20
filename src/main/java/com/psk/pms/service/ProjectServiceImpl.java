@@ -7,14 +7,14 @@ public class ProjectServiceImpl implements ProjectService {
 	
 	private ProjectDAO projectDAO;
 
-	public boolean editProject(ProjectDetail cabDetail){
+	public boolean editProject(ProjectDetail projectDetail){
 		boolean isInsertSuccessful = false;
 		projectDAO.notify();
 		return isInsertSuccessful;
 	}
 	
-	public boolean createProject(ProjectDetail cabDetail){
-		boolean isInsertSuccessful = false;
+	public boolean createProject(ProjectDetail projectDetail){
+		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
 
