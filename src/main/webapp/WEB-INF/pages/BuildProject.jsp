@@ -30,103 +30,134 @@
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Project Details</legend>
 						<table>
-							<tr>
-								<td>Project <span id="colon">:</span>
-								</td>
-								<td><form:input path="project"
-										placeholder="Enter Project Name" cssClass="inputText" /></td>
-								<td><form:errors path="project" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Alias <span id="colon">:</span>
-								</td>
-								<td><form:input path="alias" placeholder="Enter Alias Name"
-										cssClass="inputText" /></td>
-								<td><form:errors path="alias" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Agreement No <span id="colon">:</span>
-								</td>
-								<td><form:input path="agreementNo"
-										placeholder="Enter Agreement No" cssClass="inputText" /></td>
-								<td><form:errors path="agreementNo" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Agreement Date <span id="colon">:</span>
-								</td>
-								<td><form:input path="agreementDate"
-										placeholder="DD-MM-YYYY" id="agreementDate"
-										cssClass="inputText" /></td>
-								<td><form:errors path="agreementDate" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Agreement Value <span id="colon">:</span>
-								</td>
-								<td><form:input path="agreementValue"
-										placeholder="Enter Agreement Value" cssClass="inputText" /></td>
-								<td><form:errors path="agreementValue" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Agreement Period <span id="colon">:</span>
-								</td>
-								<td><form:input path="agreementPeriod"
-										placeholder="Enter Agremment Period" cssClass="inputText" /></td>
-								<td><form:errors path="agreementPeriod" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Estimate No <span id="colon">:</span>
-								</td>
-								<td><form:input path="estimationNo"
-										placeholder="Enter Estimation No" cssClass="inputText" /></td>
-								<td><form:errors path="estimationNo" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Estimate Amount <span id="colon">:</span>
-								</td>
-								<td><form:input path="estimationAmount"
-										placeholder="Enter Estimation Amount" cssClass="inputText" /></td>
-								<td><form:errors path="estimationAmount" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Contractor Name <span id="colon">:</span>
-								</td>
-								<td><form:input path="contractorName"
-										placeholder="Enter Contractor Name" cssClass="inputText" /></td>
-								<td><form:errors path="contractorName" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Contractor Address <span id="colon">:</span>
-								</td>
-								<td><form:textarea path="contractorAddress"
-										placeholder="Enter Contractor Address" cssClass="inputText" /></td>
-								<td><form:errors path="contractorAddress" cssClass="error" /></td>
-							</tr>
-
-							<tr>
-								<td>Tender Date <span id="colon">:</span>
-								</td>
-								<td><form:input path="tenderDate" placeholder="DD-MM-YYYY"
-										id="tenderDate" cssClass="inputText" /></td>
-								<td><form:errors path="tenderDate" cssClass="error" /></td>
-							</tr>
-
-							<tr>
-								<td>Commencement Date <span id="colon">:</span>
-								</td>
-								<td><form:input path="commencementDate"
-										placeholder="DD-MM-YYYY" id="commencementDate"
-										cssClass="inputText" /></td>
-								<td><form:errors path="commencementDate" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Completion Date <span id="colon">:</span>
-								</td>
-								<td><form:input path="completionDate"
-										placeholder="DD-MM-YYYY" id="completionDate"
-										cssClass="inputText" /></td>
-								<td><form:errors path="completionDate" cssClass="error" /></td>
-							</tr>
-						</table>
+						<tr>
+							<td>Project Name<span id="colon">:</span>
+							</td>
+							<td><form:textarea path="projectName"
+									placeholder="Enter Project Name" cssClass="inputText" /></td>
+							<td><form:errors path="projectName" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Alias Project Name<span id="colon">:</span>
+							</td>
+							<td><form:input path="aliasName"
+									placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
+							<td><form:errors path="aliasName" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Original Agreement Number<span id="colon">:</span>
+							</td>
+							<td><form:input path="agreementNo"
+									placeholder="Enter Original Agreement Number" cssClass="inputText" /></td>
+							<td><form:errors path="agreementNo" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Estimate C.E.R. Number<span id="colon">:</span>
+							</td>
+							<td><form:input path="cerNo"
+									placeholder="Enter C.E.R. Number" cssClass="inputText" /></td>
+							<td><form:errors path="cerNo" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Estimated Amount<span id="colon">:</span>
+							</td>
+							<td><form:input path="Amount"
+									placeholder="Enter Estimated Amount" cssClass="inputText" /></td>
+							<td><form:errors path="Amount" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Name of Contractor<span id="colon">:</span>
+							</td>
+							<td><form:input path="contractorName"
+									placeholder="Enter Name of Contractor" cssClass="inputText" /></td>
+							<td><form:errors path="contractorName" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Address of Contractor<span id="colon">:</span>
+							</td>
+							<td><form:input path="contractorAddress"
+									placeholder="Enter Address of Contractor" cssClass="inputText" /></td>
+							<td><form:errors path="contractorAddress" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Contractors value<span id="colon">:</span>
+							</td>
+							<td><form:input path="contractValue"
+									placeholder="Enter Contractors Value" cssClass="inputText" /></td>
+							<td><form:errors path="contractValue" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Agreement Value<span id="colon">:</span>
+							</td>
+							<td><form:input path="agreementValue" placeholder="Enter Agreement Value"
+									 cssClass="inputText" /></td>
+							<td><form:errors path="agreementValue" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Value put to Tender<span id="colon">:</span>
+							</td>
+							<td><form:input path="tenderValue"
+									placeholder="Enter Tender Value" cssClass="inputText" /></td>
+							<td><form:errors path="tenderValue" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Excess in Amount<span id="colon">:</span>
+							</td>
+							<td><form:input path="exAmount"
+									placeholder="Enter Excess in Amount" cssClass="inputText" /></td>
+							<td><form:errors path="exAmount"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Excess in Percentage<span id="colon">:</span>
+							</td>
+							<td><form:input path="exPercentage"
+									placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
+							<td><form:errors path="exPercentage"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Date of Tender<span id="colon">:</span>
+							</td>
+							<td><form:input path="tenderDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="tenderDate"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Date of Agreement<span id="colon">:</span>
+							</td>
+							<td><form:input path="agreementDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="agreementDate"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Date of Commencement<span id="colon">:</span>
+							</td>
+							<td><form:input path="commencementDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="commencementDate"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Date of Completion<span id="colon">:</span>
+							</td>
+							<td><form:input path="completionDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="completionDate"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Agreement Period (in months)<span id="colon">:</span>
+							</td>
+							<td><form:input path="agreementPeriod"
+									placeholder="Enter Agreement Period (in months)" cssClass="inputText" /></td>
+							<td><form:errors path="agreementPeriod"
+									cssClass="error" /></td>
+						</tr>
+						<tr></tr>
+					</table>
 					</fieldset>
 
 					<form:hidden path="employeeId" />

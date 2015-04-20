@@ -15,22 +15,7 @@ public class ProjectDetailValidator implements Validator{
  
 	@Override
 	public void validate(Object target, Errors errors) {
- 
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "requestDate",
-			"required.requestDate", "Field name is required.");
 		
-	}
-	
-	public void validateNotNeedEmptyValue(Object target, Errors errors, boolean status) {	 
-		if(status){
-			errors.rejectValue("dropTime", "Required.dropTime");
-		}		
-	}
-	
-	public void validateDropTime(Object target, Errors errors, boolean status) {	 
-		if(status){
-			errors.rejectValue("dropTime", "Required.validDropTime");
-		}		
 	}
 	
 	

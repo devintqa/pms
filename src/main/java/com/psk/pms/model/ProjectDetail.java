@@ -4,76 +4,61 @@ import java.util.Date;
 
 public class ProjectDetail {
 	
-	private String project;
-	private String alias;
+	private String projectName;
+	private String aliasName;
 	private String agreementNo;
-	private String agreementValue;
-	private Date agreementDate;
-	private String agreementPeriod;
-	private String estimationNo;
-	private String estimationAmount;
+	private String cerNo;
+	private String Amount;	
 	private String contractorName;
 	private String contractorAddress;
+	private String contractValue;
+	private String agreementValue;
+	private String tenderValue;
+	private String exAmount;
+	private String exPercentage;
 	private Date tenderDate;
+	private Date agreementDate;
 	private Date commencementDate;
 	private Date completionDate;
-	private String empId;
+	private int agreementPeriod;
+	private String employeeId;
+		
 	
-	private String subProject;
-	private String won;
-	private String area;
-	private String requestDate;
-	private Date requestCabDate;
-	private String pickupTime;
-	private String dropTime;
-	
-	public String getProject() {
-		return project;
+	public String getEmployeeId() {
+		return employeeId;
 	}
-	public void setProject(String project) {
-		this.project = project;
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
 	}
-	public String getAlias() {
-		return alias;
+	public String getProjectName() {
+		return projectName;
 	}
-	public void setAlias(String alias) {
-		this.alias = alias;
+	public void setProjectNam(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getAliasName() {
+		return aliasName;
+	}
+	public void setAliasName(String aliasName) {
+		this.aliasName = aliasName;
 	}
 	public String getAgreementNo() {
 		return agreementNo;
 	}
 	public void setAgreementNo(String agreementNo) {
 		this.agreementNo = agreementNo;
+	}	
+	public String getCerNo() {
+		return cerNo;
 	}
-	public String getAgreementValue() {
-		return agreementValue;
+	public void setCerNo(String cerNo) {
+		this.cerNo = cerNo;
 	}
-	public void setAgreementValue(String agreementValue) {
-		this.agreementValue = agreementValue;
+	public String getAmount() {
+		return Amount;
 	}
-	public Date getAgreementDate() {
-		return agreementDate;
-	}
-	public void setAgreementDate(Date agreementDate) {
-		this.agreementDate = agreementDate;
-	}
-	public String getAgreementPeriod() {
-		return agreementPeriod;
-	}
-	public void setAgreementPeriod(String agreementPeriod) {
-		this.agreementPeriod = agreementPeriod;
-	}
-	public String getEstimationNo() {
-		return estimationNo;
-	}
-	public void setEstimationNo(String estimationNo) {
-		this.estimationNo = estimationNo;
-	}
-	public String getEstimationAmount() {
-		return estimationAmount;
-	}
-	public void setEstimationAmount(String estimationAmount) {
-		this.estimationAmount = estimationAmount;
+	public void setAmount(String Amount) {
+		this.Amount = Amount;
 	}
 	public String getContractorName() {
 		return contractorName;
@@ -87,11 +72,48 @@ public class ProjectDetail {
 	public void setContractorAddress(String contractorAddress) {
 		this.contractorAddress = contractorAddress;
 	}
+	public String getContractValue() {
+		return contractValue;
+	}
+	public void setContractValue(String contractValue) {
+		this.contractValue = contractValue;
+	}	
+	public String getAgreementValue() {
+		return agreementValue;
+	}
+	public void setAgreementValue(String agreementValue) {
+		this.agreementValue = agreementValue;
+	}
+	public String getTenderValue() {
+		return tenderValue;
+	}
+	public void setTenderValue(String tenderValue) {
+		this.tenderValue = tenderValue;
+	}
+	public String getExAmount() {
+		return exAmount;
+	}
+	
+	public void setExAmount(String exAmount) {
+		this.exAmount = exAmount;
+	}
+	public String getExPercentage() {
+		return exPercentage;
+	}
+	public void setExPercentage(String exPercentage) {
+		this.exPercentage = exPercentage;
+	}	
 	public Date getTenderDate() {
 		return tenderDate;
 	}
 	public void setTenderDate(Date tenderDate) {
 		this.tenderDate = tenderDate;
+	}
+	public Date getAgreementDate() {
+		return agreementDate;
+	}
+	public void setAgreementDate(Date agreementDate) {
+		this.agreementDate = agreementDate;
 	}
 	public Date getCommencementDate() {
 		return commencementDate;
@@ -105,53 +127,10 @@ public class ProjectDetail {
 	public void setCompletionDate(Date completionDate) {
 		this.completionDate = completionDate;
 	}
-	public String getEmpId() {
-		return empId;
+	public int getAgreementPeriod() {
+		return agreementPeriod;
 	}
-	public void setEmpId(String empId) {
-		this.empId = empId;
-	}
-	
-	public String getSubProject() {
-		return subProject;
-	}
-	public void setSubProject(String subProject) {
-		this.subProject = subProject;
-	}
-	public String getWon() {
-		return won;
-	}
-	public void setWon(String won) {
-		this.won = won;
-	}
-	public String getArea() {
-		return area;
-	}
-	public void setArea(String area) {
-		this.area = area;
-	}
-	public String getPickupTime() {
-		return pickupTime;
-	}
-	public void setPickupTime(String pickupTime) {
-		this.pickupTime = pickupTime;
-	}
-	public String getDropTime() {
-		return dropTime;
-	}
-	public void setDropTime(String dropTime) {
-		this.dropTime = dropTime;
-	}
-	public String getRequestDate() {
-		return requestDate;
-	}
-	public void setRequestDate(String requestDate) {
-		this.requestDate = requestDate;
-	}
-	public Date getRequestCabDate() {
-		return requestCabDate;
-	}
-	public void setRequestCabDate(Date requestCabDate) {
-		this.requestCabDate = requestCabDate;
+	public void setAgreementPeriod(int agreementPeriod) {
+		this.agreementPeriod = agreementPeriod;
 	}
 }
