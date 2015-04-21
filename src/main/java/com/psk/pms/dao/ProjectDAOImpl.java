@@ -1,11 +1,4 @@
 package com.psk.pms.dao;
-
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.List;
-
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -22,19 +15,16 @@ public class ProjectDAOImpl implements ProjectDAO {
 	
 	public boolean saveProject(final ProjectDetail projectDetail){
 		String sql = "INSERT INTO project" +
-		"(ProjName, AliasProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
+		"(ProjName, AliasProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
+		"ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate = new JdbcTemplate(dataSource);
-		java.util.Date TenderDate = projectDetail.getTenderDate();
-		java.util.Date AgreementDate = projectDetail.getAgreementDate();
-		java.util.Date CommencementDate = projectDetail.getCommencementDate();
-		java.util.Date CompletionDate = projectDetail.getCompletionDate();	
+		jdbcTemplate = new JdbcTemplate(dataSource);	
 		jdbcTemplate.update(sql, new Object[] { projectDetail.getProjectName(),
 				projectDetail.getAliasName(),projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
 				projectDetail.getContractorName(), projectDetail.getContractorAddress(),
 				projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
-				projectDetail.getExPercentage(), new java.sql.Date(TenderDate.getTime()), new java.sql.Date(AgreementDate.getTime()),
-				new java.sql.Date(CommencementDate.getTime()), new java.sql.Date(CompletionDate.getTime()), Integer.valueOf(projectDetail.getAgreementPeriod())
+				projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getAgreementSqlDate(),
+				projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod()
 		});
 		return true;
 	}
