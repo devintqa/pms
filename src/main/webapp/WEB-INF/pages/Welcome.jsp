@@ -8,9 +8,17 @@
 <title>PMS :: Project Home</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <script src="<c:url value="/resources/js/script.js" />"></script>
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script	src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 
+<script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+<script>
+
+	$(function() {
+		var table = $("#newSignUpRequests")
+				.dataTable();
+	})
+	</script>
 <script>
 	function manageUser(userId, action) {
 		var entity = {
@@ -23,8 +31,8 @@
 			contentType : 'application/json',
 			data : JSON.stringify(entity),
 			success : function(response) {
-				if(response == '1'){
-					location.reload();	
+				if (response == '1') {
+					location.reload();
 				}
 			},
 			error : function(err) {
@@ -44,9 +52,10 @@
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employee.employeeId}&nbsp!
 				${employee.employeeTeam}</h3>
-			<h2 style="text-align:left;font-family:arial;color:#E08B14;font-size:14px;">${projectCreationMessage}</h2>
+			<h2
+				style="text-align: left; font-family: arial; color: #E08B14; font-size: 14px;">${projectCreationMessage}</h2>
 		</div>
-
+		${session.employeeId}
 		<c:if test="${employee.employeeTeam eq 'Admin'}">
 			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
 				Signup Requests</h1>
@@ -79,7 +88,9 @@
 								<td><c:if test="${listValue.enabled eq '0'}">
 										<a
 											href="javascript:manageUser('${listValue.employeeId}', 'enable');"
-											class="userAction">Enable</a>
+											class="userAction">Enable</a> &nbsp;&nbsp;
+										<a href="/pms/emp/myview/details/edit/${listValue.employeeId}"
+											class="userAction">Edit</a>
 									</c:if> <c:if test="${listValue.enabled eq '1'}">
 										<a
 											href="javascript:manageUser('${listValue.employeeId}', 'disable');"
@@ -90,6 +101,7 @@
 					</c:if>
 				</tbody>
 			</table>
+			<br>
 			<br>
 		</c:if>
 	</div>

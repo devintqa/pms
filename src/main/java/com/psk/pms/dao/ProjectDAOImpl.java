@@ -1,11 +1,5 @@
 package com.psk.pms.dao;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Calendar;
-import java.util.List;
-
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 

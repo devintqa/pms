@@ -234,10 +234,10 @@ font-family:arial;color:#E08B14;text-decoration: none;
 	background: #E08B14 none; /* a color that fits the widget theme */
 	color: white; /* a color that is readeable with the color above */
 }
-/* Css for view cab detail page starts here */
+/* Css for new sign up page starts here */
 	#newSignUpRequests{
 		    border-collapse: collapse;
-		    width: 90%;
+		    width: 100%;
 		    margin:auto;
 		}
 	#newSignUpRequests, #newSignUpRequests td, #newSignUpRequests th {

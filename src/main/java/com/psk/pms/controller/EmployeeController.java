@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmployeeService;
@@ -29,6 +31,7 @@ import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
 
 @Controller
+@SessionAttributes("session")
 public class EmployeeController {
 
 	@Autowired
@@ -42,6 +45,8 @@ public class EmployeeController {
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isEmployeeAvailable = false;
 		employeeValidator.validate(employee, result);
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("session", employee);
 		if(!result.hasErrors()){
 			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmployeeId(), employee.getEmployeePwd());
 		}
