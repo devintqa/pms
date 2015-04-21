@@ -16,24 +16,21 @@ public class ProjectDetail {
 	private String tenderValue;
 	private String exAmount;
 	private String exPercentage;
-	private Date tenderDate;
-	private Date agreementDate;
-	private Date commencementDate;
-	private Date completionDate;
+	private String tenderDate;
+	private String agreementDate;
+	private String commencementDate;
+	private String completionDate;
+	private Date tenderSqlDate;
+	private Date agreementSqlDate;
+	private Date commencementSqlDate;
+	private Date completionSqlDate;
 	private int agreementPeriod;
 	private String employeeId;
-		
 	
-	public String getEmployeeId() {
-		return employeeId;
-	}
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
-	}
 	public String getProjectName() {
 		return projectName;
 	}
-	public void setProjectNam(String projectName) {
+	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
 	public String getAliasName() {
@@ -47,7 +44,7 @@ public class ProjectDetail {
 	}
 	public void setAgreementNo(String agreementNo) {
 		this.agreementNo = agreementNo;
-	}	
+	}
 	public String getCerNo() {
 		return cerNo;
 	}
@@ -57,8 +54,8 @@ public class ProjectDetail {
 	public String getAmount() {
 		return Amount;
 	}
-	public void setAmount(String Amount) {
-		this.Amount = Amount;
+	public void setAmount(String amount) {
+		Amount = amount;
 	}
 	public String getContractorName() {
 		return contractorName;
@@ -77,7 +74,7 @@ public class ProjectDetail {
 	}
 	public void setContractValue(String contractValue) {
 		this.contractValue = contractValue;
-	}	
+	}
 	public String getAgreementValue() {
 		return agreementValue;
 	}
@@ -93,7 +90,6 @@ public class ProjectDetail {
 	public String getExAmount() {
 		return exAmount;
 	}
-	
 	public void setExAmount(String exAmount) {
 		this.exAmount = exAmount;
 	}
@@ -102,30 +98,54 @@ public class ProjectDetail {
 	}
 	public void setExPercentage(String exPercentage) {
 		this.exPercentage = exPercentage;
-	}	
-	public Date getTenderDate() {
+	}
+	public String getTenderDate() {
 		return tenderDate;
 	}
-	public void setTenderDate(Date tenderDate) {
+	public void setTenderDate(String tenderDate) {
 		this.tenderDate = tenderDate;
 	}
-	public Date getAgreementDate() {
+	public String getAgreementDate() {
 		return agreementDate;
 	}
-	public void setAgreementDate(Date agreementDate) {
+	public void setAgreementDate(String agreementDate) {
 		this.agreementDate = agreementDate;
 	}
-	public Date getCommencementDate() {
+	public String getCommencementDate() {
 		return commencementDate;
 	}
-	public void setCommencementDate(Date commencementDate) {
+	public void setCommencementDate(String commencementDate) {
 		this.commencementDate = commencementDate;
 	}
-	public Date getCompletionDate() {
+	public String getCompletionDate() {
 		return completionDate;
 	}
-	public void setCompletionDate(Date completionDate) {
+	public void setCompletionDate(String completionDate) {
 		this.completionDate = completionDate;
+	}
+	public Date getTenderSqlDate() {
+		return tenderSqlDate;
+	}
+	public void setTenderSqlDate(Date tenderSqlDate) {
+		this.tenderSqlDate = tenderSqlDate;
+	}
+	public Date getAgreementSqlDate() {
+		return agreementSqlDate;
+	}
+	public void setAgreementSqlDate(Date agreementSqlDate) {
+		this.agreementSqlDate = agreementSqlDate;
+	}
+	public Date getCommencementSqlDate() {
+		return commencementSqlDate;
+	}
+	public void setCommencementSqlDate(Date commencementSqlDate) {
+		this.commencementSqlDate = commencementSqlDate;
+	}
+	public Date getCompletionSqlDate() {
+		return completionSqlDate;
+	}
+	public void setCompletionSqlDate(Date completionSqlDate) {
+		this.completionSqlDate = completionSqlDate;
 	}
 	public int getAgreementPeriod() {
 		return agreementPeriod;
@@ -133,4 +153,11 @@ public class ProjectDetail {
 	public void setAgreementPeriod(int agreementPeriod) {
 		this.agreementPeriod = agreementPeriod;
 	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	
 }
