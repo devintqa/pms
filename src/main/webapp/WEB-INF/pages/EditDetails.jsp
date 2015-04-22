@@ -49,27 +49,6 @@
 							<td><form:errors path="employeeTeam" cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td>Password<span id="colon">:</span>
-							</td>
-							<td><form:password path="employeePwd" cssClass="inputText"
-									value="${employee.employeePwd}" /></td>
-							<td><form:errors path="employeePwd" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>First Name<span id="colon">:</span>
-							</td>
-							<td><form:input path="employeeFName" cssClass="inputText"
-									value="${employee.employeeFName}" /></td>
-							<td><form:errors path="employeeFName" cssClass="error" /></td>
-						</tr>
-						<tr>
-							<td>Last Name<span id="colon">:</span>
-							</td>
-							<td><form:input path="employeeLName" cssClass="inputText"
-									value="${employee.employeeLName}" /></td>
-							<td><form:errors path="employeeLName" cssClass="error" /></td>
-						</tr>
-						<tr>
 							<td>Home Address<span id="colon">:</span>
 							</td>
 							<td><form:textarea path="employeeAddress"
@@ -98,8 +77,6 @@
 						</tr>
 					</table>
 				</center>
-
-
 			</form:form>
 		</div>
 

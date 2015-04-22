@@ -12,13 +12,13 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmployeeService;
-import com.psk.pms.validator.SignUpValidator;
+import com.psk.pms.validator.EditDetailValidator;
 
 @Controller
 public class EditDetailsController {
 	
 	@Autowired
-	SignUpValidator signupValidator;
+	EditDetailValidator editDetailValidator;
 	@Autowired
 	EmployeeService employeeService;
 	
@@ -44,7 +44,13 @@ public class EditDetailsController {
             @ModelAttribute("employee") Employee employee,
             BindingResult result, Model model, SessionStatus status) {
 		boolean isUpdateSuccessful = false;
-		isUpdateSuccessful = employeeService.updateEmployee(employee);
+		editDetailValidator.validate(employee, result);
+		if(!result.hasErrors()){
+			isUpdateSuccessful = employeeService.updateEmployee(employee);
+		}
+		if(result.hasErrors() || !isUpdateSuccessful) {
+			return "EditDetails";
+		}
 		System.out.println("isUpdateSuccessful : " + isUpdateSuccessful);
 		status.setComplete();
 		if(isUpdateSuccessful){

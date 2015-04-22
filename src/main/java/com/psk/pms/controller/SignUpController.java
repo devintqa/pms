@@ -39,7 +39,6 @@ public class SignUpController {
 		boolean isSignUpSuccessful = false;
 		signupValidator.validate(employee, result);
 		if(!result.hasErrors()){
-			employee.setEnabled("0");
 			isSignUpSuccessful = employeeService.signupEmployee(employee);
 		}
 		if(result.hasErrors() || !isSignUpSuccessful) {

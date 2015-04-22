@@ -49,6 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 		} else {
 			employee.setEmployeeGender("Female");
 		}
+		employee.setEnabled("0");
 		employee.setEmployeePwd(Encryption.doPasswordEncode(employee.getEmployeePwd()));
 		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);

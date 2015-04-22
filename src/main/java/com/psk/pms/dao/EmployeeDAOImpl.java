@@ -73,10 +73,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public boolean updateEmployee(Employee employee){
-		String sql = "UPDATE employee set empPassword = ?, empFirstName = ?, empLastName = ?, empAddress  = ?, empMobNum = ?, empMail = ? WHERE empId = ? "; 
+		String sql = "UPDATE employee set empAddress  = ?, empMobNum = ?, empMail = ? WHERE empId = ?"; 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcTemplate.update(sql, new Object[] {
-				employee.getEmployeePwd(),employee.getEmployeeFName(), employee.getEmployeeLName(),
 				employee.getEmployeeAddress(), employee.getEmployeeMobile(),
 				employee.getEmployeeMail(), employee.getEmployeeId()
 		});		
