@@ -104,8 +104,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 		this.employeeDAO = employeeDAO;
 	}
 	
-	public void setPmsMail(MailClient pmsMail) {
-		this.mailClient = pmsMail;
+	public void setMailClient(MailClient mailClient) {
+		this.mailClient = mailClient;
 	}
 
 	@Override

@@ -111,7 +111,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	@Override
 	public List<String> getUserNames(String userName) {
 		String name = userName+"%";
-		String sql = "SELECT employee.empId FROM employee where employee.enabled = 1 and employee.empId like ? order by employee.empId asc";		
+		String sql = "SELECT employee.empId FROM employee where employee.empId like ? order by employee.empId asc";		
 		jdbcTemplate = new JdbcTemplate(dataSource);			
 		List<String> employeeList = new ArrayList<String>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] { name });		 

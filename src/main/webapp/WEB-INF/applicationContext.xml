@@ -13,7 +13,7 @@
 	
 	<bean id="employeeService" class="com.psk.pms.service.EmployeeServiceImpl">
 		<property name="employeeDAO" ref="employeeDAO" />
-<!-- 		<property name="mailClient" ref="mailClient" /> -->
+		<property name="mailClient" ref="mailClient" />
 	</bean>
 	
 	<bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
@@ -31,24 +31,24 @@
 		<property name="password" value="mysql" />
 	</bean>
 	
-<!-- 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> -->
-<!-- 		<property name="host" value="smtp.gmail.com" /> -->
-<!-- 		<property name="port" value="25" /> -->
-<!-- 		<property name="username" value="username" /> -->
-<!-- 		<property name="password" value="password" /> -->
+ 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
+ 		<property name="host" value="smtp.gmail.com" /> 
+ 		<property name="port" value="25" /> 
+ 		<property name="username" value="pskconstructionsgroup@gmail.com" /> 
+ 		<property name="password" value="Psk@2015" /> 
 	 
-<!-- 		<property name="javaMailProperties"> -->
-<!-- 		   <props> -->
-<!-- 	       	     <prop key="mail.smtp.auth">true</prop> -->
-<!--                 <prop key="mail.smtp.starttls.enable">true</prop> -->
-<!--                 <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> -->
-<!-- 	       	   </props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+ 		<property name="javaMailProperties"> 
+ 		   <props> 
+ 	       	     <prop key="mail.smtp.auth">true</prop> 
+                 <prop key="mail.smtp.starttls.enable">true</prop> 
+                 <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> 
+ 	       	   </props> 
+ 		</property> 
+ 	</bean> 
  
-<!-- 	<bean id="mailClient" class="com.psk.pms.utils.MailClient"> -->
-<!-- 		<property name="mailSender" ref="mailSender" /> -->
-<!-- 	</bean> -->
+ 	<bean id="mailClient" class="com.psk.pms.utils.MailClient"> 
+ 		<property name="mailSender" ref="mailSender" /> 
+ 	</bean>
  
 </beans>
 
