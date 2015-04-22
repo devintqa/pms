@@ -53,11 +53,11 @@
 			<h3 id="welcomeMessage">Welcome, ${employee.employeeId}&nbsp!
 				${employee.employeeTeam}</h3>
 			<h2
-				style="text-align: left; font-family: arial; color: #E08B14; font-size: 14px;">${projectCreationMessage}</h2>
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
 		</div>
 		${session.employeeId}
 		<c:if test="${employee.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
+			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">New
 				Signup Requests</h1>
 			<table id="newSignUpRequests">
 				<thead>
@@ -90,7 +90,7 @@
 											href="javascript:manageUser('${listValue.employeeId}', 'enable');"
 											class="userAction">Enable</a> &nbsp;&nbsp;
 										<a href="/pms/emp/myview/details/edit/${listValue.employeeId}"
-											class="userAction">Edit</a>
+											class="userAction">Deny</a>
 									</c:if> <c:if test="${listValue.enabled eq '1'}">
 										<a
 											href="javascript:manageUser('${listValue.employeeId}', 'disable');"

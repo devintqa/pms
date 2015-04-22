@@ -16,7 +16,7 @@ font: 90%/1.6 "Trebuchet MS", Helvetica, sans-serif;
 }
 /*content styling*/
 header {
-background: #E08B14;
+background: #C6311D;
 padding: 50px 25px 10px 0;
 color: #fff;
 margin-bottom: 2em;
@@ -51,12 +51,12 @@ nav > ul > li >a.active{
 color: #ffffff;
 }
 nav > ul > li >a{
-color: #E08B14;
+color: #ffffff;
 text-decoration:none;
 }
 nav > ul > li >a:hover{
 cursor:pointer;
-color: #eeeeee;
+color: #C6311D;
 }
 p {
 margin-bottom: 1em;
@@ -89,7 +89,7 @@ margin-bottom: 0.25em;
 	float:right;
 }
 footer {
-background: #E08B14;
+background: #C6311D;
 font: 0.8em sans-serif;
 text-transform: uppercase;
 letter-spacing: .2em;
@@ -182,7 +182,7 @@ nav > ul > li {
 .homepagelinks{
 	width: 40%;	
 	padding: 5px;
-	background: #E08B14;
+	background: #C6311D;
 	align-content: center;
 	margin: auto;
 	margin-top: 10px;
@@ -205,13 +205,13 @@ border:solid 1px black;
 padding:5px;
 }
 .error {
-color: #E08B14;
+color: #C6311D;
 }
 .errorblock{
 	width:75%;
-	color: #E08B14;
+	color: #C6311D;
 	background-color: white;
-	border: 3px solid #E08B14;
+	border: 3px solid #C6311D;
 	padding:8px;
 	margin:16px;
 	margin-left:auto;
@@ -220,7 +220,7 @@ color: #E08B14;
 }
 
 input[type=submit] {
-	padding:5px 15px; background:#E08B14; border:0 none;
+	padding:5px 15px; background:#C6311D; border:0 none;
     cursor:pointer;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -228,10 +228,10 @@ input[type=submit] {
 }
 
 a{
-font-family:arial;color:#E08B14;text-decoration: none;
+font-family:arial;color:#C6311D;text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
-	background: #E08B14 none; /* a color that fits the widget theme */
+	background: #C6311D none; /* a color that fits the widget theme */
 	color: white; /* a color that is readeable with the color above */
 }
 /* Css for new sign up page starts here */
@@ -241,10 +241,10 @@ font-family:arial;color:#E08B14;text-decoration: none;
 		    margin:auto;
 		}
 	#newSignUpRequests, #newSignUpRequests td, #newSignUpRequests th {
-		    border: 1px solid #E08B14;
+		    border: 1px solid #C6311D;
 		}
 	#newSignUpRequests th {
-	    background-color: #E08B14;
+	    background-color: #C6311D;
 	    color: white;
 	}
 	#newSignUpRequests td {
