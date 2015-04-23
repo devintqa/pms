@@ -30,6 +30,7 @@
 			url : 'manageAccess.do',
 			contentType : 'application/json',
 			data : JSON.stringify(entity),
+			dataType: "json",
 			success : function(response) {
 				if (response == '1') {
 					location.reload();
@@ -89,7 +90,8 @@
 										<a
 											href="javascript:manageUser('${listValue.employeeId}', 'enable');"
 											class="userAction">Enable</a> &nbsp;&nbsp;
-										<a href="/pms/emp/myview/details/edit/${listValue.employeeId}"
+										<a 
+											href="javascript:manageUser('${listValue.employeeId}', 'deny');"
 											class="userAction">Deny</a>
 									</c:if> <c:if test="${listValue.enabled eq '1'}">
 										<a

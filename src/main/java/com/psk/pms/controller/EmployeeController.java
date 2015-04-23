@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmployeeService;
+import com.psk.pms.Constants;
 import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
 
@@ -62,12 +64,19 @@ public class EmployeeController {
 		}
 	}
 
-	@RequestMapping(value = "/emp/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
+	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody int enableAccess(@RequestBody String json){
 		System.out.println("called in java"+json);
 		HashMap<String, String> details = (HashMap<String, String>) JsonHelper.jsonToMap(json);
 		Employee employee = new Employee();
-		String action = (details.get("action").equalsIgnoreCase("enable")) ? "1" : "0"; 
+		String action = "";
+		if(details.get("action").equalsIgnoreCase("enable")){
+			action = Constants.ENABLE_EMPLOYEE_ACCESS;
+		}else if(details.get("action").equalsIgnoreCase("deny")){
+			action = Constants.DENY_EMPLOYEE_ACCESS;
+		}else{
+			action = Constants.DISABLE_EMPLOYEE_ACCESS;
+		}
 		employee.setEnabled(action);
 		employee.setEmployeeId(details.get("user"));
 		System.out.println("called in java"+employee.getEmployeeId()+employee.getEnabled());
@@ -75,14 +84,11 @@ public class EmployeeController {
 		return status;
 	}
 
-	@RequestMapping("/emp/myview")
-	public String mypage(Model model, Principal principal) {
-		String userRole = employeeService.getUserRole(principal.getName());
+	@RequestMapping(value = "/emp/myview/{empId}", method = RequestMethod.GET)
+	public String getHomePage(@PathVariable String empId, Model model, Principal principal) {
 		Employee employee = employeeService.getEmployeeDetails(principal.getName());
-		employee.setEmployeeId(principal.getName());
 		System.out.println("user: " + principal.getName());
 		System.out.println("team: "+employee.getEmployeeTeam());
-		employee.setEmployeeRole(userRole);
 		model.addAttribute("employee", employee);
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
 			List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);

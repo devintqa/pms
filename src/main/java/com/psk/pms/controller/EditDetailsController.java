@@ -29,16 +29,6 @@ public class EditDetailsController {
 		return "EditDetails";
 	}
 	
-	@RequestMapping(value = "/emp/myview/myhome/{empId}", method = RequestMethod.GET)
-	public String getHomePage(@PathVariable String empId, Model model) {
-		Employee employee = new Employee();
-		String userRole = employeeService.getUserRole(empId);
-		employee.setEmployeeId(empId);
-		employee.setEmployeeRole(userRole);
-		model.addAttribute("employee", employee);
-		return "Welcome";
-	}
-	
 	@RequestMapping(value = "/emp/myview/details/edit/editDetails.do", method = RequestMethod.POST)
     public String saveUpdateAction(
             @ModelAttribute("employee") Employee employee,

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -42,7 +43,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	public int isEmployeeExisting(String userName){
-		String sql = "SELECT COUNT(*) FROM employee where empId = ?";	 
+		String sql = "SELECT COUNT(*) FROM employee where empId = ? and enabled ="+Constants.ENABLE_EMPLOYEE_ACCESS;	 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class, new Object[] { userName });
 		return total;
@@ -159,6 +160,5 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			System.out.println("status: "+status);
 		return status;
 	}
-
-
+	
 }

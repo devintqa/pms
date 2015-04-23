@@ -10,10 +10,10 @@
 </head>
 <body>
 	<nav id="desktop"> <c:choose>
-		<c:when test="${employee.employeeId > '0'}">
+		<c:when test="${employee.employeeTeam eq 'Technical'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/myhome/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="about"
 					href="/pms/emp/myview/buildProject/${employee.employeeId}">Build Project</a></li>
