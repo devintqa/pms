@@ -16,13 +16,62 @@
 					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="about"
-					href="/pms/emp/myview/buildProject/${employee.employeeId}">Build Project</a></li>
+					href="/pms/emp/myview/buildProject/${employee.employeeId}?team=${employee.employeeTeam}">Build Project</a></li>
 				<li><a id="profile"
 					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</c:when>
+		
+		<c:when test="${employee.employeeTeam eq 'Account'}">
+			<ul>
+				<li><a id="emphome"
+					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+				</li>
+				<li><a id="profile"
+					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+				<li><a id="logout"
+					href="${pageContext.request.contextPath}/logout">Logout</a></li>
+			</ul>
+		</c:when>
+		
+		<c:when test="${employee.employeeTeam eq 'Admin'}">
+			<ul>
+				<li><a id="emphome"
+					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+				</li>
+				<li><a id="profile"
+					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+				<li><a id="logout"
+					href="${pageContext.request.contextPath}/logout">Logout</a></li>
+			</ul>
+		</c:when>
+		
+		<c:when test="${employee.employeeTeam eq 'Management'}">
+			<ul>
+				<li><a id="emphome"
+					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+				</li>
+				<li><a id="profile"
+					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+				<li><a id="logout"
+					href="${pageContext.request.contextPath}/logout">Logout</a></li>
+			</ul>
+		</c:when>
+		
+		<c:when test="${employee.employeeTeam eq 'Purchase'}">
+			<ul>
+				<li><a id="emphome"
+					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+				</li>
+				<li><a id="profile"
+					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+				<li><a id="logout"
+					href="${pageContext.request.contextPath}/logout">Logout</a></li>
+			</ul>
+		</c:when>
+		
 		<c:otherwise>
 			<ul>
 				<li><a id="home" href="/pms/emp/login">Login</a></li>

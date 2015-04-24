@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
@@ -25,12 +26,13 @@ public class ProjectController {
 	ProjectService projectService;
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId, Model model) {
+	public String buildProject(@PathVariable String employeeId, @RequestParam(value="team", required=true) String team,  Model model) {
 		ProjectDetail projectDetail = new ProjectDetail();
 		projectDetail.setEmployeeId(employeeId);
 		model.addAttribute("createProjectForm", projectDetail);
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
+		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
 		return "BuildProject";
 	}
