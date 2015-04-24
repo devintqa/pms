@@ -48,7 +48,7 @@
 							<tr>
 								<td>UserName :</td>
 								<td><form:input path="employeeId"
-										placeholder="Enter Employee ID" cssClass="inputText" /></td>
+										placeholder="Enter User Name" cssClass="inputText" /></td>
 								<td><form:errors path="employeeId" cssClass="error" /></td>
 							</tr>
 							<tr>
