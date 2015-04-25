@@ -108,10 +108,12 @@ public class ProjectController {
             BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
+			model.addAttribute("aliasProjectList", aliasProjectList);
 			return "BuildSubProject";
 		} else {
 			status.setComplete();
