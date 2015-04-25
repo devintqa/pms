@@ -1,6 +1,12 @@
 package com.psk.pms.controller;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
@@ -155,6 +162,18 @@ public class ProjectController {
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
+	}
+	
+	@RequestMapping(value = "/emp/myview/getSubAliasProject", method = RequestMethod.GET)
+	@ResponseBody 
+	public List<String> getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+		List<String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+		return subAliasProjectList;
+	}
+	
+	public List<String> populateSubAliasProjectList(String aliasProjectName) {
+		List<String> aliasSubProjectName = projectService.getSubAliasProjectNames(aliasProjectName);
+		return aliasSubProjectName;
 	}
 	
 }

@@ -22,4 +22,6 @@ public interface ProjectDAO {
 	
 	public List<String> getAliasProjectNames();
 	
+	public List<String> getSubAliasProjectNames(String aliasProjectName);
+	
 }

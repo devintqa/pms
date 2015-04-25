@@ -16,10 +16,10 @@ public class ProjDescDetailValidator implements Validator{
 	@Override
 	public void validate(Object target, Errors errors) {
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectName",
-				"required.projectName", "Please Select Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subProjectName",
-				"required.subProjectName", "Please Select Project Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
+				"required.aliasProjectName", "Please Select Project Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasSubProjectName",
+				"required.aliasSubProjectName", "Please Select Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "workType",
 			"required.workType", "Enter Work Type");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",

@@ -36,12 +36,23 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 	
 	public List<String> getAliasProjectNames(){
-		String sql = "select AliasProjName from project;";	 
+		String sql = "select AliasProjName from project";	 
 		List<String> projects = new ArrayList<String>();
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		for (Map<String, Object> row : rows) {
 			projects.add((String)row.get("AliasProjName"));
+		}	 
+		return projects;
+	}
+	
+	public List<String> getSubAliasProjectNames(String aliasProjectName) {
+		String sql = "select AliasSubProjName from subproject where AliasProjName = ?";	 
+		List<String> projects = new ArrayList<String>();
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] {aliasProjectName});
+		for (Map<String, Object> row : rows) {
+			projects.add((String)row.get("AliasSubProjName"));
 		}	 
 		return projects;
 	}
@@ -67,7 +78,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		"(AliasProjName, AliasSubProjName, WorkType, QuantityInFig, QuantityInWords, Description, AliasDescription, RateInFig, RateInWords, Amount) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getSubProjectName(),
+		jdbcTemplate.update(sql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
 				projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 				projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 

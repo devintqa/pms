@@ -14,6 +14,25 @@
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
+ <script type="text/javascript">
+   function fillstates() {
+     $.ajax({
+    	  type: "get",
+    	  url: "http://localhost:8082/pms/emp/myview/getSubAliasProject",
+    	  cache: false,    
+    	  data:'aliasProjectName=' + $('#aliasProjectName').val(),
+       success : function(response) {
+    	   var options = '';
+           if (response != null) {
+             $(response).each(function(index, value) {
+               options = options + '<option>' + value + '</option>';
+             });
+             $('#aliasSubProjectName').html(options);
+           }
+       }
+     });
+   }
+ </script>
 </head>
 
 
@@ -32,16 +51,14 @@
 						<table>
 						<tr>
 								<td>Alias Project Name <span id="colon">:</span> </td>
-								<td><form:select path="aliasProjectName" cssClass="inputText" items="${aliasProjectList}"/></td>
+								<td><form:select path="aliasProjectName" cssClass="inputText" id="aliasProjectName" items="${aliasProjectList}" onchange="fillstates()"/></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
-						</tr>	
-						<tr>
-							<td>Sub Project Name<span id="colon">:</span>
-							</td>
-							<td><form:textarea path="subProjectName"
-									placeholder="Enter Sub Project Name" cssClass="inputText" /></td>
-							<td><form:errors path="subProjectName" cssClass="error" /></td>
 						</tr>
+						<tr>
+								<td>Sub Project Name <span id="colon">:</span> </td>
+								<td><form:select path="aliasSubProjectName" id="aliasSubProjectName" cssClass="inputText"/></td>
+								<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
+						</tr>	
 						<tr>
 							<td>Work Type<span id="colon">:</span>
 							</td>
@@ -102,8 +119,8 @@
 					</table>
 					</fieldset>
 
-					<form:hidden path="employeeId" />
-					<table>
+					<form:hidden path="employeeId"/>
+						<table>
 						<tr>
 							<td></td>
 							<td><input type="submit" /></td>

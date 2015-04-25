@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.psk.pms.model.ProjDescDetail;
@@ -21,4 +22,6 @@ public interface ProjectService {
 	public boolean editSubProject(SubProjectDetail subProjectDetail);
 	
 	public Map<String, String> getAliasProjectNames();
+	
+	public List<String> getSubAliasProjectNames(String aliasProjectName);
 }

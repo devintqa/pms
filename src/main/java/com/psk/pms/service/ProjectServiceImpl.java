@@ -69,6 +69,11 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return aliasProjects;
 	}
+	
+	public List<String> getSubAliasProjectNames(String aliasProjectName) {
+		List<String> aliasSubProjectList = projectDAO.getSubAliasProjectNames(aliasProjectName);
+		return aliasSubProjectList;
+	}
 
 	public void setProjectDAO(ProjectDAO projectDAO) {
 		this.projectDAO = projectDAO;
