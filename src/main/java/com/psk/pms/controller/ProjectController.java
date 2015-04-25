@@ -1,6 +1,5 @@
 package com.psk.pms.controller;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,7 +77,14 @@ public class ProjectController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-		return "BuildDescription";
+		Map<String, String> aliasProjectList = populateAliasProjectList();
+		if(aliasProjectList.size() == 0){
+			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+			return "Welcome";
+		} else{
+			model.addAttribute("aliasProjectList", aliasProjectList);
+			return "BuildDescription";
+		}
 	}
 	
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)

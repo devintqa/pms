@@ -2,7 +2,7 @@ package com.psk.pms.model;
 
 public class ProjDescDetail {
 	
-	private String projectName;
+	private String aliasProjectName;
 	private String subProjectName;
 	private String workType;
 	private int quantityInFig;
@@ -14,11 +14,11 @@ public class ProjDescDetail {
 	private String projDescAmount;
 	private String employeeId;
 	
-	public String getProjectName() {
-		return projectName;
+	public String getAliasProjectName() {
+		return aliasProjectName;
 	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setAliasProjectName(String aliasProjectName) {
+		this.aliasProjectName = aliasProjectName;
 	}
 	public String getSubProjectName() {
 		return subProjectName;

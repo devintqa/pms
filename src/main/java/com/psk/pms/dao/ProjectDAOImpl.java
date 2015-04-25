@@ -67,7 +67,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		"(AliasProjName, AliasSubProjName, WorkType, QuantityInFig, QuantityInWords, Description, AliasDescription, RateInFig, RateInWords, Amount) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] {projDescDetail.getProjectName(), projDescDetail.getSubProjectName(),
+		jdbcTemplate.update(sql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getSubProjectName(),
 				projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 				projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
