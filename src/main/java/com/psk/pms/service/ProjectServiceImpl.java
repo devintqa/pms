@@ -36,8 +36,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	public boolean createProjDesc(ProjDescDetail projDescDetail){
-		//boolean isInsertSuccessful = projDescDAO.saveProjDesc(projDescDetail);
-		return true;
+		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
+		return isInsertSuccessful;
 	}
 	
 	public boolean editSubProject(SubProjectDetail subProjectDetail){
@@ -52,8 +52,8 @@ public class ProjectServiceImpl implements ProjectService {
 		subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
 		subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
 		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
-		//boolean isInsertSuccessful = subProjectDAO.saveSubProject(subProjectDetail);
-		return true;
+		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
+		return isInsertSuccessful;
 	}
 
 	public void setProjectDAO(ProjectDAO projectDAO) {

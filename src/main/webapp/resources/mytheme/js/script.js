@@ -24,6 +24,18 @@ $(function() {
 	$("#completionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , maxDate: new Date(), changeMonth:true ,changeYear: true }
 			);
+	$("#subAgreementDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);
+	$("#subTenderDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);
+	$("#subCommencementDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);
+	$("#subCompletionDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);
 	
 	var today = new Date();
 	   $('#requestDate').multiDatesPicker({

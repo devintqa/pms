@@ -2,7 +2,9 @@ package com.psk.pms.dao;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.SubProjectDetail;
 
 public class ProjectDAOImpl implements ProjectDAO {
 	
@@ -26,6 +28,44 @@ public class ProjectDAOImpl implements ProjectDAO {
 				projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getAgreementSqlDate(),
 				projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod()
 		});
+		return true;
+	}
+	
+	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
+		String sql = "INSERT INTO subproject" +
+		"(AliasProjName, SubProjName, AliasSubProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
+		"ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);	
+		jdbcTemplate.update(sql, new Object[] {subProjectDetail.getProjectName(), subProjectDetail.getSubProjectName(),
+				subProjectDetail.getSubAliasName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
+				subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
+				subProjectDetail.getSubContractValue(), subProjectDetail.getSubAgreementValue(), subProjectDetail.getSubTenderValue(), subProjectDetail.getSubExAmount(),
+				subProjectDetail.getSubExPercentage(), subProjectDetail.getSubTenderSqlDate(), subProjectDetail.getSubAgreementSqlDate(),
+				subProjectDetail.getSubCommencementSqlDate(), subProjectDetail.getSubCompletionSqlDate(), subProjectDetail.getSubAgreementPeriod()
+		});
+		return true;
+	}
+	
+	public boolean saveProjDesc(final ProjDescDetail projDescDetail){
+		String sql = "INSERT INTO projectDesc" +
+		"(AliasProjName, AliasSubProjName, WorkType, QuantityInFig, QuantityInWords, Description, AliasDescription, RateInFig, RateInWords, Amount) " +
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);	
+		jdbcTemplate.update(sql, new Object[] {projDescDetail.getProjectName(), projDescDetail.getSubProjectName(),
+				projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+				projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
+				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
+				projDescDetail.getProjDescAmount()
+		});
+		return true;
+	}
+	
+	public boolean editProjDesc(final ProjDescDetail projDescDetail){
+		return true;
+	}
+	
+	public boolean editSubProject(final SubProjectDetail subProjectDetail){
 		return true;
 	}
 	

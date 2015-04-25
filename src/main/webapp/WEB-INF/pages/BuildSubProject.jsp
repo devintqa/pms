@@ -26,8 +26,8 @@
 		<div>
 			<form:form method="POST" commandName="createSubProjectForm"
 				action="createSubProject.do">
-				<form:errors path="*" cssClass="errorblock" element="div" />
-				<center>
+				<!--<form:errors path="*" cssClass="errorblock" element="div" />
+				--><center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Sub Project Details</legend>
 						<table>

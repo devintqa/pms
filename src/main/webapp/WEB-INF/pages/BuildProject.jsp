@@ -25,8 +25,8 @@
 		<div>
 			<form:form method="POST" commandName="createProjectForm"
 				action="createProject.do">
-				<form:errors path="*" cssClass="errorblock" element="div" />
-				<center>
+				<!--<form:errors path="*" cssClass="errorblock" element="div" />
+				--><center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Project Details</legend>
 						<table>
