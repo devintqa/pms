@@ -17,7 +17,8 @@
 	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
 	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
 	<bean class="com.psk.pms.validator.EditDetailValidator" />
-
+	<bean class="com.psk.pms.validator.SubProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
 
 	<!-- Register the Employee.properties -->
 	<bean id="messageSource"
