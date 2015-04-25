@@ -1,4 +1,8 @@
 package com.psk.pms.dao;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -31,13 +35,24 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 	
+	public List<String> getAliasProjectNames(){
+		String sql = "select AliasProjName from project;";	 
+		List<String> projects = new ArrayList<String>();
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		for (Map<String, Object> row : rows) {
+			projects.add((String)row.get("AliasProjName"));
+		}	 
+		return projects;
+	}
+	
 	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
 		String sql = "INSERT INTO subproject" +
 		"(AliasProjName, SubProjName, AliasSubProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 		"ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] {subProjectDetail.getProjectName(), subProjectDetail.getSubProjectName(),
+		jdbcTemplate.update(sql, new Object[] {subProjectDetail.getAliasProjectName(), subProjectDetail.getSubProjectName(),
 				subProjectDetail.getSubAliasName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
 				subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
 				subProjectDetail.getSubContractValue(), subProjectDetail.getSubAgreementValue(), subProjectDetail.getSubTenderValue(), subProjectDetail.getSubExAmount(),

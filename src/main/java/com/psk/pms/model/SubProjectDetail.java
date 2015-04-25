@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class SubProjectDetail {
 	
-	private String projectName;
+	private String aliasProjectName;
 	private String subProjectName;
 	private String subAliasName;
 	private String subAgreementNo;
@@ -28,11 +28,11 @@ public class SubProjectDetail {
 	private int subAgreementPeriod;
 	private String employeeId;
 	
-	public String getProjectName() {
-		return projectName;
+	public String getAliasProjectName() {
+		return aliasProjectName;
 	}
-	public void setProjectName(String projectName) {
-		this.projectName = projectName;
+	public void setAliasProjectName(String aliasProjectName) {
+		this.aliasProjectName = aliasProjectName;
 	}
 	public String getSubProjectName() {
 		return subProjectName;

@@ -1,5 +1,7 @@
 package com.psk.pms.service;
 
+import java.util.Map;
+
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -17,4 +19,6 @@ public interface ProjectService {
 	public boolean createSubProject(SubProjectDetail subProjectDetail);
 	
 	public boolean editSubProject(SubProjectDetail subProjectDetail);
+	
+	public Map<String, String> getAliasProjectNames();
 }

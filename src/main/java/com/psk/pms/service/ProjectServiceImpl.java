@@ -3,6 +3,9 @@ package com.psk.pms.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.ProjDescDetail;
@@ -54,6 +57,17 @@ public class ProjectServiceImpl implements ProjectService {
 		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;
+	}
+	
+	public Map<String, String> getAliasProjectNames(){
+		List<String> aliasProjectList = projectDAO.getAliasProjectNames();
+		Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
+		if(aliasProjectList != null && aliasProjectList.size() > 0){
+			for(String aliasProject : aliasProjectList){
+				aliasProjects.put(aliasProject, aliasProject);
+			}		
+		}
+		return aliasProjects;
 	}
 
 	public void setProjectDAO(ProjectDAO projectDAO) {

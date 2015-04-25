@@ -30,14 +30,12 @@
 				--><center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Sub Project Details</legend>
-						<table>
+						<table>	
 						<tr>
-							<td>Project Name<span id="colon">:</span>
-							</td>
-							<td><form:textarea path="projectName"
-									placeholder="Enter Project Name" cssClass="inputText" /></td>
-							<td><form:errors path="projectName" cssClass="error" /></td>
-						</tr>	
+								<td>Alias Project Name <span id="colon">:</span> </td>
+								<td><form:select path="aliasProjectName" cssClass="inputText" items="${aliasProjectList}"/></td>
+								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+						</tr>
 						<tr>
 							<td>Sub Project Name<span id="colon">:</span>
 							</td>

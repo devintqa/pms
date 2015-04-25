@@ -1,5 +1,8 @@
 package com.psk.pms.controller;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -133,5 +136,11 @@ public class ProjectController {
 			return "Welcome";
 		}
     }
+	
+	@ModelAttribute("aliasProjectList")
+	public Map<String, String> populateAliasProjectList() {
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		return aliasProjectName;
+	}
 	
 }
