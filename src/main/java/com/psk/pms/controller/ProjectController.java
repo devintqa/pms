@@ -59,7 +59,14 @@ public class ProjectController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-		return "BuildSubProject";
+		Map<String, String> aliasProjectList = populateAliasProjectList();
+		if(aliasProjectList.size() == 0){
+			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+			return "Welcome";
+		} else{
+			model.addAttribute("aliasProjectList", aliasProjectList);
+			return "BuildSubProject";
+		}		
 	}
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
@@ -136,8 +143,7 @@ public class ProjectController {
 			return "Welcome";
 		}
     }
-	
-	@ModelAttribute("aliasProjectList")
+
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
