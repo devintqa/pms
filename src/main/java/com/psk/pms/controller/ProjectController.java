@@ -176,4 +176,13 @@ public class ProjectController {
 		return aliasSubProjectName;
 	}
 	
+	@ModelAttribute("workTypeList")
+	public Map<String, String> populateWorkTypeList() {
+		Map<String, String> workType = new LinkedHashMap<String, String>();
+		workType.put("Main Work", "Main Work");
+		workType.put("Electrical", "Electrical");
+		workType.put("Plumbing", "Plumbing");
+		return workType;
+	}
+	
 }

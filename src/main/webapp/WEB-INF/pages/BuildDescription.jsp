@@ -15,7 +15,7 @@
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
  <script type="text/javascript">
-   function fillstates() {
+   function getAliasSubProjects() {
      $.ajax({
     	  type: "get",
     	  url: "http://localhost:8082/pms/emp/myview/getSubAliasProject",
@@ -51,7 +51,7 @@
 						<table>
 						<tr>
 								<td>Alias Project Name <span id="colon">:</span> </td>
-								<td><form:select path="aliasProjectName" cssClass="inputText" id="aliasProjectName" items="${aliasProjectList}" onchange="fillstates()"/></td>
+								<td><form:select path="aliasProjectName" cssClass="inputText" id="aliasProjectName" items="${aliasProjectList}" onchange="getAliasSubProjects()"/></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 						</tr>
 						<tr>
@@ -60,11 +60,9 @@
 								<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
 						</tr>	
 						<tr>
-							<td>Work Type<span id="colon">:</span>
-							</td>
-							<td><form:input path="workType"
-									placeholder="Enter Work Type" cssClass="inputText" /></td>
-							<td><form:errors path="workType" cssClass="error" /></td>
+								<td>Work Type <span id="colon">:</span> </td>
+								<td><form:select path="workType" cssClass="inputText" id="workType" items="${workTypeList}"/></td>
+								<td><form:errors path="workType" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Quantity in Figures<span id="colon">:</span>
