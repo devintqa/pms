@@ -13,7 +13,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmployeeService;
@@ -33,36 +30,13 @@ import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
 
 @Controller
-@SessionAttributes("session")
+@SessionAttributes("employeeObj")
 public class EmployeeController {
 
 	@Autowired
 	EmployeeValidator employeeValidator;
 	@Autowired
 	EmployeeService employeeService;
-
-	@RequestMapping(value = "/emp/login.do", method = RequestMethod.POST)
-	public String saveEmployeeAction(
-			@ModelAttribute("employeeForm") Employee employee,
-			BindingResult result, Model model, SessionStatus status) {
-		boolean isEmployeeAvailable = false;
-		employeeValidator.validate(employee, result);
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("session", employee);
-		if(!result.hasErrors()){
-			isEmployeeAvailable = employeeService.isValidLogin(employee.getEmployeeId(), employee.getEmployeePwd());
-		}
-		if (result.hasErrors()) {
-			return "EmployeeForm";
-		} else if(!isEmployeeAvailable){
-			model.addAttribute("loginMessage", "User Details Not Found. Please Sign Up.");
-			return "EmployeeForm";
-		} else {
-			status.setComplete();
-			model.addAttribute("employee", employee);
-			return "EmployeeSuccess";
-		}
-	}
 
 	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody int enableAccess(@RequestBody String json){
@@ -87,9 +61,7 @@ public class EmployeeController {
 	@RequestMapping(value = "/emp/myview/{empId}", method = RequestMethod.GET)
 	public String getHomePage(@PathVariable String empId, Model model, Principal principal) {
 		Employee employee = employeeService.getEmployeeDetails(principal.getName());
-		System.out.println("user: " + principal.getName());
-		System.out.println("team: "+employee.getEmployeeTeam());
-		model.addAttribute("employee", employee);
+		model.addAttribute("employeeObj", employee);
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
 			List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
 			if(!newSignupRequestList.isEmpty()){

@@ -51,13 +51,11 @@
 	</header>
 	<div>
 		<div>
-			<h3 id="welcomeMessage">Welcome, ${employee.employeeId}&nbsp!
-				${employee.employeeTeam}</h3>
+			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
 			<h2
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
 		</div>
-		${session.employeeId}
-		<c:if test="${employee.employeeTeam eq 'Admin'}">
+		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">New
 				Signup Requests</h1>
 			<table id="newSignUpRequests">

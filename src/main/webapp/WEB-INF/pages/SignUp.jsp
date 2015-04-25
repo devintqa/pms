@@ -21,13 +21,12 @@
 	</header>
 	<div>
 		<div>
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
-				User SignUp</h1>
+			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New User SignUp</h1>
 			<br>
 			<form:form method="POST" commandName="signupForm" action="signup.do">
 
-				<form:errors path="*" cssClass="errorblock" element="div" />
-				<center>
+				<!--<form:errors path="*" cssClass="errorblock" element="div" />
+				--><center>
 					<table>
 						<tr>
 							<td>First Name <span id="colon">:</span>

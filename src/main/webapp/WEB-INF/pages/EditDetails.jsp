@@ -31,8 +31,8 @@
 			<form:form method="POST" commandName="employee"
 				action="editDetails.do">
 
-				<form:errors path="*" cssClass="errorblock" element="div" />
-				<center>
+				<!--<form:errors path="*" cssClass="errorblock" element="div" />
+				--><center>
 					<table>
 						<tr>
 							<td>UserName<span id="colon">:</span>

@@ -26,13 +26,13 @@
 			<form:form method="POST" commandName="forgotPasswordForm"
 				action="forgotpassword.do">
 
-				<form:errors path="*" cssClass="errorblock" element="div" />
-				<center>
+				<!--<form:errors path="*" cssClass="errorblock" element="div" />
+				--><center>
 					<table>
 						<tr>
 							<td>UserName <span id="colon">:</span>
 							</td>
-							<td><form:input path="employeeId" placeholder="Employee ID"
+							<td><form:input path="employeeId" placeholder="Enter User Name"
 									cssClass="inputText" /></td>
 							<td><form:errors path="employeeId" cssClass="error" /></td>
 						</tr>

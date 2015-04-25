@@ -10,63 +10,63 @@
 </head>
 <body>
 	<nav id="desktop"> <c:choose>
-		<c:when test="${employee.employeeTeam eq 'Technical'}">
+		<c:when test="${employeeObj.employeeTeam eq 'Technical'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="about"
-					href="/pms/emp/myview/buildProject/${employee.employeeId}?team=${employee.employeeTeam}">Build Project</a></li>
+					href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Build Project</a></li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</c:when>
 		
-		<c:when test="${employee.employeeTeam eq 'Account'}">
+		<c:when test="${employeeObj.employeeTeam eq 'Account'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</c:when>
 		
-		<c:when test="${employee.employeeTeam eq 'Admin'}">
+		<c:when test="${employeeObj.employeeTeam eq 'Admin'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</c:when>
 		
-		<c:when test="${employee.employeeTeam eq 'Management'}">
+		<c:when test="${employeeObj.employeeTeam eq 'Management'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
 		</c:when>
 		
-		<c:when test="${employee.employeeTeam eq 'Purchase'}">
+		<c:when test="${employeeObj.employeeTeam eq 'Purchase'}">
 			<ul>
 				<li><a id="emphome"
-					href="/pms/emp/myview/${employee.employeeId}" class="active">Home</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
 				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employee.employeeId}">Update Profile</a></li>
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>
