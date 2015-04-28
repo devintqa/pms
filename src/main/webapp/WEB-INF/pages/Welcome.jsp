@@ -20,10 +20,11 @@
 	})
 	</script>
 <script>
-	function manageUser(userId, action) {
+	function manageUser(userId, action, mail) {
 		var entity = {
 			"user" : userId,
-			"action" : action
+			"action" : action,
+			"mail" : mail
 		};
 		$.ajax({
 			type : 'POST',
@@ -88,14 +89,14 @@
 								<td>${listValue.employeeMail}</td>
 								<td><c:if test="${listValue.enabled eq '0'}">
 										<a
-											href="javascript:manageUser('${listValue.employeeId}', 'enable');"
+											href="javascript:manageUser('${listValue.employeeId}', 'enable','${listValue.employeeMail}');"
 											class="userAction">Enable</a> &nbsp;&nbsp;
 										<a 
-											href="javascript:manageUser('${listValue.employeeId}', 'deny');"
+											href="javascript:manageUser('${listValue.employeeId}', 'deny','${listValue.employeeMail}');"
 											class="userAction">Deny</a>
 									</c:if> <c:if test="${listValue.enabled eq '1'}">
 										<a
-											href="javascript:manageUser('${listValue.employeeId}', 'disable');"
+											href="javascript:manageUser('${listValue.employeeId}', 'disable','${listValue.employeeMail}');"
 											class="userAction">Disable</a>
 									</c:if></td>
 							</tr>

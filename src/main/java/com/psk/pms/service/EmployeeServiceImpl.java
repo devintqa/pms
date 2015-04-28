@@ -106,6 +106,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int manageUserAccess(Employee employee) {
 		int status = employeeDAO.manageUserAccess(employee);
+		mailClient.sendAccessMail(employee.getEmployeeMail(), employee.getEmployeeId(), employee.getEnabled());
 		return status;
 	}
 
