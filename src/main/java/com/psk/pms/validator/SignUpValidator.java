@@ -12,6 +12,7 @@ import com.psk.pms.model.Employee;
 public class SignUpValidator implements Validator{
 	
 	String MOBILE_PATTERN = "[0-9]{10}";
+	String NAME_PATTERN = "^[a-zA-Z]{2,20}$";
 	
 	 private Pattern pattern;  
 	 private Matcher matcher;
@@ -51,14 +52,33 @@ public class SignUpValidator implements Validator{
 			errors.rejectValue("employeePwd", "notmatch.password");
 		}	
 		
-		 if (!(employee.getEmployeeMobile() != null && employee.getEmployeeMobile().isEmpty())) {  
-			   pattern = Pattern.compile(MOBILE_PATTERN);  
-			   matcher = pattern.matcher(employee.getEmployeeMobile());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("employeeMobile", "employeeMobile.incorrect",  
-			      "Enter a correct phone number");  
-			   }  
-			  
-	}
+		if (!(employee.getEmployeeMobile() != null && employee
+				.getEmployeeMobile().isEmpty())) {
+			pattern = Pattern.compile(MOBILE_PATTERN);
+			matcher = pattern.matcher(employee.getEmployeeMobile());
+			if (!matcher.matches()) {
+				errors.rejectValue("employeeMobile",
+						"employeeMobile.incorrect",
+						"Enter a correct phone number");
+			}
+		}
+		if (employee.getEmployeeFName() != null && !employee.getEmployeeFName().isEmpty()) {
+			pattern = Pattern.compile(NAME_PATTERN);
+			matcher = pattern.matcher(employee.getEmployeeFName());
+			if (!matcher.matches()) {
+				errors.rejectValue("employeeFName",
+						"employeeFName.incorrect",
+						"First Name Should Be All Alphabets. Minimum of 2 characters and Maximum of 20 characters makes perfect First Name");
+			}
+		}
+		if (employee.getEmployeeLName() != null && !employee.getEmployeeLName().isEmpty()) {
+			pattern = Pattern.compile(NAME_PATTERN);
+			matcher = pattern.matcher(employee.getEmployeeLName());
+			if (!matcher.matches()) {
+				errors.rejectValue("employeeLName",
+						"employeeLName.incorrect",
+						"Last Name Should Be All Alphabets. Minimum of 2 characters and Maximum of 20 characters makes perfect Last Name");
+			}
+		}
 }
 }
