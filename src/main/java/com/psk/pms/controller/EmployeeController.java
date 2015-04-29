@@ -53,7 +53,7 @@ public class EmployeeController {
 		}
 		employee.setEnabled(action);
 		employee.setEmployeeId(details.get("user"));
-		employee.setEmployeeMail(details.get("mail"));
+		//employee.setEmployeeMail(details.get("mail"));
 		System.out.println("called in java"+employee.getEmployeeId()+employee.getEnabled()+employee.getEmployeeMail());
 		int status = employeeService.manageUserAccess(employee);
 		return status;
