@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.ProjectService;
 import com.psk.pms.Constants;
 import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
@@ -37,7 +39,9 @@ public class EmployeeController {
 	EmployeeValidator employeeValidator;
 	@Autowired
 	EmployeeService employeeService;
-
+	@Autowired
+	ProjectService projectService;
+	
 	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody int enableAccess(@RequestBody String json){
 		System.out.println("called in java"+json);
@@ -66,6 +70,13 @@ public class EmployeeController {
 			List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
 			if(!newSignupRequestList.isEmpty()){
 				model.addAttribute("newSignupRequestList", newSignupRequestList);
+			}
+		}
+
+		if("technical".equalsIgnoreCase(employee.getEmployeeTeam())){
+			List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+			if(!projectDocumentList.isEmpty()){
+				model.addAttribute("projectDocumentList", projectDocumentList);
 			}
 		}
 		return "Welcome";

@@ -1,6 +1,5 @@
 package com.psk.pms.controller;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,28 +33,41 @@ public class ProjectController {
 
 	@Autowired
 	ProjectDetailValidator projectDetailValidator;
-	
+
 	@Autowired
 	ProjDescDetailValidator projDescDetailValidator;
-	
+
 	@Autowired
 	SubProjectDetailValidator subProjectDetailValidator;
-	
+
 	@Autowired
 	ProjectService projectService;
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId, @RequestParam(value="team", required=true) String team,  Model model) {
-		ProjectDetail projectDetail = new ProjectDetail();
-		projectDetail.setEmployeeId(employeeId);
-		model.addAttribute("createProjectForm", projectDetail);
+	public String buildProject(@PathVariable String employeeId, 
+			@RequestParam(value="team", required=true) String team,  
+			@RequestParam(value="action", required=false) String action, 
+			@RequestParam(value="project", required=false) String project, 
+			Model model) {
+		
+		
+		if(null!=project){
+			ProjectDetail projectDetail = new ProjectDetail();
+			projectDetail = projectService.getProjectDocument(project);
+			projectDetail.setEmployeeId(employeeId);
+			model.addAttribute("projectForm", projectDetail);
+		}else{
+			model.addAttribute("projectForm", new ProjectDetail());
+		}
+		
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
+		
 		return "BuildProject";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/buildSubProject/{employeeId}", method = RequestMethod.GET)
 	public String buildSubProject(@PathVariable String employeeId, @RequestParam(value="team", required=true) String team,  Model model) {
 		SubProjectDetail subProjectDetail = new SubProjectDetail();
@@ -74,9 +86,10 @@ public class ProjectController {
 			return "BuildSubProject";
 		}		
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildProjDesc(@PathVariable String employeeId, @RequestParam(value="team", required=true) String team,  Model model) {
+	public String buildProjDesc(@PathVariable String employeeId, 
+			@RequestParam(value="team", required=true) String team, Model model) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		projDescDetail.setEmployeeId(employeeId);
 		model.addAttribute("createProjDescForm", projDescDetail);
@@ -93,11 +106,11 @@ public class ProjectController {
 			return "BuildDescription";
 		}
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
-    public String saveProjectAction(
-            @ModelAttribute("createProjectForm") ProjectDetail projectDetail,
-            BindingResult result, Model model, SessionStatus status) {
+	public String saveProjectAction(
+			@ModelAttribute("createProjectForm") ProjectDetail projectDetail,
+			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
 		if(!result.hasErrors()){
@@ -113,12 +126,12 @@ public class ProjectController {
 			model.addAttribute("employee", employee);
 			return "Welcome";
 		}
-    }
-	
+	}
+
 	@RequestMapping(value = "/emp/myview/buildSubProject/createSubProject.do", method = RequestMethod.POST)
-    public String saveSubProjectAction(
-            @ModelAttribute("createSubProjectForm") SubProjectDetail subProjectDetail,
-            BindingResult result, Model model, SessionStatus status) {
+	public String saveSubProjectAction(
+			@ModelAttribute("createSubProjectForm") SubProjectDetail subProjectDetail,
+			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
@@ -136,12 +149,12 @@ public class ProjectController {
 			model.addAttribute("employee", employee);
 			return "Welcome";
 		}
-    }
-	
+	}
+
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
-    public String saveProjDescAction(
-            @ModelAttribute("createProjDescForm") ProjDescDetail projDescDetail,
-            BindingResult result, Model model, SessionStatus status) {
+	public String saveProjDescAction(
+			@ModelAttribute("createProjDescForm") ProjDescDetail projDescDetail,
+			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projDescDetailValidator.validate(projDescDetail, result);
 		if(!result.hasErrors()){
@@ -157,25 +170,25 @@ public class ProjectController {
 			model.addAttribute("employee", employee);
 			return "Welcome";
 		}
-    }
+	}
 
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/getSubAliasProject", method = RequestMethod.GET)
 	@ResponseBody 
 	public List<String> getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
 		List<String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		return subAliasProjectList;
 	}
-	
+
 	public List<String> populateSubAliasProjectList(String aliasProjectName) {
 		List<String> aliasSubProjectName = projectService.getSubAliasProjectNames(aliasProjectName);
 		return aliasSubProjectName;
 	}
-	
+
 	@ModelAttribute("workTypeList")
 	public Map<String, String> populateWorkTypeList() {
 		Map<String, String> workType = new LinkedHashMap<String, String>();
@@ -184,5 +197,10 @@ public class ProjectController {
 		workType.put("Plumbing", "Plumbing");
 		return workType;
 	}
-	
+
+	public List<ProjectDetail> getProjectDocumentList() {
+		List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+		return projectDocumentList;
+	}
+
 }

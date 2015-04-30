@@ -8,17 +8,24 @@
 <title>PMS :: Project Home</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <script src="<c:url value="/resources/js/script.js" />"></script>
-<script	src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 
-<script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+<script
+	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script>
-
 	$(function() {
-		var table = $("#newSignUpRequests")
-				.dataTable();
+		var table = $("#newSignUpRequests").dataTable();
 	})
-	</script>
+</script>
+
+<script>
+	$(function() {
+		var table = $("#projectDocumentList").dataTable();
+	})
+</script>
+
 <script>
 	function manageUser(userId, action) {
 		var entity = {
@@ -30,7 +37,7 @@
 			url : 'manageAccess.do',
 			contentType : 'application/json',
 			data : JSON.stringify(entity),
-			dataType: "json",
+			dataType : "json",
 			success : function(response) {
 				if (response == '1') {
 					location.reload();
@@ -52,15 +59,19 @@
 	<div>
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
-			<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
-			<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
-			<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
-			<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${noProjectCreated}</h2>
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${noProjectCreated}</h2>
 		</div>
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">New
 				Signup Requests</h1>
-			<table id="newSignUpRequests">
+			<table id="newSignUpRequests" class="gridView">
 				<thead>
 					<tr>
 						<th>User Name</th>
@@ -76,28 +87,65 @@
 				</thead>
 				<tbody>
 					<c:if test="${not empty newSignupRequestList}">
-						<c:forEach var="listValue" items="${newSignupRequestList}">
+						<c:forEach var="signReq" items="${newSignupRequestList}">
 							<tr>
-								<td>${listValue.employeeId}</td>
-								<td>${listValue.employeeFName}</td>
-								<td>${listValue.employeeLName}</td>
-								<td>${listValue.employeeGender}</td>
-								<td>${listValue.employeeTeam}</td>
-								<td>${listValue.employeeAddress}</td>
-								<td>${listValue.employeeMobile}</td>
-								<td>${listValue.employeeMail}</td>
-								<td><c:if test="${listValue.enabled eq '0'}">
+								<td>${signReq.employeeId}</td>
+								<td>${signReq.employeeFName}</td>
+								<td>${signReq.employeeLName}</td>
+								<td>${signReq.employeeGender}</td>
+								<td>${signReq.employeeTeam}</td>
+								<td>${signReq.employeeAddress}</td>
+								<td>${signReq.employeeMobile}</td>
+								<td>${signReq.employeeMail}</td>
+								<td><c:if test="${signReq.enabled eq '0'}">
 										<a
-											href="javascript:manageUser('${listValue.employeeId}', 'enable');"
+											href="javascript:manageUser('${signReq.employeeId}', 'enable');"
 											class="userAction">Enable</a> &nbsp;&nbsp;
-										<a 
-											href="javascript:manageUser('${listValue.employeeId}', 'deny');"
+										<a
+											href="javascript:manageUser('${signReq.employeeId}', 'deny');"
 											class="userAction">Deny</a>
 									</c:if> <c:if test="${listValue.enabled eq '1'}">
 										<a
-											href="javascript:manageUser('${listValue.employeeId}', 'disable');"
+											href="javascript:manageUser('${signReq.employeeId}', 'disable');"
 											class="userAction">Disable</a>
 									</c:if></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
+
+		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
+			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project
+				Documents</h1>
+			<table id="projectDocumentList" class="gridView">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Alias</th>
+						<th>Agreement No</th>
+						<th>CER No</th>
+						<th>Amount</th>
+						<th>Contractor Name</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty projectDocumentList}">
+						<c:forEach var="projDoc" items="${projectDocumentList}">
+							<tr>
+								<td><a
+									href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=edit"
+									class="userAction">${projDoc.projectName}</a></td>
+								<td><a
+									href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}"
+									class="userAction">${projDoc.aliasName}</a> &nbsp;&nbsp;</td>
+								<td>${projDoc.agreementNo}</td>
+								<td>${projDoc.cerNo}</td>
+								<td>${projDoc.amount}</td>
+								<td>${projDoc.contractorName}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

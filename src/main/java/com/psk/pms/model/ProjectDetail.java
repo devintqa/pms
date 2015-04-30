@@ -4,11 +4,12 @@ import java.util.Date;
 
 public class ProjectDetail {
 	
+	private int projId;
 	private String projectName;
 	private String aliasName;
 	private String agreementNo;
 	private String cerNo;
-	private String Amount;	
+	private String amount;	
 	private String contractorName;
 	private String contractorAddress;
 	private String contractValue;
@@ -52,10 +53,10 @@ public class ProjectDetail {
 		this.cerNo = cerNo;
 	}
 	public String getAmount() {
-		return Amount;
+		return amount;
 	}
 	public void setAmount(String amount) {
-		Amount = amount;
+		this.amount = amount;
 	}
 	public String getContractorName() {
 		return contractorName;
@@ -158,6 +159,12 @@ public class ProjectDetail {
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
+	}
+	public int getProjId() {
+		return projId;
+	}
+	public void setProjId(int projId) {
+		this.projId = projId;
 	}
 	
 }

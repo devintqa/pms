@@ -24,4 +24,8 @@ public interface ProjectService {
 	public Map<String, String> getAliasProjectNames();
 	
 	public List<String> getSubAliasProjectNames(String aliasProjectName);
+	
+	public List<ProjectDetail> getProjectDocumentList();
+	
+	public ProjectDetail getProjectDocument(String projectId);
 }

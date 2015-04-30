@@ -23,7 +23,7 @@
 	</header>
 	<div>
 		<div>
-			<form:form method="POST" commandName="createProjectForm"
+			<form:form method="POST" commandName="projectForm"
 				action="createProject.do">
 				<!--<form:errors path="*" cssClass="errorblock" element="div" />
 				--><center>

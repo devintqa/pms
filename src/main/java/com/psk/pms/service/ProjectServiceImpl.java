@@ -3,7 +3,6 @@ package com.psk.pms.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,13 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	public Map<String, String> getAliasProjectNames(){
-		List<String> aliasProjectList = projectDAO.getAliasProjectNames();
-		Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
-		if(aliasProjectList != null && aliasProjectList.size() > 0){
-			for(String aliasProject : aliasProjectList){
-				aliasProjects.put(aliasProject, aliasProject);
-			}		
-		}
+		Map<String, String> aliasProjects = projectDAO.getAliasProjectNames();
 		return aliasProjects;
 	}
 	
@@ -87,6 +80,17 @@ public class ProjectServiceImpl implements ProjectService {
 			System.out.println("Error in parsing the date");
 		}
 		return date;
+	}
+
+	public List<ProjectDetail> getProjectDocumentList() {
+		List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
+		return projectDocumentList;
+	}
+
+	@Override
+	public ProjectDetail getProjectDocument(String projectId) {
+		ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
+		return projectDetail;
 	}
 
 }

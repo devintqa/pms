@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -20,8 +21,13 @@ public interface ProjectDAO {
 	
 	public boolean editProjDesc(ProjDescDetail projDescDetail);
 	
-	public List<String> getAliasProjectNames();
+	public Map<String, String> getAliasProjectNames();
 	
 	public List<String> getSubAliasProjectNames(String aliasProjectName);
+	
+	public ProjectDetail getProjectDocument(String projectId);
+	
+	public List<ProjectDetail> getProjectDocumentList();
+	
 	
 }
