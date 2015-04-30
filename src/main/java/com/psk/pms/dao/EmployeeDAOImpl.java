@@ -109,17 +109,13 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public List<String> getUserNames(String userName) {
+	public int getUserNamePatternCount(String userName) {
 		String name = userName+"%";
-		String sql = "SELECT employee.empId FROM employee where employee.empId like ? order by employee.empId asc";		
-		jdbcTemplate = new JdbcTemplate(dataSource);			
-		List<String> employeeList = new ArrayList<String>();
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] { name });		 
-		for (Map<String, Object> row : rows) {
-			String empID = (String) row.get("empId");
-			employeeList.add(empID);
-		}
-		return employeeList;
+		String sql = "SELECT count(employee.empId) FROM employee where employee.empId like ? order by employee.empId asc";		
+		jdbcTemplate = new JdbcTemplate(dataSource);	
+		int count = jdbcTemplate.queryForObject(
+                sql, new Object[] { name }, Integer.class);
+		return count;
 	}
 
 	@Override
