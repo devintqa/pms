@@ -42,7 +42,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
 		for (Map<String, Object> row : rows) {
-			aliasProjects.put(new Integer((int) row.get("ProjId")).toString(), (String)row.get("AliasProjName"));
+			aliasProjects.put(String.valueOf(row.get("ProjId")), (String)row.get("AliasProjName"));
 		}	 
 		return aliasProjects;
 	}
@@ -108,7 +108,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 		for (Map<String, Object> row : rows) {
 			ProjectDetail projDoc = new ProjectDetail();
-			projDoc.setProjId((int) row.get("ProjId"));
+			projDoc.setProjId((Integer) row.get("ProjId"));
 			projDoc.setProjectName((String) row.get("ProjName"));
 			projDoc.setAliasName((String) row.get("AliasProjName"));
 			projDoc.setAgreementNo((String) row.get("AgreementNum"));
@@ -125,7 +125,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			projDoc.setAgreementDate(row.get("AgreementDate").toString());
 			projDoc.setCommencementDate(row.get("CommencementDate").toString());
 			projDoc.setCompletionDate(row.get("CompletedDate").toString());
-			projDoc.setAgreementPeriod((int) row.get("AgreementPeriod"));
+			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
 			projDocList.add(projDoc);
 		} 
 		return projDocList;
@@ -139,7 +139,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
-			projDoc.setProjId((int) row.get("ProjId"));
+			projDoc.setProjId((Integer) row.get("ProjId"));
 			projDoc.setProjectName((String) row.get("ProjName"));
 			projDoc.setAliasName((String) row.get("AliasProjName"));
 			projDoc.setAgreementNo((String) row.get("AgreementNum"));
@@ -156,7 +156,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			projDoc.setAgreementDate(row.get("AgreementDate").toString());
 			projDoc.setCommencementDate(row.get("CommencementDate").toString());
 			projDoc.setCompletionDate(row.get("CompletedDate").toString());
-			projDoc.setAgreementPeriod((int) row.get("AgreementPeriod"));
+			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
 		} 
 		return projDoc;
 	}
