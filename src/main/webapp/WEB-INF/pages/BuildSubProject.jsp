@@ -33,8 +33,8 @@
 						<table>	
 						<tr>
 								<td>Alias Project Name <span id="colon">:</span> </td>
-								<td><form:select path="aliasProjectName" cssClass="inputText" items="${aliasProjectList}"/></td>
-								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+								<td><form:select path="projId" cssClass="inputText" items="${aliasProjectList}"/></td>
+								<td><form:errors path="projId" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Sub Project Name<span id="colon">:</span>

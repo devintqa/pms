@@ -63,8 +63,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return aliasProjects;
 	}
 	
-	public List<String> getSubAliasProjectNames(String aliasProjectName) {
-		List<String> aliasSubProjectList = projectDAO.getSubAliasProjectNames(aliasProjectName);
+	public Map<String, String> getSubAliasProjectNames(String projectId) {
+		Map<String, String> aliasSubProjectList = projectDAO.getSubAliasProjectNames(projectId);
 		return aliasSubProjectList;
 	}
 

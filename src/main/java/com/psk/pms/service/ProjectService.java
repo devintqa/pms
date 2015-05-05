@@ -23,7 +23,7 @@ public interface ProjectService {
 	
 	public Map<String, String> getAliasProjectNames();
 	
-	public List<String> getSubAliasProjectNames(String aliasProjectName);
+	public Map<String, String> getSubAliasProjectNames(String projectId);
 	
 	public List<ProjectDetail> getProjectDocumentList();
 	

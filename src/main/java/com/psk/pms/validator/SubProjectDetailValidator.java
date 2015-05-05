@@ -16,8 +16,8 @@ public class SubProjectDetailValidator implements Validator{
 	@Override
 	public void validate(Object target, Errors errors) {
 		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
-				"required.aliasProjectName", "Please Select Project Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projId",
+				"required.projId", "Please Select Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subProjectName",
 				"required.subProjectName", "Enter Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAliasName",

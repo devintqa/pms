@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -177,15 +178,18 @@ public class ProjectController {
 		return aliasProjectName;
 	}
 
-	@RequestMapping(value = "/emp/myview/getSubAliasProject", method = RequestMethod.GET)
+	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
-	public List<String> getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
-		List<String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
-		return subAliasProjectList;
+	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+		Gson gson = new Gson(); 
+		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
+		System.out.println(subAliasProjectJson);
+		return subAliasProjectJson;
 	}
 
-	public List<String> populateSubAliasProjectList(String aliasProjectName) {
-		List<String> aliasSubProjectName = projectService.getSubAliasProjectNames(aliasProjectName);
+	public Map<String, String> populateSubAliasProjectList(String project) {
+		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
 

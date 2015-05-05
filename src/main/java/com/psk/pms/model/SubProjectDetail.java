@@ -5,6 +5,7 @@ import java.util.Date;
 public class SubProjectDetail {
 	
 	private String aliasProjectName;
+	private String projId;
 	private String subProjectName;
 	private String subAliasName;
 	private String subAgreementNo;
@@ -165,6 +166,12 @@ public class SubProjectDetail {
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
+	}
+	public String getProjId() {
+		return projId;
+	}
+	public void setProjId(String projId) {
+		this.projId = projId;
 	}
 	
 }

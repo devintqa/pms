@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `pms` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `pms`;
--- MySQL dump 10.13  Distrib 5.6.13, for Win32 (x86)
+-- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: pms
+-- Host: localhost    Database: pms
 -- ------------------------------------------------------
--- Server version	5.6.14
+-- Server version	5.6.24-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,28 +14,6 @@ USE `pms`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
---
--- Table structure for table `cabdetail`
---
-
-DROP TABLE IF EXISTS `cabdetail`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `cabdetail` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `empId` int(8) DEFAULT NULL,
-  `project` varchar(30) NOT NULL,
-  `subProject` varchar(30) NOT NULL,
-  `won` varchar(20) NOT NULL,
-  `requestDate` date NOT NULL,
-  `pickupTime` varchar(15) NOT NULL,
-  `dropTime` varchar(15) NOT NULL,
-  `dropRequestDate` date DEFAULT NULL,
-  `area` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `employee`
@@ -63,6 +39,16 @@ CREATE TABLE `employee` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `employee`
+--
+
+LOCK TABLES `employee` WRITE;
+/*!40000 ALTER TABLE `employee` DISABLE KEYS */;
+INSERT INTO `employee` VALUES ('akumar','$2a$10$PZb8ORC45xFGG/kJ5wtiseot.0ikqTNe6CnqYWWRwh1FZmS5/nvRG','ajith','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Admin'),('mkumar','$2a$10$U9C.H3FqG8.J6HUwoh9CO.qGLigYFh7UUWFvz/2uVS1G54ozAJ/oK','manager','kumar','3 rd street','Male','9994254559','mail@mail.com','9994254559',0,'Management'),('tkumar','$2a$10$FvLt6u7AoqnbVwj46Ohf7eoxmQj.j13vulC2eZkkdPWQqARL..Lra','tech','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Technical');
+/*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `project`
 --
 
@@ -70,13 +56,14 @@ DROP TABLE IF EXISTS `project`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `project` (
+  `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
-  `AgreementNum` int(30) NOT NULL,
-  `CERNum` int(30) NOT NULL,
+  `AgreementNum` varchar(50) NOT NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` varchar(50) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
-  `ContractorAdd` text NOT NULL,
+  `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` varchar(50) NOT NULL,
   `TenderValue` varchar(50) NOT NULL,
   `ContractorValue` varchar(50) NOT NULL,
@@ -87,10 +74,20 @@ CREATE TABLE `project` (
   `CommencementDate` datetime NOT NULL,
   `CompletedDate` datetime NOT NULL,
   `AgreementPeriod` int(10) NOT NULL,
-  `ProjNum` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ProjNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`ProjId`),
+  UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `project`
+--
+
+LOCK TABLES `project` WRITE;
+/*!40000 ALTER TABLE `project` DISABLE KEYS */;
+INSERT INTO `project` VALUES (1,'Life Insurance Corporation Building','LIC Building','12345','12345','2000000','john kontrac','12, metro boulevard, chennai','5000000','8000000','1000000','4000000','40','2015-04-24 00:00:00','2015-04-24 00:00:00','2015-04-24 00:00:00','2015-04-24 00:00:00',12),(2,'Central Prison','cp','original 123','12345','12345','ajith','123, north street','12345','12345','12345','123','12','2015-04-27 00:00:00','2015-04-27 00:00:00','2015-04-27 00:00:00','2015-04-27 00:00:00',12);
+/*!40000 ALTER TABLE `project` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `projectdesc`
@@ -100,23 +97,32 @@ DROP TABLE IF EXISTS `projectdesc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projectdesc` (
-  `SubProjNum` int(10) NOT NULL,
-  `AliasProjName` varchar(50) NOT NULL,
-  `SubProjName` text NOT NULL,
-  `WorkType` text NOT NULL,
+  `ProjId` int(10) NOT NULL,
+  `SubProjId` int(10) NOT NULL,
+  `WorkType` varchar(30) NOT NULL,
   `QuantityInFig` int(30) NOT NULL,
   `QuantityInWords` varchar(50) NOT NULL,
   `Description` text NOT NULL,
-  `AliasDescription` text NOT NULL,
+  `AliasDescription` varchar(100) NOT NULL,
   `RateInFig` int(30) NOT NULL,
   `RateInWords` varchar(50) NOT NULL,
   `Amount` int(50) NOT NULL,
-  `DescNum` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`DescNum`),
-  KEY `SubProjNum` (`SubProjNum`),
-  CONSTRAINT `projectdesc_ibfk_1` FOREIGN KEY (`SubProjNum`) REFERENCES `subproject` (`SubProjNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ProjDescId`),
+  UNIQUE KEY `AliasDescription_UNIQUE` (`AliasDescription`),
+  KEY `AliasSubProjName` (`SubProjId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projectdesc`
+--
+
+LOCK TABLES `projectdesc` WRITE;
+/*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
+INSERT INTO `projectdesc` VALUES (2,1,'Main Work',0,'zero','description','mainDesc',0,'zero',0,1);
+/*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `subproject`
@@ -126,15 +132,14 @@ DROP TABLE IF EXISTS `subproject`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `subproject` (
-  `ProjNum` int(10) NOT NULL,
-  `AliasProjName` varchar(50) NOT NULL,
+  `SubProjId` int(10) NOT NULL AUTO_INCREMENT,
   `SubProjName` text NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
-  `AgreementNum` int(30) NOT NULL,
-  `CERNum` int(30) NOT NULL,
+  `AgreementNum` varchar(50) NOT NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` varchar(50) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
-  `ContractorAdd` text NOT NULL,
+  `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` varchar(50) NOT NULL,
   `TenderValue` varchar(50) NOT NULL,
   `ContractorValue` varchar(50) NOT NULL,
@@ -145,12 +150,21 @@ CREATE TABLE `subproject` (
   `CommencementDate` datetime NOT NULL,
   `CompletedDate` datetime NOT NULL,
   `AgreementPeriod` int(10) NOT NULL,
-  `SubProjNum` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`SubProjNum`),
-  KEY `ProjNum` (`ProjNum`),
-  CONSTRAINT `subproject_ibfk_1` FOREIGN KEY (`ProjNum`) REFERENCES `project` (`ProjNum`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `ProjId` int(10) NOT NULL,
+  PRIMARY KEY (`SubProjId`),
+  UNIQUE KEY `AliasSubProjName_UNIQUE` (`AliasSubProjName`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `subproject`
+--
+
+LOCK TABLES `subproject` WRITE;
+/*!40000 ALTER TABLE `subproject` DISABLE KEYS */;
+INSERT INTO `subproject` VALUES (1,'cp flooring','cpf','1234','1224','2131','12312','1233','1231','12321','123213','1323','1233','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00',12,2),(4,'cp flooring','cpf1','1234','1224','2131','12312','1233','1231','12321','123213','1323','1233','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00',12,2);
+/*!40000 ALTER TABLE `subproject` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `userroles`
@@ -164,6 +178,16 @@ CREATE TABLE `userroles` (
   `userRole` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `userroles`
+--
+
+LOCK TABLES `userroles` WRITE;
+/*!40000 ALTER TABLE `userroles` DISABLE KEYS */;
+INSERT INTO `userroles` VALUES ('akumar','ROLE_USER'),('tkumar','ROLE_USER'),('mkumar','ROLE_USER');
+/*!40000 ALTER TABLE `userroles` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `users`
@@ -181,8 +205,13 @@ CREATE TABLE `users` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping routines for database 'pms'
+-- Dumping data for table `users`
 --
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -193,4 +222,4 @@ CREATE TABLE `users` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-24 16:42:39
+-- Dump completed on 2015-05-05 21:17:37

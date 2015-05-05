@@ -47,20 +47,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return aliasProjects;
 	}
 
-	public List<String> getSubAliasProjectNames(String aliasProjectName) {
-		String sql = "select AliasSubProjName from subproject where AliasProjName = ?";	 
-		List<String> projects = new ArrayList<String>();
+	public Map<String, String> getSubAliasProjectNames(String projectId) {
+		String sql = "select SubProjId, AliasSubProjName from subproject where ProjId = ?";	 
+		Map<String, String> aliasSubProjects = new LinkedHashMap<String, String>();
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] {aliasProjectName});
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] {projectId});
 		for (Map<String, Object> row : rows) {
-			projects.add((String)row.get("AliasSubProjName"));
+			aliasSubProjects.put(new Integer((int) row.get("SubProjId")).toString(), (String)row.get("AliasSubProjName"));
 		}	 
-		return projects;
+		return aliasSubProjects;
 	}
 
 	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
 		String sql = "INSERT INTO subproject" +
-				"(AliasProjName, SubProjName, AliasSubProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
+				"(ProjId, SubProjName, AliasSubProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);	
@@ -76,7 +76,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	public boolean saveProjDesc(final ProjDescDetail projDescDetail){
 		String sql = "INSERT INTO projectDesc" +
-				"(AliasProjName, AliasSubProjName, WorkType, QuantityInFig, QuantityInWords, Description, AliasDescription, RateInFig, RateInWords, Amount) " +
+				"(ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, Description, AliasDescription, RateInFig, RateInWords, Amount) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		jdbcTemplate.update(sql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),

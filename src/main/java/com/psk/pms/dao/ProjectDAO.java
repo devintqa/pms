@@ -23,7 +23,7 @@ public interface ProjectDAO {
 	
 	public Map<String, String> getAliasProjectNames();
 	
-	public List<String> getSubAliasProjectNames(String aliasProjectName);
+	public Map<String, String> getSubAliasProjectNames(String projectId);
 	
 	public ProjectDetail getProjectDocument(String projectId);
 	
