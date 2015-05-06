@@ -44,14 +44,14 @@ public class SubProjectDetailValidator implements Validator{
 				"required.subExPercentage", "Enter Expected Amount in Percentage.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderDate",
 				"required.subTenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementDate",
+		/*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementDate",
 				"required.subAgreementDate", "Select Agreement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subCommencementDate",
 				"required.subCommencementDate", "Select Commencement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subCompletionDate",
 				"required.subCompletionDate", "Select Completion Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementPeriod",
-				"required.subAgreementPeriod", "Select Agreement Period.");
+				"required.subAgreementPeriod", "Select Agreement Period.");*/
 		
 	}
 	

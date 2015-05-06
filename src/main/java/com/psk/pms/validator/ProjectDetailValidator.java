@@ -41,14 +41,14 @@ public class ProjectDetailValidator implements Validator{
 				"required.exPercentage", "Enter Expected Amount in Percentage.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementDate",
+		/*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementDate",
 				"required.agreementDate", "Select Agreement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "commencementDate",
 				"required.commencementDate", "Select Commencement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "completionDate",
 				"required.completionDate", "Select Completion Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementPeriod",
-				"required.agreementPeriod", "Select Agreement Period.");
+				"required.agreementPeriod", "Select Agreement Period.");*/
 		
 	}
 	

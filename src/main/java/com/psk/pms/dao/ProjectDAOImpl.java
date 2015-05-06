@@ -107,57 +107,51 @@ public class ProjectDAOImpl implements ProjectDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(projQuery);
 
 		for (Map<String, Object> row : rows) {
-			ProjectDetail projDoc = new ProjectDetail();
-			projDoc.setProjId((Integer) row.get("ProjId"));
-			projDoc.setProjectName((String) row.get("ProjName"));
-			projDoc.setAliasName((String) row.get("AliasProjName"));
-			projDoc.setAgreementNo((String) row.get("AgreementNum"));
-			projDoc.setCerNo((String) row.get("CERNum"));
-			projDoc.setAmount((String) row.get("Amount"));
-			projDoc.setContractorName((String) row.get("ContractorName"));
-			projDoc.setContractorAddress((String) row.get("ContractorAdd"));
-			projDoc.setAgreementValue((String) row.get("AgreementValue"));
-			projDoc.setTenderValue((String) row.get("TenderValue"));
-			projDoc.setContractValue((String) row.get("ContractorValue"));
-			projDoc.setExAmount((String) row.get("ExcessInAmount"));
-			projDoc.setExPercentage((String) row.get("ExcessInPercentage"));
-			projDoc.setTenderDate(row.get("TenderDate").toString());
-			projDoc.setAgreementDate(row.get("AgreementDate").toString());
-			projDoc.setCommencementDate(row.get("CommencementDate").toString());
-			projDoc.setCompletionDate(row.get("CompletedDate").toString());
-			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
-			projDocList.add(projDoc);
+			projDocList.add(buildProjectDetail(row));
 		} 
 		return projDocList;
 	}
 	
 	public ProjectDetail getProjectDocument(String projectId) {
-		String sql = projQuery + "where ProjId ="+projectId;
-		ProjectDetail projDoc = new ProjectDetail();	
+		String sql = projQuery + "where ProjId ="+projectId;	
 		jdbcTemplate = new JdbcTemplate(dataSource);             
-
+		ProjectDetail projDoc = null;
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
-			projDoc.setProjId((Integer) row.get("ProjId"));
-			projDoc.setProjectName((String) row.get("ProjName"));
-			projDoc.setAliasName((String) row.get("AliasProjName"));
-			projDoc.setAgreementNo((String) row.get("AgreementNum"));
-			projDoc.setCerNo((String) row.get("CERNum"));
-			projDoc.setAmount((String) row.get("Amount"));
-			projDoc.setContractorName((String) row.get("ContractorName"));
-			projDoc.setContractorAddress((String) row.get("ContractorAdd"));
-			projDoc.setAgreementValue((String) row.get("AgreementValue"));
-			projDoc.setTenderValue((String) row.get("TenderValue"));
-			projDoc.setContractValue((String) row.get("ContractorValue"));
-			projDoc.setExAmount((String) row.get("ExcessInAmount"));
-			projDoc.setExPercentage((String) row.get("ExcessInPercentage"));
-			projDoc.setTenderDate(row.get("TenderDate").toString());
-			projDoc.setAgreementDate(row.get("AgreementDate").toString());
-			projDoc.setCommencementDate(row.get("CommencementDate").toString());
-			projDoc.setCompletionDate(row.get("CompletedDate").toString());
-			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
+			projDoc = buildProjectDetail(row);
 		} 
+		return projDoc;
+	}
+	
+	private ProjectDetail buildProjectDetail(Map<String, Object> row){
+		ProjectDetail projDoc = new ProjectDetail();
+		projDoc.setProjId((Integer) row.get("ProjId"));
+		projDoc.setProjectName((String) row.get("ProjName"));
+		projDoc.setAliasName((String) row.get("AliasProjName"));
+		projDoc.setAgreementNo((String) row.get("AgreementNum"));
+		projDoc.setCerNo((String) row.get("CERNum"));
+		projDoc.setAmount((String) row.get("Amount"));
+		projDoc.setContractorName((String) row.get("ContractorName"));
+		projDoc.setContractorAddress((String) row.get("ContractorAdd"));
+		projDoc.setAgreementValue((String) row.get("AgreementValue"));
+		projDoc.setTenderValue((String) row.get("TenderValue"));
+		projDoc.setContractValue((String) row.get("ContractorValue"));
+		projDoc.setExAmount((String) row.get("ExcessInAmount"));
+		projDoc.setExPercentage((String) row.get("ExcessInPercentage"));
+		projDoc.setTenderDate(row.get("TenderDate").toString());
+		if(row.get("AgreementDate") != null){
+			projDoc.setAgreementDate(row.get("AgreementDate").toString());
+		}
+		if(row.get("CommencementDate") != null){
+			projDoc.setCommencementDate(row.get("CommencementDate").toString());
+		}
+		if(row.get("CompletedDate") != null){
+			projDoc.setCompletionDate(row.get("CompletedDate").toString());
+		}
+		if(row.get("AgreementPeriod") != null){
+			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
+		}	
 		return projDoc;
 	}
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
