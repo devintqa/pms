@@ -47,6 +47,8 @@
 				</li>
 				<li><a id="profile"
 					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile</a></li>
+				<li><a id="empcount"
+					href="/pms/emp/myview/empcount/${employeeObj.employeeId}">Project Count</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 			</ul>

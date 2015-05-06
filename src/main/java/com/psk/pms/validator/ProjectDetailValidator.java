@@ -20,7 +20,7 @@ public class ProjectDetailValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
 			"required.aliasName", "Enter Alias Project Name.");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementNo",
-				"required.agreementNo", "Enter Agrement Number.");
+				"required.agreementNo", "Enter Agreement Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cerNo",
 				"required.cerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "Amount",
