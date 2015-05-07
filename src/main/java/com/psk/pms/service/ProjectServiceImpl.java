@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setAgreementSqlDate(getSQLDate(projectDetail.getAgreementDate(), formatter));
 		projectDetail.setCommencementSqlDate(getSQLDate(projectDetail.getCommencementDate(), formatter));
 		projectDetail.setCompletionSqlDate(getSQLDate(projectDetail.getCompletionDate(), formatter));
+		projectDetail.setEmdStartSqlDate(getSQLDate(projectDetail.getEmdStartDate(), formatter));
+		projectDetail.setEmdEndSqlDate(getSQLDate(projectDetail.getEmdEndDate(), formatter));
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
@@ -86,11 +89,44 @@ public class ProjectServiceImpl implements ProjectService {
 		List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
 		return projectDocumentList;
 	}
+	
+	public List<ProjectDetail> getEmdEndAlertList() {
+		Date todayDate = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
+		List<ProjectDetail> emdDocumentList = new ArrayList<ProjectDetail>();
+		for(ProjectDetail projectDetail : projectDocumentList){
+			long diff = projectDetail.getEmdEndSqlDate().getTime() - todayDate.getTime();
+			long diffDays = diff / (24 * 60 * 60 * 1000);
+			if(diffDays < 14){
+				projectDetail.setEmdStartDate(getStringDate(projectDetail.getEmdStartSqlDate(), formatter));
+				projectDetail.setEmdEndDate(getStringDate(projectDetail.getEmdEndSqlDate(), formatter));
+				emdDocumentList.add(projectDetail);
+			}
+		}
+		return emdDocumentList;
+	}
 
 	@Override
 	public ProjectDetail getProjectDocument(String projectId) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
+		projectDetail.setTenderDate(getStringDate(projectDetail.getTenderSqlDate(), formatter));
+		projectDetail.setAgreementDate(getStringDate(projectDetail.getAgreementSqlDate(), formatter));
+		projectDetail.setCommencementDate(getStringDate(projectDetail.getCommencementSqlDate(), formatter));
+		projectDetail.setCompletionDate(getStringDate(projectDetail.getCompletionSqlDate(), formatter));
+		projectDetail.setEmdStartDate(getStringDate(projectDetail.getEmdStartSqlDate(), formatter));
+		projectDetail.setEmdEndDate(getStringDate(projectDetail.getEmdEndSqlDate(), formatter));
 		return projectDetail;
+	}
+	
+	private String getStringDate(Date dateToBeFormatted, SimpleDateFormat formatter){
+		String date = null;
+		if(dateToBeFormatted != null){
+			date = formatter.format(dateToBeFormatted);
+			return date;
+		}		
+		return date;
 	}
 
 }

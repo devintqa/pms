@@ -48,8 +48,7 @@ public class ProjectController {
 			@RequestParam(value="team", required=true) String team,  
 			@RequestParam(value="action", required=false) String action, 
 			@RequestParam(value="project", required=false) String project, 
-			Model model) {
-		
+			Model model) {		
 		
 		if(null!=project){
 			ProjectDetail projectDetail = new ProjectDetail();
@@ -109,7 +108,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
 	public String saveProjectAction(
-			@ModelAttribute("createProjectForm") ProjectDetail projectDetail,
+			@ModelAttribute("projectForm") ProjectDetail projectDetail,
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);

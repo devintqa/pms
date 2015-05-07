@@ -9,7 +9,7 @@
 <title>PMS :: Create Project</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
-<script	src="<c:url value="/resources/js/jquery-1.11.1.min.js"/>"></script>
+<script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
@@ -112,6 +112,30 @@
 							<td><form:input path="exPercentage"
 									placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
 							<td><form:errors path="exPercentage"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>EMD Amount<span id="colon">:</span>
+							</td>
+							<td><form:input path="emdAmount"
+									placeholder="Enter EMD Amount" cssClass="inputText" /></td>
+							<td><form:errors path="emdAmount"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>EMD Start Date<span id="colon">:</span>
+							</td>
+							<td><form:input path="emdStartDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="emdStartDate"
+									cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>EMD End Date<span id="colon">:</span>
+							</td>
+							<td><form:input path="emdEndDate"
+									placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
+							<td><form:errors path="emdEndDate"
 									cssClass="error" /></td>
 						</tr>
 						<tr>

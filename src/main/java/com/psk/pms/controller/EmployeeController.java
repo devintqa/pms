@@ -80,6 +80,12 @@ public class EmployeeController {
 				model.addAttribute("projectDocumentList", projectDocumentList);
 			}
 		}
+		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
+			List<ProjectDetail> emdEndAlertList = projectService.getEmdEndAlertList();
+			if(emdEndAlertList.size() > 0){
+				model.addAttribute("emdDocumentList", emdEndAlertList);
+			}
+		}
 		return "Welcome";
 	}
 

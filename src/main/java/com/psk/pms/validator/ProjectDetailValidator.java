@@ -20,7 +20,7 @@ public class ProjectDetailValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
 			"required.aliasName", "Enter Alias Project Name.");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementNo",
-				"required.agreementNo", "Enter Agrement Number.");
+				"required.agreementNo", "Enter Agreement Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cerNo",
 				"required.cerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "Amount",
@@ -39,16 +39,22 @@ public class ProjectDetailValidator implements Validator{
 				"required.exAmount", "Enter Expected Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
 				"required.exPercentage", "Enter Expected Amount in Percentage.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdAmount",
+				"required.emdAmount", "Enter EMD Amount.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdStartDate",
+				"required.emdStartDate", "Enter EMD Start Date.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdEndDate",
+				"required.emdEndDate", "Enter EMD End Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementDate",
+		/*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementDate",
 				"required.agreementDate", "Select Agreement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "commencementDate",
 				"required.commencementDate", "Select Commencement Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "completionDate",
 				"required.completionDate", "Select Completion Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementPeriod",
-				"required.agreementPeriod", "Select Agreement Period.");
+				"required.agreementPeriod", "Select Agreement Period.");*/
 		
 	}
 	

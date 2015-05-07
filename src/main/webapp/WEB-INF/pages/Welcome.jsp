@@ -27,6 +27,12 @@
 </script>
 
 <script>
+	$(function() {
+		var table = $("#emdDocumentList").dataTable();
+	})
+</script>
+
+<script>
 	function manageUser(userId, action) {
 		var entity = {
 			"user" : userId,
@@ -109,6 +115,32 @@
 											href="javascript:manageUser('${signReq.employeeId}', 'disable');"
 											class="userAction">Disable</a>
 									</c:if></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
+		
+		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
+			<h1 style="text-align: center; color: #C6311D; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
+			<table id="emdDocumentList" class="gridView">
+				<thead>
+					<tr>
+						<th>Project Alias Name</th>
+						<th>EMD Start Date</th>
+						<th>EMD End Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty emdDocumentList}">
+						<c:forEach var="emdProject" items="${emdDocumentList}">
+							<tr>
+								<td>${emdProject.aliasName}</td>
+								<td>${emdProject.emdStartDate}</td>
+								<td>${emdProject.emdEndDate}</td>
 							</tr>
 						</c:forEach>
 					</c:if>
