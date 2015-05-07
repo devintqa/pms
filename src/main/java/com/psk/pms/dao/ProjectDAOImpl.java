@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -140,22 +141,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDoc.setContractValue((String) row.get("ContractorValue"));
 		projDoc.setExAmount((String) row.get("ExcessInAmount"));
 		projDoc.setExPercentage((String) row.get("ExcessInPercentage"));
-		projDoc.setTenderDate(row.get("TenderDate").toString());
-		projDoc.setEmdStartDate(row.get("EmdStartDate").toString());
-		projDoc.setEmdEndDate(row.get("EmdEndDate").toString());
-		projDoc.setEmdAmount(row.get("EmdAmount").toString());
-		if(row.get("AgreementDate") != null){
-			projDoc.setAgreementDate(row.get("AgreementDate").toString());
-		}
-		if(row.get("CommencementDate") != null){
-			projDoc.setCommencementDate(row.get("CommencementDate").toString());
-		}
-		if(row.get("CompletedDate") != null){
-			projDoc.setCompletionDate(row.get("CompletedDate").toString());
-		}
-		if(row.get("AgreementPeriod") != null){
-			projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
-		}	
+		projDoc.setTenderSqlDate((Date)row.get("TenderDate"));
+		projDoc.setEmdStartSqlDate((Date)row.get("EmdStartDate"));
+		projDoc.setEmdEndSqlDate((Date)row.get("EmdEndDate"));
+		projDoc.setEmdAmount((String)row.get("EmdAmount"));
+		projDoc.setAgreementSqlDate((Date)row.get("AgreementDate"));
+		projDoc.setCommencementSqlDate((Date)row.get("CommencementDate"));
+		projDoc.setCompletionSqlDate((Date)row.get("CompletedDate"));
+		projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));	
 		return projDoc;
 	}
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "

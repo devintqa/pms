@@ -91,8 +91,24 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public ProjectDetail getProjectDocument(String projectId) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
+		projectDetail.setTenderDate(getStringDate(projectDetail.getTenderSqlDate(), formatter));
+		projectDetail.setAgreementDate(getStringDate(projectDetail.getAgreementSqlDate(), formatter));
+		projectDetail.setCommencementDate(getStringDate(projectDetail.getCommencementSqlDate(), formatter));
+		projectDetail.setCompletionDate(getStringDate(projectDetail.getCompletionSqlDate(), formatter));
+		projectDetail.setEmdStartDate(getStringDate(projectDetail.getEmdStartSqlDate(), formatter));
+		projectDetail.setEmdEndDate(getStringDate(projectDetail.getEmdEndSqlDate(), formatter));
 		return projectDetail;
+	}
+	
+	private String getStringDate(Date dateToBeFormatted, SimpleDateFormat formatter){
+		String date = null;
+		if(dateToBeFormatted != null){
+			date = formatter.format(dateToBeFormatted);
+			return date;
+		}		
+		return date;
 	}
 
 }
