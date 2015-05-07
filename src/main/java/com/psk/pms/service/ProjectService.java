@@ -27,5 +27,7 @@ public interface ProjectService {
 	
 	public List<ProjectDetail> getProjectDocumentList();
 	
+	public List<ProjectDetail> getEmdEndAlertList();
+	
 	public ProjectDetail getProjectDocument(String projectId);
 }
