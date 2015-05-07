@@ -21,6 +21,12 @@ $(function() {
 	$("#commencementDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , maxDate: new Date(), changeMonth:true ,changeYear: true }
 			);
+	$("#emdStartDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , maxDate: new Date(), changeMonth:true ,changeYear: true }
+			);
+	$("#emdEndDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , maxDate: new Date(), changeMonth:true ,changeYear: true }
+			);
 	$("#completionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , maxDate: new Date(), changeMonth:true ,changeYear: true }
 			);

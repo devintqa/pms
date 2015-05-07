@@ -27,6 +27,8 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setAgreementSqlDate(getSQLDate(projectDetail.getAgreementDate(), formatter));
 		projectDetail.setCommencementSqlDate(getSQLDate(projectDetail.getCommencementDate(), formatter));
 		projectDetail.setCompletionSqlDate(getSQLDate(projectDetail.getCompletionDate(), formatter));
+		projectDetail.setEmdStartSqlDate(getSQLDate(projectDetail.getEmdStartDate(), formatter));
+		projectDetail.setEmdEndSqlDate(getSQLDate(projectDetail.getEmdEndDate(), formatter));
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
