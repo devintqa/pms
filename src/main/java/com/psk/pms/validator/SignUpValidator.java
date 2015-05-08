@@ -9,10 +9,7 @@ import org.springframework.validation.Validator;
 
 import com.psk.pms.model.Employee;
  
-public class SignUpValidator implements Validator{
-	
-	String MOBILE_PATTERN = "[0-9]{10}";
-	String NAME_PATTERN = "^[a-zA-Z]{2,20}$";
+public class SignUpValidator extends BaseValidator implements Validator{
 	
 	 private Pattern pattern;  
 	 private Matcher matcher;
@@ -60,6 +57,16 @@ public class SignUpValidator implements Validator{
 				errors.rejectValue("employeeMobile",
 						"employeeMobile.incorrect",
 						"Enter a correct phone number");
+			}
+		}
+		if (!(employee.getEmployeeMail() != null && employee
+				.getEmployeeMail().isEmpty())) {
+			pattern = Pattern.compile(EMAIL_PATTERN);
+			matcher = pattern.matcher(employee.getEmployeeMail());
+			if (!matcher.matches()) {
+				errors.rejectValue("employeeMail",
+						"employeeMail.incorrect",
+						"Enter a correct mail id");
 			}
 		}
 		if (employee.getEmployeeFName() != null && !employee.getEmployeeFName().isEmpty()) {

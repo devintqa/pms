@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -22,19 +23,35 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public boolean saveProject(final ProjectDetail projectDetail){
-		String sql = "INSERT INTO project" +
+		String createsql = "INSERT INTO project" +
 				"(ProjName, AliasProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, TenderDate, EmdStartDate, EmdEndDate, EmdAmount, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] { projectDetail.getProjectName(),
-				projectDetail.getAliasName(),projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
-				projectDetail.getContractorName(), projectDetail.getContractorAddress(),
-				projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
-				projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getEmdStartSqlDate(), projectDetail.getEmdEndSqlDate(),
-				projectDetail.getEmdAmount(), projectDetail.getAgreementSqlDate(),
-				projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod()
-		});
+
+		String updatesql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
+					"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
+					"ExcessInPercentage = ?, TenderDate = ?, EmdStartDate = ?, EmdEndDate = ?, EmdAmount = ?, AgreementDate = ?," +
+					"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? WHERE ProjId = ?"; 
+
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
+			jdbcTemplate.update(createsql, new Object[] { projectDetail.getProjectName(),
+					projectDetail.getAliasName(),projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
+					projectDetail.getContractorName(), projectDetail.getContractorAddress(),
+					projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
+					projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getEmdStartSqlDate(), projectDetail.getEmdEndSqlDate(),
+					projectDetail.getEmdAmount(), projectDetail.getAgreementSqlDate(),
+					projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod()
+			});
+		} else {
+			jdbcTemplate.update(updatesql, new Object[] { projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
+					projectDetail.getContractorName(), projectDetail.getContractorAddress(),
+					projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
+					projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getEmdStartSqlDate(), projectDetail.getEmdEndSqlDate(),
+					projectDetail.getEmdAmount(), projectDetail.getAgreementSqlDate(),
+					projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod(), projectDetail.getProjId()
+			});
+		}
 		return true;
 	}
 
