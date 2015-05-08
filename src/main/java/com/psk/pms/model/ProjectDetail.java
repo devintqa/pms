@@ -32,7 +32,15 @@ public class ProjectDetail {
 	private Date emdEndSqlDate;
 	private int agreementPeriod;
 	private String employeeId;
+	private String isUpdate;
 	
+
+	public String getIsUpdate() {
+		return isUpdate;
+	}
+	public void setIsUpdate(String isUpdate) {
+		this.isUpdate = isUpdate;
+	}
 	public String getProjectName() {
 		return projectName;
 	}

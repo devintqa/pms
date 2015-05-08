@@ -14,12 +14,14 @@
 <script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
 
-
 <body ng-app="sampleApp">
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div>
+	<div>
+	<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectUpdationMessage}</h2>
+	</div>
 		<div>
 			<form:form method="POST" commandName="projectForm"
 				action="createProject.do">
@@ -183,6 +185,7 @@
 					</fieldset>
 
 					<form:hidden path="employeeId" />
+					<form:hidden path="isUpdate" />
 					<table>
 						<tr>
 							<td></td>

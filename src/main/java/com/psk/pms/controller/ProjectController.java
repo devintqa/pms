@@ -54,6 +54,7 @@ public class ProjectController {
 		if(null!=project){
 			ProjectDetail projectDetail = new ProjectDetail();
 			projectDetail = projectService.getProjectDocument(project);
+			projectDetail.setIsUpdate("Y");
 			projectDetail.setEmployeeId(employeeId);
 			model.addAttribute("projectForm", projectDetail);
 		}else{
@@ -121,10 +122,15 @@ public class ProjectController {
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
-			model.addAttribute("projectCreationMessage", "Project Creation Successful.");
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
-			return "Welcome";
+			if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
+				model.addAttribute("projectCreationMessage", "Project Creation Successful.");
+				return "Welcome";
+			} else{
+				model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
+				return "BuildProject";
+			}			
 		}
 	}
 
