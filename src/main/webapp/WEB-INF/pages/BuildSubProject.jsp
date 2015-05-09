@@ -7,21 +7,21 @@
 <head>
 <title>PMS :: Create Sub Project</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/resources/css/jquery-ui-1.10.3.css" />">
+<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery-ui-1.10.3.js" />"></script>
+<script src="<c:url value="/resources/js/script.js" />"></script>
+<script
+	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <style>
-#errmsg
-{
-color: red;
+#errmsg {
+	color: red;
 }
 </style>
-<script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<script src="<c:url value="/resources/js/script.js" />"></script>
-<script>
-	$(function() {
-		var table = $("#projDescDocListSize").dataTable();
-	});
-</script>
+
 <script>
 $(document).ready(function () {
 	  //called when key is pressed in textbox
@@ -33,6 +33,9 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
+	  $(function() {
+			var table = $("#projDescDocListSize").dataTable();
+		});
 });
 </script>
 </head>
@@ -42,9 +45,10 @@ $(document).ready(function () {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div>
-	<div>
-		<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
-	</div>
+		<div>
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
+		</div>
 		<div>
 			<form:form method="POST" commandName="subProjectForm"
 				action="createSubProject.do">
@@ -226,7 +230,8 @@ $(document).ready(function () {
 						<c:forEach var="projDesc" items="${projDescDocList}">
 							<tr>
 								<td>${projDesc.description}</td>
-								<td><a href="#" class="userAction">${projDesc.aliasDescription}</a></td>
+								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+										 class="userAction">${projDesc.aliasDescription}</a></td>
 								<td>${projDesc.workType}</td>
 								<td>${projDesc.quantityInFig}</td>
 								<td>${projDesc.rateInFig}</td>

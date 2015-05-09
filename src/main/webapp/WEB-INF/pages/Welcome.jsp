@@ -9,11 +9,8 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <script src="<c:url value="/resources/js/script.js" />"></script>
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-
-<script
-	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+<script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script>
 	$(function() {
 		var table = $("#newSignUpRequests").dataTable();
@@ -71,7 +68,7 @@
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${noProjectCreated}</h2>
 		</div>
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">New
+			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
 				Signup Requests</h1>
 			<table id="newSignUpRequests" class="gridView">
 				<thead>
@@ -121,7 +118,7 @@
 		</c:if>
 		
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #C6311D; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
+			<h1 style="text-align: center; color: #E08B14; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
 			<table id="emdDocumentList" class="gridView">
 				<thead>
 					<tr>
@@ -147,7 +144,7 @@
 		</c:if>
 
 		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
-			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project
+			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">Project
 				Documents</h1>
 			<table id="projectDocumentList" class="gridView">
 				<thead>

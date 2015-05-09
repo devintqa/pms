@@ -9,13 +9,16 @@
 <title>PMS :: Create Detailed Description</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <link rel="stylesheet" type="text/css"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script	src="<c:url value="/resources/js/jquery-1.11.1.min.js"/>"></script>	
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	href="<c:url value="/resources/css/jquery-ui-1.10.3.css" />">
+<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
+<script src="<c:url value="/resources/js/jquery-ui-1.10.3.js" />"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
+<script
+	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script type="text/javascript">
 	function getAliasSubProjects() {
-		alert($('#projId').val());
 		$.ajax({
 			type : "GET",
 			url : "getSubAliasProject.do",
@@ -26,11 +29,12 @@
 				if (response != null) {
 					var obj = jQuery.parseJSON(response);
 					var options = '';
-					 for(var key in obj){
-				            var attrName = key;
-				            var attrValue = obj[key];
-				            options = options + '<option value='+attrName+'>' + attrValue + '</option>';
-				        }
+					for ( var key in obj) {
+						var attrName = key;
+						var attrValue = obj[key];
+						options = options + '<option value='+attrName+'>'
+								+ attrValue + '</option>';
+					}
 					$('#aliasSubProjectName').html(options);
 				}
 			}
@@ -46,7 +50,7 @@
 	</header>
 	<div>
 		<div>
-			<form:form method="POST" commandName="createProjDescForm"
+			<form:form method="POST" commandName="projDescForm"
 				action="createProjDesc.do">
 				<!--<form:errors path="*" cssClass="errorblock" element="div" />
 				-->
@@ -57,16 +61,26 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="projId"
-										cssClass="inputText" id="projId"
-										items="${aliasProjectList}" onchange="getAliasSubProjects()" /></td>
+								<td><form:select path="projId" cssClass="inputText"
+										id="projId" items="${aliasProjectList}"
+										onchange="getAliasSubProjects()" >
+										<c:if test="${projDescForm.projId gt 0}">
+										<option value="${projDescForm.projId}">${projDescForm.aliasProjectName}</option>
+										</c:if>
+										</form:select>
+										</td>
 								<td><form:errors path="projId" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Sub Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasSubProjectName"
-										id="aliasSubProjectName" cssClass="inputText" /></td>
+										id="aliasSubProjectName" cssClass="inputText" >
+										<c:if test="${projDescForm.subProjId gt 0}">
+										<option value="${projDescForm.subProjId}">${projDescForm.aliasSubProjectName}</option>
+										</c:if>
+										</form:select>
+										</td>
 								<td><form:errors path="aliasSubProjectName"
 										cssClass="error" /></td>
 							</tr>
@@ -131,8 +145,7 @@
 					</fieldset>
 
 					<form:hidden path="employeeId" />
-					<form:hidden path="projId" />
-					<form:hidden path="subProjId" />
+					<form:hidden path="projDescId" />
 					<table>
 						<tr>
 							<td></td>

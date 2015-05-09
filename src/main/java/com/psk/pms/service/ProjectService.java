@@ -32,6 +32,8 @@ public interface ProjectService {
 	public ProjectDetail getProjectDocument(String projectId);
 	
 	public SubProjectDetail getSubProjectDocument(String subProject);
+	
+	public ProjDescDetail getProjectDescDetail(String projDescId);
 
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
 

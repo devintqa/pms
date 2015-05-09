@@ -111,22 +111,49 @@ public class ProjectController {
 
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
 	public String buildProjDesc(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team, Model model) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		projDescDetail.setEmployeeId(employeeId);
-		model.addAttribute("createProjDescForm", projDescDetail);
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
-		employee.setEmployeeTeam(team);
-		model.addAttribute("employee", employee);
-		Map<String, String> aliasProjectList = populateAliasProjectList();
-		if(aliasProjectList.size() == 0){
-			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
-			return "Welcome";
-		} else{
+			@RequestParam(value="team", required=true) String team, 
+			@RequestParam(value="action", required=false) String action, 
+			@RequestParam(value="project", required=false) String project,
+			@RequestParam(value="subproject", required=false) String subProject,
+			@RequestParam(value="desc", required=false) String descDetail, 
+			Model model) {
+		
+		if(null!=descDetail){
+			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail);
+			projDescDetail.setEmployeeId(employeeId);
+			projDescDetail.setIsUpdate("Y");
+			Map<String, String> aliasProjectList = new HashMap<String, String>();
+			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			return "BuildDescription";
+			model.addAttribute("projDescForm", projDescDetail);
+
+		}else{
+			model.addAttribute("projDescForm", new ProjDescDetail());
+			Map<String, String> aliasProjectList = populateAliasProjectList();
+
+			if(aliasProjectList.size() == 0){
+				model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+				return "Welcome";
+			} else{
+				model.addAttribute("aliasProjectList", aliasProjectList);
+			}	
 		}
+		return "BuildDescription";
+//		ProjDescDetail projDescDetail = new ProjDescDetail();
+//		projDescDetail.setEmployeeId(employeeId);
+//		model.addAttribute("createProjDescForm", projDescDetail);
+//		Employee employee = new Employee();
+//		employee.setEmployeeId(employeeId);
+//		employee.setEmployeeTeam(team);
+//		model.addAttribute("employee", employee);
+//		Map<String, String> aliasProjectList = populateAliasProjectList();
+//		if(aliasProjectList.size() == 0){
+//			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+//			return "Welcome";
+//		} else{
+//			model.addAttribute("aliasProjectList", aliasProjectList);
+//			return "BuildDescription";
+//		}
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
@@ -194,10 +221,13 @@ public class ProjectController {
 
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
 	public String saveProjDescAction(
-			@ModelAttribute("createProjDescForm") ProjDescDetail projDescDetail,
+			@ModelAttribute("projDescForm") ProjDescDetail projDescDetail,
 			BindingResult result, Model model, SessionStatus status) {
+		
 		boolean isProjectSaveSuccessful = false;
 		projDescDetailValidator.validate(projDescDetail, result);
+		System.out.println("calling controller"+result.hasErrors());
+		System.out.println(result.toString());
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
 		}
@@ -221,12 +251,9 @@ public class ProjectController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println(request.getParameter("aliasProjectName"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
-		System.out.println(subAliasProjectList.size());
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
-		System.out.println(subAliasProjectJson);
 		return subAliasProjectJson;
 	}
 

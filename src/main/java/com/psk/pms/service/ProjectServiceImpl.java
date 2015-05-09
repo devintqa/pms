@@ -157,6 +157,12 @@ public class ProjectServiceImpl implements ProjectService {
 		return subProjectDetail;
 	}
 	
+	@Override
+	public ProjDescDetail getProjectDescDetail(String projDescId) {
+		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId);
+		return projDescDetail;
+	}
+	
 	private String getStringDate(Date dateToBeFormatted, SimpleDateFormat formatter){
 		String date = null;
 		if(dateToBeFormatted != null){
@@ -177,5 +183,7 @@ public class ProjectServiceImpl implements ProjectService {
 		List<ProjDescDetail> projectDescDetailList = projectDAO.projectDescDetailList(subProjectId);
 		return projectDescDetailList;
 	}
+
+	
 
 }

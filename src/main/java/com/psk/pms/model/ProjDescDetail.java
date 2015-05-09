@@ -15,7 +15,8 @@ public class ProjDescDetail {
 	private String employeeId;
 	private Integer projId;
 	private Integer subProjId;
-	private Integer ProjDescId;
+	private Integer projDescId;
+	private String isUpdate;
 	
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -90,16 +91,22 @@ public class ProjDescDetail {
 		this.subProjId = subProjId;
 	}
 	public Integer getProjDescId() {
-		return ProjDescId;
+		return projDescId;
 	}
 	public void setProjDescId(Integer projDescId) {
-		ProjDescId = projDescId;
+		this.projDescId = projDescId;
 	}
 	public Integer getProjDescAmount() {
 		return projDescAmount;
 	}
 	public void setProjDescAmount(Integer projDescAmount) {
 		this.projDescAmount = projDescAmount;
+	}
+	public String getIsUpdate() {
+		return isUpdate;
+	}
+	public void setIsUpdate(String isUpdate) {
+		this.isUpdate = isUpdate;
 	}
 	
 }
