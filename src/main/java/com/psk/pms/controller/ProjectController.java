@@ -147,7 +147,7 @@ public class ProjectController {
 			model.addAttribute("employee", employee);
 			if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
 				model.addAttribute("projectCreationMessage", "Project Creation Successful.");
-				return "Welcome";
+				return "BuildProject";
 			} else{
 				isProjectSaveSuccessful = projectService.createProject(projectDetail);
 				model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");

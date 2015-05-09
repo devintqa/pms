@@ -66,8 +66,6 @@
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
 			<h2
-				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
-			<h2
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
 			<h2
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
@@ -162,6 +160,7 @@
 						<th>CER No</th>
 						<th>Amount</th>
 						<th>Contractor Name</th>
+						<th>Project Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -176,6 +175,7 @@
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>
 								<td>${projDoc.contractorName}</td>
+								<td>${projDoc.projectStatus}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

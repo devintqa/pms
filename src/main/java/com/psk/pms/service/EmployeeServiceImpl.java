@@ -59,6 +59,19 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return isAvailable;
 	}
 	
+
+	public boolean isEmployeeMailExisting(String mail) {
+		boolean isAvailable = false;
+		isAvailable = employeeDAO.isEmployeeMailExisting(mail);
+		return isAvailable;
+	}
+
+	public boolean isEmployeeMobNumExisting(String mobile) {
+		boolean isAvailable = false;
+		isAvailable = employeeDAO.isEmployeeMobNumExisting(mobile);
+		return isAvailable;
+	}
+	
 	public boolean resetPassword(String userName, String password)
 	{
 		boolean isAvailable = false;

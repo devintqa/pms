@@ -1,12 +1,18 @@
 package com.psk.pms.validator;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.psk.pms.model.ProjectDetail;
 
-public class ProjectDetailValidator implements Validator{
+public class ProjectDetailValidator extends BaseValidator implements Validator{
+	
+	private Pattern pattern;  
+	private Matcher matcher;
  
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -55,6 +61,52 @@ public class ProjectDetailValidator implements Validator{
 				"required.completionDate", "Select Completion Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementPeriod",
 				"required.agreementPeriod", "Select Agreement Period.");*/
+		
+		ProjectDetail projectDetail = (ProjectDetail)target;
+		
+		String agreementPeriod = String.format ("%d", projectDetail.getAgreementPeriod());
+		if (agreementPeriod != null) {  
+			   pattern = Pattern.compile(ID_PATTERN);  
+			   matcher = pattern.matcher(agreementPeriod);  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("agreementPeriod", "agreementPeriod.incorrect",  
+			      "Enter a numeric value and it must be greater than 0.");
+			   }
+		}
+		
+		if(projectDetail.getAliasName().length() > 50){
+            errors.rejectValue("aliasName", "aliasName.incorrect","Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getAgreementNo().length() > 50){
+            errors.rejectValue("agreementNo","agreementNo.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getCerNo().length() > 30){
+            errors.rejectValue("cerNo", "cerNo.incorrect", "Field must not exceed 30 characters");
+        }
+		if(projectDetail.getAmount().length() > 50){
+            errors.rejectValue("Amount", "Amount.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getContractorName().length() > 50){
+            errors.rejectValue("contractorName","contractorName.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getAgreementValue().length() > 50){
+            errors.rejectValue("agreementValue","agreementValue.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getTenderValue().length() > 50){
+            errors.rejectValue("tenderValue","tenderValue.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getContractValue().length() > 50){
+            errors.rejectValue("contractValue", "contractValue.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getExAmount().length() > 50){
+            errors.rejectValue("exAmount","exAmount.incorrect", "Field must not exceed 50 characters.");
+        }
+		if(projectDetail.getExPercentage().length() > 30){
+            errors.rejectValue("exPercentage","exPercentage.incorrect", "Field must not exceed 30 characters.");
+        }	
+		if(agreementPeriod.length() > 10){
+            errors.rejectValue("agreementPeriod","agreementPeriod.incorrect", "Field must not exceed 10 characters");
+        }
 		
 	}
 	

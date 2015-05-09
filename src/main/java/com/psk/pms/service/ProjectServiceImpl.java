@@ -87,6 +87,15 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public List<ProjectDetail> getProjectDocumentList() {
 		List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
+		for(ProjectDetail projectDetail : projectDocumentList){
+			if(projectDetail.getCompletionSqlDate() != null){
+				projectDetail.setProjectStatus("Completed");
+			} else if(projectDetail.getCommencementSqlDate() != null){
+				projectDetail.setProjectStatus("Active");
+			} else if(projectDetail.getTenderSqlDate() != null){
+				projectDetail.setProjectStatus("Tendered");
+			}
+		}
 		return projectDocumentList;
 	}
 	

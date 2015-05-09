@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <script src="<c:url value="/resources/js/script.js" />"></script>
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-
 <script
 	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
 <link rel="stylesheet"
@@ -21,6 +20,25 @@
 	$(function() {
 		var table = $("#subProjectDocumentList").dataTable();
 	})
+</script>
+<style>
+#errmsg
+{
+color: red;
+}
+</style>
+<script>
+$(document).ready(function () {
+	  //called when key is pressed in textbox
+	  $("#agreementPeriod").keypress(function (e) {
+	     //if the letter is not digit then display error and don't type anything
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        //display error message
+	        $("#errmsg").html("Numbers Only").show().fadeOut("slow");
+	               return false;
+	    }
+	   });
+});
 </script>
 </head>
 
@@ -31,6 +49,7 @@
 	<div>
 	<div>
 	<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectUpdationMessage}</h2>
+	<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
 	</div>
 		<div>
 			<form:form method="POST" commandName="projectForm"
@@ -85,7 +104,7 @@
 						<tr>
 							<td>Address of Contractor<span id="colon">:</span>
 							</td>
-							<td><form:input path="contractorAddress"
+							<td><form:textarea path="contractorAddress"
 									placeholder="Enter Address of Contractor" cssClass="inputText" /></td>
 							<td><form:errors path="contractorAddress" cssClass="error" /></td>
 						</tr>
@@ -186,7 +205,8 @@
 							<td>Agreement Period (in months)<span id="colon">:</span>
 							</td>
 							<td><form:input path="agreementPeriod"
-									placeholder="Enter Agreement Period (in months)" cssClass="inputText" /></td>
+									placeholder="Enter Agreement Period (in months)" maxlength="4" cssClass="inputText" required="required"/></td>
+							<td>&nbsp;<span id="errmsg"></span></td>
 							<td><form:errors path="agreementPeriod"
 									cssClass="error" /></td>
 						</tr>
