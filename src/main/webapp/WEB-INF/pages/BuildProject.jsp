@@ -21,6 +21,7 @@
 	<div>
 	<div>
 	<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectUpdationMessage}</h2>
+	<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projectCreationMessage}</h2>
 	</div>
 		<div>
 			<form:form method="POST" commandName="projectForm"
