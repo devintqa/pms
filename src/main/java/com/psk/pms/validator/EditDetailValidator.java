@@ -39,9 +39,7 @@ public class EditDetailValidator extends BaseValidator implements Validator {
 						"employeeMobile.incorrect",
 						"Enter a correct phone number");
 			}
-
 		}
-		
 		if (!(employee.getEmployeeMail() != null && employee
 				.getEmployeeMail().isEmpty())) {
 			pattern = Pattern.compile(EMAIL_PATTERN);
@@ -50,8 +48,13 @@ public class EditDetailValidator extends BaseValidator implements Validator {
 				errors.rejectValue("employeeMail",
 						"employeeMail.incorrect",
 						"Enter a correct mail id");
+			} else if(employee.getEmployeeMail().length() > 30){
+	            errors.rejectValue("employeeMail","employeeMail.incorrect", "Mail Length must not exceed 30 characters.");
 			}
 		}
+		if(employee.getEmployeeAddress().length() > 80){
+            errors.rejectValue("employeeAddress","employeeAddress.incorrect", "Address Length must not exceed 80 characters.");
+        }
 	}
 
 }

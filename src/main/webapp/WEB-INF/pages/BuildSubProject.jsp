@@ -5,15 +5,32 @@
 <!doctype html>
 <html>
 <head>
-
+<style>
+#errmsg
+{
+color: red;
+}
+</style>
 <title>PMS :: Create Sub Project</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <link rel="stylesheet" type="text/css"
 	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
+<script>
+$(document).ready(function () {
+	  //called when key is pressed in textbox
+	  $("#agreementPeriod").keypress(function (e) {
+	     //if the letter is not digit then display error and don't type anything
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        //display error message
+	        $("#errmsg").html("Numbers Only").show().fadeOut("slow");
+	               return false;
+	    }
+	   });
+});
+</script>
 </head>
 
 
@@ -158,7 +175,8 @@
 							<td>Agreement Period (in months)<span id="colon">:</span>
 							</td>
 							<td><form:input path="subAgreementPeriod"
-									placeholder="Enter Agreement Period (in months)" cssClass="inputText" /></td>
+									placeholder="Enter Sub Agreement Period (in months)" maxlength="4" cssClass="inputText" /></td>
+							<td>&nbsp;<span id="errmsg"></span></td>
 							<td><form:errors path="subAgreementPeriod"
 									cssClass="error" /></td>
 						</tr>
