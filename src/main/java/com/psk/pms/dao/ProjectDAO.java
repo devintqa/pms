@@ -35,5 +35,9 @@ public interface ProjectDAO {
 
 	public List<ProjDescDetail> projectDescDetailList(Integer subProjectId);
 	
+	public boolean isAliasProjectAlreadyExisting(String aliasName);
+	
+	public boolean isAliasSubProjectAlreadyExisting(String subAliasName);
+	
 	
 }

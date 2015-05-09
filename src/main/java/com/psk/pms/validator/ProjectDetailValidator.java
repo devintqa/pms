@@ -3,16 +3,21 @@ package com.psk.pms.validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.service.ProjectService;
 
 public class ProjectDetailValidator extends BaseValidator implements Validator{
 	
 	private Pattern pattern;  
 	private Matcher matcher;
+	
+	@Autowired
+	ProjectService projectService;
  
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -76,7 +81,12 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		
 		if(projectDetail.getAliasName().length() > 50){
             errors.rejectValue("aliasName", "aliasName.incorrect","Field must not exceed 50 characters.");
-        }
+        } else {
+			boolean isAliasProjectAlreadyExisting = projectService.isAliasProjectAlreadyExisting(projectDetail.getAliasName());
+			if(isAliasProjectAlreadyExisting){
+				errors.rejectValue("aliasName", "aliasName.incorrect","Alias Project Name Already Found To Be Existing.");
+			}
+		}
 		if(projectDetail.getAgreementNo().length() > 50){
             errors.rejectValue("agreementNo","agreementNo.incorrect", "Field must not exceed 50 characters.");
         }
