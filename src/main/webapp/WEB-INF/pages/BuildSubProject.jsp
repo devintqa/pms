@@ -81,7 +81,7 @@
 						<tr>
 							<td>Address of Contractor<span id="colon">:</span>
 							</td>
-							<td><form:input path="subContractorAddress"
+							<td><form:textarea path="subContractorAddress"
 									placeholder="Enter Address of Contractor" cssClass="inputText" /></td>
 							<td><form:errors path="subContractorAddress" cssClass="error" /></td>
 						</tr>
