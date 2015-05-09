@@ -39,6 +39,23 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDAO.notify();
 		return isInsertSuccessful;
 	}
+	public boolean isAliasProjectAlreadyExisting(String aliasName){
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);
+		return isAvailable;
+	}
+	
+	public boolean isAliasSubProjectAlreadyExisting(String subAliasName) {
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isAliasSubProjectAlreadyExisting(subAliasName);
+		return isAvailable;
+	}
+	
+	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(aliasDescription);
+		return isAvailable;
+	}
 	
 	public boolean createProjDesc(ProjDescDetail projDescDetail){
 		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);

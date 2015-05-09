@@ -246,6 +246,38 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projectDescDetailList;
 	}
+	public boolean isAliasProjectAlreadyExisting(String aliasName){
+		String sql = "SELECT COUNT(*) FROM project where AliasProjName = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[] { aliasName });
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isAliasSubProjectAlreadyExisting(String subAliasName) {
+		String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[] { subAliasName });
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
+		String sql = "SELECT COUNT(*) FROM projectdesc where AliasDescription = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[] { aliasDescription });
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
 
 	private ProjDescDetail buildProjectDescDetail(Map<String, Object> row) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();

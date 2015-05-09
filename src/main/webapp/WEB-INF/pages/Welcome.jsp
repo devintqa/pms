@@ -66,8 +66,6 @@
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
 			<h2
-				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
-			<h2
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
 			<h2
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${noProjectCreated}</h2>
