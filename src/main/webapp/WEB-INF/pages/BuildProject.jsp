@@ -196,7 +196,7 @@ $(document).ready(function () {
 							<td>Agreement Period (in months)<span id="colon">:</span>
 							</td>
 							<td><form:input path="agreementPeriod"
-									placeholder="Enter Agreement Period (in months)" maxlength="4" cssClass="inputText" /></td>
+									placeholder="Enter Agreement Period (in months)" maxlength="4" cssClass="inputText" required="required"/></td>
 							<td>&nbsp;<span id="errmsg"></span></td>
 							<td><form:errors path="agreementPeriod"
 									cssClass="error" /></td>
