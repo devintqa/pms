@@ -51,6 +51,12 @@ public class ProjectServiceImpl implements ProjectService {
 		return isAvailable;
 	}
 	
+	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(aliasDescription);
+		return isAvailable;
+	}
+	
 	public boolean createProjDesc(ProjDescDetail projDescDetail){
 		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
 		return isInsertSuccessful;

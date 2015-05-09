@@ -89,7 +89,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
-			System.out.println("Yeah");
 			jdbcTemplate.update(insertSql, new Object[] {subProjectDetail.getProjId(), subProjectDetail.getSubProjectName(),
 					subProjectDetail.getAliasSubProjName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
 					subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
@@ -263,6 +262,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
 				new Object[] { subAliasName });
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
+		String sql = "SELECT COUNT(*) FROM projectdesc where AliasDescription = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[] { aliasDescription });
 		if (total == 0) {
 			return false;
 		}
