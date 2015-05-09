@@ -162,6 +162,7 @@
 						<th>CER No</th>
 						<th>Amount</th>
 						<th>Contractor Name</th>
+						<th>Project Status</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -178,6 +179,7 @@
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>
 								<td>${projDoc.contractorName}</td>
+								<td>${projDoc.projectStatus}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

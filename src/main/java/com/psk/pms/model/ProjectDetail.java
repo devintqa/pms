@@ -33,8 +33,15 @@ public class ProjectDetail {
 	private int agreementPeriod;
 	private String employeeId;
 	private String isUpdate;
+	private String projectStatus;
 	
 
+	public String getProjectStatus() {
+		return projectStatus;
+	}
+	public void setProjectStatus(String projectStatus) {
+		this.projectStatus = projectStatus;
+	}
 	public String getIsUpdate() {
 		return isUpdate;
 	}
