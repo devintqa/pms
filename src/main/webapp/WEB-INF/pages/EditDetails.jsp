@@ -7,11 +7,8 @@
 <head>
 <title>PMS :: My Profile</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="<c:url value="/resources/js/jquery-1.11.1.min.js"/>"></script>
+<script src="<c:url value="/resources/js/jquery-ui-1.10.3.js"/>"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
 </head>
 
@@ -32,20 +29,23 @@
 				action="editDetails.do">
 
 				<!--<form:errors path="*" cssClass="errorblock" element="div" />
-				--><center>
+				-->
+				<center>
 					<table>
 						<tr>
 							<td>UserName<span id="colon">:</span>
 							</td>
-							<td><form:input path="employeeId" placeholder="PSK User Name"
-									cssClass="inputText" value="${employee.employeeId}" readonly="true" /></td>
+							<td><form:input path="employeeId"
+									placeholder="PSK User Name" cssClass="inputText"
+									value="${employee.employeeId}" readonly="true" /></td>
 							<td><form:errors path="employeeId" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Team<span id="colon">:</span>
 							</td>
-							<td><form:input path="employeeTeam" placeholder="PSK User Name"
-									cssClass="inputText" value="${employee.employeeTeam}" readonly="true" /></td>
+							<td><form:input path="employeeTeam"
+									placeholder="PSK User Name" cssClass="inputText"
+									value="${employee.employeeTeam}" readonly="true" /></td>
 							<td><form:errors path="employeeTeam" cssClass="error" /></td>
 						</tr>
 						<tr>

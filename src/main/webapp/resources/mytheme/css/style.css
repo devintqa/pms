@@ -16,7 +16,7 @@ font: 90%/1.6 "Trebuchet MS", Helvetica, sans-serif;
 }
 /*content styling*/
 header {
-background: #C6311D;
+background: #00007A;
 padding: 50px 25px 10px 0;
 color: #fff;
 margin-bottom: 2em;
@@ -32,7 +32,7 @@ letter-spacing: .1em;
 }
 
 nav {
-background: #3a3a3a;
+background: #ffffff;
 margin: 1em 0em 0em 1em;
 padding: 0em 0.25em 0em 0.25em;
 height: 3em;
@@ -48,15 +48,15 @@ font-family: tahoma;
 margin-top: 0.3em;
 }
 nav > ul > li >a.active{
-color: #ffffff;
+color: #E08B14;
 }
 nav > ul > li >a{
-color: #ffffff;
+color: #E08B14;
 text-decoration:none;
 }
 nav > ul > li >a:hover{
 cursor:pointer;
-color: #C6311D;
+color: #00007A;
 }
 p {
 margin-bottom: 1em;
@@ -89,7 +89,7 @@ margin-bottom: 0.25em;
 	float:right;
 }
 footer {
-background: #C6311D;
+background: #00007A;
 font: 0.8em sans-serif;
 text-transform: uppercase;
 letter-spacing: .2em;
@@ -182,7 +182,7 @@ nav > ul > li {
 .homepagelinks{
 	width: 40%;	
 	padding: 5px;
-	background: #C6311D;
+	background: #00007A;
 	align-content: center;
 	margin: auto;
 	margin-top: 10px;
@@ -205,13 +205,13 @@ border:solid 1px black;
 padding:5px;
 }
 .error {
-color: #C6311D;
+color: #00007A;
 }
 .errorblock{
 	width:75%;
-	color: #C6311D;
+	color: #00007A;
 	background-color: white;
-	border: 3px solid #C6311D;
+	border: 3px solid #00007A;
 	padding:8px;
 	margin:16px;
 	margin-left:auto;
@@ -220,7 +220,7 @@ color: #C6311D;
 }
 
 input[type=submit] {
-	padding:5px 15px; background:#C6311D; border:0 none;
+	padding:5px 15px; background:#00007A; border:0 none;
     cursor:pointer;
     -webkit-border-radius: 5px;
     border-radius: 5px;
@@ -228,10 +228,10 @@ input[type=submit] {
 }
 
 a{
-font-family:arial;color:#C6311D;text-decoration: none;
+font-family:arial;color:#00007A;text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-calendar .ui-state-highlight a {
-	background: #C6311D none; /* a color that fits the widget theme */
+	background: #00007A none; /* a color that fits the widget theme */
 	color: white; /* a color that is readeable with the color above */
 }
 /* Css for new sign up page starts here */
@@ -241,10 +241,10 @@ font-family:arial;color:#C6311D;text-decoration: none;
 		    margin:auto;
 		}
 	.gridView, .gridView td, .gridView th {
-		    border: 1px solid #C6311D;
+		    border: 1px solid #00007A;
 		}
 	.gridView th {
-	    background-color: #C6311D;
+	    background-color: #00007A;
 	    color: white;
 	}
 	.gridView td {

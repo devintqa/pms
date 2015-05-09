@@ -151,7 +151,9 @@ public class ProjectController {
 			} else{
 				isProjectSaveSuccessful = projectService.createProject(projectDetail);
 				model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
-//				model.addAttribute("projectForm", new ProjectDetail());
+				List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
+				model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+				model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());			
 				return "BuildProject";
 			}			
 		}
