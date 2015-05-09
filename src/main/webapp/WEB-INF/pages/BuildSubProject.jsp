@@ -5,26 +5,22 @@
 <!doctype html>
 <html>
 <head>
-<style>
-#errmsg {
-	color: red;
-}
-</style>
 <title>PMS :: Create Sub Project</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<style>
+#errmsg
+{
+color: red;
+}
+</style>
+<script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 <script src="<c:url value="/resources/js/script.js" />"></script>
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script
-	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script>
 	$(function() {
 		var table = $("#projDescDocListSize").dataTable();
-	})
+	});
 </script>
 <script>
 $(document).ready(function () {
@@ -46,6 +42,9 @@ $(document).ready(function () {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div>
+	<div>
+		<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
+	</div>
 		<div>
 			<form:form method="POST" commandName="subProjectForm"
 				action="createSubProject.do">

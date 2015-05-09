@@ -164,15 +164,15 @@ public class ProjectController {
 			Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
-
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		
-
+		if(!result.hasErrors()){
+			isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
+		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			return "BuildSubProject";
 		} else {
-			isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(subProjectDetail.getEmployeeId());
@@ -184,9 +184,9 @@ public class ProjectController {
 				isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
 				model.addAttribute("subProjectCreationMessage", "Sub Project Updated Successfully.");
 			}	
-			model.addAttribute("subProjectForm", new SubProjectDetail());
+			//model.addAttribute("subProjectForm", new SubProjectDetail());
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			return "BuildSubProject";
+			return "BuildSubProject";			
 		}
 	}
 

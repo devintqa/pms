@@ -89,6 +89,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
+			System.out.println("Yeah");
 			jdbcTemplate.update(insertSql, new Object[] {subProjectDetail.getProjId(), subProjectDetail.getSubProjectName(),
 					subProjectDetail.getAliasSubProjName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
 					subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
