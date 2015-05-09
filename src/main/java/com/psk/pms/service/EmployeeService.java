@@ -19,6 +19,10 @@ public interface EmployeeService {
 	public String getUserRole(String empId);
 	
 	public boolean isEmployeeMotherMaidenExisting(String userName,String motherMaiden);
+	
+	public boolean isEmployeeMailExisting(String mail);
+	
+	public boolean isEmployeeMobNumExisting(String mobile);
 
 	public boolean resetPassword(String userName, String password);
 	

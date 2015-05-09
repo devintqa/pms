@@ -27,6 +27,10 @@ public interface EmployeeDAO {
 	public List<Employee> getNewRegistrationRequest(String fromDate);
 	
 	public int manageUserAccess(Employee employee);
+	
+	public boolean isEmployeeMailExisting(String mail);
+	
+	public boolean isEmployeeMobNumExisting(String mobile);
 
 
 }

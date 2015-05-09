@@ -94,6 +94,28 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		}
 		return true;
 	}
+	
+
+	public boolean isEmployeeMailExisting(String mail) {
+		String sql = "SELECT COUNT(*) FROM employee where empMail = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[] { mail });
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isEmployeeMobNumExisting(String mobile) {
+		String sql = "SELECT COUNT(*) FROM employee where empMobNum = ?";	 
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class, new Object[] {mobile});		
+		if(total == 0){
+			return false;
+		}
+		return true;
+	}
 
 
 	public boolean resetpassword(String userName, String password) {
