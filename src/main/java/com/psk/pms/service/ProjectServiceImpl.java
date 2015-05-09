@@ -120,6 +120,17 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDetail;
 	}
 	
+	@Override
+	public SubProjectDetail getSubProjectDocument(String subProjectId) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		SubProjectDetail subProjectDetail = projectDAO.getSubProjectDocument(subProjectId);
+		subProjectDetail.setSubTenderDate(getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
+		subProjectDetail.setSubAgreementDate(getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
+		subProjectDetail.setSubCommencementDate(getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
+		subProjectDetail.setSubCompletionDate(getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
+		return subProjectDetail;
+	}
+	
 	private String getStringDate(Date dateToBeFormatted, SimpleDateFormat formatter){
 		String date = null;
 		if(dateToBeFormatted != null){
@@ -127,6 +138,18 @@ public class ProjectServiceImpl implements ProjectService {
 			return date;
 		}		
 		return date;
+	}
+
+	@Override
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+		List<SubProjectDetail> subProjectDocumentList = projectDAO.getSubProjectDocumentList(projectId);
+		return subProjectDocumentList;
+	}
+	
+	@Override
+	public List<ProjDescDetail> getProjectDescDetailList(Integer subProjectId) {
+		List<ProjDescDetail> projectDescDetailList = projectDAO.projectDescDetailList(subProjectId);
+		return projectDescDetailList;
 	}
 
 }

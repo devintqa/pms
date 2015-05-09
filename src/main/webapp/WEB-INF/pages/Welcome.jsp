@@ -171,9 +171,7 @@
 								<td><a
 									href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=edit"
 									class="userAction">${projDoc.projectName}</a></td>
-								<td><a
-									href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}"
-									class="userAction">${projDoc.aliasName}</a> &nbsp;&nbsp;</td>
+								<td>${projDoc.aliasName}</a></td>
 								<td>${projDoc.agreementNo}</td>
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>

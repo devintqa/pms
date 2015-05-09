@@ -20,7 +20,7 @@ public class SubProjectDetailValidator implements Validator{
 				"required.projId", "Please Select Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subProjectName",
 				"required.subProjectName", "Enter Sub Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAliasName",
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "AliasSubProjName",
 			"required.subAliasName", "Enter Alias Sub Project Name.");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementNo",
 				"required.subAgreementNo", "Enter Agrement Number.");

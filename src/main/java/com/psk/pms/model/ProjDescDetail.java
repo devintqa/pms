@@ -11,8 +11,11 @@ public class ProjDescDetail {
 	private String aliasDescription;
 	private int rateInFig;
 	private String rateInWords;
-	private String projDescAmount;
+	private Integer projDescAmount;
 	private String employeeId;
+	private Integer projId;
+	private Integer subProjId;
+	private Integer ProjDescId;
 	
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -68,17 +71,35 @@ public class ProjDescDetail {
 	public void setRateInWords(String rateInWords) {
 		this.rateInWords = rateInWords;
 	}
-	public String getProjDescAmount() {
-		return projDescAmount;
-	}
-	public void setProjDescAmount(String projDescAmount) {
-		this.projDescAmount = projDescAmount;
-	}
 	public String getEmployeeId() {
 		return employeeId;
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
+	}
+	public Integer getProjId() {
+		return projId;
+	}
+	public void setProjId(Integer projId) {
+		this.projId = projId;
+	}
+	public Integer getSubProjId() {
+		return subProjId;
+	}
+	public void setSubProjId(Integer subProjId) {
+		this.subProjId = subProjId;
+	}
+	public Integer getProjDescId() {
+		return ProjDescId;
+	}
+	public void setProjDescId(Integer projDescId) {
+		ProjDescId = projDescId;
+	}
+	public Integer getProjDescAmount() {
+		return projDescAmount;
+	}
+	public void setProjDescAmount(Integer projDescAmount) {
+		this.projDescAmount = projDescAmount;
 	}
 	
 }

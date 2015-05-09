@@ -28,6 +28,12 @@ public interface ProjectDAO {
 	public ProjectDetail getProjectDocument(String projectId);
 	
 	public List<ProjectDetail> getProjectDocumentList();
+
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
+
+	public SubProjectDetail getSubProjectDocument(String subProjectId);
+
+	public List<ProjDescDetail> projectDescDetailList(Integer subProjectId);
 	
 	
 }

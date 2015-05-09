@@ -4,10 +4,11 @@ import java.util.Date;
 
 public class SubProjectDetail {
 	
-	private String aliasProjectName;
-	private String projId;
+	private String aliasSubProjName;
+	private String aliasProjName;	
+	private Integer projId;
+	private Integer subProjId;
 	private String subProjectName;
-	private String subAliasName;
 	private String subAgreementNo;
 	private String subCerNo;
 	private String subAmount;	
@@ -28,24 +29,13 @@ public class SubProjectDetail {
 	private Date subCompletionSqlDate;
 	private int subAgreementPeriod;
 	private String employeeId;
+	private String isUpdate;
 	
-	public String getAliasProjectName() {
-		return aliasProjectName;
-	}
-	public void setAliasProjectName(String aliasProjectName) {
-		this.aliasProjectName = aliasProjectName;
-	}
 	public String getSubProjectName() {
 		return subProjectName;
 	}
 	public void setSubProjectName(String subProjectName) {
 		this.subProjectName = subProjectName;
-	}
-	public String getSubAliasName() {
-		return subAliasName;
-	}
-	public void setSubAliasName(String subAliasName) {
-		this.subAliasName = subAliasName;
 	}
 	public String getSubAgreementNo() {
 		return subAgreementNo;
@@ -167,11 +157,35 @@ public class SubProjectDetail {
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	public String getProjId() {
+	public Integer getProjId() {
 		return projId;
 	}
-	public void setProjId(String projId) {
+	public void setProjId(Integer projId) {
 		this.projId = projId;
+	}
+	public Integer getSubProjId() {
+		return subProjId;
+	}
+	public void setSubProjId(Integer subProjId) {
+		this.subProjId = subProjId;
+	}
+	public String getAliasSubProjName() {
+		return aliasSubProjName;
+	}
+	public void setAliasSubProjName(String aliasSubProjName) {
+		this.aliasSubProjName = aliasSubProjName;
+	}
+	public String getIsUpdate() {
+		return isUpdate;
+	}
+	public void setIsUpdate(String isUpdate) {
+		this.isUpdate = isUpdate;
+	}
+	public String getAliasProjName() {
+		return aliasProjName;
+	}
+	public void setAliasProjName(String aliasProjName) {
+		this.aliasProjName = aliasProjName;
 	}
 	
 }

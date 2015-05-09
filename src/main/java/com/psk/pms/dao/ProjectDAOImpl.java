@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -23,19 +22,19 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public boolean saveProject(final ProjectDetail projectDetail){
-		String createsql = "INSERT INTO project" +
+		String createSql = "INSERT INTO project" +
 				"(ProjName, AliasProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, TenderDate, EmdStartDate, EmdEndDate, EmdAmount, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		String updatesql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
-					"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
-					"ExcessInPercentage = ?, TenderDate = ?, EmdStartDate = ?, EmdEndDate = ?, EmdAmount = ?, AgreementDate = ?," +
-					"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? WHERE ProjId = ?"; 
+		String updateSql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
+				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
+				"ExcessInPercentage = ?, TenderDate = ?, EmdStartDate = ?, EmdEndDate = ?, EmdAmount = ?, AgreementDate = ?," +
+				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? WHERE ProjId = ?"; 
 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
-			jdbcTemplate.update(createsql, new Object[] { projectDetail.getProjectName(),
+			jdbcTemplate.update(createSql, new Object[] { projectDetail.getProjectName(),
 					projectDetail.getAliasName(),projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
 					projectDetail.getContractorName(), projectDetail.getContractorAddress(),
 					projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
@@ -44,7 +43,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projectDetail.getCommencementSqlDate(), projectDetail.getCompletionSqlDate(), projectDetail.getAgreementPeriod()
 			});
 		} else {
-			jdbcTemplate.update(updatesql, new Object[] { projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
+			jdbcTemplate.update(updateSql, new Object[] { projectDetail.getAgreementNo(), projectDetail.getCerNo(), projectDetail.getAmount(),
 					projectDetail.getContractorName(), projectDetail.getContractorAddress(),
 					projectDetail.getContractValue(), projectDetail.getAgreementValue(), projectDetail.getTenderValue(), projectDetail.getExAmount(),
 					projectDetail.getExPercentage(), projectDetail.getTenderSqlDate(), projectDetail.getEmdStartSqlDate(), projectDetail.getEmdEndSqlDate(),
@@ -78,18 +77,33 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
-		String sql = "INSERT INTO subproject" +
+		String insertSql = "INSERT INTO subproject" +
 				"(ProjId, SubProjName, AliasSubProjName, AgreementNum, CERNum, Amount, ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+		String updateSql = "UPDATE subproject set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
+				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
+				"ExcessInPercentage = ?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+ 
+				"AgreementPeriod = ? WHERE SubProjId = ?"; 
+
 		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] {subProjectDetail.getAliasProjectName(), subProjectDetail.getSubProjectName(),
-				subProjectDetail.getSubAliasName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
-				subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
-				subProjectDetail.getSubContractValue(), subProjectDetail.getSubAgreementValue(), subProjectDetail.getSubTenderValue(), subProjectDetail.getSubExAmount(),
-				subProjectDetail.getSubExPercentage(), subProjectDetail.getSubTenderSqlDate(), subProjectDetail.getSubAgreementSqlDate(),
-				subProjectDetail.getSubCommencementSqlDate(), subProjectDetail.getSubCompletionSqlDate(), subProjectDetail.getSubAgreementPeriod()
-		});
+		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
+			jdbcTemplate.update(insertSql, new Object[] {subProjectDetail.getProjId(), subProjectDetail.getSubProjectName(),
+					subProjectDetail.getAliasSubProjName(),subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
+					subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
+					subProjectDetail.getSubContractValue(), subProjectDetail.getSubAgreementValue(), subProjectDetail.getSubTenderValue(), subProjectDetail.getSubExAmount(),
+					subProjectDetail.getSubExPercentage(), subProjectDetail.getSubTenderSqlDate(), subProjectDetail.getSubAgreementSqlDate(),
+					subProjectDetail.getSubCommencementSqlDate(), subProjectDetail.getSubCompletionSqlDate(), subProjectDetail.getSubAgreementPeriod()
+			});
+		}else {
+			jdbcTemplate.update(updateSql, new Object[] { subProjectDetail.getSubAgreementNo(), subProjectDetail.getSubCerNo(), subProjectDetail.getSubAmount(),
+					subProjectDetail.getSubContractorName(), subProjectDetail.getSubContractorAddress(),
+					subProjectDetail.getSubContractValue(), subProjectDetail.getSubAgreementValue(), subProjectDetail.getSubTenderValue(), subProjectDetail.getSubExAmount(),
+					subProjectDetail.getSubExPercentage(), subProjectDetail.getSubTenderSqlDate(), subProjectDetail.getSubAgreementSqlDate(),
+					subProjectDetail.getSubCommencementSqlDate(), subProjectDetail.getSubCompletionSqlDate(), subProjectDetail.getSubAgreementPeriod(), subProjectDetail.getSubProjId()
+			});
+		}
 		return true;
 	}
 
@@ -130,9 +144,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projDocList;
 	}
-	
+
 	public ProjectDetail getProjectDocument(String projectId) {
-		String sql = projQuery + "where ProjId ="+projectId;	
+		String sql = projQuery + " where ProjId ="+projectId;	
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 		ProjectDetail projDoc = null;
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -142,7 +156,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projDoc;
 	}
-	
+
+	public SubProjectDetail getSubProjectDocument(String subProjectId) {
+		String sql = subProj + " ,p.AliasProjName from subproject s, project as p WHERE p.ProjId = s.ProjId and s.SubProjId ="+subProjectId;	
+		System.out.println("spd: "+sql);
+		jdbcTemplate = new JdbcTemplate(dataSource);             
+		SubProjectDetail subProjDoc = null;
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			subProjDoc = buildSubProjectDetail(row);
+		} 
+		return subProjDoc;
+	}
+
 	private ProjectDetail buildProjectDetail(Map<String, Object> row){
 		ProjectDetail projDoc = new ProjectDetail();
 		projDoc.setProjId((Integer) row.get("ProjId"));
@@ -168,11 +195,94 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));	
 		return projDoc;
 	}
+
+	private SubProjectDetail buildSubProjectDetail(Map<String, Object> row){
+		SubProjectDetail subProjDoc = new SubProjectDetail();
+		subProjDoc.setProjId((Integer) row.get("ProjId"));
+		subProjDoc.setAliasProjName((String) row.get("AliasProjName"));
+		subProjDoc.setSubProjId((Integer) row.get("SubProjId"));
+		subProjDoc.setSubProjectName((String) row.get("SubProjName"));
+		subProjDoc.setAliasSubProjName((String) row.get("AliasSubProjName"));
+		subProjDoc.setSubAgreementNo((String) row.get("AgreementNum"));
+		subProjDoc.setSubCerNo((String) row.get("CERNum"));
+		subProjDoc.setSubAmount((String) row.get("Amount"));
+		subProjDoc.setSubContractorName((String) row.get("ContractorName"));
+		subProjDoc.setSubContractorAddress((String) row.get("ContractorAdd"));
+		subProjDoc.setSubAgreementValue((String) row.get("AgreementValue"));
+		subProjDoc.setSubTenderValue((String) row.get("TenderValue"));
+		subProjDoc.setSubContractValue((String) row.get("ContractorValue"));
+		subProjDoc.setSubExAmount((String) row.get("ExcessInAmount"));
+		subProjDoc.setSubExPercentage((String) row.get("ExcessInPercentage"));
+		subProjDoc.setSubTenderSqlDate((Date)row.get("TenderDate"));
+		subProjDoc.setSubAgreementSqlDate((Date)row.get("AgreementDate"));
+		subProjDoc.setSubCommencementSqlDate((Date)row.get("CommencementDate"));
+		subProjDoc.setSubCompletionSqlDate((Date)row.get("CompletedDate"));
+		subProjDoc.setSubAgreementPeriod((Integer) row.get("AgreementPeriod"));	
+		return subProjDoc;
+	}
+
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+		String sql = subProjQuery + " where ProjId = "+projectId;
+		jdbcTemplate = new JdbcTemplate(dataSource);             
+
+		List<SubProjectDetail> subProjDocList = new ArrayList<SubProjectDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			subProjDocList.add(buildSubProjectDetail(row));
+		} 
+		return subProjDocList;
+	}
+
+	public List<ProjDescDetail> projectDescDetailList(Integer subProjectId) {
+		String sql = projDescDetail + " where SubProjId = "+subProjectId;
+		jdbcTemplate = new JdbcTemplate(dataSource);             
+
+		List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			projectDescDetailList.add(buildProjectDescDetail(row));
+		} 
+		return projectDescDetailList;
+	}
+
+	private ProjDescDetail buildProjectDescDetail(Map<String, Object> row) {
+		ProjDescDetail projDescDetail = new ProjDescDetail();
+		projDescDetail.setProjId((Integer) row.get("ProjId"));
+		projDescDetail.setAliasProjectName((String) row.get("AliasProjName"));
+		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
+		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
+		projDescDetail.setWorkType((String) row.get("WorkType"));
+		projDescDetail.setQuantityInFig((Integer) row.get("QuantityInFig"));
+		projDescDetail.setQuantityInWords((String) row.get("QuantityInWords"));
+		projDescDetail.setDescription((String) row.get("Description"));
+		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
+		projDescDetail.setRateInFig((Integer) row.get("RateInFig"));
+		projDescDetail.setRateInWords((String) row.get("RateInWords"));
+		projDescDetail.setProjDescAmount((Integer) row.get("Amount"));
+		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
+		return projDescDetail;
+	}
+
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage, "
 			+ "TenderDate, EmdStartDate, EmdEndDate, EmdAmount, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod FROM `pms`.`project`";
+			+ "AgreementPeriod FROM project";
 
+	private String subProjQuery = "SELECT SubProjId, SubProjName, AliasSubProjName, AgreementNum, "
+			+ "CERNum, Amount, ContractorName, ContractorAdd, AgreementValue, "
+			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage, "
+			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
+			+ "AgreementPeriod, ProjId FROM subproject";
 
+	private String subProj = "SELECT s.SubProjId, s.SubProjName, s.AliasSubProjName, s.AgreementNum, "
+			+ "s.CERNum, s.Amount, s.ContractorName, s.ContractorAdd, s.AgreementValue, "
+			+ "s.TenderValue, s.ContractorValue, s.ExcessInAmount, s.ExcessInPercentage, "
+			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
+			+ "s.AgreementPeriod, s.ProjId";
+	
+	private String projDescDetail = "SELECT ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
+			+ "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
 }

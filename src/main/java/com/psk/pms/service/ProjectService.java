@@ -30,4 +30,10 @@ public interface ProjectService {
 	public List<ProjectDetail> getEmdEndAlertList();
 	
 	public ProjectDetail getProjectDocument(String projectId);
+	
+	public SubProjectDetail getSubProjectDocument(String subProject);
+
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
+
+	public List<ProjDescDetail> getProjectDescDetailList(Integer subProjId);
 }

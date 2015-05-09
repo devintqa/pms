@@ -8,12 +8,20 @@
 
 <title>PMS :: Create Sub Project</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css"
-	href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css">
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
 <script src="<c:url value="/resources/js/script.js" />"></script>
+<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
+
+<script
+	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
+<link rel="stylesheet"
+	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+<script>
+	$(function() {
+		var table = $("#projDescDocListSize").dataTable();
+	})
+</script>
 </head>
 
 
@@ -24,7 +32,7 @@
 	</header>
 	<div>
 		<div>
-			<form:form method="POST" commandName="createSubProjectForm"
+			<form:form method="POST" commandName="subProjectForm"
 				action="createSubProject.do">
 				<!--<form:errors path="*" cssClass="errorblock" element="div" />
 				--><center>
@@ -46,9 +54,9 @@
 						<tr>
 							<td>Alias Sub Project Name<span id="colon">:</span>
 							</td>
-							<td><form:input path="subAliasName"
+							<td><form:input path="aliasSubProjName"
 									placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
-							<td><form:errors path="subAliasName" cssClass="error" /></td>
+							<td><form:errors path="aliasSubProjName" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td>Original Agreement Number<span id="colon">:</span>
@@ -167,6 +175,9 @@
 					</fieldset>
 
 					<form:hidden path="employeeId" />
+					<form:hidden path="projId" />			
+					<form:hidden path="subProjId" />					
+					<form:hidden path="isUpdate" />
 					<table>
 						<tr>
 							<td></td>
@@ -180,6 +191,40 @@
 
 			</form:form>
 		</div>
+		
+			<c:if test="${projDescDocListSize gt 0}">
+			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project Description Details</h1>
+			<table id="projDescDocListSize" class="gridView">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Alias</th>
+						<th>Work Type</th>
+						<th>Quantity</th>
+						<th>Rate</th>
+						<th>Project Description Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty projDescDocList}">
+						<c:forEach var="projDesc" items="${projDescDocList}">
+							<tr>
+								<td>${projDesc.description}</td>
+								<td><a
+									href="#"
+									class="userAction">${projDesc.aliasDescription}</a></td>
+								<td>${projDesc.workType}</td>
+								<td>${projDesc.quantityInFig}</td>
+								<td>${projDesc.rateInFig}</td>
+								<td>${projDesc.projDescAmount}</td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
 
 	</div>
 	<footer>
