@@ -219,7 +219,9 @@ public class ProjectController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println(request.getParameter("aliasProjectName"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+		System.out.println(subAliasProjectList.size());
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
 		System.out.println(subAliasProjectJson);

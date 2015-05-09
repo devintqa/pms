@@ -15,11 +15,12 @@
 <script src="<c:url value="/resources/js/script.js" />"></script>
 <script type="text/javascript">
 	function getAliasSubProjects() {
+		alert($('#projId').val());
 		$.ajax({
 			type : "GET",
 			url : "getSubAliasProject.do",
 			cache : false,
-			data : 'aliasProjectName=' + $('#aliasProjectName').val(),
+			data : 'aliasProjectName=' + $('#projId').val(),
 			success : function(response) {
 				var options = '';
 				if (response != null) {
@@ -56,10 +57,10 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="aliasProjectName"
-										cssClass="inputText" id="aliasProjectName"
+								<td><form:select path="projId"
+										cssClass="inputText" id="projId"
 										items="${aliasProjectList}" onchange="getAliasSubProjects()" /></td>
-								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+								<td><form:errors path="projId" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Sub Project Name <span id="colon">:</span>
@@ -130,6 +131,8 @@
 					</fieldset>
 
 					<form:hidden path="employeeId" />
+					<form:hidden path="projId" />
+					<form:hidden path="subProjId" />
 					<table>
 						<tr>
 							<td></td>
