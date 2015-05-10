@@ -81,7 +81,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		
 		if(projectDetail.getAliasName().length() > 50){
             errors.rejectValue("aliasName", "aliasName.incorrect","Field must not exceed 50 characters.");
-        } else {
+        } else if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
 			boolean isAliasProjectAlreadyExisting = projectService.isAliasProjectAlreadyExisting(projectDetail.getAliasName());
 			if(isAliasProjectAlreadyExisting){
 				errors.rejectValue("aliasName", "aliasName.incorrect","Alias Project Name Already Found To Be Existing.");

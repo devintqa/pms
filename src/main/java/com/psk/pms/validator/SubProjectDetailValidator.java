@@ -78,7 +78,7 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 		
 		if(subProjectDetail.getAliasSubProjName().length() > 50){
 	        errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect","Field must not exceed 50 characters.");
-	    } else {
+	    } else if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
 			boolean isAliasSubProjectAlreadyExisting = projectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName());
 			if(isAliasSubProjectAlreadyExisting){
 				errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect","Alias Sub Project Name Already Found To Be Existing.");
