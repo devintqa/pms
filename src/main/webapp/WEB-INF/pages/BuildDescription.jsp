@@ -49,6 +49,9 @@
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div>
+	<div>
+		<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
+	</div>
 		<div>
 			<form:form method="POST" commandName="projDescForm"
 				action="createProjDesc.do">
@@ -61,7 +64,7 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="projId" cssClass="inputText"
+								<td><form:select path="aliasProjectName" cssClass="inputText"
 										id="projId" items="${aliasProjectList}"
 										onchange="getAliasSubProjects()" >
 										<c:if test="${projDescForm.projId gt 0}">
@@ -69,7 +72,7 @@
 										</c:if>
 										</form:select>
 										</td>
-								<td><form:errors path="projId" cssClass="error" /></td>
+								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Sub Project Name <span id="colon">:</span>

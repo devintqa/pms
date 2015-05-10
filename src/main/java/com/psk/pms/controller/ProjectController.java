@@ -139,21 +139,6 @@ public class ProjectController {
 			}	
 		}
 		return "BuildDescription";
-//		ProjDescDetail projDescDetail = new ProjDescDetail();
-//		projDescDetail.setEmployeeId(employeeId);
-//		model.addAttribute("createProjDescForm", projDescDetail);
-//		Employee employee = new Employee();
-//		employee.setEmployeeId(employeeId);
-//		employee.setEmployeeTeam(team);
-//		model.addAttribute("employee", employee);
-//		Map<String, String> aliasProjectList = populateAliasProjectList();
-//		if(aliasProjectList.size() == 0){
-//			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
-//			return "Welcome";
-//		} else{
-//			model.addAttribute("aliasProjectList", aliasProjectList);
-//			return "BuildDescription";
-//		}
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
@@ -212,8 +197,7 @@ public class ProjectController {
 			} else{
 				isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
 				model.addAttribute("subProjectCreationMessage", "Sub Project Updated Successfully.");
-			}	
-			//model.addAttribute("subProjectForm", new SubProjectDetail());
+			}
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			return "BuildSubProject";			
 		}
@@ -222,24 +206,29 @@ public class ProjectController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
 	public String saveProjDescAction(
 			@ModelAttribute("projDescForm") ProjDescDetail projDescDetail,
-			BindingResult result, Model model, SessionStatus status) {
-		
+			BindingResult result, Model model, SessionStatus status) {	
 		boolean isProjectSaveSuccessful = false;
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		projDescDetailValidator.validate(projDescDetail, result);
-		System.out.println("calling controller"+result.hasErrors());
-		System.out.println(result.toString());
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
+			model.addAttribute("aliasProjectList", aliasProjectList);
 			return "BuildDescription";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
-			model.addAttribute("projDescCreationMessage", "Project Description added successfully.");
 			employee.setEmployeeId(projDescDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
-			return "Welcome";
+			if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
+				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
+			} else{
+				isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
+				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
+			}
+			model.addAttribute("aliasProjectList", aliasProjectList);
+			return "BuildDescription";
 		}
 	}
 

@@ -161,16 +161,27 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public boolean saveProjDesc(final ProjDescDetail projDescDetail){
-		String sql = "INSERT INTO projectDesc (ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
+		String insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
 				+ "Description, AliasDescription, RateInFig, RateInWords, Amount) " +
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate = new JdbcTemplate(dataSource);	
-		jdbcTemplate.update(sql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
+
+		String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInWords = ?, Description = ?," +
+			"AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=? WHERE SubProjId = ? and ProjId = ?";
+	
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
+		jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
 				projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 				projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
 				projDescDetail.getProjDescAmount()
-		});
+		});} else {
+		jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
+					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
+					projDescDetail.getProjDescAmount(), projDescDetail.getAliasSubProjectName(), projDescDetail.getAliasProjectName()
+			});
+		}
 		return true;
 	}
 
