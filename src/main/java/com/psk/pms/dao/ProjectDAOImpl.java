@@ -176,6 +176,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
 				projDescDetail.getProjDescAmount()
 		});} else {
+		System.out.println(projDescDetail.getIsUpdate());
 		jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 

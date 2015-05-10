@@ -122,11 +122,11 @@ public class ProjectController {
 			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail);
 			projDescDetail.setEmployeeId(employeeId);
 			projDescDetail.setIsUpdate("Y");
+			System.out.println("Setting it to Y");
 			Map<String, String> aliasProjectList = new HashMap<String, String>();
 			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			model.addAttribute("projDescForm", projDescDetail);
-
 		}else{
 			model.addAttribute("projDescForm", new ProjDescDetail());
 			Map<String, String> aliasProjectList = populateAliasProjectList();
