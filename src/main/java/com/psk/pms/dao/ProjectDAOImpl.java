@@ -335,8 +335,9 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
-	public boolean isAliasDescriptionAlreadyExisting(Integer projectId, Integer subProjId, String aliasDescription) {
+	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription) {
 		String sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and AliasDescription = ?";
+		System.out.println(sql);
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
 				new Object[] { projectId, subProjId, aliasDescription });

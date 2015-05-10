@@ -51,7 +51,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return isAvailable;
 	}
 	
-	public boolean isAliasDescriptionAlreadyExisting(Integer projectId, Integer subProjId, String aliasDescription) {
+	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription) {
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectId, subProjId, aliasDescription);
 		return isAvailable;
