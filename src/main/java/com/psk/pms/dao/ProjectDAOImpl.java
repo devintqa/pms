@@ -335,11 +335,11 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
-	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
-		String sql = "SELECT COUNT(*) FROM projectdesc where AliasDescription = ?";
+	public boolean isAliasDescriptionAlreadyExisting(Integer projectId, Integer subProjId, String aliasDescription) {
+		String sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and AliasDescription = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
-				new Object[] { aliasDescription });
+				new Object[] { projectId, subProjId, aliasDescription });
 		if (total == 0) {
 			return false;
 		}

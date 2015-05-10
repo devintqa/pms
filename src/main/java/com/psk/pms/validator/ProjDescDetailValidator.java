@@ -90,7 +90,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
         } 
 		else if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
-			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail.getAliasDescription());
+			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail.getProjId(), projectDescDetail.getSubProjId(), projectDescDetail.getAliasDescription());
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");
 			}

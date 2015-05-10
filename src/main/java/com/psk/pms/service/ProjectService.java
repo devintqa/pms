@@ -43,6 +43,6 @@ public interface ProjectService {
 	
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName);
 	
-	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription);
+	public boolean isAliasDescriptionAlreadyExisting(Integer projectId, Integer subProjId, String aliasDescription);
 	
 }
