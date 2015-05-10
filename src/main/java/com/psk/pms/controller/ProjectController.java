@@ -210,6 +210,7 @@ public class ProjectController {
 		boolean isProjectSaveSuccessful = false;
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		projDescDetailValidator.validate(projDescDetail, result);
+		System.out.println(result.hasErrors());
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
 		}

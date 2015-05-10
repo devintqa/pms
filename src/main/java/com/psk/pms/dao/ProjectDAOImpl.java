@@ -166,21 +166,22 @@ public class ProjectDAOImpl implements ProjectDAO {
 				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInWords = ?, Description = ?," +
-			"AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=? WHERE SubProjId = ? and ProjId = ?";
-	
+				"AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=? WHERE ProjDescId = ?";
+
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
-		jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
-				projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
-				projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
-				projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
-				projDescDetail.getProjDescAmount()
-		});} else {
-		System.out.println(projDescDetail.getIsUpdate());
-		jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+			jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
+					projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
-					projDescDetail.getProjDescAmount(), projDescDetail.getAliasSubProjectName(), projDescDetail.getAliasProjectName()
+					projDescDetail.getProjDescAmount()
+			});
+		} else {
+			System.out.println("update proj desc: "+projDescDetail.getIsUpdate());
+			jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
+					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
+					projDescDetail.getProjDescAmount(), projDescDetail.getProjDescId() 
 			});
 		}
 		return true;
@@ -225,7 +226,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public SubProjectDetail getSubProjectDocument(String subProjectId) {
 		String sql = subProj + ", p.AliasProjName from subproject s, project as p "
 				+ "WHERE p.ProjId = s.ProjId and s.SubProjId ="+subProjectId;	
-		
+
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 		SubProjectDetail subProjDoc = null;
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -322,7 +323,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		}
 		return true;
 	}
-	
+
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName) {
 		String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -333,7 +334,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		}
 		return true;
 	}
-	
+
 	public boolean isAliasDescriptionAlreadyExisting(String aliasDescription) {
 		String sql = "SELECT COUNT(*) FROM projectdesc where AliasDescription = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -378,7 +379,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projDescDetail;
 	}
-	
+
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage, "
@@ -396,12 +397,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 			+ "s.TenderValue, s.ContractorValue, s.ExcessInAmount, s.ExcessInPercentage, "
 			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
 			+ "s.AgreementPeriod, s.ProjId";
-	
+
 	private String projDescDetailQuery = "SELECT ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
 			+ "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
-	
+
 	private String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.WorkType, d.QuantityInFig, d.QuantityInWords, "
 			+ "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
 
-	
+
 }
