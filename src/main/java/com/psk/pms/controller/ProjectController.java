@@ -97,7 +97,7 @@ public class ProjectController {
 		}else{
 			model.addAttribute("subProjectForm", new SubProjectDetail());
 			Map<String, String> aliasProjectList = populateAliasProjectList();
-
+			System.out.println(aliasProjectList);
 			if(aliasProjectList.size() == 0){
 				model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 				return "Welcome";
@@ -234,7 +234,9 @@ public class ProjectController {
 	}
 
 	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		Map<String, String> aliasProjectName = new HashMap<String, String>();
+		aliasProjectName.put("0", "--select--");
+		aliasProjectName.putAll(projectService.getAliasProjectNames());
 		return aliasProjectName;
 	}
 
