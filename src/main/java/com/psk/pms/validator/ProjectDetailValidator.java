@@ -79,6 +79,15 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 			   }
 		}
 		
+		if (projectDetail.getEmdAmount() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getEmdAmount());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("emdAmount", "emdAmount.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
 		if(projectDetail.getAliasName().length() > 50){
             errors.rejectValue("aliasName", "aliasName.incorrect","Field must not exceed 50 characters.");
         } else if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {

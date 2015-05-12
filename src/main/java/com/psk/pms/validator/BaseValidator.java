@@ -7,5 +7,6 @@ public class BaseValidator {
 	 public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"  
 		   + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 	 String ID_PATTERN = "[0-9]+"; 
+	 String AMOUNT_PATTERN = "\\d+(?:\\.\\d+)?$";
 
 }

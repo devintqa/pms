@@ -72,7 +72,7 @@ CREATE TABLE `project` (
   `TenderDate` datetime NOT NULL,
   `EmdStartDate` datetime NOT NULL,
   `EmdEndDate` datetime NOT NULL,
-  `EmdAmount` varchar(50) NOT NULL,
+  `EmdAmount` numeric(15,2) NOT NULL,
   `AgreementDate` datetime NULL,
   `CommencementDate` datetime NULL,
   `CompletedDate` datetime NULL,

@@ -55,8 +55,6 @@ $(document).ready(function () {
 		<div>
 			<form:form method="POST" commandName="projectForm"
 				action="createProject.do">
-				<!--<form:errors path="*" cssClass="errorblock" element="div" />
-				-->
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Project Details</legend>

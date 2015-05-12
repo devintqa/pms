@@ -1,4 +1,5 @@
 package com.psk.pms.dao;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -243,7 +244,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDoc.setTenderSqlDate((Date)row.get("TenderDate"));
 		projDoc.setEmdStartSqlDate((Date)row.get("EmdStartDate"));
 		projDoc.setEmdEndSqlDate((Date)row.get("EmdEndDate"));
-		projDoc.setEmdAmount((String)row.get("EmdAmount"));
+		BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
+		projDoc.setEmdAmount(emdAmount.toString());
 		projDoc.setAgreementSqlDate((Date)row.get("AgreementDate"));
 		projDoc.setCommencementSqlDate((Date)row.get("CommencementDate"));
 		projDoc.setCompletionSqlDate((Date)row.get("CompletedDate"));
