@@ -11,15 +11,9 @@ public interface ProjectDAO {
 	
 	public boolean saveProject(ProjectDetail projectDetail);
 	
-	public boolean editProject(ProjectDetail projectDetail);
-	
 	public boolean saveSubProject(SubProjectDetail subProjectDetail);
 	
-	public boolean editSubProject(SubProjectDetail subProjectDetail);
-	
 	public boolean saveProjDesc(ProjDescDetail projDescDetail);
-	
-	public boolean editProjDesc(ProjDescDetail projDescDetail);
 	
 	public Map<String, String> getAliasProjectNames();
 	

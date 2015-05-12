@@ -187,18 +187,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
-	public boolean editProjDesc(final ProjDescDetail projDescDetail){
-		return true;
-	}
-
-	public boolean editSubProject(final SubProjectDetail subProjectDetail){
-		return true;
-	}
-
-	public boolean editProject(final ProjectDetail projectDetail){
-		return true;
-	}
-
 	public List<ProjectDetail> getProjectDocumentList() {
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 

@@ -147,7 +147,7 @@ public class ProjectController {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createProject(projectDetail);
+			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			return "BuildProject";
@@ -160,7 +160,7 @@ public class ProjectController {
 				model.addAttribute("projectCreationMessage", "Project Creation Successful.");
 				return "BuildProject";
 			} else{
-				isProjectSaveSuccessful = projectService.createProject(projectDetail);
+				isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
 				model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
 				List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
 				model.addAttribute("subProjectDocumentList", subProjectDocumentList);
@@ -180,7 +180,7 @@ public class ProjectController {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
+			isProjectSaveSuccessful = projectService.createEditSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -194,7 +194,7 @@ public class ProjectController {
 			if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
 				model.addAttribute("subProjectCreationMessage", "Sub Project Creation Successful.");
 			} else{
-				isProjectSaveSuccessful = projectService.createSubProject(subProjectDetail);
+				isProjectSaveSuccessful = projectService.createEditSubProject(subProjectDetail);
 				model.addAttribute("subProjectCreationMessage", "Sub Project Updated Successfully.");
 			}
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -211,7 +211,7 @@ public class ProjectController {
 		projDescDetailValidator.validate(projDescDetail, result);
 		System.out.println(result.hasErrors());
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
+			isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -224,7 +224,7 @@ public class ProjectController {
 			if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 			} else{
-				isProjectSaveSuccessful = projectService.createProjDesc(projDescDetail);
+				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
 				projDescDetail = projectService.getProjectDescDetail(projDescDetail.getProjDescId().toString());
 				aliasProjectList = new HashMap<String, String>();
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());

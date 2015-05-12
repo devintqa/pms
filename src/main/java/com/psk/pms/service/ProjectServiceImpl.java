@@ -15,14 +15,8 @@ import com.psk.pms.model.SubProjectDetail;
 public class ProjectServiceImpl implements ProjectService {
 	
 	private ProjectDAO projectDAO;
-
-	public boolean editProject(ProjectDetail projectDetail){
-		boolean isInsertSuccessful = false;
-		projectDAO.notify();
-		return isInsertSuccessful;
-	}
 	
-	public boolean createProject(ProjectDetail projectDetail){
+	public boolean createEditProject(ProjectDetail projectDetail){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		projectDetail.setTenderSqlDate(getSQLDate(projectDetail.getTenderDate(), formatter));
 		projectDetail.setAgreementSqlDate(getSQLDate(projectDetail.getAgreementDate(), formatter));
@@ -34,11 +28,21 @@ public class ProjectServiceImpl implements ProjectService {
 		return isInsertSuccessful;
 	}
 	
-	public boolean editProjDesc(ProjDescDetail projDescDetail){
-		boolean isInsertSuccessful = false;
-		projectDAO.notify();
+	public boolean createEditProjDesc(ProjDescDetail projDescDetail){
+		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
 		return isInsertSuccessful;
 	}
+	
+	public boolean createEditSubProject(SubProjectDetail subProjectDetail){
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		subProjectDetail.setSubTenderSqlDate(getSQLDate(subProjectDetail.getSubTenderDate(), formatter));
+		subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
+		subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
+		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
+		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
+		return isInsertSuccessful;
+	}
+	
 	public boolean isAliasProjectAlreadyExisting(String aliasName){
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);
@@ -55,27 +59,6 @@ public class ProjectServiceImpl implements ProjectService {
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectId, subProjId, aliasDescription);
 		return isAvailable;
-	}
-	
-	public boolean createProjDesc(ProjDescDetail projDescDetail){
-		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
-		return isInsertSuccessful;
-	}
-	
-	public boolean editSubProject(SubProjectDetail subProjectDetail){
-		boolean isInsertSuccessful = false;
-		projectDAO.notify();
-		return isInsertSuccessful;
-	}
-	
-	public boolean createSubProject(SubProjectDetail subProjectDetail){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		subProjectDetail.setSubTenderSqlDate(getSQLDate(subProjectDetail.getSubTenderDate(), formatter));
-		subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
-		subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
-		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
-		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
-		return isInsertSuccessful;
 	}
 	
 	public Map<String, String> getAliasProjectNames(){
