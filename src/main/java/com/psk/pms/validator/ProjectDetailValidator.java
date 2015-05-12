@@ -1,5 +1,6 @@
 package com.psk.pms.validator;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,6 +89,60 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 			   }
 		}
 		
+		if (projectDetail.getAmount() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getAmount());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("amount", "amount.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
+		if (projectDetail.getAgreementValue() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getAgreementValue());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("agreementValue", "agreementValue.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
+		if (projectDetail.getTenderValue() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getTenderValue());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("tenderValue", "tenderValue.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
+		if (projectDetail.getContractValue() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getContractValue());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("contractValue", "contractValue.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
+		if (projectDetail.getExAmount() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getExAmount());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("exAmount", "exAmount.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}
+		
+		if (projectDetail.getExPercentage() != null) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDetail.getExPercentage());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("exPercentage", "exPercentage.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }
+		}		
+		
 		if(projectDetail.getAliasName().length() > 50){
             errors.rejectValue("aliasName", "aliasName.incorrect","Field must not exceed 50 characters.");
         } else if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
@@ -102,13 +157,13 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		if(projectDetail.getCerNo().length() > 30){
             errors.rejectValue("cerNo", "cerNo.incorrect", "Field must not exceed 30 characters");
         }
-		if(projectDetail.getAmount().length() > 50){
+		/*if(projectDetail.getAmount().length() > 50){
             errors.rejectValue("Amount", "Amount.incorrect", "Field must not exceed 50 characters.");
-        }
+        }*/
 		if(projectDetail.getContractorName().length() > 50){
             errors.rejectValue("contractorName","contractorName.incorrect", "Field must not exceed 50 characters.");
         }
-		if(projectDetail.getAgreementValue().length() > 50){
+/*		if(projectDetail.getAgreementValue().length() > 50){
             errors.rejectValue("agreementValue","agreementValue.incorrect", "Field must not exceed 50 characters.");
         }
 		if(projectDetail.getTenderValue().length() > 50){
@@ -122,7 +177,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
         }
 		if(projectDetail.getExPercentage().length() > 30){
             errors.rejectValue("exPercentage","exPercentage.incorrect", "Field must not exceed 30 characters.");
-        }	
+        }	*/
 		if(agreementPeriod.length() > 10){
             errors.rejectValue("agreementPeriod","agreementPeriod.incorrect", "Field must not exceed 10 characters");
         }
