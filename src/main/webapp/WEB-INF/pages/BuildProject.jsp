@@ -91,9 +91,9 @@ $(document).ready(function () {
 							<tr>
 								<td>Estimated Amount<span id="colon">:</span>
 								</td>
-								<td><form:input path="Amount"
+								<td><form:input path="amount"
 										placeholder="Enter Estimated Amount" cssClass="inputText" /></td>
-								<td><form:errors path="Amount" cssClass="error" /></td>
+								<td><form:errors path="amount" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Name of Contractor<span id="colon">:</span>

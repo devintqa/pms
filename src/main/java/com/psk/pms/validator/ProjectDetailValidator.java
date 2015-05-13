@@ -1,6 +1,5 @@
 package com.psk.pms.validator;
 
-import java.math.BigDecimal;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.service.ProjectService;
 
@@ -35,8 +35,8 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.agreementNo", "Enter Agreement Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cerNo",
 				"required.cerNo", "Enter CER Number.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "Amount",
-				"required.Amount", "Enter Amount.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount",
+				"required.amount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorName",
 				"required.contractorName", "Enter Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorAddress",
@@ -59,14 +59,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.emdEndDate", "Enter EMD End Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
-		/*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementDate",
-				"required.agreementDate", "Select Agreement Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "commencementDate",
-				"required.commencementDate", "Select Commencement Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "completionDate",
-				"required.completionDate", "Select Completion Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementPeriod",
-				"required.agreementPeriod", "Select Agreement Period.");*/
 		
 		ProjectDetail projectDetail = (ProjectDetail)target;
 		
@@ -80,67 +72,81 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 			   }
 		}
 		
-		if (projectDetail.getEmdAmount() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getEmdAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getEmdAmount());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("emdAmount", "emdAmount.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getEmdAmount().length() > 15){
+		            errors.rejectValue("emdAmount", "emdAmount.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getAmount() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getAmount());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("amount", "amount.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getAmount().length() > 15){
+		            errors.rejectValue("amount", "amount.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getAgreementValue() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getAgreementValue())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getAgreementValue());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("agreementValue", "agreementValue.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getAgreementValue().length() > 15){
+		            errors.rejectValue("agreementValue", "agreementValue.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getTenderValue() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getTenderValue())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getTenderValue());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("tenderValue", "tenderValue.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getTenderValue().length() > 15){
+		            errors.rejectValue("tenderValue", "tenderValue.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getContractValue() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getContractValue())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getContractValue());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("contractValue", "contractValue.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getContractValue().length() > 15){
+		            errors.rejectValue("contractValue", "contractValue.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getExAmount() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getExAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getExAmount());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("exAmount", "exAmount.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getExAmount().length() > 15){
+		            errors.rejectValue("exAmount", "exAmount.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}
 		
-		if (projectDetail.getExPercentage() != null) {  
+		if (!StringUtils.isNullOrEmpty(projectDetail.getExPercentage())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getExPercentage());  
 			   if (!matcher.matches()) {  
 			    errors.rejectValue("exPercentage", "exPercentage.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }
+			   }else if(projectDetail.getExPercentage().length() > 15){
+		            errors.rejectValue("exPercentage", "exPercentage.incorrect", "Field must not exceed 15 characters.");
+		        }
 		}		
 		
 		if(projectDetail.getAliasName().length() > 50){
@@ -157,27 +163,9 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		if(projectDetail.getCerNo().length() > 30){
             errors.rejectValue("cerNo", "cerNo.incorrect", "Field must not exceed 30 characters");
         }
-		/*if(projectDetail.getAmount().length() > 50){
-            errors.rejectValue("Amount", "Amount.incorrect", "Field must not exceed 50 characters.");
-        }*/
 		if(projectDetail.getContractorName().length() > 50){
             errors.rejectValue("contractorName","contractorName.incorrect", "Field must not exceed 50 characters.");
         }
-/*		if(projectDetail.getAgreementValue().length() > 50){
-            errors.rejectValue("agreementValue","agreementValue.incorrect", "Field must not exceed 50 characters.");
-        }
-		if(projectDetail.getTenderValue().length() > 50){
-            errors.rejectValue("tenderValue","tenderValue.incorrect", "Field must not exceed 50 characters.");
-        }
-		if(projectDetail.getContractValue().length() > 50){
-            errors.rejectValue("contractValue", "contractValue.incorrect", "Field must not exceed 50 characters.");
-        }
-		if(projectDetail.getExAmount().length() > 50){
-            errors.rejectValue("exAmount","exAmount.incorrect", "Field must not exceed 50 characters.");
-        }
-		if(projectDetail.getExPercentage().length() > 30){
-            errors.rejectValue("exPercentage","exPercentage.incorrect", "Field must not exceed 30 characters.");
-        }	*/
 		if(agreementPeriod.length() > 10){
             errors.rejectValue("agreementPeriod","agreementPeriod.incorrect", "Field must not exceed 10 characters");
         }
