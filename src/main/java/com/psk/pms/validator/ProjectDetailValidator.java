@@ -62,16 +62,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		
 		ProjectDetail projectDetail = (ProjectDetail)target;
 		
-		String agreementPeriod = String.format ("%d", projectDetail.getAgreementPeriod());
-		if (agreementPeriod != null) {  
-			   pattern = Pattern.compile(ID_PATTERN);  
-			   matcher = pattern.matcher(agreementPeriod);  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("agreementPeriod", "agreementPeriod.incorrect",  
-			      "Enter a numeric value and it must be greater than 0.");
-			   }
-		}
-		
 		if (!StringUtils.isNullOrEmpty(projectDetail.getEmdAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getEmdAmount());  
@@ -165,11 +155,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
         }
 		if(projectDetail.getContractorName().length() > 50){
             errors.rejectValue("contractorName","contractorName.incorrect", "Field must not exceed 50 characters.");
-        }
-		if(agreementPeriod.length() > 10){
-            errors.rejectValue("agreementPeriod","agreementPeriod.incorrect", "Field must not exceed 10 characters");
-        }
-		
+        }	
 	}
 	
 	

@@ -52,8 +52,6 @@ $(document).ready(function () {
 		<div>
 			<form:form method="POST" commandName="subProjectForm"
 				action="createSubProject.do">
-				<!--<form:errors path="*" cssClass="errorblock" element="div" />
-				-->
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Sub Project Details</legend>

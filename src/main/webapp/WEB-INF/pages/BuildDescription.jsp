@@ -29,7 +29,7 @@
 				if (response != null) {
 					var obj = jQuery.parseJSON(response);
 					var options = '';
-					options = '<option value=0>--select--</option>';
+					options = '<option value=0>--Please Select--</option>';
 					for ( var key in obj) {
 						var attrName = key;
 						var attrValue = obj[key];

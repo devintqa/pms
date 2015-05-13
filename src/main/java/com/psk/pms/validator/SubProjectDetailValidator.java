@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 
@@ -65,6 +66,10 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subAgreementPeriod", "Select Agreement Period.");*/
 		
 		SubProjectDetail subProjectDetail = (SubProjectDetail)target;
+		
+		if (subProjectDetail.getProjId() == 0) {  
+				errors.rejectValue("projId", "projId.incorrect","Please select a valid project");
+		}
 		
 		String subAgreementPeriod = String.format ("%d", subProjectDetail.getSubAgreementPeriod());
 		if (subAgreementPeriod != null) {  

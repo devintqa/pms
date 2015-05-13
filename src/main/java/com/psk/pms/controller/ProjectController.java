@@ -238,9 +238,7 @@ public class ProjectController {
 	}
 
 	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = new HashMap<String, String>();
-		aliasProjectName.put("0", "--select--");
-		aliasProjectName.putAll(projectService.getAliasProjectNames());
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
 	}
 

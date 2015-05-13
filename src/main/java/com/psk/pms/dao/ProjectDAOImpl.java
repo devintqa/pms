@@ -88,6 +88,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
+		aliasProjects.put("0", "--Please Select--");
 		for (Map<String, Object> row : rows) {
 			aliasProjects.put(String.valueOf(row.get("ProjId")), (String)row.get("AliasProjName"));
 		}	 
