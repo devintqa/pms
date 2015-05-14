@@ -372,13 +372,16 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
 		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
 		projDescDetail.setWorkType((String) row.get("WorkType"));
-		projDescDetail.setQuantityInFig((Integer) row.get("QuantityInFig"));
+		BigDecimal quantityInFig = (BigDecimal)row.get("QuantityInFig");
+		projDescDetail.setQuantityInFig(quantityInFig.toString());
 		projDescDetail.setQuantityInWords((String) row.get("QuantityInWords"));
 		projDescDetail.setDescription((String) row.get("Description"));
 		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
-		projDescDetail.setRateInFig((Integer) row.get("RateInFig"));
+		BigDecimal rateInFig = (BigDecimal)row.get("RateInFig");
+		projDescDetail.setRateInFig(rateInFig.toString());
 		projDescDetail.setRateInWords((String) row.get("RateInWords"));
-		projDescDetail.setProjDescAmount((Integer) row.get("Amount"));
+		BigDecimal amount = (BigDecimal)row.get("Amount");
+		projDescDetail.setProjDescAmount(amount.toString());
 		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
 		return projDescDetail;
 	}

@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.service.ProjectService;
 
@@ -50,39 +51,47 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		
-		String rateInFig = String.format ("%d", projectDescDetail.getRateInFig());
-		if (rateInFig != null) {  
-			   pattern = Pattern.compile(ID_PATTERN);  
-			   matcher = pattern.matcher(rateInFig);  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("rateInFig", "rateInFig.incorrect",  
-			      "Enter a numeric value and it must be greater than 0.");  
-			   }
-		} 
-		
-		String quantityInFig = String.format ("%d", projectDescDetail.getQuantityInFig());
-		if (quantityInFig != null) {  
-			   pattern = Pattern.compile(ID_PATTERN);  
-			   matcher = pattern.matcher(quantityInFig);  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("quantityInFig", "quantityInFig.incorrect",  
-			      "Enter a numeric value and it must be greater than 0.");  
-			   }
-		} 
-		
-		String projDescAmount = String.format ("%d", projectDescDetail.getProjDescAmount());
-		if (projDescAmount != null) {  
-			   pattern = Pattern.compile(ID_PATTERN);  
-			   matcher = pattern.matcher(projDescAmount);  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("projDescAmount", "projDescAmount.incorrect",  
-			      "Enter a numeric value and it must be greater than 0.");  
-			   }
+		if ("0".equalsIgnoreCase(projectDescDetail.getAliasProjectName())) {  
+			errors.rejectValue("aliasProjectName", "aliasProjectName.incorrect","Please select a valid project");
 		}
 		
-		if(quantityInFig.length() > 30){
-            errors.rejectValue("quantityInFig","quantityInFig.incorrect", "Field Should Not Exceed 30 numeric");
-        }
+		if ("0".equalsIgnoreCase(projectDescDetail.getAliasSubProjectName())) {  
+			errors.rejectValue("aliasSubProjectName", "aliasSubProjectName.incorrect","Please select a valid sub project");
+		}
+		
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getQuantityInFig())) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDescDetail.getQuantityInFig());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("quantityInFig", "quantityInFig.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }else if(projectDescDetail.getQuantityInFig().length() > 15){
+		            errors.rejectValue("quantityInFig", "quantityInFig.incorrect", "Field must not exceed 15 characters.");
+		        }
+		}
+		
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getRateInFig())) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDescDetail.getRateInFig());  
+			   if (!matcher.matches()) {  
+				  errors.rejectValue("rateInFig", "rateInFig.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }else if(projectDescDetail.getRateInFig().length() > 15){
+		            errors.rejectValue("rateInFig", "rateInFig.incorrect", "Field must not exceed 15 characters.");
+		        }
+		}
+		
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getProjDescAmount())) {  
+			   pattern = Pattern.compile(AMOUNT_PATTERN);  
+			   matcher = pattern.matcher(projectDescDetail.getProjDescAmount());  
+			   if (!matcher.matches()) {  
+			    errors.rejectValue("projDescAmount", "projDescAmount.incorrect",  
+			      "Enter a numeric value and only a single dot is allowed");
+			   }else if(projectDescDetail.getProjDescAmount().length() > 15){
+		            errors.rejectValue("projDescAmount", "projDescAmount.incorrect", "Field must not exceed 15 characters.");
+		        }
+		}
+		
 		if(projectDescDetail.getQuantityInWords().length() > 50){
             errors.rejectValue("quantityInWords","quantityInWords.incorrect", "Field Should Not Exceed 50 characters");
         }
@@ -96,15 +105,10 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");
 			}
+
 		}
-		if(rateInFig.length() > 30){
-            errors.rejectValue("rateInFig", "rateInFig.incorrect", "Field Should Not Exceed 30 numeric");
-        }
 		if(projectDescDetail.getRateInWords().length() > 50){
             errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
-        }
-		if(projDescAmount.length() > 50){
-            errors.rejectValue("projDescAmount","projDescAmount.incorrect", "Field Should Not Exceed 50 numeric");
         }		
 		
 	}

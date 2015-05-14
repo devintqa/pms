@@ -5,13 +5,13 @@ public class ProjDescDetail {
 	private String aliasProjectName;
 	private String aliasSubProjectName;
 	private String workType;
-	private int quantityInFig;
+	private String quantityInFig;
 	private String quantityInWords;
 	private String description;	
 	private String aliasDescription;
-	private int rateInFig;
+	private String rateInFig;
 	private String rateInWords;
-	private Integer projDescAmount;
+	private String projDescAmount;
 	private String employeeId;
 	private Integer projId;
 	private Integer subProjId;
@@ -36,12 +36,6 @@ public class ProjDescDetail {
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
-	public int getQuantityInFig() {
-		return quantityInFig;
-	}
-	public void setQuantityInFig(int quantityInFig) {
-		this.quantityInFig = quantityInFig;
-	}
 	public String getQuantityInWords() {
 		return quantityInWords;
 	}
@@ -59,12 +53,6 @@ public class ProjDescDetail {
 	}
 	public void setAliasDescription(String aliasDescription) {
 		this.aliasDescription = aliasDescription;
-	}
-	public int getRateInFig() {
-		return rateInFig;
-	}
-	public void setRateInFig(int rateInFig) {
-		this.rateInFig = rateInFig;
 	}
 	public String getRateInWords() {
 		return rateInWords;
@@ -96,17 +84,29 @@ public class ProjDescDetail {
 	public void setProjDescId(Integer projDescId) {
 		this.projDescId = projDescId;
 	}
-	public Integer getProjDescAmount() {
-		return projDescAmount;
-	}
-	public void setProjDescAmount(Integer projDescAmount) {
-		this.projDescAmount = projDescAmount;
-	}
 	public String getIsUpdate() {
 		return isUpdate;
 	}
 	public void setIsUpdate(String isUpdate) {
 		this.isUpdate = isUpdate;
+	}
+	public String getQuantityInFig() {
+		return quantityInFig;
+	}
+	public void setQuantityInFig(String quantityInFig) {
+		this.quantityInFig = quantityInFig;
+	}
+	public String getRateInFig() {
+		return rateInFig;
+	}
+	public void setRateInFig(String rateInFig) {
+		this.rateInFig = rateInFig;
+	}
+	public String getProjDescAmount() {
+		return projDescAmount;
+	}
+	public void setProjDescAmount(String projDescAmount) {
+		this.projDescAmount = projDescAmount;
 	}
 	
 }
