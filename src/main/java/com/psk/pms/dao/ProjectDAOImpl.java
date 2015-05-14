@@ -277,14 +277,27 @@ public class ProjectDAOImpl implements ProjectDAO {
 		subProjDoc.setAliasSubProjName((String) row.get("AliasSubProjName"));
 		subProjDoc.setSubAgreementNo((String) row.get("AgreementNum"));
 		subProjDoc.setSubCerNo((String) row.get("CERNum"));
-		subProjDoc.setSubAmount((String) row.get("Amount"));
 		subProjDoc.setSubContractorName((String) row.get("ContractorName"));
 		subProjDoc.setSubContractorAddress((String) row.get("ContractorAdd"));
-		subProjDoc.setSubAgreementValue((String) row.get("AgreementValue"));
-		subProjDoc.setSubTenderValue((String) row.get("TenderValue"));
-		subProjDoc.setSubContractValue((String) row.get("ContractorValue"));
-		subProjDoc.setSubExAmount((String) row.get("ExcessInAmount"));
-		subProjDoc.setSubExPercentage((String) row.get("ExcessInPercentage"));
+		
+		BigDecimal amount = (BigDecimal)row.get("Amount");
+		subProjDoc.setSubAmount(amount.toString());
+		
+		BigDecimal aggValue = (BigDecimal)row.get("AgreementValue");
+		subProjDoc.setSubAgreementValue(aggValue.toString());
+		
+		BigDecimal tenderValue = (BigDecimal)row.get("TenderValue");
+		subProjDoc.setSubTenderValue(tenderValue.toString());
+		
+		BigDecimal contValue = (BigDecimal)row.get("ContractorValue");
+		subProjDoc.setSubContractValue(contValue.toString());
+		
+		BigDecimal exAmount = (BigDecimal)row.get("ExcessInAmount");
+		subProjDoc.setSubExAmount(exAmount.toString());
+		
+		BigDecimal exPercentage = (BigDecimal)row.get("ExcessInPercentage");
+		subProjDoc.setSubExPercentage(exPercentage.toString());
+		
 		subProjDoc.setSubTenderSqlDate((Date)row.get("TenderDate"));
 		subProjDoc.setSubAgreementSqlDate((Date)row.get("AgreementDate"));
 		subProjDoc.setSubCommencementSqlDate((Date)row.get("CommencementDate"));
