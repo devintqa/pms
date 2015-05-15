@@ -342,11 +342,11 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
-	public boolean isAliasSubProjectAlreadyExisting(String subAliasName) {
-		String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ?";
+	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId) {
+		String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ? and ProjId = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
-				new Object[] { subAliasName });
+				new Object[] { subAliasName,projectId });
 		if (total == 0) {
 			return false;
 		}

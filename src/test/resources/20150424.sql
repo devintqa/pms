@@ -112,7 +112,6 @@ CREATE TABLE `projectdesc` (
   `Amount` numeric(15,2) NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`),
-  UNIQUE KEY `AliasDescription_UNIQUE` (`AliasDescription`),
   KEY `AliasSubProjName` (`SubProjId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -154,8 +153,7 @@ CREATE TABLE `subproject` (
   `CompletedDate` datetime NULL,
   `AgreementPeriod` int(10) NULL,
   `ProjId` int(10) NOT NULL,
-  PRIMARY KEY (`SubProjId`),
-  UNIQUE KEY `AliasSubProjName_UNIQUE` (`AliasSubProjName`)
+  PRIMARY KEY (`SubProjId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
