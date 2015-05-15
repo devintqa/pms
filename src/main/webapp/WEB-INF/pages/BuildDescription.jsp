@@ -18,6 +18,9 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script type="text/javascript">
+$(window).load(function () {
+	  getAliasSubProjects();
+});
 	function getAliasSubProjects() {
 		$.ajax({
 			type : "GET",
@@ -112,7 +115,7 @@
 							<tr>
 								<td>Description<span id="colon">:</span>
 								</td>
-								<td><form:input path="description"
+								<td><form:textarea path="description"
 										placeholder="Enter Description" cssClass="inputText" /></td>
 								<td><form:errors path="description" cssClass="error" /></td>
 							</tr>
