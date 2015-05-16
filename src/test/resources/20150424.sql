@@ -88,7 +88,6 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Life Insurance Corporation Building','LIC Building','12345','12345','2000000','john kontrac','12, metro boulevard, chennai','5000000','8000000','1000000','4000000','40','2015-04-24 00:00:00','2015-04-24 00:00:00','2015-04-24 00:00:00','2015-04-24 00:00:00',12),(2,'Central Prison','cp','original 123','12345','12345','ajith','123, north street','12345','12345','12345','123','12','2015-04-27 00:00:00','2015-04-27 00:00:00','2015-04-27 00:00:00','2015-04-27 00:00:00',12);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +122,6 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-INSERT INTO `projectdesc` VALUES (2,1,'Main Work',0,'zero','description','mainDesc',0,'zero',0,1);
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +163,6 @@ CREATE TABLE `subproject` (
 
 LOCK TABLES `subproject` WRITE;
 /*!40000 ALTER TABLE `subproject` DISABLE KEYS */;
-INSERT INTO `subproject` VALUES (1,'cp flooring','cpf','1234','1224','2131','12312','1233','1231','12321','123213','1323','1233','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00',12,2),(4,'cp flooring','cpf1','1234','1224','2131','12312','1233','1231','12321','123213','1323','1233','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00','2015-04-01 00:00:00',12,2);
 /*!40000 ALTER TABLE `subproject` ENABLE KEYS */;
 UNLOCK TABLES;
 

@@ -1,0 +1,70 @@
+
+<!doctype html>
+<html>
+<head>
+
+<title>PMS :: Create Project</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" type="text/css"
+	href="jquery-ui-1.10.3.css">
+<script src="jquery-1.11.1.min.js""></script>
+<script src="jquery-ui-1.10.3.js"></script>
+<script src="script.js"></script>
+<script
+	src="jquery.dataTables.1.10.6.min.js"></script>
+<link rel="stylesheet"
+	href="jquery.dataTables.1.10.6.css"/>
+<style>
+#errmsg {
+	color: red;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+	  //called when key is pressed in textbox
+	  $("#agreementPeriod").keypress(function (e) {
+	     //if the letter is not digit then display error and don't type anything
+	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+	        //display error message
+	        $("#errmsg").html("Numbers Only").show().fadeOut("slow");
+	               return false;
+	    }
+	   });
+	  $(function() {
+			var table = $("#subProjectDocumentList").dataTable();
+		})
+});
+</script>
+</head>
+
+<body ng-app="sampleApp">
+<br><br>
+	<table id="subProjectDocumentList" class="gridView">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Alias</th>
+							<th>Agreement No</th>
+							<th>CER No</th>
+							<th>Amount</th>
+							<th>Contractor Name</th>
+						</tr>
+					</thead>
+					<tbody>
+					<tr>
+					<td>Life Insurance</td>
+					<td>LIC</td>
+					<td>AGN1213</td>
+					<td>CER1234</td>
+					<td>1000</td>
+					<td>psk contractor</td>
+					</tr>
+					</tbody>
+					</table>
+					
+					
+</body>
+</html>
+
+
