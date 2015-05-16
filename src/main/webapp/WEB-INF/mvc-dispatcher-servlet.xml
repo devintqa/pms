@@ -11,15 +11,7 @@
 
 	<context:component-scan base-package="com.psk.pms.controller" />
 
-	<bean class="com.psk.pms.validator.EmployeeValidator" />
-	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
-	<bean class="com.psk.pms.validator.SignUpValidator" />
-	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
-	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
-	<bean class="com.psk.pms.validator.EditDetailValidator" />
-	<bean class="com.psk.pms.validator.SubProjectDetailValidator" />
-	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
-
+	
 	<!-- Register the Employee.properties -->
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">

@@ -25,6 +25,15 @@
 		<property name="projectDAO" ref="projectDAO" />
 	</bean>
 	
+	<bean class="com.psk.pms.validator.EmployeeValidator" />
+	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.SignUpValidator" />
+	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
+	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
+	<bean class="com.psk.pms.validator.EditDetailValidator" />
+	<bean class="com.psk.pms.validator.SubProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
+	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/pms" />

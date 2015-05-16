@@ -9,7 +9,7 @@ import com.psk.pms.model.Employee;
 public class EmployeeValidator implements Validator{
  
 	@Override
-	public boolean supports(Class<?> clazz) {
+	public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {
 		return Employee.class.isAssignableFrom(clazz);
 	}
  

@@ -179,7 +179,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projDescDetail.getProjDescAmount()
 			});
 		} else {
-			System.out.println("update proj desc: "+projDescDetail.getIsUpdate());
 			jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
@@ -355,7 +354,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription) {
 		String sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and AliasDescription = ?";
-		System.out.println(sql);
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
 				new Object[] { projectId, subProjId, aliasDescription });
@@ -391,7 +389,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM projectdesc as d "
 				+ "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId "
 				+ "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = "+projDescId;
-		System.out.println(sql);
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 		ProjDescDetail projDescDetail = null;
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);

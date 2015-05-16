@@ -18,9 +18,8 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script type="text/javascript">
-$(window).load(function () {
-	  getAliasSubProjects();
-});
+	$(window).load(function() {
+	});
 	function getAliasSubProjects() {
 		$.ajax({
 			type : "GET",
@@ -45,6 +44,7 @@ $(window).load(function () {
 		});
 	}
 </script>
+
 </head>
 
 
@@ -53,11 +53,12 @@ $(window).load(function () {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div>
-	<div>
-		<h2 style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
-	</div>
 		<div>
-			<form:form method="POST" commandName="projDescForm"
+			<h2
+				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
+		</div>
+		<div>
+			<form:form id="projDescForm" method="POST" commandName="projDescForm"
 				action="createProjDesc.do">
 				<!--<form:errors path="*" cssClass="errorblock" element="div" />
 				-->
@@ -68,26 +69,22 @@ $(window).load(function () {
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="aliasProjectName" cssClass="inputText"
-										id="projId" items="${aliasProjectList}"
-										onchange="getAliasSubProjects()" >
-										<c:if test="${projDescForm.projId gt 0}">
-										<option value="${projDescForm.projId}">${projDescForm.aliasProjectName}</option>
-										</c:if>
-										</form:select>
-										</td>
+								<td><form:select path="aliasProjectName"
+										cssClass="inputText" id="projId" items="${aliasProjectList}"
+										onchange="getAliasSubProjects()">
+									</form:select></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Sub Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasSubProjectName"
-										id="aliasSubProjectName" cssClass="inputText" >
-										<c:if test="${projDescForm.subProjId gt 0}">
-										<option value="${projDescForm.subProjId}">${projDescForm.aliasSubProjectName}</option>
+										id="aliasSubProjectName" cssClass="inputText">
+										<c:if test="${projDescForm.subProjId gt '0'}">
+											<option value="0">--Please Select--</option>
+											<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
 										</c:if>
-										</form:select>
-										</td>
+									</form:select></td>
 								<td><form:errors path="aliasSubProjectName"
 										cssClass="error" /></td>
 							</tr>
@@ -101,7 +98,7 @@ $(window).load(function () {
 							<tr>
 								<td>Quantity in Figures<span id="colon">:</span>
 								</td>
-								<td><form:input path="quantityInFig"
+								<td><form:input id="quantityInFig" path="quantityInFig"
 										placeholder="Enter Quantity in Figures" cssClass="inputText" /></td>
 								<td><form:errors path="quantityInFig" cssClass="error" /></td>
 							</tr>
@@ -109,7 +106,9 @@ $(window).load(function () {
 								<td>Quantity in Words<span id="colon">:</span>
 								</td>
 								<td><form:input path="quantityInWords"
-										placeholder="Enter Quantity in Words" cssClass="inputText" /></td>
+										placeholder="Enter Quantity in Words"
+										data-validation="length numeric" data-validation-length="min4"
+										cssClass="inputText" /></td>
 								<td><form:errors path="quantityInWords" cssClass="error" /></td>
 							</tr>
 							<tr>
