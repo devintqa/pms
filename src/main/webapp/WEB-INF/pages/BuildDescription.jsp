@@ -18,20 +18,19 @@
 <link rel="stylesheet"
 	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 <script type="text/javascript">
-	$(window).load(function() {
-	});
 	function getAliasSubProjects() {
+		 var aliasProjectName  = $('#projId').val();
 		$.ajax({
 			type : "GET",
 			url : "getSubAliasProject.do",
 			cache : false,
-			data : 'aliasProjectName=' + $('#projId').val(),
+			data: "aliasProjectName="+aliasProjectName,
 			success : function(response) {
 				var options = '';
 				if (response != null) {
 					var obj = jQuery.parseJSON(response);
 					var options = '';
-					options = '<option value=0>--Please Select--</option>';
+					//options = '<option value=0>--Please Select--</option>';
 					for ( var key in obj) {
 						var attrName = key;
 						var attrValue = obj[key];
@@ -79,9 +78,8 @@
 								<td>Sub Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasSubProjectName"
-										id="aliasSubProjectName" cssClass="inputText">
+										id="aliasSubProjectName" cssClass="inputText"  items="${subAliasProjectList}">
 										<c:if test="${projDescForm.subProjId gt '0'}">
-											<option value="0">--Please Select--</option>
 											<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
 										</c:if>
 									</form:select></td>

@@ -124,6 +124,9 @@ public class ProjectController {
 			projDescDetail.setIsUpdate("Y");
 			Map<String, String> aliasProjectList = new HashMap<String, String>();
 			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
+			Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getProjId().toString());
+			subAliasProjectList.put("0", "--Please Select--");
+			model.addAttribute("subAliasProjectList", subAliasProjectList);
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			model.addAttribute("projDescForm", projDescDetail);
 		}else{
@@ -222,6 +225,9 @@ public class ProjectController {
 			employee.setEmployeeId(projDescDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
 			if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
+				Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getAliasProjectName());
+				subAliasProjectList.put("0", "--Please Select--");
+				model.addAttribute("subAliasProjectList", subAliasProjectList);
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 			} else{
 				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
@@ -245,7 +251,9 @@ public class ProjectController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("Sub Proj Id" + request.getParameter("subProjId"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+		subAliasProjectList.put("0", "--Please Select--");
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
 		return subAliasProjectJson;
