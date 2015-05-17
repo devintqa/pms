@@ -121,7 +121,6 @@ public class ProjectController {
 		if(null!=descDetail){
 			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail);
 			projDescDetail.setEmployeeId(employeeId);
-			projDescDetail.setIsUpdate("Y");
 			Map<String, String> aliasProjectList = new HashMap<String, String>();
 			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 			Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getProjId().toString());

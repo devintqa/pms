@@ -143,6 +143,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public ProjDescDetail getProjectDescDetail(String projDescId) {
 		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId);
+		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
 	
