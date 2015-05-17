@@ -211,6 +211,7 @@ public class ProjectController {
 			BindingResult result, Model model, SessionStatus status) {	
 		boolean isProjectSaveSuccessful = false;
 		Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getAliasProjectName());
 		projDescDetailValidator.validate(projDescDetail, result);
 		System.out.println(result.hasErrors());
 		if(!result.hasErrors()){
@@ -218,6 +219,8 @@ public class ProjectController {
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
+			subAliasProjectList.put("0", "--Please Select--");
+			model.addAttribute("subAliasProjectList", subAliasProjectList);
 			return "BuildDescription";
 		} else {
 			status.setComplete();
@@ -225,9 +228,6 @@ public class ProjectController {
 			employee.setEmployeeId(projDescDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
 			if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
-				Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getAliasProjectName());
-				subAliasProjectList.put("0", "--Please Select--");
-				model.addAttribute("subAliasProjectList", subAliasProjectList);
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 			} else{
 				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
@@ -239,6 +239,8 @@ public class ProjectController {
 				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
 			}
 			model.addAttribute("aliasProjectList", aliasProjectList);
+			subAliasProjectList.put("0", "--Please Select--");
+			model.addAttribute("subAliasProjectList", subAliasProjectList);
 			return "BuildDescription";
 		}
 	}
