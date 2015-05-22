@@ -47,24 +47,36 @@ public class ProjectController {
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
 	public String buildProject(@PathVariable String employeeId, 
+			@RequestParam(value="team", required=true) String team, 
+			Model model) {		
+
+		model.addAttribute("projectForm", new ProjectDetail());
+
+		Employee employee = new Employee();
+		employee.setEmployeeId(employeeId);
+		employee.setEmployeeTeam(team);
+		model.addAttribute("employee", employee);
+
+		return "BuildProject";
+	}
+	
+	@RequestMapping(value = "/emp/myview/updateProject/{employeeId}", method = RequestMethod.GET)
+	public String updateProject(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team,  
 			@RequestParam(value="action", required=false) String action, 
 			@RequestParam(value="project", required=false) String project, 
 			Model model) {		
 
-		if(null!=project){
-			ProjectDetail projectDetail = new ProjectDetail();
-			projectDetail = projectService.getProjectDocument(project);
-			projectDetail.setIsUpdate("Y");
-			projectDetail.setEmployeeId(employeeId);
-			model.addAttribute("projectForm", projectDetail);
-			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
-			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());			
-
-		}else{
-			model.addAttribute("projectForm", new ProjectDetail());
-		}
+		ProjectDetail projectDetail = new ProjectDetail();
+		projectDetail = projectService.getProjectDocument(project);
+		projectDetail.setIsUpdate("Y");
+		projectDetail.setEmployeeId(employeeId);
+		model.addAttribute("projectForm", projectDetail);
+		/*List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail
+				.getProjId());
+		model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+		model.addAttribute("subProjectDocumentSize",
+				subProjectDocumentList.size());*/
 
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
@@ -158,17 +170,33 @@ public class ProjectController {
 			Employee employee = new Employee();
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
-			if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
-				model.addAttribute("projectCreationMessage", "Project Creation Successful.");
-				return "BuildProject";
-			} else{
-				isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
-				model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
-				List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
-				model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-				model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());			
-				return "BuildProject";
-			}			
+			model.addAttribute("projectCreationMessage", "Project Creation Successful.");
+			return "BuildProject";			
+		}
+	}
+	
+	@RequestMapping(value = "/emp/myview/updateProject/createProject.do", method = RequestMethod.POST)
+	public String updateProjectAction(
+			@ModelAttribute("projectForm") ProjectDetail projectDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		boolean isProjectSaveSuccessful = false;
+		projectDetailValidator.validate(projectDetail, result);
+		if(!result.hasErrors()){
+			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
+		}
+		if(result.hasErrors() || !isProjectSaveSuccessful) {
+			return "BuildProject";
+		} else {
+			status.setComplete();
+			Employee employee = new Employee();
+			employee.setEmployeeId(projectDetail.getEmployeeId());
+			model.addAttribute("employee", employee);	
+			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
+			model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
+			/*List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
+			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());*/			
+			return "BuildProject";		
 		}
 	}
 

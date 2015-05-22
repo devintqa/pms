@@ -15,8 +15,12 @@
 				<li><a id="emphome"
 					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
-				<li><a id="project"
-					href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Build Project</a></li>
+				<li><a id="createProject"
+					href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create Project</a>
+				</li>
+				<li><a id="updateProject"
+					href="/pms/emp/myview/${employeeObj.employeeId}">Update Project</a>
+				</li>
 				<li><a id="subProject"
 					href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Build Sub Project</a></li>
 				<li><a id="description"
