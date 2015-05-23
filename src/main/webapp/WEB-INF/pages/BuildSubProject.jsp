@@ -207,7 +207,7 @@ $(document).ready(function () {
 				<br>
 
 			</form:form>
-		</div>
+		</div><!--
 
 		<c:if test="${projDescDocListSize gt 0}">
 			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project
@@ -243,7 +243,7 @@ $(document).ready(function () {
 			<br>
 		</c:if>
 
-	</div>
+	--></div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>

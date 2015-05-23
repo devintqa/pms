@@ -19,10 +19,12 @@
 					href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create Project</a>
 				</li>
 				<li><a id="updateProject"
-					href="/pms/emp/myview/${employeeObj.employeeId}">Update Project</a>
+					href="/pms/emp/myview/${employeeObj.employeeId}?action=editProject">Update Project</a>
 				</li>
-				<li><a id="subProject"
-					href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Build Sub Project</a></li>
+				<li><a id="createSubProject"
+					href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create Sub Project</a></li>
+				<li><a id="updateSubProject"
+					href="/pms/emp/myview/${employeeObj.employeeId}?action=editSubProject">Update Sub Project</a></li>
 				<li><a id="description"
 					href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Build Description</a></li>
 				<li><a id="profile"

@@ -34,9 +34,6 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
-	  $(function() {
-			var table = $("#subProjectDocumentList").dataTable();
-		})
 });
 </script>
 </head>
@@ -220,41 +217,7 @@ $(document).ready(function () {
 				<br>
 			</form:form>
 
-			<!--<c:if test="${subProjectDocumentSize gt 0}">
-				<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Sub
-					Project Details</h1>
-				<table id="subProjectDocumentList" class="gridView">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Alias</th>
-							<th>Agreement No</th>
-							<th>CER No</th>
-							<th>Amount</th>
-							<th>Contractor Name</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:if test="${not empty subProjectDocumentList}">
-							<c:forEach var="subProjDoc" items="${subProjectDocumentList}">
-								<tr>
-									<td>${subProjDoc.subProjectName}</td>
-									<td><a
-										href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=edit"
-										class="userAction">${subProjDoc.aliasSubProjName}</a></td>
-									<td>${subProjDoc.subAgreementNo}</td>
-									<td>${subProjDoc.subCerNo}</td>
-									<td>${subProjDoc.subAmount}</td>
-									<td>${subProjDoc.subContractorName}</td>
-								</tr>
-							</c:forEach>
-						</c:if>
-					</tbody>
-				</table>
-				<br>
-				<br>
-			</c:if>
-		--></div>
+		</div>
 
 	</div>
 	<footer>

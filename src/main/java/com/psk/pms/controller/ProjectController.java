@@ -1,5 +1,7 @@
 package com.psk.pms.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
 
@@ -46,24 +49,28 @@ public class ProjectController {
 			@RequestParam(value="action", required=false) String action, 
 			@RequestParam(value="project", required=false) String project, 
 			Model model) {		
-
-		ProjectDetail projectDetail = new ProjectDetail();
-		projectDetail = projectService.getProjectDocument(project);
-		projectDetail.setIsUpdate("Y");
-		projectDetail.setEmployeeId(employeeId);
-		model.addAttribute("projectForm", projectDetail);
-		/*List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail
-				.getProjId());
-		model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-		model.addAttribute("subProjectDocumentSize",
-				subProjectDocumentList.size());*/
-
+		
+		System.out.println("Into Project: " + action);
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-
-		return "BuildProject";
+		
+		if("editSubProject".equalsIgnoreCase(action)){
+			ProjectDetail projectDetail = new ProjectDetail();
+			projectDetail = projectService.getProjectDocument(project);
+			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
+			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
+			return "UpdateSubProject";
+		}else {
+			ProjectDetail projectDetail = new ProjectDetail();
+			projectDetail = projectService.getProjectDocument(project);
+			projectDetail.setIsUpdate("Y");
+			projectDetail.setEmployeeId(employeeId);
+			model.addAttribute("projectForm", projectDetail);
+		}
+			return "BuildProject";
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
@@ -104,12 +111,14 @@ public class ProjectController {
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);	
 			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
-			model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");
-			/*List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
-			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());*/			
+			model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");			
 			return "BuildProject";		
 		}
+	}
+	
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
+		return subProjectDocumentList;
 	}
 
 }

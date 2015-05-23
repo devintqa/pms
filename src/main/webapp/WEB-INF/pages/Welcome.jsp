@@ -161,7 +161,7 @@
 						<c:forEach var="projDoc" items="${projectDocumentList}">
 							<tr>
 								<td><a
-									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=edit"
+									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=${action}"
 									class="userAction">${projDoc.projectName}</a></td>
 								<td>${projDoc.aliasName}</td>
 								<td>${projDoc.agreementNo}</td>

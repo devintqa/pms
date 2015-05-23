@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -64,7 +65,7 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "/emp/myview/{empId}", method = RequestMethod.GET)
-	public String getHomePage(@PathVariable String empId, Model model, Principal principal) {
+	public String getHomePage(@PathVariable String empId, @RequestParam(value="action", required=false) String action, Model model, Principal principal) {
 		Employee employee = employeeService.getEmployeeDetails(principal.getName());
 		model.addAttribute("employeeObj", employee);
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
@@ -73,11 +74,11 @@ public class EmployeeController {
 				model.addAttribute("newSignupRequestList", newSignupRequestList);
 			}
 		}
-
 		if("technical".equalsIgnoreCase(employee.getEmployeeTeam())){
 			List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
 			if(!projectDocumentList.isEmpty()){
 				model.addAttribute("projectDocumentList", projectDocumentList);
+				model.addAttribute("action", action);
 			}
 		}
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
