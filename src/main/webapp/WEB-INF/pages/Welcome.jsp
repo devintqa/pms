@@ -163,7 +163,7 @@
 								<td><a
 									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=edit"
 									class="userAction">${projDoc.projectName}</a></td>
-								<td>${projDoc.aliasName}</a></td>
+								<td>${projDoc.aliasName}</td>
 								<td>${projDoc.agreementNo}</td>
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>
