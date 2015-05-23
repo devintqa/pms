@@ -7,7 +7,7 @@
 <head>
 <title>PMS :: Project Home</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<script src="<c:url value="/resources/js/script.js" />"></script>
+
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
@@ -18,9 +18,55 @@
 </script>
 
 <script>
-	$(function() {
-		var table = $("#projectDocumentList").dataTable();
-	})
+$(function() {
+    var table = $("#projectDocumentList").dataTable( {"pageLength": 10});
+
+     $("#columnNames").on('change', 'input:checkbox', function(e) {
+        var columnName = $(this).attr('name');			  
+        
+		  var isColumnStatusChecked = $( this ).is( ":checked" ) 
+		  if(!isColumnStatusChecked){
+				$(this).attr('value', 'hidden');
+		  } else{
+				$(this).attr('value', '');
+		  }
+        $("table[id*=projectDocumentList] th").each(function(index, item) {			  
+            if (columnName == item.innerHTML) {
+                $('table[id*=projectDocumentList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+            }
+        })
+    });
+
+
+    $("#projectDocumentList_paginate").on('click', function(e) {
+        $("#columnNames").find('input:checkbox').each(function(index, item) {
+            var columnStatus = $(this).attr('value');
+            var columnName = $(this).attr('name');				  
+			  
+            if (columnStatus == 'hidden') {						
+                $("table[id*=projectDocumentList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#projectDocumentList tr').find("td:eq(" + index + ")").css('display');
+                        if (displayType != 'none') {
+                            $('table[id*=projectDocumentList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+            }else{					
+				 $("table[id*=projectDocumentList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#projectDocumentList tr').find("td:eq(" + index + ")").css('display');							  
+                        if (displayType == 'none') {
+                            $('table[id*=projectDocumentList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+			  }
+        });
+    });		  
+})
 </script>
 
 <script>
