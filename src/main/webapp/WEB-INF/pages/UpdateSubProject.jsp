@@ -47,7 +47,7 @@ $(function() {
 								<tr>
 									<td>${subProjDoc.subProjectName}</td>
 									<td><a
-										href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=edit"
+										href="/pms/emp/myview/updateSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=${action}"
 										class="userAction">${subProjDoc.aliasSubProjName}</a></td>
 									<td>${subProjDoc.subAgreementNo}</td>
 									<td>${subProjDoc.subCerNo}</td>

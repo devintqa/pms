@@ -56,12 +56,13 @@ public class ProjectController {
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
 		
-		if("editSubProject".equalsIgnoreCase(action)){
+		if("editSubProject".equalsIgnoreCase(action) || "editProjectDesc".equalsIgnoreCase(action)){
 			ProjectDetail projectDetail = new ProjectDetail();
 			projectDetail = projectService.getProjectDocument(project);
 			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
 			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
 			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
+			model.addAttribute("action", action);
 			return "UpdateSubProject";
 		}else {
 			ProjectDetail projectDetail = new ProjectDetail();

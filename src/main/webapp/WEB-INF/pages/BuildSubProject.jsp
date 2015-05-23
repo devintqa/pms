@@ -33,9 +33,6 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
-	  $(function() {
-			var table = $("#projDescDocListSize").dataTable();
-		});
 });
 </script>
 </head>
@@ -207,43 +204,8 @@ $(document).ready(function () {
 				<br>
 
 			</form:form>
-		</div><!--
-
-		<c:if test="${projDescDocListSize gt 0}">
-			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project
-				Description Details</h1>
-			<table id="projDescDocListSize" class="gridView">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Alias</th>
-						<th>Work Type</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Project Description Amount</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${not empty projDescDocList}">
-						<c:forEach var="projDesc" items="${projDescDocList}">
-							<tr>
-								<td>${projDesc.description}</td>
-								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
-										 class="userAction">${projDesc.aliasDescription}</a></td>
-								<td>${projDesc.workType}</td>
-								<td>${projDesc.quantityInFig}</td>
-								<td>${projDesc.rateInFig}</td>
-								<td>${projDesc.projDescAmount}</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-				</tbody>
-			</table>
-			<br>
-			<br>
-		</c:if>
-
-	--></div>
+		</div>
+		</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
