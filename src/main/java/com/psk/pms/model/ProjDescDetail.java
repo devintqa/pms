@@ -1,5 +1,7 @@
 package com.psk.pms.model;
 
+import java.util.Date;
+
 public class ProjDescDetail {
 	
 	private String aliasProjectName;
@@ -17,6 +19,8 @@ public class ProjDescDetail {
 	private Integer subProjId;
 	private Integer projDescId;
 	private String isUpdate;
+    private String lastUpdatedBy ;
+    private Date lastUpdatedAt;
 	
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -108,6 +112,21 @@ public class ProjDescDetail {
 	public void setProjDescAmount(String projDescAmount) {
 		this.projDescAmount = projDescAmount;
 	}
-	
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public Date getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
 }
 

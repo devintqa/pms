@@ -34,6 +34,9 @@ public class ProjectDetail {
 	private String employeeId;
 	private String isUpdate;
 	private String projectStatus;
+    private String lastUpdatedBy ;
+    private Date lastUpdatedAt;
+    private String addSecurityDeposit;
 	
 
 	public String getProjectStatus() {
@@ -216,5 +219,28 @@ public class ProjectDetail {
 	public void setEmdEndSqlDate(Date emdEndSqlDate) {
 		this.emdEndSqlDate = emdEndSqlDate;
 	}
-	
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public Date getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public String getAddSecurityDeposit() {
+        return addSecurityDeposit;
+    }
+
+    public void setAddSecurityDeposit(String addSecurityDeposit) {
+        this.addSecurityDeposit = addSecurityDeposit;
+    }
 }

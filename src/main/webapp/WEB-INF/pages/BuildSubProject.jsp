@@ -146,7 +146,14 @@ $(document).ready(function () {
 										placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="subExPercentage" cssClass="error" /></td>
 							</tr>
-							<tr>
+                            <tr>
+                                <td>Additional Security Deposit<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="subAddSecurityDeposit"
+                                                placeholder="Enter aditional security deposit" cssClass="inputText" /></td>
+                                <td><form:errors path="subAddSecurityDeposit" cssClass="error" /></td>
+                            </tr>
+                            <tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>
 								<td><form:input path="subTenderDate"

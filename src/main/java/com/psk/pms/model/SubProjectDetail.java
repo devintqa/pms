@@ -30,7 +30,10 @@ public class SubProjectDetail {
 	private int subAgreementPeriod;
 	private String employeeId;
 	private String isUpdate;
-	
+    private String lastUpdatedBy ;
+    private Date lastUpdatedAt;
+    private String subAddSecurityDeposit;
+
 	public String getSubProjectName() {
 		return subProjectName;
 	}
@@ -187,6 +190,29 @@ public class SubProjectDetail {
 	public void setAliasProjName(String aliasProjName) {
 		this.aliasProjName = aliasProjName;
 	}
-	
+
+    public Date getLastUpdatedAt() {
+        return lastUpdatedAt;
+    }
+
+    public void setLastUpdatedAt(Date lastUpdatedAt) {
+        this.lastUpdatedAt = lastUpdatedAt;
+    }
+
+    public String getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    public void setLastUpdatedBy(String lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public String getSubAddSecurityDeposit() {
+        return subAddSecurityDeposit;
+    }
+
+    public void setSubAddSecurityDeposit(String subAddSecurityDeposit) {
+        this.subAddSecurityDeposit = subAddSecurityDeposit;
+    }
 }
 

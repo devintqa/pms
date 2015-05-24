@@ -2,10 +2,7 @@ package com.psk.pms.service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.ProjDescDetail;
@@ -24,11 +21,24 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setCompletionSqlDate(getSQLDate(projectDetail.getCompletionDate(), formatter));
 		projectDetail.setEmdStartSqlDate(getSQLDate(projectDetail.getEmdStartDate(), formatter));
 		projectDetail.setEmdEndSqlDate(getSQLDate(projectDetail.getEmdEndDate(), formatter));
+        projectDetail.setLastUpdatedBy(projectDetail.getEmployeeId());
+        projectDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
-	
-	public boolean createEditProjDesc(ProjDescDetail projDescDetail){
+
+    private Date getCurrentDateTime() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.getTimeInMillis();
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = simpleDateFormat.format(date);
+        return getSQLDate(formattedDate,simpleDateFormat);
+    }
+
+    public boolean createEditProjDesc(ProjDescDetail projDescDetail){
+        projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
+        projDescDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
 		return isInsertSuccessful;
 	}
@@ -39,6 +49,8 @@ public class ProjectServiceImpl implements ProjectService {
 		subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
 		subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
 		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
+        subProjectDetail.setLastUpdatedBy(subProjectDetail.getEmployeeId());
+        subProjectDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;
 	}
@@ -78,7 +90,9 @@ public class ProjectServiceImpl implements ProjectService {
 	private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter){
 		Date date = null;
 		try {
-			date = (Date) formatter.parse(dateToBeFormatted);
+            if(null != dateToBeFormatted) {
+                date = (Date) formatter.parse(dateToBeFormatted);
+            }
 		} catch (ParseException e) {
 			System.out.println("Error in parsing the date");
 		}

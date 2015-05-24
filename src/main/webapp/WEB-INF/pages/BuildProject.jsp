@@ -148,7 +148,15 @@ $(document).ready(function () {
 										placeholder="Enter EMD Amount" cssClass="inputText" /></td>
 								<td><form:errors path="emdAmount" cssClass="error" /></td>
 							</tr>
-							<tr>
+                            <tr>
+                                <td>Additional Security Deposit<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="addSecurityDeposit"
+                                                placeholder="Enter security deposit amount" cssClass="inputText" /></td>
+                                <td><form:errors path="addSecurityDeposit" cssClass="error" /></td>
+                            </tr>
+
+                            <tr>
 								<td>EMD Start Date<span id="colon">:</span>
 								</td>
 								<td><form:input path="emdStartDate"

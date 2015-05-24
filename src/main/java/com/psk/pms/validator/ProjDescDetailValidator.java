@@ -47,8 +47,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "rateInWords",
 				"required.rateInWords", "Enter Rate in Words.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projDescAmount",
-				"required.projDescAmount", "Enter Project Amount In Numbers.");	
-		
+				"required.projDescAmount", "Enter Project Amount In Numbers.");
+
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		
 		if ("0".equalsIgnoreCase(projectDescDetail.getAliasProjectName())) {  
@@ -109,7 +109,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		}
 		if(projectDescDetail.getRateInWords().length() > 50){
             errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
-        }		
+        }
 		
 	}
 	
