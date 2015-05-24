@@ -58,7 +58,9 @@ public class ProjectDescriptionController {
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			model.addAttribute("projDescForm", projDescDetail);
 		}else{
-			model.addAttribute("projDescForm", new ProjDescDetail());
+			ProjDescDetail projDescDetail = new ProjDescDetail();
+			projDescDetail.setEmployeeId(employeeId);
+			model.addAttribute("projDescForm", projDescDetail);
 			Map<String, String> aliasProjectList = populateAliasProjectList();
 
 			if(aliasProjectList.size() == 0){
