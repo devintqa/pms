@@ -2,6 +2,7 @@ package com.psk.pms.controller;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,12 +28,14 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
+	
+	private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
 	public String buildProject(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
 			Model model) {		
-
+		LOGGER.info("Into Build Project");
 		model.addAttribute("projectForm", new ProjectDetail());
 
 		Employee employee = new Employee();

@@ -1,5 +1,6 @@
 package com.psk.pms.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +23,8 @@ public class EditDetailsController {
 	@Autowired
 	EmployeeService employeeService;
 	
+	private static final Logger LOGGER = Logger.getLogger(EditDetailsController.class);
+	
 	@RequestMapping(value = "/emp/myview/details/edit/{empId}", method = RequestMethod.GET)
 	public String editEmployeeDetails(@PathVariable String empId, Model model){
 		Employee employee = employeeService.getEmployeeDetails(empId);
@@ -41,7 +44,7 @@ public class EditDetailsController {
 		if(result.hasErrors() || !isUpdateSuccessful) {
 			return "EditDetails";
 		}
-		System.out.println("isUpdateSuccessful : " + isUpdateSuccessful);
+		LOGGER.info("isUpdateSuccessful : " + isUpdateSuccessful);
 		status.setComplete();
 		if(isUpdateSuccessful){
 		model.addAttribute("employee", employee);
