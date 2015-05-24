@@ -36,7 +36,9 @@ public class ProjectController {
 			@RequestParam(value="team", required=true) String team, 
 			Model model) {		
 		LOGGER.info("Into Build Project");
-		model.addAttribute("projectForm", new ProjectDetail());
+		ProjectDetail projDetail = new ProjectDetail();
+		projDetail.setEmployeeId(employeeId);
+		model.addAttribute("projectForm", projDetail);
 
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
