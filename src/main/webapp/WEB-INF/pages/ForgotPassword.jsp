@@ -49,6 +49,10 @@
 							<td><input type="submit" /></td>
 							<td></td>
 						</tr>
+						<tr>
+							<td colspan="3" style="text-align: center">Go To Home Page! <a href="/pms/emp/login">Home Page</a>
+							</td>
+						</tr>
 					</table>
 				</center>
 			</form:form>
