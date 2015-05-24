@@ -37,8 +37,9 @@ public class SubProjectController {
 			@RequestParam(value="project", required=false) String project,
 			@RequestParam(value="subproject", required=false) String subProject, 
 			Model model) {
-		
-			model.addAttribute("subProjectForm", new SubProjectDetail());
+			SubProjectDetail subProjectDetail = new SubProjectDetail();
+			subProjectDetail.setEmployeeId(employeeId);
+			model.addAttribute("subProjectForm", subProjectDetail);
 			Map<String, String> aliasProjectList = populateAliasProjectList();
 			System.out.println(aliasProjectList);
 			if(aliasProjectList.size() == 0){

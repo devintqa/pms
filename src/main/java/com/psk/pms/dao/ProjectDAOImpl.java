@@ -121,7 +121,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String updateSql = "UPDATE subproject set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
 				"ExcessInPercentage = ?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+ 
-				"AgreementPeriod = ? LastUpdatedBy = ?  LastUpdatedAt = ? SubAddSecurityDeposit = ? WHERE SubProjId = ?";
+				"AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? WHERE SubProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){

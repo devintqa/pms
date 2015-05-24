@@ -73,6 +73,9 @@ CREATE TABLE `project` (
   `EmdStartDate` datetime NOT NULL,
   `EmdEndDate` datetime NOT NULL,
   `EmdAmount` numeric(15,2) NOT NULL,
+  `AddSecurityDeposit` decimal(15,2) not null,
+  `LastUpdatedBy` varchar(30) not null,
+  `LastUpdatedAt` datetime not null,
   `AgreementDate` datetime NULL,
   `CommencementDate` datetime NULL,
   `CompletedDate` datetime NULL,
@@ -109,6 +112,8 @@ CREATE TABLE `projectdesc` (
   `RateInFig` numeric(15,2) NOT NULL,
   `RateInWords` varchar(50) NOT NULL,
   `Amount` numeric(15,2) NOT NULL,
+  `LastUpdatedBy` varchar(30) not null,
+  `LastUpdatedAt` datetime not null,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`),
   KEY `AliasSubProjName` (`SubProjId`)
@@ -145,11 +150,14 @@ CREATE TABLE `subproject` (
   `ContractorValue` numeric(15,2) NOT NULL,
   `ExcessInAmount` numeric(15,2) NOT NULL,
   `ExcessInPercentage` numeric(15,2) NOT NULL,
+  `SubAddSecurityDeposit` decimal(15,2) not null,
   `TenderDate` datetime NOT NULL,
   `AgreementDate` datetime NULL,
   `CommencementDate` datetime NULL,
   `CompletedDate` datetime NULL,
   `AgreementPeriod` int(10) NULL,
+  `LastUpdatedBy` varchar(30) not null,
+  `LastUpdatedAt` datetime not null,
   `ProjId` int(10) NOT NULL,
   PRIMARY KEY (`SubProjId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
