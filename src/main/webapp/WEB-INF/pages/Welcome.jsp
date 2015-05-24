@@ -7,20 +7,16 @@
 <head>
 <title>PMS :: Project Home</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-
 <script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
 <link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
-<script>
-	$(function() {
-		var table = $("#newSignUpRequests").dataTable();
-	})
-</script>
 
 <script>
 $(function() {
     var table = $("#projectDocumentList").dataTable( {"pageLength": 10});
-
+    var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
+	var tblEmdDocument = $("#emdDocumentList").dataTable();
+	
      $("#columnNames").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
         
@@ -66,13 +62,7 @@ $(function() {
 			  }
         });
     });		  
-})
-</script>
-
-<script>
-	$(function() {
-		var table = $("#emdDocumentList").dataTable();
-	})
+});
 </script>
 
 <script>

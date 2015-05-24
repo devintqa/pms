@@ -7,8 +7,6 @@
 <head>
 <title>PMS :: A Licensed Product</title>
 <link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<script src="<c:url value="/resources/js/script.js" />"></script>
-
 </head>
 
 <body>
