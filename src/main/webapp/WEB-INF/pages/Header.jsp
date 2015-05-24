@@ -26,7 +26,7 @@
 				<c:when test="${employeeObj.employeeTeam eq 'Technical'}">
 
 					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+						href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc" class="active">Home</a>
 					</li>
 					<li><a href="#">Project</a>
 						<ul>
