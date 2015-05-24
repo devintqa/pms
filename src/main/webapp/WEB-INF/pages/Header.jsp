@@ -20,7 +20,6 @@
 </script>
 
 </head>
-<body>
 	<div class="navigation">
 		<ul class="nav">
 			<c:choose>
@@ -58,6 +57,7 @@
 							<li><a id="logout"
 								href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						</ul>
+						
 				</c:when>
 
 				<c:when test="${employeeObj.employeeTeam eq 'Account'}">
@@ -119,5 +119,4 @@
 			</c:choose>
 		</ul>
 	</div>
-</body>
 </html>
