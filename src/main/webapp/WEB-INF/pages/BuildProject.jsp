@@ -210,7 +210,7 @@ $(document).ready(function () {
 							<tr></tr>
 						</table>
 					</fieldset>
-
+					<a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">Build EMD</a>
 					<form:hidden path="employeeId" />
 					<form:hidden path="projId" />
 					<form:hidden path="isUpdate" />

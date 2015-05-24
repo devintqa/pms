@@ -15,6 +15,8 @@ public class EMDDetail {
 	private String emdExtensionDate;
 	private Date emdExtensionSqlDate;
 	private String emdLedgerNumber;
+	private String employeeId;
+	private String isUpdate;
 	
 	public int getProjId() {
 		return projId;
@@ -81,6 +83,18 @@ public class EMDDetail {
 	}
 	public void setEmdLedgerNumber(String emdLedgerNumber) {
 		this.emdLedgerNumber = emdLedgerNumber;
+	}
+	public String getEmployeeId() {
+		return employeeId;
+	}
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+	public String getIsUpdate() {
+		return isUpdate;
+	}
+	public void setIsUpdate(String isUpdate) {
+		this.isUpdate = isUpdate;
 	}
 
 }
