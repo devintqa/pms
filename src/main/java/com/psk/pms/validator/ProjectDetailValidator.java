@@ -51,12 +51,12 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.exAmount", "Enter Expected Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
 				"required.exPercentage", "Enter Expected Amount in Percentage.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdAmount",
+		/*ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdAmount",
 				"required.emdAmount", "Enter EMD Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdStartDate",
 				"required.emdStartDate", "Enter EMD Start Date.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdEndDate",
-				"required.emdEndDate", "Enter EMD End Date.");
+				"required.emdEndDate", "Enter EMD End Date.");*/
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "addSecurityDeposit",
@@ -64,7 +64,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		
 		ProjectDetail projectDetail = (ProjectDetail)target;
 		
-		if (!StringUtils.isNullOrEmpty(projectDetail.getEmdAmount())) {  
+		/*if (!StringUtils.isNullOrEmpty(projectDetail.getEmdAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getEmdAmount());  
 			   if (!matcher.matches()) {  
@@ -73,7 +73,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 			   }else if(projectDetail.getEmdAmount().length() > 15){
 		            errors.rejectValue("emdAmount", "emdAmount.incorrect", "Field must not exceed 15 characters.");
 		        }
-		}
+		}*/
 		
 		if (!StringUtils.isNullOrEmpty(projectDetail.getAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  

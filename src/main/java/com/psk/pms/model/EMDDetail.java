@@ -17,7 +17,28 @@ public class EMDDetail {
 	private String emdLedgerNumber;
 	private String employeeId;
 	private String isUpdate;
+	private boolean subProjectEMD;
+	private String aliasProjectName;
+	private String aliasSubProjectName;
 	
+	public String getAliasProjectName() {
+		return aliasProjectName;
+	}
+	public void setAliasProjectName(String aliasProjectName) {
+		this.aliasProjectName = aliasProjectName;
+	}
+	public String getAliasSubProjectName() {
+		return aliasSubProjectName;
+	}
+	public void setAliasSubProjectName(String aliasSubProjectName) {
+		this.aliasSubProjectName = aliasSubProjectName;
+	}
+	public boolean isSubProjectEMD() {
+		return subProjectEMD;
+	}
+	public void setSubProjectEMD(boolean subProjectEMD) {
+		this.subProjectEMD = subProjectEMD;
+	}
 	public int getProjId() {
 		return projId;
 	}

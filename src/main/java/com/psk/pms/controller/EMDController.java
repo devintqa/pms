@@ -3,41 +3,71 @@ package com.psk.pms.controller;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.Employee;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.ProjectService;
 
 @Controller
 public class EMDController {
 	
+	@Autowired
+	ProjectService projectService;
+	
 	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
 	
 	@RequestMapping(value = "/emp/myview/buildEmd/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId,
-			@ModelAttribute("projectForm") ProjectDetail projectDetail,
-			BindingResult result, Model model, SessionStatus status) {		
+	public String buildEmd(@PathVariable String employeeId, 
+			Model model) {		
 		LOGGER.info("Into Build EMD");
-		LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
 		EMDDetail emdDetail = new EMDDetail();
 		model.addAttribute("emdForm", emdDetail);
-
+		Map<String, String> aliasProjectList = populateAliasProjectList();
+		if(aliasProjectList.size() == 0){
+			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+			return "Welcome";
+		} else{
+			model.addAttribute("aliasProjectList", aliasProjectList);
+		}
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
 
 		return "BuildEmd";
+	}
+	
+	@RequestMapping(value = "/emp/myview/buildEmd/getSubAliasProject.do", method = RequestMethod.GET)
+	@ResponseBody 
+	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+		System.out.println("Sub Proj Id" + request.getParameter("subProjId"));
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+		subAliasProjectList.put("0", "--Please Select--");
+		Gson gson = new Gson(); 
+		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
+		return subAliasProjectJson;
+	}
+
+	public Map<String, String> populateSubAliasProjectList(String project) {
+		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
+		return aliasSubProjectName;
+	}
+	
+	public Map<String, String> populateAliasProjectList() {
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		return aliasProjectName;
 	}
 	
 	@ModelAttribute("emdTypeList")

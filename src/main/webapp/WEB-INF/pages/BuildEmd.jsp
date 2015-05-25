@@ -25,6 +25,7 @@
 
 <script>
 $(document).ready(function () {
+	  $("#showSubProject").hide();
 	  //called when key is pressed in textbox
 	  $("#emdPeriod").keypress(function (e) {
 	     //if the letter is not digit then display error and don't type anything
@@ -34,6 +35,40 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
+	  
+	  $('#subProjectEMD').change(function() {
+	        if($(this).is(":checked")) {
+			var aliasProjectName  = $('#projId').val();
+			$.ajax({
+				type : "GET",
+				url : "getSubAliasProject.do",
+				cache : false,
+				data: "aliasProjectName="+aliasProjectName,
+				success : function(response) {
+					var options = '';
+					if (response != null) {
+						var obj = jQuery.parseJSON(response);
+						var options = '';
+						//options = '<option value=0>--Please Select--</option>';
+						for ( var key in obj) {
+							var attrName = key;
+							var attrValue = obj[key];
+							options = options + '<option value='+attrName+'>'
+									+ attrValue + '</option>';
+						}
+						$('#aliasSubProjectName').html(options);
+					}
+				}
+			});
+				$("#showSubProject").show();
+	        }else {
+	        	$("#showSubProject").hide();
+	        }
+		}); 
+	  $('#projId').change(function() {
+		  $("#showSubProject").hide();
+		  $('#subProjectEMD').attr('checked', false);
+	  });
 });
 </script>
 </head>
@@ -56,6 +91,31 @@ $(document).ready(function () {
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>EMD Details</legend>
 						<table>
+							<tr>
+								<td>Alias Project Name <span id="colon">:</span>
+								</td>
+								<td><form:select path="aliasProjectName"
+										cssClass="inputText" id="projId" items="${aliasProjectList}" >
+									</form:select></td>
+								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>EMD For Sub Project? :</td>
+								<td><form:checkbox path="subProjectEMD" id="subProjectEMD"/></td>
+								<td><form:errors path="subProjectEMD" cssClass="error" /></td>
+							</tr>
+							<tr id="showSubProject">
+								<td>Sub Project Name <span id="colon">:</span>
+								</td>
+								<td><form:select path="aliasSubProjectName"
+										id="aliasSubProjectName" cssClass="inputText"  items="${subAliasProjectList}">
+										<c:if test="${projDescForm.subProjId gt '0'}">
+											<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
+										</c:if>
+									</form:select></td>
+								<td><form:errors path="aliasSubProjectName"
+										cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>EMD Type <span id="colon">:</span>
 								</td>

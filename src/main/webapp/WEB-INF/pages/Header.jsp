@@ -48,6 +48,10 @@
 								href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create</a></li>
 							<li><a id="updateDescription"
 								href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc">Update</a></li>
+						</ul></li>					
+					<li><a href="#">EMD</a>
+						<ul>
+							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">Create</a></li>
 						</ul></li>
 					<li><a href="#">User</a>
 						<ul>
