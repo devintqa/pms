@@ -229,3 +229,31 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2015-05-05 21:17:37
+
+--
+-- Dumping data for table `emddetail`
+--
+
+
+DROP TABLE IF EXISTS `emddetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emddetail` (
+  `ProjId` int(10) NOT NULL,
+  `SubProjId` int(10) NOT NULL,
+  `EmdAmount` numeric(15,2) NOT NULL,
+  `EmdStartDate` datetime not null,
+  `EmdEndDate` datetime not null,
+  `EmdType` Varchar(20) NOT NULL,
+  `BGNumber` Varchar(20) NOT NULL,
+  `EmdPeriod`int(10) NOT NULL,
+  `EmdExtensionDate` datetime NOT NULL,
+  `EmdLedgerNumber` Varchar(20) NOT NULL,
+  `SubProjectEmd` Varchar(20) NOT NULL,
+  `AliasProjName` Varchar(50) NOT NULL,
+  `AliasSubProjName` Varchar(50) NOT NULL,
+  `LastUpdatedBy` varchar(30) not null,
+  `LastUpdatedAt` datetime not null,
+   PRIMARY KEY (`ProjId`,`SubProjId`)
+   );
+/*!40101 SET character_set_client = @saved_cs_client */;

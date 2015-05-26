@@ -37,4 +37,7 @@ $(function() {
 	$("#subCompletionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
+	$("#emdExtensionDate").datepicker(
+    			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+    			);
 });

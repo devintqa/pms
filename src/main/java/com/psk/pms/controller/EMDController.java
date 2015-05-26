@@ -1,32 +1,32 @@
 package com.psk.pms.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.google.gson.Gson;
+import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.service.EmdService;
+import com.psk.pms.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
-import com.google.gson.Gson;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.service.ProjectService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 public class EMDController {
 	
 	@Autowired
 	ProjectService projectService;
-	
+
+	@Autowired
+	EmdService emdService;
+
 	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
 	
 	@RequestMapping(value = "/emp/myview/buildEmd/{employeeId}", method = RequestMethod.GET)
@@ -34,6 +34,7 @@ public class EMDController {
 			Model model) {		
 		LOGGER.info("Into Build EMD");
 		EMDDetail emdDetail = new EMDDetail();
+		emdDetail.setEmployeeId(employeeId);
 		model.addAttribute("emdForm", emdDetail);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		if(aliasProjectList.size() == 0){
@@ -81,4 +82,22 @@ public class EMDController {
 		return emdType;
 	}
 
+
+	@RequestMapping(value = "/emp/myview/buildEmd/createEmd.do", method = RequestMethod.POST)
+	public String saveEmdAction(
+			@ModelAttribute("emdForm") EMDDetail emdDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		boolean isEmdSaveSuccessful = false;
+		isEmdSaveSuccessful = emdService.createEditEmd(emdDetail);
+		if(isEmdSaveSuccessful)
+		{
+			status.setComplete();
+			Employee employee = new Employee();
+			employee.setEmployeeId(emdDetail.getEmployeeId());
+			model.addAttribute("employee", employee);
+			model.addAttribute("emdCreationMessage", "Project Creation Successful.");
+		}
+			return "BuildEmd";
+		}
 }
+

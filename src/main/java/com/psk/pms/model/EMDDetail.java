@@ -3,12 +3,14 @@ package com.psk.pms.model;
 import java.util.Date;
 
 public class EMDDetail {
-	
+	private int emdId;
 	private int projId;
 	private int subProjId;
 	private String emdAmount;
 	private String emdStartDate;
+	private Date sqlEmdStartDate;
 	private String emdEndDate;
+	private Date sqlEmdEndDate;
 	private String emdType;
 	private String bgNumber;
 	private int emdPeriod;
@@ -20,6 +22,8 @@ public class EMDDetail {
 	private boolean subProjectEMD;
 	private String aliasProjectName;
 	private String aliasSubProjectName;
+	private String lastUpdatedBy ;
+	private Date lastUpdatedAt;
 	
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -118,4 +122,43 @@ public class EMDDetail {
 		this.isUpdate = isUpdate;
 	}
 
+	public String getLastUpdatedBy() {
+		return lastUpdatedBy;
+	}
+
+	public void setLastUpdatedBy(String lastUpdatedBy) {
+		this.lastUpdatedBy = lastUpdatedBy;
+	}
+
+	public Date getLastUpdatedAt() {
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(Date lastUpdatedAt) {
+		this.lastUpdatedAt = lastUpdatedAt;
+	}
+
+	public int getEmdId() {
+		return emdId;
+	}
+
+	public void setEmdId(int emdId) {
+		this.emdId = emdId;
+	}
+
+	public Date getSqlEmdStartDate() {
+		return sqlEmdStartDate;
+	}
+
+	public void setSqlEmdStartDate(Date sqlEmdStartDate) {
+		this.sqlEmdStartDate = sqlEmdStartDate;
+	}
+
+	public Date getSqlEmdEndDate() {
+		return sqlEmdEndDate;
+	}
+
+	public void setSqlEmdEndDate(Date sqlEmdEndDate) {
+		this.sqlEmdEndDate = sqlEmdEndDate;
+	}
 }

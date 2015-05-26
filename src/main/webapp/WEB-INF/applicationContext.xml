@@ -24,6 +24,14 @@
 	<bean id="projectService" class="com.psk.pms.service.ProjectServiceImpl">
 		<property name="projectDAO" ref="projectDAO" />
 	</bean>
+
+	<bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
+		<property name="emdDAO" ref="emdDAO"/>
+	</bean>
+
+	<bean id="emdDAO" class="com.psk.pms.dao.EmdDaoImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
 	
 	<bean class="com.psk.pms.validator.EmployeeValidator" />
 	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
