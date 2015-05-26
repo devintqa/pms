@@ -154,6 +154,7 @@ legend {
 	display: block;
 	padding-left: 0px;
 	padding-right: 0px;
+	text-align:center;
 }
 
 li:hover {
@@ -187,6 +188,10 @@ li:hover {
 
 .nav ul li a:hover {
 	#ffffff
+}
+
+.nav ul li{
+	text-align:left
 }
 /*===menu css ends===*/
 
