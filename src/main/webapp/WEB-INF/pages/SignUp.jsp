@@ -21,7 +21,7 @@
 	</header>
 	<div>
 		<div>
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New User SignUp</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">New User SignUp</h1>
 			<br>
 			<form:form method="POST" commandName="signupForm" action="signup.do">
 

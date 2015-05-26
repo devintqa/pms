@@ -17,26 +17,31 @@
 		<div>
 			<article id="one">
 				<section class="one">
-					<p>
+				   <div style="text-align: center;">
 					<br><br>
-					<center>
+					<br><br>		
 						<img src="<c:url value="/resources/images/PSK.jpg" />"
-							alt="PSK Logo"></center>
-					</p>
+							alt="PSK Logo">		
+							<br><br>
+							<br><br>
+							<br><br>
+							<br><br>
+							<br><br>
+					</div>
 				</section>
 
 			</article>
 			<aside>
-
+				<br> <br>
 				<c:if test="${'fail' eq param.auth}">
-					<div style="color: #E08B14">
+					<div style="color: #007399">
 						Login Failed!<br /> Reason :
 						${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
 					</div>
 				</c:if>
 				<br>
 				<h2
-					style="text-align: left; font-family: arial; color: #E08B14; font-size: 14px;">${loginMessage}</h2>
+					style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${loginMessage}</h2>
 				<!-- <h2>Employee Login Here </h2> -->
 				<br>
 				<form:form method="POST" commandName="employeeForm"

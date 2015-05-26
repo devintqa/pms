@@ -158,14 +158,14 @@ legend {
 }
 
 li:hover {
-	border: solid 1px #E08B14;
-	-moz-box-shadow: 1px 1px 5px #E08B14;
-	-webkit-box-shadow: 1px 1px 5px #E08B14;
-	box-shadow: 1px 1px 5px #E08B14;
+	border: solid 1px #ffffff;
+	-moz-box-shadow: 1px 1px 5px #ffffff;
+	-webkit-box-shadow: 1px 1px 5px #ffffff;
+	box-shadow: 1px 1px 5px #ffffff;
 }
 
 .nav li a {	
-	color: #E08B14;	
+	color: #ffffff;	
 	padding: 7px 8px;
 	text-decoration: none;
 	
