@@ -17,18 +17,17 @@
 		<div>
 			<article id="one">
 				<section class="one">
-					<p>
+				   <div style="text-align: center;">
 					<br><br>
-					<br><br>
-					<center>
+					<br><br>		
 						<img src="<c:url value="/resources/images/PSK.jpg" />"
-							alt="PSK Logo"></center>		
+							alt="PSK Logo">		
 							<br><br>
 							<br><br>
 							<br><br>
 							<br><br>
 							<br><br>
-					</p>
+					</div>
 				</section>
 
 			</article>
