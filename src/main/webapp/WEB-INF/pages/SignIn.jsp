@@ -19,15 +19,21 @@
 				<section class="one">
 					<p>
 					<br><br>
+					<br><br>
 					<center>
 						<img src="<c:url value="/resources/images/PSK.jpg" />"
-							alt="PSK Logo"></center>
+							alt="PSK Logo"></center>		
+							<br><br>
+							<br><br>
+							<br><br>
+							<br><br>
+							<br><br>
 					</p>
 				</section>
 
 			</article>
 			<aside>
-
+				<br> <br>
 				<c:if test="${'fail' eq param.auth}">
 					<div style="color: #E08B14">
 						Login Failed!<br /> Reason :
