@@ -18,8 +18,10 @@
 			<article id="one">
 				<section class="one">
 					<p>
+					<br><br>
+					<center>
 						<img src="<c:url value="/resources/images/PSK.jpg" />"
-							alt="PSK Logo">
+							alt="PSK Logo"></center>
 					</p>
 				</section>
 
