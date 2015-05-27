@@ -17,6 +17,9 @@
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="com/psk/pms/employee/properties/Employee" />
 	</bean>
+	
+	<bean id="multipartResolver"
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 
 	<bean id="viewResolver1" class="org.springframework.web.servlet.view.XmlViewResolver">
 		<property name="order" value="1" />
