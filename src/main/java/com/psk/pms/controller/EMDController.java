@@ -95,6 +95,7 @@ public class EMDController {
 			Employee employee = new Employee();
 			employee.setEmployeeId(emdDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
+			model.addAttribute("emdForm",emdDetail);
 			model.addAttribute("emdCreationMessage", "Project Creation Successful.");
 		}
 			return "BuildEmd";
