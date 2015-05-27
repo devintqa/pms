@@ -102,7 +102,7 @@ $(function() {
 				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${noProjectCreated}</h2>
 		</div>
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">New
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">New
 				Signup Requests</h1>
 			<table id="newSignUpRequests" class="gridView">
 				<thead>
@@ -152,7 +152,7 @@ $(function() {
 		</c:if>
 		
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #E08B14; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
 			<table id="emdDocumentList" class="gridView">
 				<thead>
 					<tr>
@@ -178,7 +178,7 @@ $(function() {
 		</c:if>
 
 		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">Project
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
 				Documents</h1>
 			<table id="projectDocumentList" class="gridView">
 				<thead>

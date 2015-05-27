@@ -22,7 +22,7 @@
 	</header>
 	<div>
 		<div>
-			<h1 style="text-align: center; color: #E08B14; font-size: 24px;">Reset
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Reset
 				Password</h1>
 			<br>
 			<h3 style="text-align: center; font-size: 18px;">Thank you for
