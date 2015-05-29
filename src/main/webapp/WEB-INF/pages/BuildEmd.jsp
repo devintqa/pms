@@ -69,6 +69,11 @@ $(document).ready(function () {
 		  $("#showSubProject").hide();
 		  $('#subProjectEMD').attr('checked', false);
 	  });
+
+	  if($('#subProjectEMD').is(':checked')) {
+	  		$("#showSubProject").show();
+	  };
+
 });
 </script>
 </head>

@@ -41,6 +41,7 @@
 	<bean class="com.psk.pms.validator.EditDetailValidator" />
 	<bean class="com.psk.pms.validator.SubProjectDetailValidator" />
 	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
+	<bean class="com.psk.pms.validator.EmdValidator"/>
 	
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />

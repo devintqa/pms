@@ -5,6 +5,7 @@ import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmdService;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.EmdValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class EMDController {
 
 	@Autowired
 	EmdService emdService;
+
+	@Autowired
+	EmdValidator emdValidator;
 
 	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
 	
@@ -87,18 +91,35 @@ public class EMDController {
 	public String saveEmdAction(
 			@ModelAttribute("emdForm") EMDDetail emdDetail,
 			BindingResult result, Model model, SessionStatus status) {
+		Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(emdDetail.getAliasProjectName());
 		boolean isEmdSaveSuccessful = false;
-		isEmdSaveSuccessful = emdService.createEditEmd(emdDetail);
-		if(isEmdSaveSuccessful)
-		{
+		emdValidator.validate(emdDetail, result);
+		if (!result.hasErrors()) {
+			isEmdSaveSuccessful = emdService.createEditEmd(emdDetail);
+		}
+		if (result.hasErrors() || !isEmdSaveSuccessful) {
+			model.addAttribute("aliasProjectList",aliasProjectList);
+			if(emdDetail.isSubProjectEMD())
+			{
+				model.addAttribute("subAliasProjectList",subAliasProjectList);
+			}
+			return "BuildEmd";
+		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(emdDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
-			model.addAttribute("emdForm",emdDetail);
+			model.addAttribute("emdForm", emdDetail);
 			model.addAttribute("emdCreationMessage", "Project Creation Successful.");
+			model.addAttribute("aliasProjectList",aliasProjectList);
+			if(emdDetail.isSubProjectEMD()) {
+				model.addAttribute("subAliasProjectList", subAliasProjectList);
+				model.addAttribute("showSubProject",true);
+			}
 		}
-			return "BuildEmd";
-		}
+		return "BuildEmd";
+	}
+
 }
 
