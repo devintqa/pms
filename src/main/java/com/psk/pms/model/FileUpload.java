@@ -10,7 +10,25 @@ public class FileUpload {
 	private String aliasProjectName;
 	private String aliasSubProjectName;
 	private String employeeId;
+	private String fileName;
+	private String filePath;
 	
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 	public String getEmployeeId() {
 		return employeeId;
 	}
