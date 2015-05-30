@@ -68,6 +68,7 @@ public class SubProjectController {
 			List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(subProjectDetail.getSubProjId());
 			model.addAttribute("projDescDocList", projDescDocList);
 			model.addAttribute("projDescDocListSize", projDescDocList.size());
+			model.addAttribute("subProjectAliasName", subProjectDetail.getAliasSubProjName());
 			return "UpdateProjectDesc";
 		}else {
 			SubProjectDetail subProjectDetail = projectService.getSubProjectDocument(subProject);

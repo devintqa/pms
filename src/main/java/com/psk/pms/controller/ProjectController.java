@@ -67,6 +67,7 @@ public class ProjectController {
 			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
 			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
 			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
+			model.addAttribute("projectAliasName", projectDetail.getAliasName());
 			model.addAttribute("action", action);
 			return "UpdateSubProject";
 		}else {
