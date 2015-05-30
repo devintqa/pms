@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import java.util.List;
 import java.util.Map;
 
+import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -21,7 +22,7 @@ public interface ProjectService {
 	
 	public List<ProjectDetail> getProjectDocumentList();
 	
-	public List<ProjectDetail> getEmdEndAlertList();
+	public List<EMDDetail> getEmdEndAlertList();
 	
 	public ProjectDetail getProjectDocument(String projectId);
 	

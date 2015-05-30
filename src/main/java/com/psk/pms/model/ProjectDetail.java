@@ -17,9 +17,6 @@ public class ProjectDetail {
 	private String tenderValue;
 	private String exAmount;
 	private String exPercentage;
-	private String emdAmount;
-	private String emdStartDate;
-	private String emdEndDate;
 	private String tenderDate;
 	private String agreementDate;
 	private String commencementDate;
@@ -28,8 +25,6 @@ public class ProjectDetail {
 	private Date agreementSqlDate;
 	private Date commencementSqlDate;
 	private Date completionSqlDate;
-	private Date emdStartSqlDate;
-	private Date emdEndSqlDate;
 	private int agreementPeriod;
 	private String employeeId;
 	private String isUpdate;
@@ -189,37 +184,6 @@ public class ProjectDetail {
 	public void setProjId(int projId) {
 		this.projId = projId;
 	}
-	public String getEmdAmount() {
-		return emdAmount;
-	}
-	public void setEmdAmount(String emdAmount) {
-		this.emdAmount = emdAmount;
-	}
-	public String getEmdStartDate() {
-		return emdStartDate;
-	}
-	public void setEmdStartDate(String emdStartDate) {
-		this.emdStartDate = emdStartDate;
-	}
-	public String getEmdEndDate() {
-		return emdEndDate;
-	}
-	public void setEmdEndDate(String emdEndDate) {
-		this.emdEndDate = emdEndDate;
-	}
-	public Date getEmdStartSqlDate() {
-		return emdStartSqlDate;
-	}
-	public void setEmdStartSqlDate(Date emdStartSqlDate) {
-		this.emdStartSqlDate = emdStartSqlDate;
-	}
-	public Date getEmdEndSqlDate() {
-		return emdEndSqlDate;
-	}
-	public void setEmdEndSqlDate(Date emdEndSqlDate) {
-		this.emdEndSqlDate = emdEndSqlDate;
-	}
-
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
     }

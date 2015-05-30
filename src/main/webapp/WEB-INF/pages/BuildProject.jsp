@@ -141,13 +141,6 @@ $(document).ready(function () {
 										placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="exPercentage" cssClass="error" /></td>
 							</tr>
-							<tr>
-								<td>EMD Amount<span id="colon">:</span>
-								</td>
-								<td><form:input path="emdAmount"
-										placeholder="Enter EMD Amount" cssClass="inputText" /></td>
-								<td><form:errors path="emdAmount" cssClass="error" /></td>
-							</tr>
                             <tr>
                                 <td>Additional Security Deposit<span id="colon">:</span>
                                 </td>
@@ -155,21 +148,6 @@ $(document).ready(function () {
                                                 placeholder="Enter security deposit amount" cssClass="inputText" /></td>
                                 <td><form:errors path="addSecurityDeposit" cssClass="error" /></td>
                             </tr>
-
-                            <tr>
-								<td>EMD Start Date<span id="colon">:</span>
-								</td>
-								<td><form:input path="emdStartDate"
-										placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
-								<td><form:errors path="emdStartDate" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>EMD End Date<span id="colon">:</span>
-								</td>
-								<td><form:input path="emdEndDate" placeholder="DD-MM-YYYY"
-										cssClass="inputText" /></td>
-								<td><form:errors path="emdEndDate" cssClass="error" /></td>
-							</tr>
 							<tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>

@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -25,13 +26,13 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public boolean saveProject(final ProjectDetail projectDetail){
 		String createSql = "INSERT INTO project (ProjName, AliasProjName, AgreementNum, CERNum, Amount, "
 				+ "ContractorName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
-				"ExcessInAmount, ExcessInPercentage, TenderDate, EmdStartDate, EmdEndDate, EmdAmount, "
+				"ExcessInAmount, ExcessInPercentage, TenderDate, "
 				+ "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 		String updateSql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
-				"ExcessInPercentage = ?, TenderDate = ?, EmdStartDate = ?, EmdEndDate = ?, EmdAmount = ?, AgreementDate = ?," +
+				"ExcessInPercentage = ?, TenderDate = ?, AgreementDate = ?," +
 				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=? WHERE ProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -49,9 +50,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projectDetail.getExAmount(),
 					projectDetail.getExPercentage(), 
 					projectDetail.getTenderSqlDate(), 
-					projectDetail.getEmdStartSqlDate(), 
-					projectDetail.getEmdEndSqlDate(),
-					projectDetail.getEmdAmount(), 
 					projectDetail.getAgreementSqlDate(),
 					projectDetail.getCommencementSqlDate(), 
 					projectDetail.getCompletionSqlDate(), 
@@ -73,9 +71,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projectDetail.getExAmount(),
 					projectDetail.getExPercentage(), 
 					projectDetail.getTenderSqlDate(), 
-					projectDetail.getEmdStartSqlDate(), 
-					projectDetail.getEmdEndSqlDate(),
-					projectDetail.getEmdAmount(), 
 					projectDetail.getAgreementSqlDate(),
 					projectDetail.getCommencementSqlDate(), 
 					projectDetail.getCompletionSqlDate(), 
@@ -211,6 +206,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projDocList;
 	}
+	
+	public List<EMDDetail> getEMDDatesList() {
+		jdbcTemplate = new JdbcTemplate(dataSource);             
+
+		List<EMDDetail> emdList = new ArrayList<EMDDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(emdDatesQuery);
+
+		for (Map<String, Object> row : rows) {
+			emdList.add(buildEMDDetail(row));
+		} 
+		return emdList;
+	}
 
 	public ProjectDetail getProjectDocument(String projectId) {
 		String sql = projQuery + " where ProjId ="+projectId;	
@@ -237,6 +244,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return subProjDoc;
 	}
+	
+	private EMDDetail buildEMDDetail(Map<String, Object> row){
+		EMDDetail emdDetail = new EMDDetail();
+		BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
+		emdDetail.setEmdAmount(emdAmount.toString());		
+		emdDetail.setSqlEmdStartDate((Date)row.get("EmdStartDate"));
+		emdDetail.setSqlEmdEndDate((Date)row.get("EmdEndDate"));
+		emdDetail.setEmdType((String)row.get("EmdType"));
+		emdDetail.setEmdExtensionSqlDate((Date)row.get("EmdExtensionDate"));
+		return emdDetail;
+	}
 
 	private ProjectDetail buildProjectDetail(Map<String, Object> row){
 		ProjectDetail projDoc = new ProjectDetail();
@@ -248,8 +266,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDoc.setContractorName((String) row.get("ContractorName"));
 		projDoc.setContractorAddress((String) row.get("ContractorAdd"));
 		projDoc.setTenderSqlDate((Date)row.get("TenderDate"));
-		projDoc.setEmdStartSqlDate((Date)row.get("EmdStartDate"));
-		projDoc.setEmdEndSqlDate((Date)row.get("EmdEndDate"));
 		
 		BigDecimal amount = (BigDecimal)row.get("Amount");
 		projDoc.setAmount(amount.toString());
@@ -268,9 +284,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 		
 		BigDecimal exPercentage = (BigDecimal)row.get("ExcessInPercentage");
 		projDoc.setExPercentage(exPercentage.toString());
-		
-		BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
-		projDoc.setEmdAmount(emdAmount.toString());
 		
 		projDoc.setAgreementSqlDate((Date)row.get("AgreementDate"));
 		projDoc.setCommencementSqlDate((Date)row.get("CommencementDate"));
@@ -420,7 +433,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage, "
-			+ "TenderDate, EmdStartDate, EmdEndDate, EmdAmount, AgreementDate, CommencementDate, CompletedDate, "
+			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
 			+ "AgreementPeriod,AddSecurityDeposit FROM project";
 
 	private String subProjQuery = "SELECT SubProjId, SubProjName, AliasSubProjName, AgreementNum, "
@@ -440,6 +453,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 	private String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.WorkType, d.QuantityInFig, d.QuantityInWords, "
 			+ "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
+	
+	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
 
 
 }

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -19,8 +20,6 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setAgreementSqlDate(getSQLDate(projectDetail.getAgreementDate(), formatter));
 		projectDetail.setCommencementSqlDate(getSQLDate(projectDetail.getCommencementDate(), formatter));
 		projectDetail.setCompletionSqlDate(getSQLDate(projectDetail.getCompletionDate(), formatter));
-		projectDetail.setEmdStartSqlDate(getSQLDate(projectDetail.getEmdStartDate(), formatter));
-		projectDetail.setEmdEndSqlDate(getSQLDate(projectDetail.getEmdEndDate(), formatter));
         projectDetail.setLastUpdatedBy(projectDetail.getEmployeeId());
         projectDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
@@ -113,18 +112,19 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDocumentList;
 	}
 	
-	public List<ProjectDetail> getEmdEndAlertList() {
+	public List<EMDDetail> getEmdEndAlertList() {
 		Date todayDate = new Date();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
-		List<ProjectDetail> emdDocumentList = new ArrayList<ProjectDetail>();
-		for(ProjectDetail projectDetail : projectDocumentList){
-			long diff = projectDetail.getEmdEndSqlDate().getTime() - todayDate.getTime();
+		List<EMDDetail> projectDocumentList = projectDAO.getEMDDatesList();
+		List<EMDDetail> emdDocumentList = new ArrayList<EMDDetail>();
+		for(EMDDetail emdDetail : projectDocumentList){
+			long diff = emdDetail.getSqlEmdEndDate().getTime() - todayDate.getTime();
 			long diffDays = diff / (24 * 60 * 60 * 1000);
 			if(diffDays < 14){
-				projectDetail.setEmdStartDate(getStringDate(projectDetail.getEmdStartSqlDate(), formatter));
-				projectDetail.setEmdEndDate(getStringDate(projectDetail.getEmdEndSqlDate(), formatter));
-				emdDocumentList.add(projectDetail);
+				emdDetail.setEmdStartDate(getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+				emdDetail.setEmdEndDate(getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+				emdDetail.setEmdExtensionDate(getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
+				emdDocumentList.add(emdDetail);
 			}
 		}
 		return emdDocumentList;
@@ -138,8 +138,6 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setAgreementDate(getStringDate(projectDetail.getAgreementSqlDate(), formatter));
 		projectDetail.setCommencementDate(getStringDate(projectDetail.getCommencementSqlDate(), formatter));
 		projectDetail.setCompletionDate(getStringDate(projectDetail.getCompletionSqlDate(), formatter));
-		projectDetail.setEmdStartDate(getStringDate(projectDetail.getEmdStartSqlDate(), formatter));
-		projectDetail.setEmdEndDate(getStringDate(projectDetail.getEmdEndSqlDate(), formatter));
 		return projectDetail;
 	}
 	

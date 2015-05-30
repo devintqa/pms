@@ -156,18 +156,22 @@ $(function() {
 			<table id="emdDocumentList" class="gridView">
 				<thead>
 					<tr>
-						<th>Project Alias Name</th>
+						<th>EMD Amount</th>
 						<th>EMD Start Date</th>
 						<th>EMD End Date</th>
+						<th>EMD Type</th>
+						<th>EMD Extension Date</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:if test="${not empty emdDocumentList}">
 						<c:forEach var="emdProject" items="${emdDocumentList}">
 							<tr>
-								<td>${emdProject.aliasName}</td>
+								<td>${emdProject.emdAmount}</td>
 								<td>${emdProject.emdStartDate}</td>
 								<td>${emdProject.emdEndDate}</td>
+								<td>${emdProject.emdType}</td>
+								<td>${emdProject.emdExtensionDate}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

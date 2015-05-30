@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.service.EmployeeService;
@@ -82,7 +83,7 @@ public class EmployeeController {
 			}
 		}
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
-			List<ProjectDetail> emdEndAlertList = projectService.getEmdEndAlertList();
+			List<EMDDetail> emdEndAlertList = projectService.getEmdEndAlertList();
 			if(emdEndAlertList.size() > 0){
 				model.addAttribute("emdDocumentList", emdEndAlertList);
 			}
