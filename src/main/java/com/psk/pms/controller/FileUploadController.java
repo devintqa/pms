@@ -79,6 +79,8 @@ public class FileUploadController {
         	SubProjectDetail subProjDetail = projectService.getSubProjectDocument(uploadForm.getAliasSubProjectName());
             files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
+            Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
+			map.addAttribute("subAliasProjectList", subAliasProjectList);
         }else{
             files = new File("C:\\PMS\\" + projectDetail.getAliasName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
@@ -103,7 +105,7 @@ public class FileUploadController {
             for (MultipartFile multipartFile : pmsFiles) {
                 String fileName = multipartFile.getOriginalFilename();
                 if (!"".equalsIgnoreCase(fileName)) {
-                	System.out.println("File Name: " + fileName);
+                	LOGGER.info("File Name: " + fileName);
                     multipartFile.transferTo(new File(saveDirectory + fileName));
                     fileNames.add(fileName);
                 }
