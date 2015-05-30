@@ -54,7 +54,7 @@
 	<div>
 		<div>
 			<h2
-				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${projDescCreationMessage}</h2>
+				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${projDescCreationMessage}</h2>
 		</div>
 		<div>
 			<form:form id="projDescForm" method="POST" commandName="projDescForm"

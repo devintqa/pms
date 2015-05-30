@@ -239,21 +239,19 @@ DROP TABLE IF EXISTS `emddetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `emddetail` (
+  `EmdId` int(10) NOT NULL  AUTO_INCREMENT,
   `ProjId` int(10) NOT NULL,
-  `SubProjId` int(10) NOT NULL,
+  `SubProjId` int(10) NULL,
   `EmdAmount` numeric(15,2) NOT NULL,
   `EmdStartDate` datetime not null,
   `EmdEndDate` datetime not null,
   `EmdType` Varchar(20) NOT NULL,
-  `BGNumber` Varchar(20) NOT NULL,
+  `BGNumber` Varchar(20) NULL,
   `EmdPeriod`int(10) NOT NULL,
-  `EmdExtensionDate` datetime NOT NULL,
+  `EmdExtensionDate` datetime NULL,
   `EmdLedgerNumber` Varchar(20) NOT NULL,
-  `SubProjectEmd` Varchar(20) NOT NULL,
-  `AliasProjName` Varchar(50) NOT NULL,
-  `AliasSubProjName` Varchar(50) NOT NULL,
   `LastUpdatedBy` varchar(30) not null,
   `LastUpdatedAt` datetime not null,
-   PRIMARY KEY (`ProjId`,`SubProjId`)
+   PRIMARY KEY (`EmdId`)
    );
 /*!40101 SET character_set_client = @saved_cs_client */;

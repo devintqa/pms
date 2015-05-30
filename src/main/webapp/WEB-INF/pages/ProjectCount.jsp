@@ -34,7 +34,7 @@
 		</div>
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 		<div>
-			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project Counts</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Project Counts</h1>
 			<table id="newSignUpRequests">
 				<thead>
 					<tr>

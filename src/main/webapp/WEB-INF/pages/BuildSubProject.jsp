@@ -44,7 +44,7 @@ $(document).ready(function () {
 	<div>
 		<div>
 			<h2
-				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${subProjectCreationMessage}</h2>
+				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${subProjectCreationMessage}</h2>
 		</div>
 		<div>
 			<form:form method="POST" commandName="subProjectForm"

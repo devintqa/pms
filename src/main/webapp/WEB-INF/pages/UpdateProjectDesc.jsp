@@ -28,7 +28,7 @@
 	<div>
 		
 				<c:if test="${projDescDocListSize gt 0}">
-			<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Project
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
 				Description Details</h1>
 			<table id="projDescDocListSize" class="gridView">
 				<thead>

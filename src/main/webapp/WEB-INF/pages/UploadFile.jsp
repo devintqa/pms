@@ -43,7 +43,7 @@
 	<div>
 		<div>
 			<h2
-				style="text-align: left; font-family: arial; color: #C6311D; font-size: 14px;">${fileAdditionSuccessful}</h2>
+				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${fileAdditionSuccessful}</h2>
 		</div>
 		<div>
  

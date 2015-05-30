@@ -28,7 +28,7 @@ $(function() {
 	<div>
 		
 		<c:if test="${subProjectDocumentSize gt 0}">
-				<h1 style="text-align: center; color: #C6311D; font-size: 24px;">Sub
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">Sub
 					Project Details</h1>
 				<table id="subProjectDocumentList" class="gridView">
 					<thead>

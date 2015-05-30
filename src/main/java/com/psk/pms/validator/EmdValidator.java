@@ -23,11 +23,8 @@ public class EmdValidator extends BaseValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
                 "required.aliasProjectName", "Please Select Project Name.");
-
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdType",
                 "required.emdType", "Enter Emd Type");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bgNumber",
-                "required.bgNumber", "Enter BG Number.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdStartDate",
                 "required.emdStartDate", "Select EMD Start Date.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdEndDate",
@@ -62,10 +59,10 @@ public class EmdValidator extends BaseValidator implements Validator {
             pattern = Pattern.compile(AMOUNT_PATTERN);
             matcher = pattern.matcher(emdDetail.getEmdAmount());
             if (!matcher.matches()) {
-                errors.rejectValue("amount", "amount.incorrect",
+                errors.rejectValue("emdAmount", "emdAmount.incorrect",
                         "Enter a numeric value and only a single dot is allowed");
             }else if(emdDetail.getEmdAmount().length() > 15){
-                errors.rejectValue("amount", "amount.incorrect", "Field must not exceed 15 characters.");
+                errors.rejectValue("emdAmount", "emdAmount.incorrect", "Field must not exceed 15 characters.");
             }
         }
     }
