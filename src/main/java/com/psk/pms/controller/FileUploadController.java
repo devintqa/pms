@@ -66,13 +66,23 @@ public class FileUploadController {
     @RequestMapping(value = "/emp/myview/uploadFile/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+    	return getAliasSubProjectNames(request);
+	}
+    
+    @RequestMapping(value = "/emp/myview/downloadFile/getSubAliasProject.do", method = RequestMethod.GET)
+	@ResponseBody 
+	public String getSubAliasProjectDownload(HttpServletRequest request, HttpServletResponse response) {
+    	return getAliasSubProjectNames(request);
+	}
+    
+    private String getAliasSubProjectNames(HttpServletRequest request){
     	LOGGER.info("Alias Project Name" + request.getParameter("aliasProjectName"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		subAliasProjectList.put("0", "--Please Select--");
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
 		return subAliasProjectJson;
-	}
+    }
  
     @RequestMapping(value = "/emp/myview/uploadFile/saveFiles.do", method = RequestMethod.POST)
     public String fileSave(
@@ -154,7 +164,16 @@ public class FileUploadController {
 		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName());
 		LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
 
-		String path = "C:\\PMS\\" + projectDetail.getAliasName();
+		String path = null;
+		
+		if(downloadForm.isSubProjectUpload()){
+			SubProjectDetail subProjDetail = projectService.getSubProjectDocument(downloadForm.getAliasSubProjectName());
+        	path = "C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName();
+        	 Map<String, String> subAliasProjectList = populateSubAliasProjectList(downloadForm.getAliasProjectName());
+        	map.addAttribute("subAliasProjectList", subAliasProjectList);
+        }else{
+        	path = "C:\\PMS\\" + projectDetail.getAliasName();
+        }
 
 		String fileName;
 		File folder = new File(path);
