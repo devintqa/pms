@@ -14,6 +14,10 @@ public class EmdServiceImpl implements EmdService {
 
     @Override
     public boolean createEditEmd(EMDDetail emdDetail) {
+    	if(!emdDetail.isSubProjectEMD())
+        {
+    		emdDetail.setAliasSubProjectName(null);
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         emdDetail.setSqlEmdEndDate(getSQLDate(emdDetail.getEmdEndDate() , formatter ));
         emdDetail.setSqlEmdStartDate(getSQLDate(emdDetail.getEmdStartDate(), formatter));
