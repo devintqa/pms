@@ -62,6 +62,7 @@ $(document).ready(function () {
 			});
 				$("#showSubProject").show();
 	        }else {
+	        	$("#aliasSubProjectName").prop('selectedIndex',0);
 	        	$("#showSubProject").hide();
 	        }
 		}); 
