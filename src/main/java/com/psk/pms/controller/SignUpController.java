@@ -69,6 +69,7 @@ public class SignUpController {
 		employeeTeam.put("Management", "Management");
 		employeeTeam.put("Purchase", "Purchase");
 		employeeTeam.put("Technical", "Technical");
+		employeeTeam.put("Store", "Store");
 		return employeeTeam;
 	}
 }
