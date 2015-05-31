@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
@@ -21,6 +22,7 @@ import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
 
 @Controller
+@SessionAttributes("employeeObj")
 public class ProjectController {
 
 	@Autowired
@@ -32,19 +34,15 @@ public class ProjectController {
 	private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId, 
+	public String buildProject(@ModelAttribute("employeeObj") Employee employee, @PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
 			Model model) {		
 		LOGGER.info("Into Build Project");
 		ProjectDetail projDetail = new ProjectDetail();
 		projDetail.setEmployeeId(employeeId);
 		model.addAttribute("projectForm", projDetail);
-
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
-		employee.setEmployeeTeam(team);
+		System.out.println("Into Build Project" + employee.getEmployeeTeam());
 		model.addAttribute("employee", employee);
-
 		return "BuildProject";
 	}
 	
