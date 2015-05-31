@@ -1,5 +1,24 @@
 package com.psk.pms.controller;
  
+import com.google.gson.Gson;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.FileUpload;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.FileUploadValidator;
+import org.apache.log4j.Logger;
+import org.apache.poi.util.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,30 +26,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
- 
-import org.apache.log4j.Logger;
-import org.apache.poi.util.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import com.psk.pms.model.ProjectDetail;
-
-import com.google.gson.Gson;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.FileUpload;
-import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.service.ProjectService;
  
 @Controller
 public class FileUploadController {
@@ -40,6 +35,9 @@ public class FileUploadController {
 	
 	@Autowired
     ServletContext context;
+
+	@Autowired
+	FileUploadValidator fileUploadValidator;
 
 	private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
  
@@ -86,56 +84,79 @@ public class FileUploadController {
  
     @RequestMapping(value = "/emp/myview/uploadFile/saveFiles.do", method = RequestMethod.POST)
     public String fileSave(
-            @ModelAttribute("uploadForm") FileUpload uploadForm,
-            Model map) throws IllegalStateException, IOException {
+            @ModelAttribute("uploadForm") FileUpload uploadForm
+            ,BindingResult result,Model map) throws IllegalStateException, IOException {
     	File files = null;
     	String saveDirectory = null;
     	Map<String, String> aliasProjectList = populateAliasProjectList();
-        ProjectDetail projectDetail = projectService.getProjectDocument(uploadForm.getAliasProjectName());
-        LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
-        if(uploadForm.isSubProjectUpload()){
-        	SubProjectDetail subProjDetail = projectService.getSubProjectDocument(uploadForm.getAliasSubProjectName());
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
+		fileUploadValidator.validate(uploadForm, result);
+		if(!result.hasErrors())
+		{
+			uploadfiel(uploadForm, map);
+		}else
+		{
+			if(uploadForm.getFiles().size()==0)
+			{
+				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
+			}
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			subAliasProjectList.put("0", "--Please Select--");
+			map.addAttribute("subAliasProjectList",subAliasProjectList);
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			return "UploadFile";
+		}
+
+
+        map.addAttribute("aliasProjectList", aliasProjectList);
+        map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
+        return "UploadFile";
+    }
+
+	private void uploadfiel(@ModelAttribute("uploadForm") FileUpload uploadForm, Model map) throws IOException {
+		File files;
+		String saveDirectory;ProjectDetail projectDetail = projectService.getProjectDocument(uploadForm.getAliasProjectName());
+		LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
+		if(uploadForm.isSubProjectUpload()){
+            SubProjectDetail subProjDetail = projectService.getSubProjectDocument(uploadForm.getAliasSubProjectName());
             files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
             Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
-			map.addAttribute("subAliasProjectList", subAliasProjectList);
+            map.addAttribute("subAliasProjectList", subAliasProjectList);
         }else{
             files = new File("C:\\PMS\\" + projectDetail.getAliasName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
         }
-        try{
-			if (!files.exists()) {
-				if (files.mkdirs()) {
-					LOGGER.info("Multiple directories are created!");
-				} else {
-					LOGGER.info("Failed to create multiple directories!");
-				}
-			}
-		}catch(Throwable e){
-			LOGGER.info("Something went wrong!!");
-		}
-		
-        List<MultipartFile> pmsFiles = uploadForm.getFiles();
- 
-        List<String> fileNames = new ArrayList<String>();
- 
-        if (null != pmsFiles && pmsFiles.size() > 0) {
+		try{
+            if (!files.exists()) {
+                if (files.mkdirs()) {
+                    LOGGER.info("Multiple directories are created!");
+                } else {
+                    LOGGER.info("Failed to create multiple directories!");
+                }
+            }
+        }catch(Throwable e){
+            LOGGER.info("Something went wrong!!");
+        }
+
+		List<MultipartFile> pmsFiles = uploadForm.getFiles();
+
+		List<String> fileNames = new ArrayList<String>();
+
+		if (null != pmsFiles && pmsFiles.size() > 0) {
             for (MultipartFile multipartFile : pmsFiles) {
                 String fileName = multipartFile.getOriginalFilename();
                 if (!"".equalsIgnoreCase(fileName)) {
-                	LOGGER.info("File Name: " + fileName);
+                    LOGGER.info("File Name: " + fileName);
                     multipartFile.transferTo(new File(saveDirectory + fileName));
                     fileNames.add(fileName);
                 }
             }
         }
-        map.addAttribute("aliasProjectList", aliasProjectList);
-        map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
-        return "UploadFile";
     }
-    
+
     @RequestMapping(value = "/emp/myview/downloadFile/{employeeId}", method = RequestMethod.GET)
-    public String pmsDownloadFile(@PathVariable String employeeId, 
+    public String pmsDownloadFile(@PathVariable String employeeId,
 			Model model) {
     	LOGGER.info("Into File Download");
     	FileUpload fileUpload = new FileUpload();
@@ -156,16 +177,35 @@ public class FileUploadController {
     
 	@RequestMapping(value = "/emp/myview/downloadFile/getFiles.do", method = RequestMethod.POST)
 	public String fileDownload(
-			@ModelAttribute("downloadForm") FileUpload downloadForm, Model map)
+			@ModelAttribute("downloadForm") FileUpload downloadForm,BindingResult result, Model map)
 			throws IllegalStateException, IOException {
-
 		Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String,String> subAliasProjectList = populateSubAliasProjectList(downloadForm.getAliasProjectName());
+		fileUploadValidator.validate(downloadForm, result);
+		if(!result.hasErrors())
+		{
+			downloadFile(downloadForm, map, aliasProjectList);
+			return "DownloadFile";
+		}else
+		{
+
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			subAliasProjectList.put("0", "--Please Select--");
+			map.addAttribute("subAliasProjectList",subAliasProjectList);
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			return "DownloadFile";
+		}
+
+
+	}
+
+	private void downloadFile(@ModelAttribute("downloadForm") FileUpload downloadForm, Model map, Map<String, String> aliasProjectList) {
 		List<FileUpload> projectFileList = new ArrayList<FileUpload>();
 		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName());
 		LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
 
 		String path = null;
-		
+
 		if(downloadForm.isSubProjectUpload()){
 			SubProjectDetail subProjDetail = projectService.getSubProjectDocument(downloadForm.getAliasSubProjectName());
         	path = "C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName();
@@ -178,7 +218,7 @@ public class FileUploadController {
 		String fileName;
 		File folder = new File(path);
 		File[] listOfFiles = folder.listFiles();
-		
+
 		if(listOfFiles != null){
 			for (int i = 0; i < listOfFiles.length; i++) {
 				FileUpload fileUpload = new FileUpload();
@@ -194,9 +234,8 @@ public class FileUploadController {
 			map.addAttribute("projectFileSize", projectFileList.size());
 		}
 		map.addAttribute("aliasProjectList", aliasProjectList);
-		return "DownloadFile";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/downloadFile/downloadFiles.web", method = RequestMethod.GET)
 	public @ResponseBody void downloadFiles(@RequestParam(value="path", required=true) String path, HttpServletRequest request,
 			HttpServletResponse response) {

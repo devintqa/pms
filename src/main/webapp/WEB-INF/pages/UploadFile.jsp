@@ -118,11 +118,10 @@
 										cssClass="error" /></td>
 							</tr>
                 <tr>
-                    <td><input name="files[0]" type="file" /></td>
+                    <td><form:input name="files[0]" type="file" path="files" id="files"/></td>
+                    <td><form:errors path="files" cssClass="error" /></td>
                 </tr>
-                <tr>
-                    <td><input name="files[1]" type="file" /></td>
-                </tr>
+
             </table>
             <br />
             <input type="submit" value="Upload" />
