@@ -1,6 +1,7 @@
 package com.psk.pms.validator;
 
 import com.psk.pms.model.FileUpload;
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -8,10 +9,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Iterator;
 
-/**
- * Created by DELL on 5/31/2015.
- */
 public class FileUploadValidator  implements Validator {
+
+    private static final Logger LOGGER = Logger.getLogger(FileUploadValidator.class);
 
     @Override
     public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {

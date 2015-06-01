@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.psk.pms.model.EMDDetail;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -8,6 +9,8 @@ public class EmdDaoImpl implements EmdDAO {
 
     private DriverManagerDataSource dataSource;
     private JdbcTemplate jdbcTemplate;
+
+    private static final Logger LOGGER = Logger.getLogger(EmdDaoImpl.class);
 
     @Override
     public boolean saveEmd(final EMDDetail emdDetail) {

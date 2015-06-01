@@ -1,20 +1,21 @@
 package com.psk.pms.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
+import com.psk.pms.Constants;
+import com.psk.pms.model.Employee;
+import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.Employee;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
 	private DriverManagerDataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
+	private static final Logger LOGGER = Logger.getLogger(EmployeeDAOImpl.class);
 	public void setDataSource(DriverManagerDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
@@ -175,7 +176,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 			String sql = "UPDATE employee set enabled = ? WHERE empId = ? "; 
 			jdbcTemplate = new JdbcTemplate(dataSource);
 			int status = jdbcTemplate.update(sql, new Object[] {employee.getEnabled(), employee.getEmployeeId()});
-			System.out.println("status: "+status);
+			LOGGER.info("method =manageUserAccess() , status: "+status);
 		return status;
 	}
 	

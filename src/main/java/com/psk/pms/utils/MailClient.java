@@ -1,13 +1,17 @@
 package com.psk.pms.utils;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+import org.apache.log4j.Logger;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 public class MailClient {
 
 	private JavaMailSender mailSender;
+
+	private static final Logger LOGGER = Logger.getLogger(MailClient.class);
 
 	public void setMailSender(JavaMailSender mailSender) {
 		this.mailSender = mailSender;
@@ -25,7 +29,8 @@ public class MailClient {
 			helper.setText(msg, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
-			System.out.println("Error in sending mail to the user :" + userName);
+			LOGGER.error("Error in sending mail to the user :" + userName);
+			LOGGER.error("Error :" + e.getMessage());
 		}
 	}
 	
@@ -45,7 +50,8 @@ public class MailClient {
 			helper.setText(msg, true);
 			mailSender.send(message);
 		} catch (MessagingException e) {
-			System.out.println("Error in sending mail to the user :" + userName);
+			LOGGER.error("Error in sending mail to the user :" + userName);
+			LOGGER.error("error :"+ e.getMessage());
 		}
 	}
 

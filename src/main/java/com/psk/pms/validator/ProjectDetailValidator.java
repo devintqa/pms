@@ -1,16 +1,16 @@
 package com.psk.pms.validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.service.ProjectService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.service.ProjectService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjectDetailValidator extends BaseValidator implements Validator{
 	
@@ -19,12 +19,14 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 	
 	@Autowired
 	ProjectService projectService;
- 
+
+	private static final Logger LOGGER = Logger.getLogger(ProjectDetailValidator.class);
+
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return ProjectDetail.class.isAssignableFrom(clazz);
 	}
- 
+
 	@Override
 	public void validate(Object target, Errors errors) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectName",

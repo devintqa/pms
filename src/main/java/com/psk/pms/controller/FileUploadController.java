@@ -202,7 +202,7 @@ public class FileUploadController {
 	private void downloadFile(@ModelAttribute("downloadForm") FileUpload downloadForm, Model map, Map<String, String> aliasProjectList) {
 		List<FileUpload> projectFileList = new ArrayList<FileUpload>();
 		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName());
-		LOGGER.info("Alias Project Name" + projectDetail.getAliasName());
+		LOGGER.info("method = downloadFile(), Alias Project Name :" + projectDetail.getAliasName());
 
 		String path = null;
 
@@ -227,7 +227,7 @@ public class FileUploadController {
 					fileUpload.setFileName(fileName);
 					fileUpload.setFilePath(listOfFiles[i].getAbsolutePath());
 					projectFileList.add(fileUpload);
-					System.out.println(fileName);
+					LOGGER.info("File name : " +fileName);
 				}
 			}
 			map.addAttribute("projectFileList", projectFileList);

@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.dao.EmdDAO;
 import com.psk.pms.model.EMDDetail;
+import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +12,8 @@ import java.util.Date;
 public class EmdServiceImpl implements EmdService {
 
     private EmdDAO emdDAO;
+
+    private static final Logger LOGGER = Logger.getLogger(EmdServiceImpl.class);
 
     @Override
     public boolean createEditEmd(EMDDetail emdDetail) {
@@ -35,7 +38,7 @@ public class EmdServiceImpl implements EmdService {
                 date = (Date) formatter.parse(dateToBeFormatted);
             }
         } catch (ParseException e) {
-            System.out.println("Error in parsing the date");
+            LOGGER.error("Error in parsing the date "+ e.getMessage());
         }
         return date;
     }

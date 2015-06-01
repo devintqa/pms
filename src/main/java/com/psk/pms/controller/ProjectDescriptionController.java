@@ -1,25 +1,5 @@
 package com.psk.pms.controller;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
@@ -27,6 +7,20 @@ import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjDescDetailValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectDescriptionController {
@@ -37,7 +31,7 @@ public class ProjectDescriptionController {
 	@Autowired
 	ProjectService projectService;
 
-
+	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
 	public String buildProjDesc(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
@@ -81,7 +75,7 @@ public class ProjectDescriptionController {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getAliasProjectName());
 		projDescDetailValidator.validate(projDescDetail, result);
-		System.out.println(result.hasErrors());
+		LOGGER.info("Result has errors ?? "+ result.hasErrors());
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
 		}
@@ -121,7 +115,7 @@ public class ProjectDescriptionController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Sub Proj Id" + request.getParameter("subProjId"));
+		LOGGER.info("method = getSubAliasProject() , Sub Project Id : " + request.getParameter("subProjId"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		subAliasProjectList.put("0", "--Please Select--");
 		Gson gson = new Gson(); 

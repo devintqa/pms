@@ -57,11 +57,11 @@ public class EMDController {
 	@RequestMapping(value = "/emp/myview/buildEmd/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
-		System.out.println("Sub Proj Id" + request.getParameter("subProjId"));
+		LOGGER.info("Sub Proj Id : " + request.getParameter("subProjId"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		subAliasProjectList.put("0", "--Please Select--");
 		Gson gson = new Gson(); 
-		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
+		String subAliasProjectJson = gson.toJson(subAliasProjectList);
 		return subAliasProjectJson;
 	}
 

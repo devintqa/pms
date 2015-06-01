@@ -1,19 +1,22 @@
 package com.psk.pms.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+import org.apache.log4j.Logger;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ProjectServiceImpl implements ProjectService {
 	
 	private ProjectDAO projectDAO;
-	
+
+	private static final Logger LOGGER = Logger.getLogger(ProjectService.class);
+
 	public boolean createEditProject(ProjectDetail projectDetail){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		projectDetail.setTenderSqlDate(getSQLDate(projectDetail.getTenderDate(), formatter));
@@ -93,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
                 date = (Date) formatter.parse(dateToBeFormatted);
             }
 		} catch (ParseException e) {
-			System.out.println("Error in parsing the date");
+			LOGGER.error("Error in parsing the date");
 		}
 		return date;
 	}
