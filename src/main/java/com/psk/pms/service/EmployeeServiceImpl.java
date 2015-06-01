@@ -1,16 +1,19 @@
 package com.psk.pms.service;
 
-import java.util.List;
-
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
 import com.psk.pms.utils.Encryption;
 import com.psk.pms.utils.MailClient;
+import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class EmployeeServiceImpl implements EmployeeService {
 		
 	private EmployeeDAO employeeDAO;
 	private MailClient mailClient;
+
+	private static final Logger LOGGER = Logger.getLogger(EmployeeServiceImpl.class);
 
 	public boolean isValidLogin(String userName, String password){	
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);

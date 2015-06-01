@@ -1,19 +1,21 @@
 package com.psk.pms.validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.psk.pms.model.Employee;
+import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.psk.pms.model.Employee;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EditDetailValidator extends BaseValidator implements Validator {
 
 	private Pattern pattern;
 	private Matcher matcher;
 
+	private static final Logger LOGGER = Logger.getLogger(EditDetailValidator.class);
+	
 	@Override
 	public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {
 		return Employee.class.isAssignableFrom(clazz);

@@ -1,37 +1,25 @@
 package com.psk.pms.controller;
 
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.psk.pms.Constants;
+import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.utils.JsonHelper;
+import com.psk.pms.validator.EmployeeValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.service.EmployeeService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.Constants;
-import com.psk.pms.utils.JsonHelper;
-import com.psk.pms.validator.EmployeeValidator;
+import java.security.Principal;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @SessionAttributes("employeeObj")
@@ -43,10 +31,12 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	@Autowired
 	ProjectService projectService;
-	
+
+	private static final Logger LOGGER = Logger.getLogger(EmployeeController.class);
+
 	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody int enableAccess(@RequestBody String json){
-		System.out.println("called in java"+json);
+		LOGGER.info("method = enableAccess() : request" +json);
 		HashMap<String, String> details = (HashMap<String, String>) JsonHelper.jsonToMap(json);
 		Employee employee = new Employee();
 		String action = "";
@@ -60,7 +50,7 @@ public class EmployeeController {
 		employee.setEnabled(action);
 		employee.setEmployeeId(details.get("user"));
 		//employee.setEmployeeMail(details.get("mail"));
-		System.out.println("called in java"+employee.getEmployeeId()+employee.getEnabled()+employee.getEmployeeMail());
+		LOGGER.info("Employee Id :"+employee.getEmployeeId()+" Employee Enabled : "+employee.getEnabled()+" Employee mail Id: "+employee.getEmployeeMail());
 		int status = employeeService.manageUserAccess(employee);
 		return status;
 	}

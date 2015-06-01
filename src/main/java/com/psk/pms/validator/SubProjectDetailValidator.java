@@ -1,16 +1,16 @@
 package com.psk.pms.validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.ProjectService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.service.ProjectService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SubProjectDetailValidator extends BaseValidator implements Validator{
 	
@@ -19,7 +19,8 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 	
 	@Autowired
 	ProjectService projectService;
- 
+
+	private static final Logger LOGGER = Logger.getLogger(SubProjectDetailValidator.class);
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return SubProjectDetail.class.isAssignableFrom(clazz);

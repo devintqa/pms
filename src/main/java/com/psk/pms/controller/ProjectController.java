@@ -1,25 +1,19 @@
 package com.psk.pms.controller;
 
-import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.List;
 
 @Controller
 @SessionAttributes("employeeObj")
@@ -37,11 +31,10 @@ public class ProjectController {
 	public String buildProject(@ModelAttribute("employeeObj") Employee employee, @PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
 			Model model) {		
-		LOGGER.info("Into Build Project");
+		LOGGER.info("method = buildProject()");
 		ProjectDetail projDetail = new ProjectDetail();
 		projDetail.setEmployeeId(employeeId);
 		model.addAttribute("projectForm", projDetail);
-		System.out.println("Into Build Project" + employee.getEmployeeTeam());
 		model.addAttribute("employee", employee);
 		return "BuildProject";
 	}
@@ -53,7 +46,7 @@ public class ProjectController {
 			@RequestParam(value="project", required=false) String project, 
 			Model model) {		
 		
-		System.out.println("Into Project: " + action);
+		LOGGER.info("method = updateProject() ,Action : " + action);
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);

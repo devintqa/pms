@@ -1,16 +1,16 @@
 package com.psk.pms.validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.ProjectService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.service.ProjectService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProjDescDetailValidator extends BaseValidator implements Validator{
 	
@@ -19,7 +19,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 	
 	@Autowired
 	ProjectService projectService;
- 
+
+	private static final Logger LOGGER = Logger.getLogger(ProjDescDetailValidator.class);
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return ProjDescDetail.class.isAssignableFrom(clazz);
@@ -99,8 +100,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
         } 
 		else if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
-			System.out.println("is update:"+projectDescDetail.getIsUpdate());
-			System.out.println(projectDescDetail.getProjId());
+			LOGGER.info("Project description detail is update: "+projectDescDetail.getIsUpdate());
+			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
 			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail.getAliasProjectName(), projectDescDetail.getAliasSubProjectName(), projectDescDetail.getAliasDescription());
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");

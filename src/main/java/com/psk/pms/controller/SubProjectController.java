@@ -1,25 +1,21 @@
 package com.psk.pms.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.SubProjectDetailValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SubProjectController {
@@ -29,6 +25,8 @@ public class SubProjectController {
 
 	@Autowired
 	ProjectService projectService;
+
+	private static final Logger LOGGER = Logger.getLogger(SubProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildSubProject/{employeeId}", method = RequestMethod.GET)
 	public String buildSubProject(@PathVariable String employeeId, 
@@ -41,7 +39,7 @@ public class SubProjectController {
 			subProjectDetail.setEmployeeId(employeeId);
 			model.addAttribute("subProjectForm", subProjectDetail);
 			Map<String, String> aliasProjectList = populateAliasProjectList();
-			System.out.println(aliasProjectList);
+			LOGGER.info("Alias project list :" + aliasProjectList);
 			if(aliasProjectList.size() == 0){
 				model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 				return "Welcome";
@@ -60,7 +58,7 @@ public class SubProjectController {
 			@RequestParam(value="subproject", required=false) String subProject, 
 			Model model) {
 			
-		System.out.println("Into Sub Project: " + action);
+		LOGGER.info("method = updateSubProject() , Action :" + action);
 		
 		if("editProjectDesc".equalsIgnoreCase(action)){
 			SubProjectDetail subProjectDetail = projectService.getSubProjectDocument(subProject);

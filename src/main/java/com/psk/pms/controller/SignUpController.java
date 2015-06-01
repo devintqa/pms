@@ -1,8 +1,10 @@
 package com.psk.pms.controller;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
+import com.psk.pms.Constants;
+import com.psk.pms.model.Employee;
+import com.psk.pms.service.EmployeeService;
+import com.psk.pms.validator.SignUpValidator;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,10 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.Employee;
-import com.psk.pms.service.EmployeeService;
-import com.psk.pms.validator.SignUpValidator;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @Controller
 public class SignUpController {
@@ -25,6 +25,8 @@ public class SignUpController {
 	SignUpValidator signupValidator;
 	@Autowired
 	EmployeeService employeeService;
+
+	private static final Logger LOGGER = Logger.getLogger(SignUpController.class);
 
 	@RequestMapping(value = "/emp/signup", method = RequestMethod.GET)
 	public String initForm(ModelMap model){ 

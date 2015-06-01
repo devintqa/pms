@@ -1,24 +1,21 @@
 package com.psk.pms.dao;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
 	private DriverManagerDataSource dataSource;
 	private JdbcTemplate jdbcTemplate;
 
+	private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
 	public void setDataSource(DriverManagerDataSource dataSource) {
 		this.dataSource = dataSource;
 	}
