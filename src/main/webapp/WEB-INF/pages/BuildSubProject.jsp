@@ -1,26 +1,11 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html>
 <head>
 <title>PMS :: Create Sub Project</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/resources/css/jquery-ui-1.10.3.css" />">
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery-ui-1.10.3.js" />"></script>
-<script src="<c:url value="/resources/js/script.js" />"></script>
-<script
-	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
-<style>
-#errmsg {
-	color: red;
-}
-</style>
+<%@include file="Script.jsp" %>
 
 <script>
 $(document).ready(function () {

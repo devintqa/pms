@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
@@ -7,16 +6,9 @@
 <head>
 
 <title>PMS :: Create Detailed Description</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<link rel="stylesheet" type="text/css"
-	href="<c:url value="/resources/css/jquery-ui-1.10.3.css" />">
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery-ui-1.10.3.js" />"></script>
-<script src="<c:url value="/resources/js/script.js" />"></script>
-<script
-	src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet"
-	href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+
+<%@include file="Script.jsp" %>
+
 <script type="text/javascript">
 	function getAliasSubProjects() {
 		 var aliasProjectName  = $('#projId').val();

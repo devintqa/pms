@@ -1,17 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html>
 <head>
 <title>PMS :: Project Home</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<script src="<c:url value="/resources/js/script.js" />"></script>
-<script	src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 
-<script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
+<%@include file="Script.jsp" %>
+
 <script>
 
 	$(function() {

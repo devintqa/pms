@@ -229,3 +229,7 @@ footer {
 	clear: both;
 	padding: 25px 0 15px;
 }
+
+#errmsg {
+	color: red;
+}
