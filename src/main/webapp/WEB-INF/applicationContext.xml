@@ -16,6 +16,9 @@
 		<property name="employeeDAO" ref="employeeDAO" />
 		<property name="mailClient" ref="mailClient" />
 	</bean>
+
+	<bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
+	</bean>
 	
 	<bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
 		<property name="dataSource" ref="dataSource" />
@@ -43,7 +46,7 @@
 	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
 	<bean class="com.psk.pms.validator.EmdValidator"/>
 	<bean class="com.psk.pms.validator.FileUploadValidator"/>
-	
+
 	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
 		<property name="url" value="jdbc:mysql://localhost:3306/pms" />
