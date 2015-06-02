@@ -1,25 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html>
 <head>
 <title>PMS :: Update Project Description</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
-<script src="<c:url value="/resources/js/script.js" />"></script>
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
-<script src="<c:url value="/resources/js/jquery.dataTables.1.10.6.min.js" />"></script>
-<link rel="stylesheet" href="<c:url value="/resources/css/jquery.dataTables.1.10.6.css" />">
 
-<script>
-	  $(function() {
-			var table = $("#projDescDocListSize").dataTable();
-	  });
-</script>
+<%@include file="Script.jsp" %>
+<%@include file="Utility.jsp" %>
 
 </head>
-
 
 <body>
 	<header>
@@ -29,7 +19,7 @@
 		
 				<c:if test="${projDescDocListSize gt 0}">
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">${subProjectAliasName} Project Description Details</h1>
-			<table id="projDescDocListSize" class="gridView">
+			<table id="projDescDocList" class="gridView">
 				<thead>
 					<tr>
 						<th>Name</th>

@@ -7,7 +7,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>PMS</title>
-
 <script type="text/javascript">
 	$(document).ready(
 	function() {
@@ -18,7 +17,6 @@
 		});
 	});
 </script>
-
 </head>
 	<div class="navigation">
 		<ul class="nav">
