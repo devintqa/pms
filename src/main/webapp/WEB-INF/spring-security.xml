@@ -12,12 +12,14 @@
 	<http use-expressions="true">
 		<intercept-url pattern="/emp/pms/**"
 			access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
-		<form-login login-processing-url="/login.do" login-page="/emp/login"
+		<form-login always-use-default-target="true"
+		    login-processing-url="/login.do" login-page="/emp/login"
 			username-parameter="employeeId" password-parameter="employeePwd"
 			authentication-success-handler-ref="authenticationHandler"
 			authentication-failure-url="/emp/login?auth=fail" />
 
-		<logout logout-url="/logout" logout-success-url="/emp/login" />
+		<logout logout-url="/logout" invalidate-session="false" logout-success-url="/emp/logout" />
+		<session-management invalid-session-url="/emp/sessionTimeout" />
 	</http>
 
 	<authentication-manager>

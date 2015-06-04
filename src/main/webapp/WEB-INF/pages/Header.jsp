@@ -18,6 +18,7 @@
 	});
 </script>
 </head>
+
 	<div class="navigation">
 		<ul class="nav">
 			<c:choose>
@@ -123,4 +124,5 @@
 			</c:choose>
 		</ul>
 	</div>
+
 </html>
