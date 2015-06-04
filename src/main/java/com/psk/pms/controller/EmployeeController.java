@@ -21,6 +21,8 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 @SessionAttributes("employeeObj")
 public class EmployeeController {
@@ -86,6 +88,21 @@ public class EmployeeController {
 		Employee employee = new Employee();
 		model.addAttribute("employeeForm", employee);
 		return "SignIn";
+	}
+	
+	@RequestMapping(value = "/emp/logout", method = RequestMethod.GET)
+	public String logoutForm(@ModelAttribute("employeeObj") Employee employee, Model model) {
+		employee.setEmployeeTeam("");
+		model.addAttribute("employeeObj", employee);
+		Employee newEmployee = new Employee();
+		model.addAttribute("employeeForm", newEmployee);
+		return "SignIn";
+	}
+	
+	@RequestMapping(value = "/emp/sessionTimeout", method = RequestMethod.GET)
+	public String expiredForm(ModelMap model, HttpSession session) {
+		session.invalidate();
+		return "SessionTimeout";
 	}
 
 	@InitBinder
