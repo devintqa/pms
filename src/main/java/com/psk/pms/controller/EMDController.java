@@ -81,7 +81,7 @@ public class EMDController {
 		emdType.put("Bank Guarantee", "Bank Guarantee");
 		emdType.put("DD", "DD");
 		emdType.put("FD", "FD");
-		emdType.put("IUP", "IUP");
+		emdType.put("IVP", "IVP");
 		emdType.put("KVP", "KVP");
 		return emdType;
 	}

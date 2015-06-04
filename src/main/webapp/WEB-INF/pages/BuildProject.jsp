@@ -53,14 +53,6 @@ $(document).ready(function () {
 								<td><form:errors path="aliasName" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Original Agreement Number<span id="colon">:</span>
-								</td>
-								<td><form:input path="agreementNo"
-										placeholder="Enter Original Agreement Number"
-										cssClass="inputText" /></td>
-								<td><form:errors path="agreementNo" cssClass="error" /></td>
-							</tr>
-							<tr>
 								<td>Estimate C.E.R. Number<span id="colon">:</span>
 								</td>
 								<td><form:input path="cerNo"
@@ -80,6 +72,13 @@ $(document).ready(function () {
 								<td><form:input path="contractorName"
 										placeholder="Enter Name of Contractor" cssClass="inputText" /></td>
 								<td><form:errors path="contractorName" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Alias Name of Contractor<span id="colon">:</span>
+								</td>
+								<td><form:input path="aliasContractorName"
+										placeholder="Enter Alias Contractor Name" cssClass="inputText" /></td>
+								<td><form:errors path="aliasContractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Address of Contractor<span id="colon">:</span>
@@ -123,6 +122,13 @@ $(document).ready(function () {
 										placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="exPercentage" cssClass="error" /></td>
 							</tr>
+							<tr>
+								<td>Less in Percentage<span id="colon">:</span>
+								</td>
+								<td><form:input path="lessPercentage"
+										placeholder="Enter Less in Percentage" cssClass="inputText" /></td>
+								<td><form:errors path="lessPercentage" cssClass="error" /></td>
+							</tr>
                             <tr>
                                 <td>Additional Security Deposit<span id="colon">:</span>
                                 </td>
@@ -137,6 +143,14 @@ $(document).ready(function () {
 										cssClass="inputText" /></td>
 								<td><form:errors path="tenderDate" cssClass="error" /></td>
 							</tr>
+							<tr>
+                            <td>Agreement Number<span id="colon">:</span>
+                            </td>
+                            <td><form:input path="agreementNo"
+                            placeholder="Enter Agreement Number"
+                            cssClass="inputText" /></td>
+                            <td><form:errors path="agreementNo" cssClass="error" /></td>
+                            </tr>
 							<tr>
 								<td>Date of Agreement<span id="colon">:</span>
 								</td>

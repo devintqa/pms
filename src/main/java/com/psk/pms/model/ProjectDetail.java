@@ -11,12 +11,14 @@ public class ProjectDetail {
 	private String cerNo;
 	private String amount;	
 	private String contractorName;
+	private String aliasContractorName;
 	private String contractorAddress;
 	private String contractValue;
 	private String agreementValue;
 	private String tenderValue;
 	private String exAmount;
 	private String exPercentage;
+	private String lessPercentage;
 	private String tenderDate;
 	private String agreementDate;
 	private String commencementDate;
@@ -207,4 +209,20 @@ public class ProjectDetail {
     public void setAddSecurityDeposit(String addSecurityDeposit) {
         this.addSecurityDeposit = addSecurityDeposit;
     }
+
+	public String getAliasContractorName() {
+		return aliasContractorName;
+	}
+
+	public void setAliasContractorName(String aliasContractorName) {
+		this.aliasContractorName = aliasContractorName;
+	}
+
+	public String getLessPercentage() {
+		return lessPercentage;
+	}
+
+	public void setLessPercentage(String lessPercentage) {
+		this.lessPercentage = lessPercentage;
+	}
 }

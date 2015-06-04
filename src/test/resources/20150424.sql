@@ -97,16 +97,18 @@ CREATE TABLE `project` (
   `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
-  `AgreementNum` varchar(50) NOT NULL,
+  `AgreementNum` varchar(50),
   `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
+  `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
   `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
-  `ExcessInPercentage` decimal(15,2) NOT NULL,
+  `ExcessInPercentage` decimal(15,2),
+  `LessInPercentage` decimal(15,2),
   `TenderDate` datetime NOT NULL,
   `EmdEndDate` datetime NOT NULL,
   `EmdAmount` decimal(15,2) NOT NULL,
@@ -128,7 +130,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (3,'Life Insurance','LIC','12312','CER234',12345.00,'PSK','mount road, chennai',12345.00,12345.00,12345.00,12.00,12.00,'2015-05-28 00:00:00','2015-05-03 00:00:00',1234.00,123.00,'tkumar','2015-05-29 22:22:53','2015-05-27 00:00:00','2015-05-27 00:00:00','2015-05-27 00:00:00',2);
+INSERT INTO `project` VALUES (3,'Life Insurance','LIC','12312','CER234',12345.00,'PSK','conpsk','mount road, chennai',12345.00,12345.00,12345.00,12.00,12.00,13.00,'2015-05-28 00:00:00','2015-05-03 00:00:00',1234.00,123.00,'tkumar','2015-05-29 22:22:53','2015-05-27 00:00:00','2015-05-27 00:00:00','2015-05-27 00:00:00',2);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,16 +181,18 @@ CREATE TABLE `subproject` (
   `SubProjId` int(10) NOT NULL AUTO_INCREMENT,
   `SubProjName` text NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
-  `AgreementNum` varchar(50) NOT NULL,
+  `AgreementNum` varchar(50),
   `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
+  `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
   `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
-  `ExcessInPercentage` decimal(15,2) NOT NULL,
+  `ExcessInPercentage` decimal(15,2),
+  `LessInPercentage` decimal(15,2),
   `SubAddSecurityDeposit` decimal(15,2) NOT NULL,
   `TenderDate` datetime NOT NULL,
   `AgreementDate` datetime DEFAULT NULL,
@@ -208,7 +212,7 @@ CREATE TABLE `subproject` (
 
 LOCK TABLES `subproject` WRITE;
 /*!40000 ALTER TABLE `subproject` DISABLE KEYS */;
-INSERT INTO `subproject` VALUES (5,'LIC 1st floor','LICF1','12212','3131',3123.00,'psk','mt road',3123.00,3213.00,12321.00,31.00,32.00,12312.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00',1,'tkumar','2015-05-30 16:00:47',3);
+INSERT INTO `subproject` VALUES (5,'LIC 1st floor','LICF1','12212','3131',3123.00,'psk','conpsk','mt road',3123.00,3213.00,12321.00,31.00,32.00,32.00,12312.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00',1,'tkumar','2015-05-30 16:00:47',3);
 /*!40000 ALTER TABLE `subproject` ENABLE KEYS */;
 UNLOCK TABLES;
 

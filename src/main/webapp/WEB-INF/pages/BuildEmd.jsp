@@ -161,10 +161,10 @@ $(document).ready(function () {
 								<td><form:errors path="emdAmount" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>EMD Ledger Number<span id="colon">:</span>
+								<td>Ledger Number<span id="colon">:</span>
 								</td>
 								<td><form:input path="emdLedgerNumber"
-										placeholder="Enter EMD Ledger Number" cssClass="inputText" /></td>
+										placeholder="Enter Ledger Number" cssClass="inputText" /></td>
 								<td><form:errors path="emdLedgerNumber" cssClass="error" /></td>
 							</tr>
 							<tr></tr>

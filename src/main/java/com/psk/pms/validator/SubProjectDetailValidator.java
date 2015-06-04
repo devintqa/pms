@@ -28,21 +28,21 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
  
 	@Override
 	public void validate(Object target, Errors errors) {
-		
+
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projId",
 				"required.projId", "Please Select Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subProjectName",
 				"required.subProjectName", "Enter Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "AliasSubProjName",
-			"required.subAliasName", "Enter Alias Sub Project Name.");		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementNo",
-				"required.subAgreementNo", "Enter Agreement Number.");
+				"required.subAliasName", "Enter Alias Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subCerNo",
 				"required.subCerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAmount",
 				"required.subAmount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorName",
 				"required.subContractorName", "Enter Contractor Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAliasContractorName",
+				"required.subAliasContractorName", "Enter alias Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorAddress",
 				"required.subContractorAddress", "Enter Contractor Address.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractValue",
@@ -53,116 +53,117 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subTenderValue", "Enter Tender Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExAmount",
 				"required.subExAmount", "Enter Expected Amount.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExPercentage",
-				"required.subExPercentage", "Enter Expected Amount in Percentage.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderDate",
 				"required.subTenderDate", "Select Tender Date.");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAddSecurityDeposit",
-                "required.subAddSecurityDeposit", "Enter additional security amount.");
-		SubProjectDetail subProjectDetail = (SubProjectDetail)target;
-		
-		if (subProjectDetail.getProjId() == 0) {  
-				errors.rejectValue("projId", "projId.incorrect","Please select a valid project");
-		}
-		
-		if(subProjectDetail.getAliasSubProjName().length() > 50){
-	        errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect","Field must not exceed 50 characters.");
-	    } else if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
-			boolean isAliasSubProjectAlreadyExisting = projectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName(), subProjectDetail.getProjId());
-			if(isAliasSubProjectAlreadyExisting){
-				errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect","Alias Sub Project Name Already Found To Be Existing.");
-			}
-		}
-		
-		if(subProjectDetail.getSubAgreementNo().length() > 50){
-	        errors.rejectValue("subAgreementNo","subAgreementNo.incorrect", "Field must not exceed 50 characters.");
-	    }
-		if(subProjectDetail.getSubCerNo().length() > 30){
-	        errors.rejectValue("subCerNo", "subCerNo.incorrect", "Field must not exceed 30 characters");
-	    }
-		if(subProjectDetail.getSubContractorName().length() > 50){
-	        errors.rejectValue("subContractorName","subContractorName.incorrect", "Field must not exceed 50 characters.");
-	    }
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAmount())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubAmount());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subAmount", "subAmount.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubAmount().length() > 15){
-		            errors.rejectValue("subAmount", "subAmount.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAgreementValue())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubAgreementValue());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubAgreementValue().length() > 15){
-		            errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubTenderValue())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubTenderValue());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subTenderValue", "subTenderValue.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubTenderValue().length() > 15){
-		            errors.rejectValue("subTenderValue", "subTenderValue.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubContractValue())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubContractValue());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subContractValue", "subContractValue.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubContractValue().length() > 15){
-		            errors.rejectValue("subContractValue", "subContractValue.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExAmount())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubExAmount());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subExAmount", "subExAmount.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubExAmount().length() > 15){
-		            errors.rejectValue("subExAmount", "subExAmount.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(subProjectDetail.getSubExPercentage());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("subExPercentage", "subExPercentage.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(subProjectDetail.getSubExPercentage().length() > 15){
-		            errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Field must not exceed 15 characters.");
-		        }
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAddSecurityDeposit",
+				"required.subAddSecurityDeposit", "Enter additional security amount.");
+		SubProjectDetail subProjectDetail = (SubProjectDetail) target;
+
+		if (subProjectDetail.getProjId() == 0) {
+			errors.rejectValue("projId", "projId.incorrect", "Please select a valid project");
 		}
 
-        if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAddSecurityDeposit())) {
-            pattern = Pattern.compile(AMOUNT_PATTERN);
-            matcher = pattern.matcher(subProjectDetail.getSubAddSecurityDeposit());
-            if (!matcher.matches()) {
-                errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect",
-                        "Enter a numeric value and only a single dot is allowed");
-            }else if(subProjectDetail.getSubAddSecurityDeposit().length() > 15){
-                errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect", "Field must not exceed 15 characters.");
-            }
-        }
-		
+		if (subProjectDetail.getAliasSubProjName().length() > 50) {
+			errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Field must not exceed 50 characters.");
+		} else if (!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
+			boolean isAliasSubProjectAlreadyExisting = projectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName(), subProjectDetail.getProjId());
+			if (isAliasSubProjectAlreadyExisting) {
+				errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Alias Sub Project Name Already Found To Be Existing.");
+			}
+		}
+
+		if (subProjectDetail.getSubAgreementNo().length() > 50) {
+			errors.rejectValue("subAgreementNo", "subAgreementNo.incorrect", "Field must not exceed 50 characters.");
+		}
+		if (subProjectDetail.getSubCerNo().length() > 30) {
+			errors.rejectValue("subCerNo", "subCerNo.incorrect", "Field must not exceed 30 characters");
+		}
+		if (subProjectDetail.getSubContractorName().length() > 50) {
+			errors.rejectValue("subContractorName", "subContractorName.incorrect", "Field must not exceed 50 characters.");
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAmount())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubAmount());
+			if (!matcher.matches()) {
+				errors.rejectValue("subAmount", "subAmount.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubAmount().length() > 15) {
+				errors.rejectValue("subAmount", "subAmount.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAgreementValue())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubAgreementValue());
+			if (!matcher.matches()) {
+				errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubAgreementValue().length() > 15) {
+				errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubTenderValue())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubTenderValue());
+			if (!matcher.matches()) {
+				errors.rejectValue("subTenderValue", "subTenderValue.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubTenderValue().length() > 15) {
+				errors.rejectValue("subTenderValue", "subTenderValue.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubContractValue())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubContractValue());
+			if (!matcher.matches()) {
+				errors.rejectValue("subContractValue", "subContractValue.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubContractValue().length() > 15) {
+				errors.rejectValue("subContractValue", "subContractValue.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExAmount())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubExAmount());
+			if (!matcher.matches()) {
+				errors.rejectValue("subExAmount", "subExAmount.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubExAmount().length() > 15) {
+				errors.rejectValue("subExAmount", "subExAmount.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubExPercentage());
+			if (!matcher.matches()) {
+				errors.rejectValue("subExPercentage", "subExPercentage.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubExPercentage().length() > 15) {
+				errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAddSecurityDeposit())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubAddSecurityDeposit());
+			if (!matcher.matches()) {
+				errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubAddSecurityDeposit().length() > 15) {
+				errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
+		if (StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExPercentage",
+					"required.subExPercentage", "Enter any one among Expected Amount or Less amount in Percentage.");
+		}
+
 	}
-	
-	
 }
 

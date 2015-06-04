@@ -13,12 +13,14 @@ public class SubProjectDetail {
 	private String subCerNo;
 	private String subAmount;	
 	private String subContractorName;
+	private String subAliasContractorName;
 	private String subContractorAddress;
 	private String subContractValue;
 	private String subAgreementValue;
 	private String subTenderValue;
 	private String subExAmount;
 	private String subExPercentage;
+	private String subLessPercentage;
 	private String subTenderDate;
 	private String subAgreementDate;
 	private String subCommencementDate;
@@ -214,5 +216,21 @@ public class SubProjectDetail {
     public void setSubAddSecurityDeposit(String subAddSecurityDeposit) {
         this.subAddSecurityDeposit = subAddSecurityDeposit;
     }
+
+	public String getSubAliasContractorName() {
+		return subAliasContractorName;
+	}
+
+	public void setSubAliasContractorName(String subAliasContractorName) {
+		this.subAliasContractorName = subAliasContractorName;
+	}
+
+	public String getSubLessPercentage() {
+		return subLessPercentage;
+	}
+
+	public void setSubLessPercentage(String subLessPercentage) {
+		this.subLessPercentage = subLessPercentage;
+	}
 }
 

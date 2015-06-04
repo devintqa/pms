@@ -32,15 +32,15 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectName",
 				"required.projectName", "Enter Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
-			"required.aliasName", "Enter Alias Project Name.");		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementNo",
-				"required.agreementNo", "Enter Agreement Number.");
+			"required.aliasName", "Enter Alias Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cerNo",
 				"required.cerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount",
 				"required.amount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorName",
 				"required.contractorName", "Enter Contractor Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasContractorName",
+				"required.aliasContractorName", "Enter alias Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorAddress",
 				"required.contractorAddress", "Enter Contractor Address.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractValue",
@@ -51,8 +51,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.tenderValue", "Enter Tender Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exAmount",
 				"required.exAmount", "Enter Expected Amount.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
-				"required.exPercentage", "Enter Expected Amount in Percentage.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "addSecurityDeposit",
@@ -153,7 +151,12 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
         }
 		if(projectDetail.getContractorName().length() > 50){
             errors.rejectValue("contractorName","contractorName.incorrect", "Field must not exceed 50 characters.");
-        }	
+        }
+
+		if (StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
+				"required.exPercentage", "Enter one among Expected Amount or Less amount in Percentage.");
+		}
 	}
 
 }

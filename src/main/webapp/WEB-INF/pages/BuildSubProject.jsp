@@ -60,14 +60,6 @@ $(document).ready(function () {
 								<td><form:errors path="aliasSubProjName" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Original Agreement Number<span id="colon">:</span>
-								</td>
-								<td><form:input path="subAgreementNo"
-										placeholder="Enter Original Agreement Number"
-										cssClass="inputText" /></td>
-								<td><form:errors path="subAgreementNo" cssClass="error" /></td>
-							</tr>
-							<tr>
 								<td>Estimate C.E.R. Number<span id="colon">:</span>
 								</td>
 								<td><form:input path="subCerNo"
@@ -87,6 +79,13 @@ $(document).ready(function () {
 								<td><form:input path="subContractorName"
 										placeholder="Enter Name of Contractor" cssClass="inputText" /></td>
 								<td><form:errors path="subContractorName" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Alias Name of Contractor<span id="colon">:</span>
+								</td>
+								<td><form:input path="subAliasContractorName"
+										placeholder="Enter Alias Name of Contractor" cssClass="inputText" /></td>
+								<td><form:errors path="subAliasContractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Address of Contractor<span id="colon">:</span>
@@ -131,6 +130,13 @@ $(document).ready(function () {
 										placeholder="Enter Excess in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="subExPercentage" cssClass="error" /></td>
 							</tr>
+							<tr>
+								<td>Less in Percentage<span id="colon">:</span>
+								</td>
+								<td><form:input path="subLessPercentage"
+										placeholder="Enter Less in Percentage" cssClass="inputText" /></td>
+								<td><form:errors path="subLessPercentage" cssClass="error" /></td>
+							</tr>
                             <tr>
                                 <td>Additional Security Deposit<span id="colon">:</span>
                                 </td>
@@ -151,6 +157,14 @@ $(document).ready(function () {
 								<td><form:input path="subAgreementDate"
 										placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
 								<td><form:errors path="subAgreementDate" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Agreement Number<span id="colon">:</span>
+								</td>
+								<td><form:input path="subAgreementNo"
+										placeholder="Enter Agreement Number"
+										cssClass="inputText" /></td>
+								<td><form:errors path="subAgreementNo" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Date of Commencement<span id="colon">:</span>
