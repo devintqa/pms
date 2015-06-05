@@ -39,6 +39,7 @@ CREATE TABLE `emddetail` (
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `EmdId` int(11) NOT NULL AUTO_INCREMENT,
+  `CompetitorName` varchar(50)
   PRIMARY KEY (`EmdId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,7 +50,7 @@ CREATE TABLE `emddetail` (
 
 LOCK TABLES `emddetail` WRITE;
 /*!40000 ALTER TABLE `emddetail` DISABLE KEYS */;
-INSERT INTO `emddetail` VALUES (3,NULL,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:05',1),(3,5,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:43',2);
+INSERT INTO `emddetail` VALUES (3,NULL,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:05',1),(3,5,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:43',2,'');
 /*!40000 ALTER TABLE `emddetail` ENABLE KEYS */;
 UNLOCK TABLES;
 

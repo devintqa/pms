@@ -99,6 +99,7 @@ public class EMDController {
 			isEmdSaveSuccessful = emdService.createEditEmd(emdDetail);
 		}
 		if (result.hasErrors() || !isEmdSaveSuccessful) {
+			model.addAttribute("emdForm",emdDetail);
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			subAliasProjectList.put("0", "--Please Select--");
 			model.addAttribute("subAliasProjectList",subAliasProjectList);

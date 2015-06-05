@@ -15,13 +15,13 @@ public class EmdDaoImpl implements EmdDAO {
     @Override
     public boolean saveEmd(final EMDDetail emdDetail) {
         String createSql = "INSERT INTO emddetail (ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ," +
-                "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, LastUpdatedBy,LastUpdatedAt)" +
-                "VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+                "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, LastUpdatedBy,LastUpdatedAt,CompetitorName)" +
+                "VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,?)";
 
 
         String updateSql = "UPDATE emddetail set ProjId = ? . SubProjId = ? ,EmdAmount = ? , EmdStartDate = ? ,EmdEndDate = ?,EmdType =? , BGNumber =?," +
                 "EmdPeriod = ?,EmdExtensionDate = ? ,EmdLedgerNumber =? ,SubProjectEmd = ? , " +
-                "LastUpdatedBy = ?,LastUpdatedAt =? WHERE EmdId = ? ";
+                "LastUpdatedBy = ?,LastUpdatedAt =? ,CompetitorName =? WHERE EmdId = ? ";
 
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(emdDetail.getIsUpdate())) {
@@ -29,14 +29,14 @@ public class EmdDaoImpl implements EmdDAO {
                     emdDetail.getAliasProjectName(), emdDetail.getAliasSubProjectName(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                     emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                     emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
-                     emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt()
+                     emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(),emdDetail.getCompetitorName()
             });
         } else {
             jdbcTemplate.update(updateSql, new Object[]
                     {emdDetail.getAliasProjectName(), emdDetail.getAliasSubProjectName(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                             emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                             emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
-                            emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(), emdDetail.getEmdId()
+                            emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(),emdDetail.getCompetitorName(), emdDetail.getEmdId()
                     });
         }
         return true;

@@ -13,6 +13,14 @@
 <script>
 $(document).ready(function () {
 	  $("#showSubProject").hide();
+
+	  $("#showCompetitorName").hide();
+
+	  if($("#competitor").is(":checked"))
+	  {
+	  	 $("#showCompetitorName").show();
+	  }
+
 	  //called when key is pressed in textbox
 	  $("#emdPeriod").keypress(function (e) {
 	     //if the letter is not digit then display error and don't type anything
@@ -61,6 +69,13 @@ $(document).ready(function () {
 	  if($('#subProjectEMD').is(':checked')) {
 	  		$("#showSubProject").show();
 	  };
+	  $('#competitor').change(function() {
+		 $("#showCompetitorName").show();
+	  });
+	  $('#main').change(function() {
+      	$("#showCompetitorName").hide();
+      	$("#competitorName").val('');
+      });
 
 });
 </script>
@@ -115,6 +130,19 @@ $(document).ready(function () {
 								<td><form:select path="emdType" cssClass="inputText"
 										items="${emdTypeList}" /></td>
 								<td><form:errors path="emdType" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>EMD For <span id="colon">:</span></td>
+								<td><form:radiobutton path="emdFor" id="main" value="main" checked="true"/>Main
+                                <form:radiobutton  path="emdFor" id="competitor"  value="competitor"/>Competitor</td>
+                                <td><form:errors path="emdFor" cssClass="error" /></td>
+							</tr>
+						    <tr id="showCompetitorName">
+								<td>Competitor Name<span id="colon">:</span>
+								</td>
+								<td><form:input path="competitorName"
+										placeholder="Enter Competitor Name" cssClass="inputText" /></td>
+								<td><form:errors path="competitorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Bank Guarantee Number<span id="colon">:</span>

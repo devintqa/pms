@@ -24,6 +24,8 @@ public class EMDDetail {
 	private String aliasSubProjectName;
 	private String lastUpdatedBy ;
 	private Date lastUpdatedAt;
+	private String competitorName;
+	private String emdFor;
 	
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -158,7 +160,23 @@ public class EMDDetail {
 		return sqlEmdEndDate;
 	}
 
+	public String getCompetitorName() {
+		return competitorName;
+	}
+
+	public void setCompetitorName(String competitorName) {
+		this.competitorName = competitorName;
+	}
+
 	public void setSqlEmdEndDate(Date sqlEmdEndDate) {
 		this.sqlEmdEndDate = sqlEmdEndDate;
+	}
+
+	public String getEmdFor() {
+		return emdFor;
+	}
+
+	public void setEmdFor(String emdFor) {
+		this.emdFor = emdFor;
 	}
 }
