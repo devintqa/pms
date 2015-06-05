@@ -110,7 +110,7 @@ public class EMDController {
 			employee.setEmployeeId(emdDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
 			model.addAttribute("emdForm", emdDetail);
-			model.addAttribute("emdCreationMessage", "Project Creation Successful.");
+			model.addAttribute("emdCreationMessage", "Emd Creation Successful.");
 			model.addAttribute("aliasProjectList",aliasProjectList);
 			if(emdDetail.isSubProjectEMD()) {
 				model.addAttribute("subAliasProjectList", subAliasProjectList);
