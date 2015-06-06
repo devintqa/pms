@@ -69,7 +69,7 @@ public class EmdValidator extends BaseValidator implements Validator {
             }
         }
 
-        if(emdDetail.getEmdFor()=="competitor")
+        if(emdDetail.getEmdSubmitter()=="competitor")
         {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "competitorName",
                     "required.competitorName", "Please enter Competitor Name,");

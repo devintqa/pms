@@ -27,6 +27,10 @@ public class EmdServiceImpl implements EmdService {
         emdDetail.setEmdExtensionSqlDate(getSQLDate(emdDetail.getEmdExtensionDate(),formatter));
         emdDetail.setLastUpdatedBy(emdDetail.getEmployeeId());
         emdDetail.setLastUpdatedAt(getCurrentDateTime());
+        if("" == emdDetail.getEmdSubmitter())
+        {
+            emdDetail.setEmdSubmitter("PSK");
+        }
         boolean isEmdUpdateSuccess = emdDAO.saveEmd(emdDetail);
         return isEmdUpdateSuccess;
     }

@@ -70,11 +70,12 @@ $(document).ready(function () {
 	  		$("#showSubProject").show();
 	  };
 	  $('#competitor').change(function() {
+		 $("#emdSubmitter").val('');
 		 $("#showCompetitorName").show();
 	  });
-	  $('#main').change(function() {
+	  $('#psk').change(function() {
       	$("#showCompetitorName").hide();
-      	$("#competitorName").val('');
+      	$("#emdSubmitter").val('');
       });
 
 });
@@ -133,16 +134,16 @@ $(document).ready(function () {
 							</tr>
 							<tr>
 								<td>EMD For <span id="colon">:</span></td>
-								<td><form:radiobutton path="emdFor" id="main" value="main" checked="true"/>Main
+								<td><form:radiobutton path="emdFor" id="psk" value="PSK" checked="true"/>PSK
                                 <form:radiobutton  path="emdFor" id="competitor"  value="competitor"/>Competitor</td>
                                 <td><form:errors path="emdFor" cssClass="error" /></td>
 							</tr>
 						    <tr id="showCompetitorName">
 								<td>Competitor Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="competitorName"
+								<td><form:input path="emdSubmitter"
 										placeholder="Enter Competitor Name" cssClass="inputText" /></td>
-								<td><form:errors path="competitorName" cssClass="error" /></td>
+								<td><form:errors path="emdSubmitter" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Bank Guarantee Number<span id="colon">:</span>
