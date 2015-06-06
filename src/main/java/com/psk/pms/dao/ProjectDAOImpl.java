@@ -287,12 +287,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 		
 		BigDecimal exAmount = (BigDecimal)row.get("ExcessInAmount");
 		projDoc.setExAmount(exAmount.toString());
-		
-		BigDecimal exPercentage = (BigDecimal)row.get("ExcessInPercentage");
-		projDoc.setExPercentage(exPercentage.toString());
+
+		BigDecimal exPercentage = (BigDecimal) row.get("ExcessInPercentage");
+		if (null == exPercentage) {
+			projDoc.setExPercentage("");
+		} else {
+			projDoc.setExPercentage(exPercentage.toString());
+		}
 
 		BigDecimal lessPercentage = (BigDecimal)row.get("LessInPercentage");
-		projDoc.setLessPercentage(lessPercentage.toString());
+		if (null == lessPercentage) {
+			projDoc.setLessPercentage("");
+		}else {
+			projDoc.setLessPercentage(lessPercentage.toString());
+		}
 		
 		projDoc.setAgreementSqlDate((Date)row.get("AgreementDate"));
 		projDoc.setCommencementSqlDate((Date)row.get("CommencementDate"));
@@ -316,27 +324,35 @@ public class ProjectDAOImpl implements ProjectDAO {
 		subProjDoc.setSubContractorName((String) row.get("ContractorName"));
 		subProjDoc.setSubAliasContractorName((String) row.get("ContractorAliasName"));
 		subProjDoc.setSubContractorAddress((String) row.get("ContractorAdd"));
-		
+
 		BigDecimal amount = (BigDecimal)row.get("Amount");
 		subProjDoc.setSubAmount(amount.toString());
-		
+
 		BigDecimal aggValue = (BigDecimal)row.get("AgreementValue");
 		subProjDoc.setSubAgreementValue(aggValue.toString());
-		
+
 		BigDecimal tenderValue = (BigDecimal)row.get("TenderValue");
 		subProjDoc.setSubTenderValue(tenderValue.toString());
-		
+
 		BigDecimal contValue = (BigDecimal)row.get("ContractorValue");
 		subProjDoc.setSubContractValue(contValue.toString());
-		
+
 		BigDecimal exAmount = (BigDecimal)row.get("ExcessInAmount");
 		subProjDoc.setSubExAmount(exAmount.toString());
-		
-		BigDecimal exPercentage = (BigDecimal)row.get("ExcessInPercentage");
-		subProjDoc.setSubExPercentage(exPercentage.toString());
 
-		BigDecimal lessPercentage = (BigDecimal)row.get("LessInPercentage");
-		subProjDoc.setSubLessPercentage(lessPercentage.toString());
+		BigDecimal exPercentage = (BigDecimal) row.get("ExcessInPercentage");
+		if (null == exPercentage) {
+			subProjDoc.setSubExPercentage("");
+		} else {
+			subProjDoc.setSubExPercentage(exPercentage.toString());
+		}
+
+		BigDecimal lessPercentage = (BigDecimal) row.get("LessInPercentage");
+		if (null == lessPercentage) {
+			subProjDoc.setSubLessPercentage("");
+		} else {
+			subProjDoc.setSubLessPercentage(lessPercentage.toString());
+		}
 
 		subProjDoc.setSubTenderSqlDate((Date)row.get("TenderDate"));
 		subProjDoc.setSubAgreementSqlDate((Date)row.get("AgreementDate"));

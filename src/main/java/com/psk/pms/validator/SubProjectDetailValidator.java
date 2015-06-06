@@ -148,6 +148,17 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			}
 		}
 
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubLessPercentage());
+			if (!matcher.matches()) {
+				errors.rejectValue("subLessPercentage", "subLessPercentage.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubLessPercentage().length() > 15) {
+				errors.rejectValue("subLessPercentage", "subLessPercentage.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
+
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAddSecurityDeposit())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);
 			matcher = pattern.matcher(subProjectDetail.getSubAddSecurityDeposit());
@@ -161,9 +172,12 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 
 		if (StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExPercentage",
-					"required.subExPercentage", "Enter any one among Expected Amount or Less amount in Percentage.");
+					"required.subExPercentage", "Enter any one among Expected amount or Less amount in Percentage.");
 		}
 
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage()) && !StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {
+			errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "only one among Expected amount or Less amount in Percentage can be entered.");
+		}
 	}
 }
 

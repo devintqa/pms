@@ -25,6 +25,12 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setCompletionSqlDate(getSQLDate(projectDetail.getCompletionDate(), formatter));
         projectDetail.setLastUpdatedBy(projectDetail.getEmployeeId());
         projectDetail.setLastUpdatedAt(getCurrentDateTime());
+		if (projectDetail.getLessPercentage() == "") {
+			projectDetail.setLessPercentage(null);
+		}
+		if (projectDetail.getExPercentage() == "") {
+			projectDetail.setExPercentage(null);
+		}
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
@@ -53,6 +59,12 @@ public class ProjectServiceImpl implements ProjectService {
 		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
         subProjectDetail.setLastUpdatedBy(subProjectDetail.getEmployeeId());
         subProjectDetail.setLastUpdatedAt(getCurrentDateTime());
+		if (subProjectDetail.getSubLessPercentage() == "") {
+			subProjectDetail.setSubLessPercentage(null);
+		}
+		if (subProjectDetail.getSubExPercentage() == "") {
+			subProjectDetail.setSubExPercentage(null);
+		}
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;
 	}

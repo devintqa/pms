@@ -123,6 +123,16 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		            errors.rejectValue("exPercentage", "exPercentage.incorrect", "Field must not exceed 15 characters.");
 		        }
 		}
+		if (!StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(projectDetail.getLessPercentage());
+			if (!matcher.matches()) {
+				errors.rejectValue("lessPercentage", "lessPercentage.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			}else if(projectDetail.getLessPercentage().length() > 15){
+				errors.rejectValue("lessPercentage", "lessPercentage.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
         if (!StringUtils.isNullOrEmpty(projectDetail.getAddSecurityDeposit())) {
             pattern = Pattern.compile(AMOUNT_PATTERN);
             matcher = pattern.matcher(projectDetail.getAddSecurityDeposit());
@@ -156,6 +166,10 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		if (StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
 				"required.exPercentage", "Enter one among Expected Amount or Less amount in Percentage.");
+		}
+
+		if (!StringUtils.isNullOrEmpty(projectDetail.getExPercentage()) && !StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
+			errors.rejectValue("exPercentage", "exPercentage.incorrect", "only one among Expected amount or Less amount in Percentage can be entered.");
 		}
 	}
 
