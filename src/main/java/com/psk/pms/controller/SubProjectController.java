@@ -139,19 +139,4 @@ public class SubProjectController {
 		return aliasProjectName;
 	}
 
-	/*public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
-		return aliasSubProjectName;
-	}*/
-
-	/*public List<ProjectDetail> getProjectDocumentList() {
-		List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
-		return projectDocumentList;
-	}
-
-	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
-		return subProjectDocumentList;
-	}*/
-
 }

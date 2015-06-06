@@ -16,7 +16,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import java.util.List;
 
 @Controller
-@SessionAttributes("employeeObj")
 public class ProjectController {
 
 	@Autowired
@@ -28,13 +27,16 @@ public class ProjectController {
 	private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@ModelAttribute("employeeObj") Employee employee, @PathVariable String employeeId, 
+	public String buildProject(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
 			Model model) {		
 		LOGGER.info("method = buildProject()");
 		ProjectDetail projDetail = new ProjectDetail();
 		projDetail.setEmployeeId(employeeId);
 		model.addAttribute("projectForm", projDetail);
+		Employee employee = new Employee();
+		employee.setEmployeeId(employeeId);
+		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
 		return "BuildProject";
 	}
