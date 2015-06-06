@@ -39,7 +39,7 @@ CREATE TABLE `emddetail` (
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `EmdId` int(11) NOT NULL AUTO_INCREMENT,
-  `CompetitorName` varchar(50)
+  `CompetitorName` varchar(50),
   PRIMARY KEY (`EmdId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
