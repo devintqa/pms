@@ -111,8 +111,6 @@ CREATE TABLE `project` (
   `ExcessInPercentage` decimal(15,2),
   `LessInPercentage` decimal(15,2),
   `TenderDate` datetime NOT NULL,
-  `EmdEndDate` datetime NOT NULL,
-  `EmdAmount` decimal(15,2) NOT NULL,
   `AddSecurityDeposit` decimal(15,2) NOT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
