@@ -172,8 +172,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId) {
-		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId);
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
+		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId, subProject);
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
@@ -194,8 +194,14 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(Integer subProjectId) {
-		List<ProjDescDetail> projectDescDetailList = projectDAO.projectDescDetailList(subProjectId);
+	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
+		List<ProjDescDetail> projectDescDetailList = projectDAO.getSubProjectDescDetailList(subProjectId);
+		return projectDescDetailList;
+	}
+	
+	@Override
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projId) {
+		List<ProjDescDetail> projectDescDetailList = projectDAO.getProjectDescDetailList(projId);
 		return projectDescDetailList;
 	}
 

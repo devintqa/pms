@@ -28,11 +28,13 @@ public interface ProjectService {
 	
 	public SubProjectDetail getSubProjectDocument(String subProject);
 	
-	public ProjDescDetail getProjectDescDetail(String projDescId);
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
 
-	public List<ProjDescDetail> getProjectDescDetailList(Integer subProjId);
+	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
+	
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projId);
 	
 	public boolean isAliasProjectAlreadyExisting(String aliasName);
 	

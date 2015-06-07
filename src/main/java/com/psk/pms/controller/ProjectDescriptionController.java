@@ -1,6 +1,7 @@
 package com.psk.pms.controller;
 
 import com.google.gson.Gson;
+import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -42,7 +43,7 @@ public class ProjectDescriptionController {
 			Model model) {
 		
 		if(null!=descDetail){
-			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail);
+			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail,subProject);
 			projDescDetail.setEmployeeId(employeeId);
 			Map<String, String> aliasProjectList = new HashMap<String, String>();
 			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
@@ -91,7 +92,7 @@ public class ProjectDescriptionController {
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 			} else{
 				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
-				projDescDetail = projectService.getProjectDescDetail(projDescDetail.getProjDescId().toString());
+				projDescDetail = projectService.getProjectDescDetail(String.valueOf(projDescDetail.getProjDescId()), projDescDetail.getAliasSubProjectName());
 				aliasProjectList = new HashMap<String, String>();
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 				model.addAttribute("aliasProjectList", aliasProjectList);

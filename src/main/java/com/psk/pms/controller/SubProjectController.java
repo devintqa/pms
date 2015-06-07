@@ -63,7 +63,7 @@ public class SubProjectController {
 		if("editProjectDesc".equalsIgnoreCase(action)){
 			SubProjectDetail subProjectDetail = projectService.getSubProjectDocument(subProject);
 			subProjectDetail.setEmployeeId(employeeId);
-			List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(subProjectDetail.getSubProjId());
+			List<ProjDescDetail> projDescDocList = projectService.getSubProjectDescDetailList(subProjectDetail.getSubProjId());
 			model.addAttribute("projDescDocList", projDescDocList);
 			model.addAttribute("projDescDocListSize", projDescDocList.size());
 			model.addAttribute("subProjectAliasName", subProjectDetail.getAliasSubProjName());

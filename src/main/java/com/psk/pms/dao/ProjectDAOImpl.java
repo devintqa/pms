@@ -1,4 +1,5 @@
 package com.psk.pms.dao;
+
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
@@ -393,7 +394,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return subProjDocList;
 	}
 
-	public List<ProjDescDetail> projectDescDetailList(Integer subProjectId) {
+	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
 		String sql = projDescDetailQuery + " where SubProjId = "+subProjectId;
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 
@@ -405,6 +406,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 		} 
 		return projectDescDetailList;
 	}
+	
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId) {
+		String sql = projDescDetailQuery + " where ProjId = "+projectId;
+		jdbcTemplate = new JdbcTemplate(dataSource);             
+
+		List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			projectDescDetailList.add(buildProjectDescDetail(row));
+		} 
+		return projectDescDetailList;
+	}
+	
 	public boolean isAliasProjectAlreadyExisting(String aliasName){
 		String sql = "SELECT COUNT(*) FROM project where AliasProjName = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
@@ -471,10 +486,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId) {
-		String sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM projectdesc as d "
-				+ "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId "
-				+ "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = "+projDescId;
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
+		String sql = null;
+		LOGGER.info("subProject value" + subProject);
+		if(!StringUtils.isNullOrEmpty(subProject)){
+			LOGGER.info("subProject value for sub project" + subProject);
+			sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM projectdesc as d "
+			+ "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId "
+			+ "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = "+projDescId;
+		}else{
+			LOGGER.info("subProject value for project" + subProject);
+			sql = projDescDetail + ",  p.AliasProjName FROM projectdesc as d "
+			+ "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = "+projDescId;
+		}
+		
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 		ProjDescDetail projDescDetail = null;
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);

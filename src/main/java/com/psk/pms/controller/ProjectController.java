@@ -1,6 +1,7 @@
 package com.psk.pms.controller;
 
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
@@ -58,11 +59,20 @@ public class ProjectController {
 			ProjectDetail projectDetail = new ProjectDetail();
 			projectDetail = projectService.getProjectDocument(project);
 			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
-			model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-			model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
-			model.addAttribute("projectAliasName", projectDetail.getAliasName());
-			model.addAttribute("action", action);
-			return "UpdateSubProject";
+			if(subProjectDocumentList.size() > 0){
+				model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+				model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
+				model.addAttribute("projectAliasName", projectDetail.getAliasName());
+				model.addAttribute("action", action);
+				return "UpdateSubProject";
+			}
+			List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(projectDetail.getProjId());
+			if(projDescDocList.size() > 0){
+				model.addAttribute("projDescDocList", projDescDocList);
+				model.addAttribute("projDescDocListSize", projDescDocList.size());
+				model.addAttribute("projectAliasName", projectDetail.getAliasName());
+				return "UpdateProjectDesc";
+			}
 		}else {
 			ProjectDetail projectDetail = new ProjectDetail();
 			projectDetail = projectService.getProjectDocument(project);

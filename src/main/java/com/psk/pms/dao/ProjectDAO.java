@@ -30,7 +30,9 @@ public interface ProjectDAO {
 
 	public SubProjectDetail getSubProjectDocument(String subProjectId);
 
-	public List<ProjDescDetail> projectDescDetailList(Integer subProjectId);
+	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
+	
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId);
 	
 	public boolean isAliasProjectAlreadyExisting(String aliasName);
 	
@@ -38,7 +40,7 @@ public interface ProjectDAO {
 	
 	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
-	public ProjDescDetail getProjectDescDetail(String projDescId);
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 	
 	
 }
