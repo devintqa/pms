@@ -59,6 +59,7 @@
 							<li><a id="profile"
 								href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 									Profile</a></li>
+							<li><a id="searchFile" href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Search</a></li>
 							<li><a id="logout"
 								href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						</ul>
