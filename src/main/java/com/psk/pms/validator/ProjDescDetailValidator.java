@@ -31,8 +31,6 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
 				"required.aliasProjectName", "Please Select Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasSubProjectName",
-				"required.aliasSubProjectName", "Please Select Alias Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "workType",
 			"required.workType", "Enter Work Type");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
@@ -56,8 +54,14 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 			errors.rejectValue("aliasProjectName", "aliasProjectName.incorrect","Please select a valid project");
 		}
 		
-		if ("0".equalsIgnoreCase(projectDescDetail.getAliasSubProjectName())) {  
-			errors.rejectValue("aliasSubProjectName", "aliasSubProjectName.incorrect","Please select a valid sub project");
+		if (projectDescDetail.isSubProjectDesc()) {
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasSubProjectName",
+					"required.aliasSubProjectName", "Please Select Alias Sub Project Name.");
+			if ("0".equalsIgnoreCase(projectDescDetail.getAliasSubProjectName())) {
+				errors.rejectValue("aliasSubProjectName",
+						"aliasSubProjectName.incorrect",
+						"Please select a valid sub project");
+			}
 		}
 		
 		if (!StringUtils.isNullOrEmpty(projectDescDetail.getQuantityInFig())) {  
@@ -98,16 +102,17 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
         }
 		if(projectDescDetail.getAliasDescription().length() > 100){
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
-        } 
-		else if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
+        }
+		
+		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
 			LOGGER.info("Project description detail is update: "+projectDescDetail.getIsUpdate());
 			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
-			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail.getAliasProjectName(), projectDescDetail.getAliasSubProjectName(), projectDescDetail.getAliasDescription());
+			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail);
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");
 			}
-
 		}
+		
 		if(projectDescDetail.getRateInWords().length() > 50){
             errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
         }

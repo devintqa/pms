@@ -73,7 +73,6 @@ public class ProjectDescriptionController {
 			BindingResult result, Model model, SessionStatus status) {	
 		boolean isProjectSaveSuccessful = false;
 		Map<String, String> aliasProjectList = populateAliasProjectList();
-		Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getAliasProjectName());
 		projDescDetailValidator.validate(projDescDetail, result);
 		LOGGER.info("Result has errors ?? "+ result.hasErrors());
 		if(!result.hasErrors()){
@@ -81,8 +80,7 @@ public class ProjectDescriptionController {
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			subAliasProjectList.put("0", "--Please Select--");
-			model.addAttribute("subAliasProjectList", subAliasProjectList);
+			model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 			return "BuildDescription";
 		} else {
 			status.setComplete();
@@ -101,8 +99,7 @@ public class ProjectDescriptionController {
 				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
 			}
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			subAliasProjectList.put("0", "--Please Select--");
-			model.addAttribute("subAliasProjectList", subAliasProjectList);
+			model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 			return "BuildDescription";
 		}
 	}
@@ -145,6 +142,12 @@ public class ProjectDescriptionController {
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
 		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
+	}
+	
+	private Map<String, String> fetchSubAliasProjectList(String aliasProjectName){
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
+		subAliasProjectList.put("0", "--Please Select--");
+		return subAliasProjectList;
 	}
 
 }

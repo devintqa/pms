@@ -1,4 +1,5 @@
 package com.psk.pms.dao;
+import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -175,21 +176,35 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public boolean saveProjDesc(final ProjDescDetail projDescDetail){
-		String insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
-				+ "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
 		String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInWords = ?, Description = ?," +
 				"AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
-
+		String insertSql = null;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
-			jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
-					projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
-					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
-					projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
-					projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt()
-			});
+			if(projDescDetail.isSubProjectDesc()){
+				insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
+					+ "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
+						projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+						projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
+						projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
+						projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt()
+				});
+			} else {
+				insertSql = "INSERT INTO projectDesc (ProjId, WorkType, QuantityInFig, QuantityInWords, "
+					+ "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
+					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(),
+						projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
+						projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
+						projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
+						projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt()
+				});
+			}
+			
+			
 		} else {
 			jdbcTemplate.update(updateSql, new Object[] {projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 					projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
@@ -412,11 +427,22 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
-	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription) {
-		String sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and AliasDescription = ?";
+	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
+		String sql = null;
+		int total = 0;
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		int total = jdbcTemplate.queryForObject(sql, Integer.class,
-				new Object[] { projectId, subProjId, aliasDescription });
+		if(!projectDescDetail.isSubProjectDesc()){
+			LOGGER.info("There is no sub project selected");
+			sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and AliasDescription = ?";
+			total = jdbcTemplate.queryForObject(sql, Integer.class,
+					new Object[] { projectDescDetail.getAliasProjectName(), projectDescDetail.getAliasDescription() });
+		}else{
+			LOGGER.info("There is a sub project selected");
+			sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and AliasDescription = ?";
+			total = jdbcTemplate.queryForObject(sql, Integer.class,
+					new Object[] { projectDescDetail.getAliasProjectName(), projectDescDetail.getAliasSubProjectName(), projectDescDetail.getAliasDescription() });
+		}
+		
 		if (total == 0) {
 			return false;
 		}

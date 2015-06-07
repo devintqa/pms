@@ -45,6 +45,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public boolean createEditProjDesc(ProjDescDetail projDescDetail){
+    	if(!projDescDetail.isSubProjectDesc())
+        {
+    		projDescDetail.setAliasSubProjectName(null);
+        }
         projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
         projDescDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
@@ -81,9 +85,9 @@ public class ProjectServiceImpl implements ProjectService {
 		return isAvailable;
 	}
 	
-	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription) {
+	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
 		boolean isAvailable = false;
-		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectId, subProjId, aliasDescription);
+		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectDescDetail);
 		return isAvailable;
 	}
 	

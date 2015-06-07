@@ -36,7 +36,7 @@ public interface ProjectDAO {
 	
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId);
 	
-	public boolean isAliasDescriptionAlreadyExisting(String projectId, String subProjId, String aliasDescription);
+	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
 	public ProjDescDetail getProjectDescDetail(String projDescId);
 	

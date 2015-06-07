@@ -19,7 +19,8 @@ public class ProjDescDetail {
 	private Integer subProjId;
 	private Integer projDescId;
 	private String isUpdate;
-    private String lastUpdatedBy ;
+	private boolean subProjectDesc;
+	private String lastUpdatedBy ;
     private Date lastUpdatedAt;
 	
 	public String getAliasProjectName() {
@@ -128,5 +129,11 @@ public class ProjDescDetail {
     public void setLastUpdatedAt(Date lastUpdatedAt) {
         this.lastUpdatedAt = lastUpdatedAt;
     }
+	public boolean isSubProjectDesc() {
+		return subProjectDesc;
+	}
+	public void setSubProjectDesc(boolean subProjectDesc) {
+		this.subProjectDesc = subProjectDesc;
+	}
 }
 

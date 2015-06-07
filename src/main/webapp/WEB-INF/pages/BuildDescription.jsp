@@ -10,30 +10,48 @@
 <%@include file="Script.jsp" %>
 
 <script type="text/javascript">
-	function getAliasSubProjects() {
-		 var aliasProjectName  = $('#projId').val();
-		$.ajax({
-			type : "GET",
-			url : "getSubAliasProject.do",
-			cache : false,
-			data: "aliasProjectName="+aliasProjectName,
-			success : function(response) {
-				var options = '';
-				if (response != null) {
-					var obj = jQuery.parseJSON(response);
+$(document).ready(function () {
+	  $("#showSubProject").hide();
+	  
+	  $('#subProjectDesc').change(function() {
+	        if($(this).is(":checked")) {
+			var aliasProjectName  = $('#projId').val();
+			$.ajax({
+				type : "GET",
+				url : "getSubAliasProject.do",
+				cache : false,
+				data: "aliasProjectName="+aliasProjectName,
+				success : function(response) {
 					var options = '';
-					//options = '<option value=0>--Please Select--</option>';
-					for ( var key in obj) {
-						var attrName = key;
-						var attrValue = obj[key];
-						options = options + '<option value='+attrName+'>'
-								+ attrValue + '</option>';
+					if (response != null) {
+						var obj = jQuery.parseJSON(response);
+						var options = '';
+						//options = '<option value=0>--Please Select--</option>';
+						for ( var key in obj) {
+							var attrName = key;
+							var attrValue = obj[key];
+							options = options + '<option value='+attrName+'>'
+									+ attrValue + '</option>';
+						}
+						$('#aliasSubProjectName').html(options);
 					}
-					$('#aliasSubProjectName').html(options);
 				}
-			}
-		});
-	}
+			});
+				$("#showSubProject").show();
+	        }else {
+	        	$("#aliasSubProjectName").prop('selectedIndex',0);
+	        	$("#showSubProject").hide();
+	        }
+		}); 
+	  $('#projId').change(function() {
+		  $("#showSubProject").hide();
+		  $('#subProjectDesc').attr('checked', false);
+	  });
+
+	  if($('#subProjectDesc').is(':checked')) {
+	  		$("#showSubProject").show();
+	  };
+});
 </script>
 
 </head>
@@ -61,12 +79,16 @@
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasProjectName"
-										cssClass="inputText" id="projId" items="${aliasProjectList}"
-										onchange="getAliasSubProjects()">
+										cssClass="inputText" id="projId" items="${aliasProjectList}" >
 									</form:select></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
+								<td>Description For Sub Project? :</td>
+								<td><form:checkbox path="subProjectDesc" id="subProjectDesc"/></td>
+								<td><form:errors path="subProjectDesc" cssClass="error" /></td>
+							</tr>
+							<tr id="showSubProject">
 								<td>Sub Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasSubProjectName"

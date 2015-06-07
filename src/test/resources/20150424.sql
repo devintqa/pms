@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS `projectdesc`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projectdesc` (
   `ProjId` int(10) NOT NULL,
-  `SubProjId` int(10) NOT NULL,
+  `SubProjId` int(10) NULL,
   `WorkType` varchar(30) NOT NULL,
   `QuantityInFig` decimal(15,2) NOT NULL,
   `QuantityInWords` varchar(50) NOT NULL,
@@ -154,8 +154,7 @@ CREATE TABLE `projectdesc` (
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ProjDescId`),
-  KEY `AliasSubProjName` (`SubProjId`)
+  PRIMARY KEY (`ProjDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
