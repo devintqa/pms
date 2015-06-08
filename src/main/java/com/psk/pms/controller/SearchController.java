@@ -2,19 +2,26 @@ package com.psk.pms.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.SearchDetail;
+import com.psk.pms.service.ProjectService;
 
 @Controller
 public class SearchController {
 	
+	@Autowired
+	ProjectService projectService;
+	
 	private static final Logger LOGGER = Logger.getLogger(SearchController.class);
+	
 	List<SearchDetail> data = new ArrayList<SearchDetail>();
 	SearchController(){
 		data.add(new SearchDetail(1, "Kalai"));
@@ -48,14 +55,18 @@ public class SearchController {
 	private List<String> simulateSearchResult(String aliasProjectName) {
  
 		List<String> result = new ArrayList<String>();
-		// iterate a list and filter by tagName
-		for (SearchDetail searchDetail : data) {
-			if (searchDetail.getAliasProjectName().toUpperCase().indexOf(aliasProjectName.toUpperCase())!= -1) {
-				LOGGER.info("Search Detail:" + aliasProjectName);
-				result.add(searchDetail.getAliasProjectName());
+		Map<String, String> aliasProjectList = populateAliasProjectList();
+		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
+			if (entry.getValue().toUpperCase().indexOf(aliasProjectName.toUpperCase())!= -1) {
+				result.add(entry.getValue());
 			}
 		}
 		return result;
+	}
+	
+	public Map<String, String> populateAliasProjectList() {
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		return aliasProjectName;
 	}
 
 }
