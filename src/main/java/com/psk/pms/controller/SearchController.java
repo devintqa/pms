@@ -41,8 +41,8 @@ public class SearchController {
 	
 	@RequestMapping(value = "/emp/myview/searchProject/searchProject.do", method = RequestMethod.GET)
 	public @ResponseBody
-	List<String> getAddressList(@RequestParam String input) {
-		return simulateSearchResult(input);
+	List<String> getAddressList(@RequestParam("term") String name) {
+		return simulateSearchResult(name);
 	}
 	
 	private List<String> simulateSearchResult(String aliasProjectName) {
@@ -50,7 +50,7 @@ public class SearchController {
 		List<String> result = new ArrayList<String>();
 		// iterate a list and filter by tagName
 		for (SearchDetail searchDetail : data) {
-			if (searchDetail.getAliasProjectName().contains(aliasProjectName)) {
+			if (searchDetail.getAliasProjectName().toUpperCase().indexOf(aliasProjectName.toUpperCase())!= -1) {
 				LOGGER.info("Search Detail:" + aliasProjectName);
 				result.add(searchDetail.getAliasProjectName());
 			}

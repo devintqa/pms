@@ -8,22 +8,15 @@
   <title>jQuery UI Autocomplete - Default functionality</title>
 <%@include file="Script.jsp" %>
   <script>
-  
-  $(document).ready(function() {
-	  $("#aliasProjectName").autocomplete({
-	  source: function(request, response) {
-	  $.ajax({
-	  url: "/searchProject/searchProject.do",
-	  data : {
-			input : request.term
-		},  
-	  success: function(data) {
-		  response(data);
-	  }
-	  });
-	  }
-	  });
-	  });
+  $(function() {		
+		$("#aliasProjectName").autocomplete({
+			source: function (request, response) {
+	            $.getJSON("/pms/emp/myview/searchProject/searchProject.do", {
+	                term: request.term
+	            }, response);
+	        }
+		});
+	});
   </script>
 </head>
 <body ng-app="sampleApp">
