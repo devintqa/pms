@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,13 +12,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
+import com.psk.pms.validator.SearchValidator;
 
 @Controller
 public class SearchController extends BaseController {
 	
 	private static final Logger LOGGER = Logger.getLogger(SearchController.class);
+	
+	@Autowired
+	private SearchValidator searchValidator;
 	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
 	public String buildProject(@PathVariable String employeeId, 
@@ -36,6 +42,7 @@ public class SearchController extends BaseController {
 	@RequestMapping(value = "/emp/myview/searchProject/searchProject.do", method = RequestMethod.GET)
 	public @ResponseBody
 	List<String> getProjectList(@RequestParam("term") String name) {
+		LOGGER.info("method = getProjectList()");
 		return fetchProjectsInfo(name);
 	}
 	
@@ -44,10 +51,22 @@ public class SearchController extends BaseController {
 			@ModelAttribute("searchForm") SearchDetail searchDetail,
 			BindingResult result, Model model, SessionStatus status) {
 		LOGGER.info("method = searchProjectDetail()");
-		if(searchDetail.isSearchProject()){
-			List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
-			if(!projectDocumentList.isEmpty()){
-				model.addAttribute("projectDocumentList", projectDocumentList);
+		searchValidator.validate(searchDetail, result);
+		if(!result.hasErrors()){
+			if(searchDetail.isEditProject()){
+				List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+				if(!projectDocumentList.isEmpty()){
+					model.addAttribute("projectDocumentList", projectDocumentList);
+				}
+			}
+			if(searchDetail.isSearchProjectDescription()){
+				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
+				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId());
+				if(projDescDocList.size() > 0){
+					model.addAttribute("projDescDocList", projDescDocList);
+					model.addAttribute("projDescDocListSize", projDescDocList.size());
+					model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+				}
 			}
 		}
 		return "SearchProject";

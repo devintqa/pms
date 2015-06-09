@@ -39,9 +39,14 @@
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Search Project? :</td>
-								<td><form:checkbox path="searchProject" id="searchProject"/></td>
-								<td><form:errors path="searchProject" cssClass="error" /></td>
+								<td>Edit Project? :</td>
+								<td><form:checkbox path="editProject" id="editProject"/></td>
+								<td><form:errors path="editProject" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Search Project Description? :</td>
+								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
+								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
 							</tr>			
 							<tr></tr>
 						</table>
@@ -90,6 +95,41 @@
 									class="userAction">Update</a></td>
 							</tr>
 						</c:forEach>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
+		
+		<c:if test="${projDescDocListSize gt 0}">
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
+			<table id="projDescDocList" class="gridView">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Alias</th>
+						<th>Work Type</th>
+						<th>Quantity</th>
+						<th>Rate</th>
+						<th>Project Description Amount</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty projDescDocList}">
+						<c:forEach var="projDesc" items="${projDescDocList}">
+							<tr>
+								<td>${projDesc.description}</td>
+								<td>${projDesc.aliasDescription}</td>
+								<td>${projDesc.workType}</td>
+								<td>${projDesc.quantityInFig}</td>
+								<td>${projDesc.rateInFig}</td>
+								<td>${projDesc.projDescAmount}</td>
+								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+										 class="userAction">Update</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
 				</tbody>
 			</table>
 			<br>

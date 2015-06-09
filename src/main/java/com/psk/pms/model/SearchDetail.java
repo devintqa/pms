@@ -1,10 +1,13 @@
 package com.psk.pms.model;
 
+import java.util.Map;
+
 public class SearchDetail {
 	
 	private String aliasProjectName;
 	private Integer projId;
-	private boolean searchProject;
+	private boolean editProject;
+	private boolean searchProjectDescription;
 
 	public SearchDetail(){
 		
@@ -27,12 +30,18 @@ public class SearchDetail {
 	public void setProjId(Integer projId) {
 		this.projId = projId;
 	}
-	public boolean isSearchProject() {
-		return searchProject;
+	public boolean isEditProject() {
+		return editProject;
 	}
-
-	public void setSearchProject(boolean searchProject) {
-		this.searchProject = searchProject;
+	public void setEditProject(boolean editProject) {
+		this.editProject = editProject;
 	}
+	public boolean isSearchProjectDescription() {
+		return searchProjectDescription;
+	}
+	public void setSearchProjectDescription(boolean searchProjectDescription) {
+		this.searchProjectDescription = searchProjectDescription;
+	}
+	
 
 }

@@ -38,6 +38,7 @@
 	
 	<bean class="com.psk.pms.validator.EmployeeValidator" />
 	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.SearchValidator" />
 	<bean class="com.psk.pms.validator.SignUpValidator" />
 	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
 	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
