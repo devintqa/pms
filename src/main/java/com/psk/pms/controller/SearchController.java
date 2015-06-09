@@ -3,34 +3,21 @@ package com.psk.pms.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
-import com.psk.pms.service.ProjectService;
 
 @Controller
-public class SearchController {
-	
-	@Autowired
-	ProjectService projectService;
+public class SearchController extends BaseController {
 	
 	private static final Logger LOGGER = Logger.getLogger(SearchController.class);
-	
-	List<SearchDetail> data = new ArrayList<SearchDetail>();
-	SearchController(){
-		data.add(new SearchDetail(1, "Kalai"));
-		data.add(new SearchDetail(2, "MMC"));
-		data.add(new SearchDetail(3, "Secretariat"));
-		data.add(new SearchDetail(4, "MMC Trichy"));
-		data.add(new SearchDetail(5, "Kalai Madurai"));
-	}
-	
 	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
 	public String buildProject(@PathVariable String employeeId, 
@@ -48,12 +35,26 @@ public class SearchController {
 	
 	@RequestMapping(value = "/emp/myview/searchProject/searchProject.do", method = RequestMethod.GET)
 	public @ResponseBody
-	List<String> getAddressList(@RequestParam("term") String name) {
-		return simulateSearchResult(name);
+	List<String> getProjectList(@RequestParam("term") String name) {
+		return fetchProjectsInfo(name);
 	}
 	
-	private List<String> simulateSearchResult(String aliasProjectName) {
- 
+	@RequestMapping(value = "/emp/myview/searchProject/searchDetails.do", method = RequestMethod.POST)
+	public String searchProjectDetail(
+			@ModelAttribute("searchForm") SearchDetail searchDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		LOGGER.info("method = searchProjectDetail()");
+		if(searchDetail.isSearchProject()){
+			List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+			if(!projectDocumentList.isEmpty()){
+				model.addAttribute("projectDocumentList", projectDocumentList);
+			}
+		}
+		return "SearchProject";
+	}
+	
+	private List<String> fetchProjectsInfo(String aliasProjectName) {
+		LOGGER.info("method = fetchProjectsInfo()");
 		List<String> result = new ArrayList<String>();
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
@@ -62,11 +63,6 @@ public class SearchController {
 			}
 		}
 		return result;
-	}
-	
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
 	}
 
 }

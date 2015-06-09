@@ -4,7 +4,8 @@ public class SearchDetail {
 	
 	private String aliasProjectName;
 	private Integer projId;
-	
+	private boolean searchProject;
+
 	public SearchDetail(){
 		
 	}
@@ -25,6 +26,13 @@ public class SearchDetail {
 	}
 	public void setProjId(Integer projId) {
 		this.projId = projId;
+	}
+	public boolean isSearchProject() {
+		return searchProject;
+	}
+
+	public void setSearchProject(boolean searchProject) {
+		this.searchProject = searchProject;
 	}
 
 }

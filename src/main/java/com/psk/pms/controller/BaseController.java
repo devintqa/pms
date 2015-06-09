@@ -1,18 +1,21 @@
 package com.psk.pms.controller;
-/*package com.tcs.moneygram.controller;
 
-import java.security.Principal;
+import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.tcs.moneygram.model.Employee;
+import com.psk.pms.service.ProjectService;
  
 @Controller
 public class BaseController {
 	
+	@Autowired
+	ProjectService projectService;
+	
+	public Map<String, String> populateAliasProjectList() {
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		return aliasProjectName;
+	}
 
- 
-}*/
+}
