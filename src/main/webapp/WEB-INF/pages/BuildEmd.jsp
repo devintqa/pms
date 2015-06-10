@@ -204,6 +204,7 @@ $(document).ready(function () {
 					<form:hidden path="projId" />
 					<form:hidden path="subProjId" />
 					<form:hidden path="isUpdate" />
+					<form:hidden path="emdId" />
 					
 					<table>
 						<tr>

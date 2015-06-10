@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class EmdServiceImpl implements EmdService {
 
@@ -33,6 +34,16 @@ public class EmdServiceImpl implements EmdService {
         }
         boolean isEmdUpdateSuccess = emdDAO.saveEmd(emdDetail);
         return isEmdUpdateSuccess;
+    }
+
+    @Override
+    public List<EMDDetail> getEmdDetails() {
+        return emdDAO.getEmdDetails();
+    }
+
+    @Override
+    public EMDDetail getEmdDetailsByEmdId(String emdId) {
+        return emdDAO.getEmdDetailsByEmdId(emdId);
     }
 
     private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter){

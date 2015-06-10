@@ -51,6 +51,7 @@
 					<li><a href="#">EMD</a>
 						<ul>
 							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">Create</a></li>
+							<li><a id="updateEmd" href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
 							<li><a id="uploadFile" href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
 							<li><a id="downloadFile" href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
 						</ul></li>
