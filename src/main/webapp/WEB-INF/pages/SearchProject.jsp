@@ -24,6 +24,9 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
+	<div>
+	    <h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+	</div>
  <div class="ui-widget">
 			<form:form id="searchForm" method="POST" commandName="searchForm"
 				action="searchDetails.do">
@@ -42,6 +45,11 @@
 								<td>Edit Project? :</td>
 								<td><form:checkbox path="editProject" id="editProject"/></td>
 								<td><form:errors path="editProject" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Edit Sub Project? :</td>
+								<td><form:checkbox path="editSubProject" id="editSubProject"/></td>
+								<td><form:errors path="editSubProject" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Search Project Description? :</td>
@@ -135,6 +143,42 @@
 			<br>
 			<br>
 		</c:if>
+		
+		<c:if test="${subProjectDocumentSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Sub Project Details</h1>
+				<table id="subProjectDocumentList" class="gridView">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Alias</th>
+							<th>Agreement No</th>
+							<th>CER No</th>
+							<th>Amount</th>
+							<th>Contractor Name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty subProjectDocumentList}">
+							<c:forEach var="subProjDoc" items="${subProjectDocumentList}">
+								<tr>
+									<td>${subProjDoc.subProjectName}</td>
+									<td>${subProjDoc.aliasSubProjName}</td>
+									<td>${subProjDoc.subAgreementNo}</td>
+									<td>${subProjDoc.subCerNo}</td>
+									<td>${subProjDoc.subAmount}</td>
+									<td>${subProjDoc.subContractorName}</td>
+									<td><a
+										href="/pms/emp/myview/updateSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=${action}"
+										class="userAction">Update</a></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
 		
 		</div>
  <footer>

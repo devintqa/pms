@@ -27,11 +27,11 @@ public class SearchValidator extends BaseValidator implements Validator{
 		
 		SearchDetail searchDetail = (SearchDetail)target;
 
-        if(searchDetail.isSearchProjectDescription() && StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())){
+        if((searchDetail.isSearchProjectDescription() || searchDetail.isEditSubProject()) && StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())){
             errors.rejectValue("aliasProjectName", "required.aliasProjectName","Please select Alias Project Name.");
         }
         	
-        if(searchDetail.isSearchProjectDescription() && !StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())){
+        if((searchDetail.isSearchProjectDescription() || searchDetail.isEditSubProject()) && !StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())){
         	String projId = fetchProjectId(searchDetail.getAliasProjectName());
         	if(projId == null){
         		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");

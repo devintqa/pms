@@ -15,6 +15,7 @@ import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
+import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.validator.SearchValidator;
 
 @Controller
@@ -59,6 +60,16 @@ public class SearchController extends BaseController {
 					model.addAttribute("projectDocumentList", projectDocumentList);
 				}
 			}
+			if(searchDetail.isEditSubProject()){
+				List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(searchDetail.getProjId());
+				if(subProjectDocumentList.size() > 0){
+					model.addAttribute("subProjectDocumentList", subProjectDocumentList);
+					model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
+					model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Sub Projects Found For The Selection.");
+				}
+			}
 			if(searchDetail.isSearchProjectDescription()){
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
 				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId());
@@ -66,10 +77,17 @@ public class SearchController extends BaseController {
 					model.addAttribute("projDescDocList", projDescDocList);
 					model.addAttribute("projDescDocListSize", projDescDocList.size());
 					model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
 				}
 			}
 		}
 		return "SearchProject";
+	}
+	
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
+		return subProjectDocumentList;
 	}
 	
 	private List<String> fetchProjectsInfo(String aliasProjectName) {
