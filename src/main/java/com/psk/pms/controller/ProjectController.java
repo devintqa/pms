@@ -66,13 +66,6 @@ public class ProjectController {
 				model.addAttribute("action", action);
 				return "UpdateSubProject";
 			}
-			List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(projectDetail.getProjId());
-			if(projDescDocList.size() > 0){
-				model.addAttribute("projDescDocList", projDescDocList);
-				model.addAttribute("projDescDocListSize", projDescDocList.size());
-				model.addAttribute("projectAliasName", projectDetail.getAliasName());
-				return "UpdateProjectDesc";
-			}
 		}else {
 			ProjectDetail projectDetail = new ProjectDetail();
 			projectDetail = projectService.getProjectDocument(project);
