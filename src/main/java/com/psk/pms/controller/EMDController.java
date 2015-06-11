@@ -46,14 +46,17 @@ public class EMDController {
 			aliasProjectList.put("0", aliasProjectName);
 			Map<String, String> subAliasProjectList = new HashMap<>();
 			if (null != aliasSubProjectName && "" != aliasSubProjectName) {
-				subAliasProjectList.put("0", aliasSubProjectName);
-				emdDetail.setSubProjectEMD(true);
+				//subAliasProjectList.put("0", aliasSubProjectName);
+				//emdDetail.setSubProjectEMD(true);
+				//emdDetail.setAliasSubProjectName(aliasSubProjectName);
 			} else {
-				subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
+				emdDetail.setAliasProjectName(aliasProjectName);
+				//subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
 			}
 			emdDetail.setEmdId(Integer.parseInt(emdId));
-			model.addAttribute("aliasProjectList", aliasProjectList);
-			model.addAttribute("subAliasProjectList", subAliasProjectList);
+			//model.addAttribute("aliasProjectList", aliasProjectList);
+			//model.addAttribute("subAliasProjectList", subAliasProjectList);
+			model.addAttribute("aliasProjectName",aliasProjectName);
 			emdDetail.setIsUpdate("Y");
 			emdDetail.setEmployeeId(employeeId);
 			Employee employee = new Employee();
@@ -83,7 +86,7 @@ public class EMDController {
 		LOGGER.info("Sub Proj Id : " + request.getParameter("subProjId"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		subAliasProjectList.put("0", "--Please Select--");
-		Gson gson = new Gson(); 
+		Gson gson = new Gson();
 		String subAliasProjectJson = gson.toJson(subAliasProjectList);
 		return subAliasProjectJson;
 	}

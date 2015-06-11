@@ -24,8 +24,7 @@ public class EmdValidator extends BaseValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
-                "required.aliasProjectName", "Please Select Project Name.");
+
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdType",
                 "required.emdType", "Enter Emd Type");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdStartDate",
@@ -43,12 +42,17 @@ public class EmdValidator extends BaseValidator implements Validator {
 
         EMDDetail emdDetail = (EMDDetail) target;
 
-        if("0".equalsIgnoreCase(emdDetail.getAliasProjectName()))
+        if(0 == emdDetail.getEmdId()) {
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
+                    "required.aliasProjectName", "Please Select Project Name.");
+        }
+
+        if("0".equalsIgnoreCase(emdDetail.getAliasProjectName()) && emdDetail.getEmdId() ==0)
         {
             errors.rejectValue("aliasProjectName","required.aliasProjectName", "Please Select Alias ProjectName");
         }
 
-        if(emdDetail.isSubProjectEMD())
+        if(emdDetail.isSubProjectEMD() && emdDetail.getEmdId()==0)
         {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasSubProjectName",
                     "required.aliasSubProjectName", "Please Select Alias Sub ProjectName");
