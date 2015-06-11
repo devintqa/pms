@@ -27,31 +27,22 @@
 					<li><a id="emphome"
 						href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc" class="active">Home</a>
 					</li>
-					<li><a href="#">Project</a>
+					<li><a href="#">Create</a>
 						<ul>
 							<li><a id="createProject"
-								href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create</a></li>
-							<li><a id="updateProject"
-								href="/pms/emp/myview/${employeeObj.employeeId}?action=editProject">Update</a></li>
-						</ul></li>
-					<li><a href="#">Sub-Project</a>
-						<ul>
+								href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a></li>
 							<li><a id="createSubProject"
-								href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create</a></li>
-							<li><a id="updateSubProject"
-								href="/pms/emp/myview/${employeeObj.employeeId}?action=editSubProject">Update</a></li>
-						</ul></li>
-					<li><a href="#">Project Description</a>
-						<ul>
+								href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
 							<li><a id="createDescription"
-								href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Create</a></li>
-							<li><a id="updateDescription"
-								href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc">Update</a></li>
+								href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project Description</a></li>
 						</ul></li>					
 					<li><a href="#">EMD</a>
 						<ul>
 							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">Create</a></li>
 							<li><a id="updateEmd" href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
+						</ul></li>
+					<li><a href="#">File</a>
+						<ul>
 							<li><a id="uploadFile" href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
 							<li><a id="downloadFile" href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
 						</ul></li>
