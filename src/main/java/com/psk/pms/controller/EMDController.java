@@ -20,7 +20,7 @@ import java.util.*;
 
 @Controller
 public class EMDController {
-	
+
 	@Autowired
 	ProjectService projectService;
 
@@ -31,31 +31,18 @@ public class EMDController {
 	EmdValidator emdValidator;
 
 	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
-	
+
 	@RequestMapping(value = "/emp/myview/buildEmd/{employeeId}", method = RequestMethod.GET)
 	public String buildEmd(@PathVariable String employeeId,@RequestParam(value="emdId", required=false) String emdId,
 						   @RequestParam(value="action", required=false) String action,@RequestParam(value="aliasProjectName", required=false) String aliasProjectName,
 						   @RequestParam(value="aliasSubProjectName", required=false) String aliasSubProjectName,
-			Model model) {		
+			Model model) {
 		LOGGER.info("Into Build EMD");
 		EMDDetail emdDetail = new EMDDetail();
 		if("updateEmd".equalsIgnoreCase(action))
 		{
 			emdDetail = emdService.getEmdDetailsByEmdId(emdId);
-			Map<String, String> aliasProjectList = new HashMap<>();
-			aliasProjectList.put("0", aliasProjectName);
-			Map<String, String> subAliasProjectList = new HashMap<>();
-			if (null != aliasSubProjectName && "" != aliasSubProjectName) {
-				//subAliasProjectList.put("0", aliasSubProjectName);
-				//emdDetail.setSubProjectEMD(true);
-				//emdDetail.setAliasSubProjectName(aliasSubProjectName);
-			} else {
-				emdDetail.setAliasProjectName(aliasProjectName);
-				//subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
-			}
 			emdDetail.setEmdId(Integer.parseInt(emdId));
-			//model.addAttribute("aliasProjectList", aliasProjectList);
-			//model.addAttribute("subAliasProjectList", subAliasProjectList);
 			model.addAttribute("aliasProjectName",aliasProjectName);
 			emdDetail.setIsUpdate("Y");
 			emdDetail.setEmployeeId(employeeId);
@@ -76,12 +63,11 @@ public class EMDController {
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
-
 		return "BuildEmd";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/buildEmd/getSubAliasProject.do", method = RequestMethod.GET)
-	@ResponseBody 
+	@ResponseBody
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("Sub Proj Id : " + request.getParameter("subProjId"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
@@ -95,12 +81,12 @@ public class EMDController {
 		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
-	
+
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
 	}
-	
+
 	@ModelAttribute("emdTypeList")
 	public Map<String, String> populateEmdTypeList() {
 		Map<String, String> emdType = new LinkedHashMap<String, String>();
@@ -152,13 +138,12 @@ public class EMDController {
 								@RequestParam(value="action", required=false) String action,
 								Model model) {
 
-		LOGGER.info("method = updateProject() ,Action : " + action);
+		LOGGER.info("method = updateEmd() ,Action : " + action);
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-		List<EMDDetail> emdDetails = new ArrayList<>();
-		emdDetails = emdService.getEmdDetails();
+        List<EMDDetail> emdDetails = emdService.getEmdDetails();
 		model.addAttribute("emdDetailsSize", emdDetails.size());
 		model.addAttribute("emdDetails", emdDetails);
 		return "updateEmd";

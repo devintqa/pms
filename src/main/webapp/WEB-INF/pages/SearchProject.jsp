@@ -17,7 +17,23 @@
 	            }, response);
 	        }
 		});
+		if($("#search").val()=='project')
+		{
+			$("#showEditSubProject").hide();
+			$("#showSearchProjectDesc").hide();
+		}
+		if($("#search").val()=='subProject')
+        {
+        	$("#showEditProject").hide();
+        	$("#showSearchProjectDesc").hide();
+        }
+        if($("#search").val()=='projectDesc')
+        {
+        	$("#showEditProject").hide();
+        	$("#showEditSubProject").hide();
+        }
 	});
+
   </script>
 </head>
 <body ng-app="sampleApp">
@@ -28,6 +44,8 @@
 	    <h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 	</div>
  <div class="ui-widget">
+     	<% String search = request.getParameter("search");%>
+         <input type="hidden" id="search" value="<%=search%>"/>
 			<form:form id="searchForm" method="POST" commandName="searchForm"
 				action="searchDetails.do">
 				<center>
@@ -41,17 +59,17 @@
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr id="showEditProject">
 								<td>Edit Project? :</td>
 								<td><form:checkbox path="editProject" id="editProject"/></td>
 								<td><form:errors path="editProject" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr id="showEditSubProject">
 								<td>Edit Sub Project? :</td>
 								<td><form:checkbox path="editSubProject" id="editSubProject"/></td>
 								<td><form:errors path="editSubProject" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr id="showSearchProjectDesc">
 								<td>Search Project Description? :</td>
 								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
 								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
