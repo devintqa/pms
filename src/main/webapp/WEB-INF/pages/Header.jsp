@@ -46,12 +46,21 @@
 							<li><a id="uploadFile" href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
 							<li><a id="downloadFile" href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
 						</ul></li>
+					<li><a href="#">Search </a>
+						<ul>
+							<li><a id="searchProject"
+									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&search=project"> Project</a> </li>
+							<li><a id="searchSubProject"
+									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&search=subProject"> Sub Project</a> </li>
+							<li><a id="searchProjectDesc"
+									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&search=projectDesc"> Project Description </a></li>
+						</ul>
+					</li>
 					<li><a href="#">User</a>
 						<ul>
 							<li><a id="profile"
 								href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 									Profile</a></li>
-							<li><a id="searchFile" href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Search</a></li>
 							<li><a id="logout"
 								href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						</ul>
