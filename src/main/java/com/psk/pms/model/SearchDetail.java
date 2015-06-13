@@ -4,6 +4,9 @@ public class SearchDetail {
 	
 	private String aliasProjectName;
 	private Integer projId;
+	private String searchProject;
+	private String searchSubProject;
+	private String searchProjectDesc;
 	private boolean editProject;
 	private boolean editSubProject;
 	private boolean searchProjectDescription;
@@ -37,6 +40,24 @@ public class SearchDetail {
 	}
 	public void setEditSubProject(boolean editSubProject) {
 		this.editSubProject = editSubProject;
+	}
+	public String getSearchProject() {
+		return searchProject;
+	}
+	public void setSearchProject(String searchProject) {
+		this.searchProject = searchProject;
+	}
+	public String getSearchSubProject() {
+		return searchSubProject;
+	}
+	public void setSearchSubProject(String searchSubProject) {
+		this.searchSubProject = searchSubProject;
+	}
+	public String getSearchProjectDesc() {
+		return searchProjectDesc;
+	}
+	public void setSearchProjectDesc(String searchProjectDesc) {
+		this.searchProjectDesc = searchProjectDesc;
 	}
 	
 

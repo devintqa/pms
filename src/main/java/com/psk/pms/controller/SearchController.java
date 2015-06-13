@@ -10,12 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
 import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.SearchService;
 import com.psk.pms.validator.SearchValidator;
 
 @Controller
@@ -26,17 +25,15 @@ public class SearchController extends BaseController {
 	@Autowired
 	private SearchValidator searchValidator;
 	
+	@Autowired
+	SearchService searchService;
+	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team, 
+	public String searchProject(@PathVariable String employeeId,
+			@RequestParam(value="search", required=true) String search,
 			Model model) {		
-		LOGGER.info("method = searchProject()");
-		SearchDetail searchDetail = new SearchDetail();
-		model.addAttribute("searchForm", searchDetail);
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
-		employee.setEmployeeTeam(team);
-		model.addAttribute("employee", employee);
+		LOGGER.info("Search Controller : searchProject()" + search);
+		model.addAttribute("searchForm", searchService.buildSearchDetail(search));
 		return "SearchProject";
 	}
 	

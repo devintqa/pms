@@ -9,7 +9,7 @@
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
   <script>
-  $(function() {		
+  $(document).ready(function () {		
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
 	            $.getJSON("/pms/emp/myview/searchProject/searchProject.do", {
@@ -17,21 +17,6 @@
 	            }, response);
 	        }
 		});
-		if($("#search").val()=='project')
-		{
-			$("#showEditSubProject").hide();
-			$("#showSearchProjectDesc").hide();
-		}
-		if($("#search").val()=='subProject')
-        {
-        	$("#showEditProject").hide();
-        	$("#showSearchProjectDesc").hide();
-        }
-        if($("#search").val()=='projectDesc')
-        {
-        	$("#showEditProject").hide();
-        	$("#showEditSubProject").hide();
-        }
 	});
 
   </script>
@@ -59,23 +44,32 @@
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
+							<c:if test="${searchForm.searchProject eq 'Y'}">
 							<tr id="showEditProject">
 								<td>Edit Project? :</td>
 								<td><form:checkbox path="editProject" id="editProject"/></td>
 								<td><form:errors path="editProject" cssClass="error" /></td>
 							</tr>
+							</c:if>
+							<c:if test="${searchForm.searchSubProject eq 'Y'}">
 							<tr id="showEditSubProject">
 								<td>Edit Sub Project? :</td>
 								<td><form:checkbox path="editSubProject" id="editSubProject"/></td>
 								<td><form:errors path="editSubProject" cssClass="error" /></td>
 							</tr>
+							</c:if>
+							<c:if test="${searchForm.searchProjectDesc eq 'Y'}">
 							<tr id="showSearchProjectDesc">
 								<td>Search Project Description? :</td>
 								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
 								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
-							</tr>			
+							</tr>	
+							</c:if>		
 							<tr></tr>
 						</table>
+							<form:hidden path="searchProject" id="searchProject"/>
+							<form:hidden path="searchSubProject" id="searchSubProject"/>
+							<form:hidden path="searchProjectDesc" id="searchProjectDesc"/>
 					</fieldset>
 					<table>
 						<tr>
