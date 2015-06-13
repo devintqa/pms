@@ -72,11 +72,11 @@ public class EmdValidator extends BaseValidator implements Validator {
                 errors.rejectValue("emdAmount", "emdAmount.incorrect", "Field must not exceed 15 characters.");
             }
         }
-
-        if(emdDetail.getEmdSubmitter()=="competitor")
+        
+        if("competitor".equalsIgnoreCase(emdDetail.getEmdFor()))
         {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "competitorName",
-                    "required.competitorName", "Please enter Competitor Name,");
+            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "emdSubmitter",
+                    "required.emdSubmitter", "Please enter Competitor Name.");
         }
     }
 }

@@ -106,6 +106,7 @@ public class EMDController {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(emdDetail.getAliasProjectName());
 		boolean isEmdSaveSuccessful = false;
+		LOGGER.info("emdDetail.getEmdFor()" + emdDetail.getEmdFor());
 		emdValidator.validate(emdDetail, result);
 		if (!result.hasErrors()) {
 			isEmdSaveSuccessful = emdService.createEditEmd(emdDetail);

@@ -12,6 +12,7 @@
 
 <script>
 $(document).ready(function () {
+	
 	  $("#showSubProject").hide();
 
 	  $("#showCompetitorName").hide();

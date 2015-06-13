@@ -35,6 +35,7 @@
 								href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
 							<li><a id="createDescription"
 								href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project Description</a></li>
+							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
 						</ul></li>	
 					<li><a href="#">Search</a>
 						<ul>
@@ -48,7 +49,6 @@
 					</li>				
 					<li><a href="#">EMD</a>
 						<ul>
-							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">Create</a></li>
 							<li><a id="updateEmd" href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
 						</ul></li>
 					<li><a href="#">File</a>
