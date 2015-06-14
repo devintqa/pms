@@ -86,8 +86,6 @@ public class FileUploadController {
     public String fileSave(
             @ModelAttribute("uploadForm") FileUpload uploadForm
             ,BindingResult result,Model map) throws IllegalStateException, IOException {
-    	File files = null;
-    	String saveDirectory = null;
     	Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
 		fileUploadValidator.validate(uploadForm, result);

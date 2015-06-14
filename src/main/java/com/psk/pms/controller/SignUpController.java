@@ -72,6 +72,7 @@ public class SignUpController {
 		employeeTeam.put("Purchase", "Purchase");
 		employeeTeam.put("Technical", "Technical");
 		employeeTeam.put("Store", "Store");
+		LOGGER.info("method = populateTeamList()");
 		return employeeTeam;
 	}
 }
