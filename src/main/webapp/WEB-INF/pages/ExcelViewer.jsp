@@ -6,7 +6,6 @@
 <html>
 <head>
 <%@include file="Script.jsp" %>
-<script src="<c:url value="/resources/js/jquery-1.11.1.min.js" />"></script>
 <script src="<c:url value="/resources/js/handsontable.full.js" />"></script>
 <link rel="stylesheet" type="text/css" href="<c:url value="/resources/css/handsontable.full.min.css" />">
 <script>
@@ -57,6 +56,7 @@
 							data : initData(),
 							rowHeaders : true,
 							colHeaders : true,
+							colWidths: [100, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85, 85],
 							contextMenu : true,
 							manualColumnResize : true,
 							manualRowResize : true,
@@ -108,7 +108,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div id="example1" class="hot handsontable" style="overflow-x: scroll; width:1270px;height:400px;"></div>
+	<div id="example1" class="hot handsontable" style="overflow-x: scroll; width:1000px;height:400px;"></div>
 	
 	<input type="button" id="loadData" value="load"/>
 	<input type="button" id="saveEdition" value="save" />

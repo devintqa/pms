@@ -20,6 +20,12 @@ public class ExcelViewController extends BaseController {
 		LOGGER.info("view excel");
 		return "ExcelViewer";
 	}
+	
+	@RequestMapping(value = "/emp/myview/excel/{empId}/editOrViewExcelTest.do", method = RequestMethod.GET)
+	public String buildExcelTest(@PathVariable String empId, Model model) {		
+		LOGGER.info("view excel");
+		return "HandsOnTableTest";
+	}
 
 	@RequestMapping(value = "/emp/myview/excel/{empId}/saveEdition.do", method = RequestMethod.POST, produces = {MediaType.APPLICATION_JSON_VALUE})
 	@ResponseBody 
