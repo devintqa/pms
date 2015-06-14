@@ -11,6 +11,7 @@ import com.psk.pms.validator.EmployeeValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,6 +22,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -84,10 +86,21 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "/emp/login", method = RequestMethod.GET)
-	public String initForm(ModelMap model) {
+	public String initForm(ModelMap model, HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		if(session == null){
+			LOGGER.info("No session available");
+		}else{
+			LOGGER.info("This is old session");
+			Employee employee = new Employee();
+			model.addAttribute("employeeObj", employee);
+			model.addAttribute("employeeForm", employee);
+			return "SignIn";
+		}
 		Employee employee = new Employee();
 		model.addAttribute("employeeForm", employee);
 		return "SignIn";
+		
 	}
 	
 	@RequestMapping(value = "/emp/logout", method = RequestMethod.GET)
@@ -102,7 +115,9 @@ public class EmployeeController {
 	@RequestMapping(value = "/emp/sessionTimeout", method = RequestMethod.GET)
 	public String expiredForm(ModelMap model, HttpSession session) {
 		session.invalidate();
-		return "SessionTimeout";
+		Employee employee = new Employee();
+		model.addAttribute("employeeForm", employee);
+		return "SignIn";
 	}
 
 	@InitBinder

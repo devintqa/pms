@@ -12,6 +12,7 @@
 
 <script>
 $(document).ready(function () {
+	
 	  $("#showSubProject").hide();
 
 	  $("#showCompetitorName").hide();
@@ -78,6 +79,15 @@ $(document).ready(function () {
       	$("#emdSubmitter").val('');
       });
 
+      var emdId = $('#emdId').val();
+      if(emdId != "0")
+      {
+		$('#showAliasProject').hide();
+		$('#showSubProjectCheckBox').hide();
+		$('#showSubProject').hide();
+      }
+
+
 });
 </script>
 </head>
@@ -100,7 +110,7 @@ $(document).ready(function () {
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>EMD Details</legend>
 						<table>
-							<tr>
+							<tr id="showAliasProject">
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasProjectName"
@@ -108,7 +118,7 @@ $(document).ready(function () {
 									</form:select></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr id="showSubProjectCheckBox">
 								<td>EMD For Sub Project? :</td>
 								<td><form:checkbox path="subProjectEMD" id="subProjectEMD"/></td>
 								<td><form:errors path="subProjectEMD" cssClass="error" /></td>
@@ -204,6 +214,7 @@ $(document).ready(function () {
 					<form:hidden path="projId" />
 					<form:hidden path="subProjId" />
 					<form:hidden path="isUpdate" />
+					<form:hidden path="emdId" />
 					
 					<table>
 						<tr>

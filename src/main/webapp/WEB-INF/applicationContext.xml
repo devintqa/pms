@@ -27,6 +27,9 @@
 	<bean id="projectService" class="com.psk.pms.service.ProjectServiceImpl">
 		<property name="projectDAO" ref="projectDAO" />
 	</bean>
+	
+	<bean id="searchService" class="com.psk.pms.service.SearchServiceImpl">
+	</bean>
 
 	<bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
 		<property name="emdDAO" ref="emdDAO"/>
@@ -38,6 +41,7 @@
 	
 	<bean class="com.psk.pms.validator.EmployeeValidator" />
 	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
+	<bean class="com.psk.pms.validator.SearchValidator" />
 	<bean class="com.psk.pms.validator.SignUpValidator" />
 	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
 	<bean class="com.psk.pms.validator.ResetPasswordValidator" />

@@ -1,7 +1,6 @@
 package com.psk.pms.controller;
 
 import com.psk.pms.model.Employee;
-import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
@@ -54,33 +53,13 @@ public class ProjectController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-		
-		if("editSubProject".equalsIgnoreCase(action) || "editProjectDesc".equalsIgnoreCase(action)){
-			ProjectDetail projectDetail = new ProjectDetail();
-			projectDetail = projectService.getProjectDocument(project);
-			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(projectDetail.getProjId());
-			if(subProjectDocumentList.size() > 0){
-				model.addAttribute("subProjectDocumentList", subProjectDocumentList);
-				model.addAttribute("subProjectDocumentSize", subProjectDocumentList.size());
-				model.addAttribute("projectAliasName", projectDetail.getAliasName());
-				model.addAttribute("action", action);
-				return "UpdateSubProject";
-			}
-			List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(projectDetail.getProjId());
-			if(projDescDocList.size() > 0){
-				model.addAttribute("projDescDocList", projDescDocList);
-				model.addAttribute("projDescDocListSize", projDescDocList.size());
-				model.addAttribute("projectAliasName", projectDetail.getAliasName());
-				return "UpdateProjectDesc";
-			}
-		}else {
-			ProjectDetail projectDetail = new ProjectDetail();
-			projectDetail = projectService.getProjectDocument(project);
-			projectDetail.setIsUpdate("Y");
-			projectDetail.setEmployeeId(employeeId);
-			model.addAttribute("projectForm", projectDetail);
-		}
-			return "BuildProject";
+
+		ProjectDetail projectDetail = new ProjectDetail();
+		projectDetail = projectService.getProjectDocument(project);
+		projectDetail.setIsUpdate("Y");
+		projectDetail.setEmployeeId(employeeId);
+		model.addAttribute("projectForm", projectDetail);
+		return "BuildProject";
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)

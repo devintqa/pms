@@ -12,7 +12,7 @@
 	<http use-expressions="true">
 		<intercept-url pattern="/emp/pms/**"
 			access="hasAnyRole('ROLE_USER','ROLE_ADMIN')" />
-		<form-login always-use-default-target="true"
+		<form-login
 		    login-processing-url="/login.do" login-page="/emp/login"
 			username-parameter="employeeId" password-parameter="employeePwd"
 			authentication-success-handler-ref="authenticationHandler"
