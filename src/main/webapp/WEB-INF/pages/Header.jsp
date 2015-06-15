@@ -19,124 +19,124 @@
 </script>
 </head>
 
-	<div class="navigation">
-		<ul class="nav">
-			<c:choose>
-				<c:when test="${employeeObj.employeeTeam eq 'Technical'}">
+<div class="navigation">
+	<ul class="nav">
+		<c:choose>
+			<c:when test="${employeeObj.employeeTeam eq 'Technical'}">
 
-					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc" class="active">Home</a>
-					</li>
-					<li><a href="#">Create</a>
-						<ul>
-							<li><a id="createProject"
-								href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a></li>
-							<li><a id="createSubProject"
-								href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
-							<li><a id="createDescription"
-								href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project Description</a></li>
-							<li><a id="createEmd" href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
-						</ul></li>	
-					<li><a href="#">Search</a>
-						<ul>
-							<li><a id="searchProject"
-									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=project"> Project</a> </li>
-							<li><a id="searchSubProject"
-									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=subProject"> Sub Project</a> </li>
-							<li><a id="searchProjectDesc"
-									href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=projectDesc"> Project Description </a></li>
-						</ul>
-					</li>				
-					<li><a href="#">EMD</a>
-						<ul>
-							<li><a id="updateEmd" href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
-						</ul></li>
-					<li><a href="#">File</a>
-						<ul>
-							<li><a id="uploadFile" href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
-							<li><a id="downloadFile" href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
-						</ul></li>
-					<li><a href="#">User</a>
-						<ul>
-							<li><a id="profile"
-								href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-									Profile</a></li>
-							<li><a id="logout"
-								href="${pageContext.request.contextPath}/logout">Logout</a></li>
-<<<<<<< HEAD
-						</ul>
-						</li>
-						
-						
-=======
-						</ul>				
->>>>>>> 00cdb6240ff66bd1e0fad719a44049a7dfeea2a8
-				</c:when>
+				<li><a id="emphome"
+					href="/pms/emp/myview/${employeeObj.employeeId}?action=editProjectDesc"
+					class="active">Home</a></li>
+				<li><a href="#">Create</a>
+					<ul>
+						<li><a id="createProject"
+							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a></li>
+						<li><a id="createSubProject"
+							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
+						<li><a id="createDescription"
+							href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project
+								Description</a></li>
+						<li><a id="createEmd"
+							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
+					</ul></li>
+				<li><a href="#">Search</a>
+					<ul>
+						<li><a id="searchProject"
+							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=project">
+								Project</a></li>
+						<li><a id="searchSubProject"
+							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=subProject">
+								Sub Project</a></li>
+						<li><a id="searchProjectDesc"
+							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=projectDesc">
+								Project Description </a></li>
+					</ul></li>
+				<li><a href="#">EMD</a>
+					<ul>
+						<li><a id="updateEmd"
+							href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
+					</ul></li>
+				<li><a href="#">File</a>
+					<ul>
+						<li><a id="uploadFile"
+							href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
+						<li><a id="downloadFile"
+							href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
+					</ul></li>
+				<li><a href="#">User</a>
+					<ul>
+						<li><a id="profile"
+							href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+								Profile</a></li>
+						<li><a id="logout"
+							href="${pageContext.request.contextPath}/logout">Logout</a></li>
+					</ul></li>
+	</c:when>
 
-				<c:when test="${employeeObj.employeeTeam eq 'Account'}">
+	<c:when test="${employeeObj.employeeTeam eq 'Account'}">
 
-					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
-					</li>
-					<li><a id="profile"
-						href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-							Profile</a></li>
-					<li><a id="logout"
-						href="${pageContext.request.contextPath}/logout">Logout</a></li>
+		<li><a id="emphome"
+			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+		</li>
+		<li><a id="profile"
+			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+				Profile</a></li>
+		<li><a id="logout"
+			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 
-				</c:when>
+	</c:when>
 
-				<c:when test="${employeeObj.employeeTeam eq 'Admin'}">
+	<c:when test="${employeeObj.employeeTeam eq 'Admin'}">
 
-					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
-					</li>
-					<li><a id="profile"
-						href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-							Profile</a></li>
-					<li><a id="logout"
-						href="${pageContext.request.contextPath}/logout">Logout</a></li>
-						
-					<li><a id="excelViewer"
-						href="/pms/emp/myview/excel/${empId}/editOrViewExcel.do" class="active">Excel</a>
-					</li>
-					<li><a id="excelViewerTest"
-						href="/pms/emp/myview/excel/${empId}/editOrViewExcelTest.do" class="active">ExcelTest</a>
-					</li>
-				</c:when>
+		<li><a id="emphome"
+			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+		</li>
+		<li><a id="profile"
+			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+				Profile</a></li>
+		<li><a id="logout"
+			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 
-				<c:when test="${employeeObj.employeeTeam eq 'Management'}">
+		<li><a id="excelViewer"
+			href="/pms/emp/myview/excel/${empId}/editOrViewExcel.do"
+			class="active">Excel</a></li>
+		<li><a id="excelViewerTest"
+			href="/pms/emp/myview/excel/${empId}/editOrViewExcelTest.do"
+			class="active">ExcelTest</a></li>
+	</c:when>
 
-					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
-					</li>
-					<li><a id="profile"
-						href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-							Profile</a></li>
-					<li><a id="logout"
-						href="${pageContext.request.contextPath}/logout">Logout</a></li>
+	<c:when test="${employeeObj.employeeTeam eq 'Management'}">
 
-				</c:when>
+		<li><a id="emphome"
+			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+		</li>
+		<li><a id="profile"
+			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+				Profile</a></li>
+		<li><a id="logout"
+			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 
-				<c:when test="${employeeObj.employeeTeam eq 'Purchase'}">
+	</c:when>
 
-					<li><a id="emphome"
-						href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
-					</li>
-					<li><a id="profile"
-						href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-							Profile</a></li>
-					<li><a id="logout"
-						href="${pageContext.request.contextPath}/logout">Logout</a></li>
+	<c:when test="${employeeObj.employeeTeam eq 'Purchase'}">
 
-				</c:when>
+		<li><a id="emphome"
+			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+		</li>
+		<li><a id="profile"
+			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+				Profile</a></li>
+		<li><a id="logout"
+			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 
-				<c:otherwise>
+	</c:when>
+
+	<c:otherwise>
 
 
-				</c:otherwise>
-			</c:choose>
-		</ul>
-	</div>
+	</c:otherwise>
+	</c:choose>
+	</ul>
+</div>
 
 </html>
