@@ -9,7 +9,7 @@
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
   <script>
-  $(document).ready(function () {		
+  $(document).ready(function () {
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
 	            $.getJSON("/pms/emp/myview/searchProject/searchProject.do", {
@@ -18,7 +18,6 @@
 	        }
 		});
 	});
-
   </script>
 </head>
 <body ng-app="sampleApp">
