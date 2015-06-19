@@ -14,30 +14,31 @@
 	    </header>
 	    <div>
 	    	<c:if test="${emdDetailsSize gt 0}">
-        		<h1 style="text-align: center; color: #007399; font-size: 24px;"> Project Description Details</h1>
+        		<h1 style="text-align: center; color: #007399; font-size: 24px;">EMD Details</h1>
 	        	<table id="emdList" class="gridView">
             		<thead>
             			<tr>
             				<th>Project Name</th>
-            				<th>Sub project Name</th>
+            				<th>Sub Project Name</th>
             				<th>EMD Type</th>
             		    	<th>EMD Amount</th>
             				<th>EMD Start Date</th>
             				<th>EMD End Date</th>
+            				<th>Action</th>
             			</tr>
             		</thead>
 					<tbody>
 						<c:if test="${not empty emdDetails}">
 							<c:forEach var="emd" items="${emdDetails}">
 								<tr>
-								<td><a href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
-                                		class="userAction">${emd.aliasProjectName}</a></td>
-								<td><a href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
-                                        class="userAction">${emd.aliasSubProjectName}</a></td>
+								    <td>${emd.aliasProjectName}</td>
+								    <td>${emd.aliasSubProjectName}</td>
 									<td>${emd.emdType}</td>
 									<td>${emd.emdAmount}</td>
-									<td>${emd.sqlEmdStartDate}</td>
-									<td>${emd.sqlEmdEndDate}</td>
+									<td>${emd.emdStartDate}</td>
+									<td>${emd.emdEndDate}</td>
+									<td><a href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
+                                        class="userAction">Update</a></td>
 								</tr>
 							</c:forEach>
 						</c:if>

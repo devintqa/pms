@@ -2,10 +2,13 @@ package com.psk.pms.service;
 
 import com.psk.pms.dao.EmdDAO;
 import com.psk.pms.model.EMDDetail;
+import com.psk.pms.utils.PMSUtil;
+
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +41,15 @@ public class EmdServiceImpl implements EmdService {
 
     @Override
     public List<EMDDetail> getEmdDetails() {
-        return emdDAO.getEmdDetails();
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+    	List<EMDDetail> emdDetails = emdDAO.getEmdDetails();
+    	List<EMDDetail> emdFinalList = new ArrayList<EMDDetail>();
+    	for(EMDDetail emdDetail : emdDetails){
+            emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+    		emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+    		emdFinalList.add(emdDetail);
+    	}
+        return emdFinalList;
     }
 
     @Override

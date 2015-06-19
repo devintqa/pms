@@ -46,7 +46,7 @@
 							</tr>
 							<c:if test="${searchForm.searchProject eq 'Y'}">
 							<tr id="showEditProject">
-								<td>Edit Project? :</td>
+								<td>Search All Projects? :</td>
 								<td><form:checkbox path="editProject" id="editProject"/></td>
 								<td><form:errors path="editProject" cssClass="error" /></td>
 							</tr>

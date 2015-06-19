@@ -5,6 +5,8 @@ import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.utils.PMSUtil;
+
 import org.apache.log4j.Logger;
 
 import java.text.ParseException;
@@ -140,9 +142,9 @@ public class ProjectServiceImpl implements ProjectService {
 			long diff = emdDetail.getSqlEmdEndDate().getTime() - todayDate.getTime();
 			long diffDays = diff / (24 * 60 * 60 * 1000);
 			if(diffDays < 14){
-				emdDetail.setEmdStartDate(getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
-				emdDetail.setEmdEndDate(getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
-				emdDetail.setEmdExtensionDate(getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
+				emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+				emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+				emdDetail.setEmdExtensionDate(PMSUtil.getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
 				emdDocumentList.add(emdDetail);
 			}
 		}
@@ -153,10 +155,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public ProjectDetail getProjectDocument(String projectId) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
-		projectDetail.setTenderDate(getStringDate(projectDetail.getTenderSqlDate(), formatter));
-		projectDetail.setAgreementDate(getStringDate(projectDetail.getAgreementSqlDate(), formatter));
-		projectDetail.setCommencementDate(getStringDate(projectDetail.getCommencementSqlDate(), formatter));
-		projectDetail.setCompletionDate(getStringDate(projectDetail.getCompletionSqlDate(), formatter));
+		projectDetail.setTenderDate(PMSUtil.getStringDate(projectDetail.getTenderSqlDate(), formatter));
+		projectDetail.setAgreementDate(PMSUtil.getStringDate(projectDetail.getAgreementSqlDate(), formatter));
+		projectDetail.setCommencementDate(PMSUtil.getStringDate(projectDetail.getCommencementSqlDate(), formatter));
+		projectDetail.setCompletionDate(PMSUtil.getStringDate(projectDetail.getCompletionSqlDate(), formatter));
 		return projectDetail;
 	}
 	
@@ -164,10 +166,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public SubProjectDetail getSubProjectDocument(String subProjectId) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		SubProjectDetail subProjectDetail = projectDAO.getSubProjectDocument(subProjectId);
-		subProjectDetail.setSubTenderDate(getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
-		subProjectDetail.setSubAgreementDate(getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
-		subProjectDetail.setSubCommencementDate(getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
-		subProjectDetail.setSubCompletionDate(getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
+		subProjectDetail.setSubTenderDate(PMSUtil.getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
+		subProjectDetail.setSubAgreementDate(PMSUtil.getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
+		subProjectDetail.setSubCommencementDate(PMSUtil.getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
+		subProjectDetail.setSubCompletionDate(PMSUtil.getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
 		return subProjectDetail;
 	}
 	
@@ -176,15 +178,6 @@ public class ProjectServiceImpl implements ProjectService {
 		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId, subProject);
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
-	}
-	
-	private String getStringDate(Date dateToBeFormatted, SimpleDateFormat formatter){
-		String date = null;
-		if(dateToBeFormatted != null){
-			date = formatter.format(dateToBeFormatted);
-			return date;
-		}		
-		return date;
 	}
 
 	@Override
