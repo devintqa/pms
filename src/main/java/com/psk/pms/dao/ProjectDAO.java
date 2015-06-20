@@ -1,12 +1,12 @@
 package com.psk.pms.dao;
 
-import java.util.List;
-import java.util.Map;
-
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ProjectDAO {
 	
@@ -32,7 +32,7 @@ public interface ProjectDAO {
 
 	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 	
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId);
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId,boolean searchUnderProject);
 	
 	public boolean isAliasProjectAlreadyExisting(String aliasName);
 	

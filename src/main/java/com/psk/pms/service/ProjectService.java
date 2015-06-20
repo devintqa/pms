@@ -1,12 +1,12 @@
 package com.psk.pms.service;
 
-import java.util.List;
-import java.util.Map;
-
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ProjectService {
 	
@@ -34,7 +34,7 @@ public interface ProjectService {
 
 	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
 	
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projId);
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject);
 	
 	public boolean isAliasProjectAlreadyExisting(String aliasName);
 	

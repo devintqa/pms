@@ -193,8 +193,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projId) {
-		List<ProjDescDetail> projectDescDetailList = projectDAO.getProjectDescDetailList(projId);
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject) {
+		List<ProjDescDetail> projectDescDetailList = projectDAO.getProjectDescDetailList(projId,searchUnderProject);
 		return projectDescDetailList;
 	}
 

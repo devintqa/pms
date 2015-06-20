@@ -101,8 +101,7 @@ public class EMDController {
 
 	@RequestMapping(value = "/emp/myview/buildEmd/createEmd.do", method = RequestMethod.POST)
 	public String saveEmdAction(
-			@ModelAttribute("emdForm") EMDDetail emdDetail,
-			BindingResult result, Model model, SessionStatus status) {
+			@ModelAttribute("emdForm") EMDDetail emdDetail, BindingResult result, Model model, SessionStatus status) {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(emdDetail.getAliasProjectName());
 		boolean isEmdSaveSuccessful = false;

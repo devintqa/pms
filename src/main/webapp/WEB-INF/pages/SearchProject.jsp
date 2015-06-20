@@ -12,9 +12,15 @@
   $(document).ready(function () {
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
-	            $.getJSON("/pms/emp/myview/searchProject/searchProject.do", {
-	                term: request.term
-	            }, response);
+			if($("#searchUnderSubProject").is(':checked'))	{
+				$.getJSON("/pms/emp/myview/searchProject/searchSubProject.do", {
+                	                term: request.term
+                	            }, response);
+			}else{
+				$.getJSON("/pms/emp/myview/searchProject/searchProject.do", {
+                	                term: request.term
+                	            }, response);
+				}
 	        }
 		});
 	});
@@ -62,7 +68,12 @@
 								<td>Search Project Description? :</td>
 								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
 								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
-							</tr>	
+							</tr>
+							<tr>
+								<td>Search under :</td>
+								<td><form:radiobutton path="searchUnder" value = "Project" id="searchUnderProject" checked="true"/>Project</td>
+								<td><form:radiobutton path="searchUnder" value = "subProject" id="searchUnderSubProject"/>Sub Project</td>
+							</tr>
 							</c:if>		
 							<tr></tr>
 						</table>

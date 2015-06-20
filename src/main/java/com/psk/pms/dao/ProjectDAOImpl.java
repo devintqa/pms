@@ -100,10 +100,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 
 	public Map<String, String> getSubAliasProjectNames(String projectId) {
-		String sql = "select SubProjId, AliasSubProjName from subproject where ProjId = ?";	 
 		Map<String, String> aliasSubProjects = new LinkedHashMap<String, String>();
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, new Object[] {projectId});
+		String sql;
+		List<Map<String, Object>> rows;
+		if ("" != projectId) {
+			sql = "select SubProjId, AliasSubProjName from subproject where ProjId = ?";
+			rows = jdbcTemplate.queryForList(sql, new Object[]{projectId});
+		} else {
+			sql = "select SubProjId, AliasSubProjName from subproject";
+			rows = jdbcTemplate.queryForList(sql);
+		}
+
 		for (Map<String, Object> row : rows) {
 			aliasSubProjects.put(String.valueOf(row.get("SubProjId")), (String)row.get("AliasSubProjName"));
 		}	 
@@ -407,8 +415,13 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return projectDescDetailList;
 	}
 	
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId) {
-		String sql = projDescDetailQuery + " where ProjId = "+projectId;
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId,boolean searchUnderProject) {
+		String sql;
+		if (searchUnderProject) {
+			sql = projDescDetailQuery + " where ProjId = " + projectId;
+		} else {
+			sql = projDescDetailQuery + " where SubProjId = " + projectId;
+		}
 		jdbcTemplate = new JdbcTemplate(dataSource);             
 
 		List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();

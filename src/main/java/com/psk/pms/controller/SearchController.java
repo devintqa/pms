@@ -1,8 +1,11 @@
 package com.psk.pms.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.SearchDetail;
+import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.SearchService;
+import com.psk.pms.validator.SearchValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,13 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SearchDetail;
-import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.service.SearchService;
-import com.psk.pms.validator.SearchValidator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SearchController extends BaseController {
@@ -45,6 +44,14 @@ public class SearchController extends BaseController {
 		LOGGER.info("method = getProjectList()");
 		return fetchProjectsInfo(name);
 	}
+
+
+	@RequestMapping(value = "/emp/myview/searchProject/searchSubProject.do", method = RequestMethod.GET)
+	public @ResponseBody
+	List<String> getSubProjectList(@RequestParam("term") String name) {
+		LOGGER.info("method = getSubProjectList()");
+		return fetchSubProjectsInfo(name);
+	}
 	
 	@RequestMapping(value = "/emp/myview/searchProject/searchDetails.do", method = RequestMethod.POST)
 	public String searchProjectDetail(
@@ -70,8 +77,9 @@ public class SearchController extends BaseController {
 				}
 			}
 			if(searchDetail.isSearchProjectDescription()){
+				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
-				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId());
+				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(),searchUnderProject);
 				if(projDescDocList.size() > 0){
 					model.addAttribute("projDescDocList", projDescDocList);
 					model.addAttribute("projDescDocListSize", projDescDocList.size());
@@ -95,6 +103,19 @@ public class SearchController extends BaseController {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
 			if (entry.getValue().toUpperCase().indexOf(aliasProjectName.toUpperCase())!= -1) {
+				result.add(entry.getValue());
+			}
+		}
+		return result;
+	}
+
+	private List<String> fetchSubProjectsInfo(String subaliasProjectName) {
+		LOGGER.info("method = fetchProjectsInfo()");
+		List<String> result = new ArrayList<String>();
+		//intentionally passing empty to get all sub projectNames
+		Map<String, String> aliasProjectList = populateSubAliasProjectList("");
+		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
+			if (entry.getValue().toUpperCase().indexOf(subaliasProjectName.toUpperCase())!= -1) {
 				result.add(entry.getValue());
 			}
 		}

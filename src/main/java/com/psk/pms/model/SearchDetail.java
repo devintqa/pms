@@ -1,7 +1,7 @@
 package com.psk.pms.model;
 
 public class SearchDetail {
-	
+
 	private String aliasProjectName;
 	private Integer projId;
 	private String searchProject;
@@ -10,6 +10,7 @@ public class SearchDetail {
 	private boolean editProject;
 	private boolean editSubProject;
 	private boolean searchProjectDescription;
+	private String searchUnder;
 
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -59,6 +60,12 @@ public class SearchDetail {
 	public void setSearchProjectDesc(String searchProjectDesc) {
 		this.searchProjectDesc = searchProjectDesc;
 	}
-	
 
+    public String getSearchUnder() {
+        return searchUnder;
+    }
+
+    public void setSearchUnder(String searchUnder) {
+        this.searchUnder = searchUnder;
+    }
 }
