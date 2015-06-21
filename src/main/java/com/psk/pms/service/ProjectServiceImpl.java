@@ -92,6 +92,12 @@ public class ProjectServiceImpl implements ProjectService {
 		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectDescDetail);
 		return isAvailable;
 	}
+
+	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail) {
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isSerialNumberAlreadyExisting(projectDescDetail);
+		return isAvailable;
+	}
 	
 	public Map<String, String> getAliasProjectNames(){
 		Map<String, String> aliasProjects = projectDAO.getAliasProjectNames();

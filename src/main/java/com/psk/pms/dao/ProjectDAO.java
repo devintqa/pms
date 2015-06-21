@@ -40,6 +40,8 @@ public interface ProjectDAO {
 	
 	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
+	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
+
 	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 	
 	

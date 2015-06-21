@@ -31,6 +31,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
 				"required.aliasProjectName", "Please Select Project Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "serialNumber",
+				"required.serialNumber", "Please Select Serial Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "workType",
 			"required.workType", "Enter Work Type");		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
@@ -105,11 +107,20 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
         }
 		
 		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
-			LOGGER.info("Project description detail is update: "+projectDescDetail.getIsUpdate());
+			LOGGER.info("Project description detail is update: " + projectDescDetail.getIsUpdate());
 			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
 			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail);
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");
+			}
+		}
+
+		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
+			LOGGER.info("Project description detail is update: "+projectDescDetail.getIsUpdate());
+			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
+			boolean isAliasDescriptionAlreadyExisting = projectService.isSerialNumberAlreadyExisting(projectDescDetail);
+			if(isAliasDescriptionAlreadyExisting){
+				errors.rejectValue("serialNumber", "serialNumber.incorrect","Serial Number Already Found To Be Existing.");
 			}
 		}
 		

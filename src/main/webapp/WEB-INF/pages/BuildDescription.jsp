@@ -12,7 +12,7 @@
 <script type="text/javascript">
 $(document).ready(function () {
 	  $("#showSubProject").hide();
-	  
+
 	  $('#subProjectDesc').change(function() {
 	        if($(this).is(":checked")) {
 			var aliasProjectName  = $('#projId').val();
@@ -51,6 +51,11 @@ $(document).ready(function () {
 	  if($('#subProjectDesc').is(':checked')) {
 	  		$("#showSubProject").show();
 	  };
+
+	  if($('#isUpdate').val()=='Y') {
+      	  	$("#serialNumber").attr("readonly", "readonly");
+      }
+
 });
 </script>
 
@@ -99,6 +104,13 @@ $(document).ready(function () {
 									</form:select></td>
 								<td><form:errors path="aliasSubProjectName"
 										cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Serial Number<span id="colon">:</span>
+								</td>
+								<td><form:input id="serialNumber" path="serialNumber"
+										placeholder="Enter Serial Number" cssClass="inputText" /></td>
+								<td><form:errors path="serialNumber" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Work Type <span id="colon">:</span>

@@ -41,5 +41,7 @@ public interface ProjectService {
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId);
 	
 	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
+
+	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 	
 }

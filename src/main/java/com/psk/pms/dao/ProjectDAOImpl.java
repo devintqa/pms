@@ -192,20 +192,20 @@ public class ProjectDAOImpl implements ProjectDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
 			if(projDescDetail.isSubProjectDesc()){
-				insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
+				insertSql = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInWords, "
 					+ "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),
+					"VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(),projDescDetail.getSerialNumber(),
 						projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 						projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 						projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
 						projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt()
 				});
 			} else {
-				insertSql = "INSERT INTO projectDesc (ProjId, WorkType, QuantityInFig, QuantityInWords, "
+				insertSql = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInWords, "
 					+ "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
-					"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
-				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(),
+					"VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?,?)";
+				jdbcTemplate.update(insertSql, new Object[] {projDescDetail.getAliasProjectName(),projDescDetail.getSerialNumber(),
 						projDescDetail.getWorkType(),projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(), 
 						projDescDetail.getDescription(),projDescDetail.getAliasDescription(), 
 						projDescDetail.getRateInFig(),projDescDetail.getRateInWords(), 
@@ -418,7 +418,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public List<ProjDescDetail> getProjectDescDetailList(Integer projectId,boolean searchUnderProject) {
 		String sql;
 		if (searchUnderProject) {
-			sql = projDescDetailQuery + " where ProjId = " + projectId;
+			sql = projDescDetailQuery + " where ProjId = " + projectId + " and SubProjId is null";
 		} else {
 			sql = projDescDetailQuery + " where SubProjId = " + projectId;
 		}
@@ -437,7 +437,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String sql = "SELECT COUNT(*) FROM project where AliasProjName = ?";
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
-				new Object[] { aliasName });
+				new Object[]{aliasName});
 		if (total == 0) {
 			return false;
 		}
@@ -477,10 +477,33 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return true;
 	}
 
+	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail) {
+		String sql = null;
+		int total = 0;
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		if(!projectDescDetail.isSubProjectDesc()){
+			LOGGER.info("method {} , There is no sub project selected" + "isSerialNumberAlreadyExisting");
+			sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SerialNumber = ?";
+			total = jdbcTemplate.queryForObject(sql, Integer.class,
+					new Object[] { projectDescDetail.getAliasProjectName(), projectDescDetail.getSerialNumber() });
+		}else{
+			LOGGER.info("method {} , There is sub project selected" + "isSerialNumberAlreadyExisting");
+			sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SubProjId = ? and SerialNumber = ?";
+			total = jdbcTemplate.queryForObject(sql, Integer.class,
+					new Object[] { projectDescDetail.getAliasProjectName(), projectDescDetail.getAliasSubProjectName(), projectDescDetail.getSerialNumber() });
+		}
+
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+
 	private ProjDescDetail buildProjectDescDetail(Map<String, Object> row) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		projDescDetail.setProjId((Integer) row.get("ProjId"));
 		projDescDetail.setAliasProjectName((String) row.get("AliasProjName"));
+		projDescDetail.setSerialNumber((String) row.get("SerialNumber"));
 		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
 		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
 		projDescDetail.setWorkType((String) row.get("WorkType"));
@@ -541,10 +564,10 @@ public class ProjectDAOImpl implements ProjectDAO {
 			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
 			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit";
 
-	private String projDescDetailQuery = "SELECT ProjId, SubProjId, WorkType, QuantityInFig, QuantityInWords, "
+	private String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInWords, "
 			+ "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
 
-	private String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.WorkType, d.QuantityInFig, d.QuantityInWords, "
+	private String projDescDetail = "SELECT d.ProjId, d.SubProjId , d.SerialNumber , d.WorkType, d.QuantityInFig, d.QuantityInWords, "
 			+ "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
 	
 	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";

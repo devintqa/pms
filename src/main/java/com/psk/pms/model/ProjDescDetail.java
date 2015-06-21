@@ -6,6 +6,7 @@ public class ProjDescDetail {
 	
 	private String aliasProjectName;
 	private String aliasSubProjectName;
+	private String serialNumber;
 	private String workType;
 	private String quantityInFig;
 	private String quantityInWords;
@@ -134,6 +135,14 @@ public class ProjDescDetail {
 	}
 	public void setSubProjectDesc(boolean subProjectDesc) {
 		this.subProjectDesc = subProjectDesc;
+	}
+
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
 	}
 }
 

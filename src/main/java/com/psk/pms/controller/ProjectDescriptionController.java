@@ -1,26 +1,5 @@
 package com.psk.pms.controller;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
@@ -28,6 +7,20 @@ import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjDescDetailValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProjectDescriptionController {
@@ -49,14 +42,21 @@ public class ProjectDescriptionController {
 			Model model) {
 		
 		if(null!=descDetail){
+			Map<String, String> aliasProjectList = new HashMap<>();
+			Map<String, String> subAliasProjectList = new HashMap<>();
+
 			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail,subProject);
+			projDescDetail.setIsUpdate("Y");
 			projDescDetail.setEmployeeId(employeeId);
-			Map<String, String> aliasProjectList = new HashMap<String, String>();
+
 			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
-			Map<String, String> subAliasProjectList = populateSubAliasProjectList(projDescDetail.getProjId().toString());
-			subAliasProjectList.put("0", "--Please Select--");
-			model.addAttribute("subAliasProjectList", subAliasProjectList);
 			model.addAttribute("aliasProjectList", aliasProjectList);
+
+			if (null != projDescDetail.getAliasSubProjectName()) {
+				subAliasProjectList.put(projDescDetail.getSubProjId().toString(), projDescDetail.getAliasSubProjectName());
+				projDescDetail.setSubProjectDesc(true);
+				model.addAttribute("subAliasProjectList", subAliasProjectList);
+			}
 			model.addAttribute("projDescForm", projDescDetail);
 		}else{
 			ProjDescDetail projDescDetail = new ProjDescDetail();
@@ -96,18 +96,26 @@ public class ProjectDescriptionController {
 			model.addAttribute("employee", employee);
 			if(!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
+				model.addAttribute("aliasProjectList", aliasProjectList);
+				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+				return "BuildDescription";
 			} else{
 				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
 				projDescDetail = projectService.getProjectDescDetail(String.valueOf(projDescDetail.getProjDescId()), projDescDetail.getAliasSubProjectName());
+				projDescDetail.setIsUpdate("Y");
 				aliasProjectList = new HashMap<String, String>();
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 				model.addAttribute("aliasProjectList", aliasProjectList);
+				if (null != projDescDetail.getAliasSubProjectName()) {
+					HashMap<String, String> subAliasProjectList = new HashMap<>();
+					subAliasProjectList.put(projDescDetail.getSubProjId().toString(), projDescDetail.getAliasSubProjectName());
+					projDescDetail.setSubProjectDesc(true);
+					model.addAttribute("subAliasProjectList", subAliasProjectList);
+				}
 				model.addAttribute("projDescForm", projDescDetail);
 				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
+				return "BuildDescription";
 			}
-			model.addAttribute("aliasProjectList", aliasProjectList);
-			model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
-			return "BuildDescription";
 		}
 	}
 
