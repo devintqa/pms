@@ -172,11 +172,11 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 
 		if (StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExPercentage",
-					"required.subExPercentage", "Enter any one among Expected amount or Less amount in Percentage.");
+					"required.subExPercentage", "Enter one among Expected or Less in Percentage.");
 		}
 
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage()) && !StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {
-			errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "only one among Expected amount or Less amount in Percentage can be entered.");
+			errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Only one among Excess or Less in Percentage can be entered.");
 		}
 	}
 }

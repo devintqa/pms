@@ -34,11 +34,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "serialNumber",
 				"required.serialNumber", "Please Select Serial Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "workType",
-			"required.workType", "Enter Work Type");		
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
-				"required.quantityInFig", "Enter Quantity in Numbers");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInWords",
-				"required.quantityInWords", "Enter Quantity in Words.");
+			"required.workType", "Enter Work Type");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "description",
 				"required.description", "Enter Description.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasDescription",
@@ -47,8 +43,6 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 				"required.rateInFig", "Enter Rate in Numbers,");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "rateInWords",
 				"required.rateInWords", "Enter Rate in Words.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projDescAmount",
-				"required.projDescAmount", "Enter Project Amount In Numbers.");
 
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		

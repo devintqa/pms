@@ -136,7 +136,7 @@
 			<table id="projDescDocList" class="gridView">
 				<thead>
 					<tr>
-						<th>Name</th>
+						<th>Serial Number</th>
 						<th>Alias</th>
 						<th>Work Type</th>
 						<th>Quantity</th>
@@ -149,7 +149,7 @@
 					<c:if test="${not empty projDescDocList}">
 						<c:forEach var="projDesc" items="${projDescDocList}">
 							<tr>
-								<td>${projDesc.description}</td>
+								<td>${projDesc.serialNumber}</td>
 								<td>${projDesc.aliasDescription}</td>
 								<td>${projDesc.workType}</td>
 								<td>${projDesc.quantityInFig}</td>
@@ -171,7 +171,7 @@
 				<table id="subProjectDocumentList" class="gridView">
 					<thead>
 						<tr>
-							<th>Name</th>
+							<th>Serial Number</th>
 							<th>Alias</th>
 							<th>Agreement No</th>
 							<th>CER No</th>
@@ -184,7 +184,7 @@
 						<c:if test="${not empty subProjectDocumentList}">
 							<c:forEach var="subProjDoc" items="${subProjectDocumentList}">
 								<tr>
-									<td>${subProjDoc.subProjectName}</td>
+									<td>${subProjDoc.serialNumber}</td>
 									<td>${subProjDoc.aliasSubProjName}</td>
 									<td>${subProjDoc.subAgreementNo}</td>
 									<td>${subProjDoc.subCerNo}</td>

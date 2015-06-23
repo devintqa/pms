@@ -6,8 +6,8 @@ import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.utils.PMSUtil;
-
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,16 +47,27 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public boolean createEditProjDesc(ProjDescDetail projDescDetail){
-    	if(!projDescDetail.isSubProjectDesc())
-        {
-    		projDescDetail.setAliasSubProjectName(null);
-        }
-        projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
+		fillEmptyProjDesValuesWithNull(projDescDetail);
+		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
         projDescDetail.setLastUpdatedAt(getCurrentDateTime());
 		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
 		return isInsertSuccessful;
 	}
-	
+
+	private void fillEmptyProjDesValuesWithNull(ProjDescDetail projDescDetail) {
+		if (!projDescDetail.isSubProjectDesc()) {
+			projDescDetail.setAliasSubProjectName(null);
+		}
+		if (StringUtils.isEmpty(projDescDetail.getQuantityInFig())) {
+			projDescDetail.setQuantityInFig(null);
+		}
+		if (StringUtils.isEmpty(projDescDetail.getQuantityInWords())) {
+			projDescDetail.setQuantityInWords(null);
+		}
+		if (StringUtils.isEmpty(projDescDetail.getProjDescAmount())) {
+			projDescDetail.setProjDescAmount(null);
+		}
+	}
 	public boolean createEditSubProject(SubProjectDetail subProjectDetail){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		subProjectDetail.setSubTenderSqlDate(getSQLDate(subProjectDetail.getSubTenderDate(), formatter));
@@ -74,7 +85,7 @@ public class ProjectServiceImpl implements ProjectService {
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;
 	}
-	
+
 	public boolean isAliasProjectAlreadyExisting(String aliasName){
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);

@@ -508,7 +508,11 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
 		projDescDetail.setWorkType((String) row.get("WorkType"));
 		BigDecimal quantityInFig = (BigDecimal)row.get("QuantityInFig");
-		projDescDetail.setQuantityInFig(quantityInFig.toString());
+		if (null == quantityInFig) {
+			projDescDetail.setQuantityInFig("");
+		} else {
+			projDescDetail.setQuantityInFig(quantityInFig.toString());
+		}
 		projDescDetail.setQuantityInWords((String) row.get("QuantityInWords"));
 		projDescDetail.setDescription((String) row.get("Description"));
 		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
@@ -516,7 +520,11 @@ public class ProjectDAOImpl implements ProjectDAO {
 		projDescDetail.setRateInFig(rateInFig.toString());
 		projDescDetail.setRateInWords((String) row.get("RateInWords"));
 		BigDecimal amount = (BigDecimal)row.get("Amount");
-		projDescDetail.setProjDescAmount(amount.toString());
+		if (null == amount) {
+			projDescDetail.setProjDescAmount("");
+		} else {
+			projDescDetail.setProjDescAmount(amount.toString());
+		}
 		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
 		return projDescDetail;
 	}
