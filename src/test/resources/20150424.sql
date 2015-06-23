@@ -142,6 +142,7 @@ DROP TABLE IF EXISTS `projectdesc`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `projectdesc` (
   `ProjId` int(10) NOT NULL,
+  `SerialNumber` varchar(10) NOT NULL,
   `SubProjId` int(10) NULL,
   `WorkType` varchar(30) NOT NULL,
   `QuantityInFig` decimal(15,2) NOT NULL,
