@@ -30,43 +30,66 @@ public class SearchController extends BaseController {
 	SearchService searchService;
 	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
-	public String searchProject(@PathVariable String employeeId,
-			@RequestParam(value="search", required=true) String search,
-			Model model) {		
-		LOGGER.info("Search Controller : searchProject()" + search);
-		model.addAttribute("searchForm", searchService.buildSearchDetail(search));
+	public String searchProject(@PathVariable String employeeId,Model model) {		
+		LOGGER.info("Search Controller : searchProject()");
+		List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+		if(!projectDocumentList.isEmpty()){
+			model.addAttribute("projectDocumentList", projectDocumentList);
+		}else{
+			model.addAttribute("noDetailsFound", "No Projects Found For The Selection.");
+		}
 		return "SearchProject";
 	}
 	
-	@RequestMapping(value = "/emp/myview/searchProject/searchProject.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/emp/myview/searchSubProject/{employeeId}", method = RequestMethod.GET)
+	public String searchSubProject(@PathVariable String employeeId,Model model) {		
+		LOGGER.info("Search Controller : searchSubProject()");
+		SearchDetail searchDetail = new SearchDetail();
+		searchDetail.setEditSubProject(true);
+		model.addAttribute("searchSubForm", searchDetail);
+		return "SearchSubProject";
+	}
+	
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/{employeeId}", method = RequestMethod.GET)
+	public String searchProjectDescription(@PathVariable String employeeId,Model model) {		
+		LOGGER.info("Search Controller : searchProjectDescription()");
+		SearchDetail searchDetail = new SearchDetail();
+		searchDetail.setSearchProjectDescription(true);
+		model.addAttribute("searchProjDescForm", searchDetail);
+		return "SearchProjectDescription";
+	}
+	
+	@RequestMapping(value = "/emp/myview/searchSubProject/searchProject.do", method = RequestMethod.GET)
 	public @ResponseBody
 	List<String> getProjectList(@RequestParam("term") String name) {
 		LOGGER.info("method = getProjectList()");
 		return fetchProjectsInfo(name);
 	}
+	
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchProject.do", method = RequestMethod.GET)
+	public @ResponseBody
+	List<String> getProjects(@RequestParam("term") String name) {
+		LOGGER.info("method = getProjectList()");
+		return fetchProjectsInfo(name);
+	}
 
 
-	@RequestMapping(value = "/emp/myview/searchProject/searchSubProject.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchSubProject.do", method = RequestMethod.GET)
 	public @ResponseBody
 	List<String> getSubProjectList(@RequestParam("term") String name) {
 		LOGGER.info("method = getSubProjectList()");
 		return fetchSubProjectsInfo(name);
 	}
 	
-	@RequestMapping(value = "/emp/myview/searchProject/searchDetails.do", method = RequestMethod.POST)
-	public String searchProjectDetail(
-			@ModelAttribute("searchForm") SearchDetail searchDetail,
+	@RequestMapping(value = "/emp/myview/searchSubProject/searchSubProjectDetails.do", method = RequestMethod.POST)
+	public String searchSubProjectDetail(
+			@ModelAttribute("searchSubForm") SearchDetail searchDetail,
 			BindingResult result, Model model, SessionStatus status) {
 		LOGGER.info("method = searchProjectDetail()");
 		searchValidator.validate(searchDetail, result);
+		LOGGER.info("method = searchProjectDetail()" + "after validate");
 		if(!result.hasErrors()){
-			if(searchDetail.isEditProject()){
-				List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
-				if(!projectDocumentList.isEmpty()){
-					model.addAttribute("projectDocumentList", projectDocumentList);
-				}
-			}
-			if(searchDetail.isEditSubProject()){
+			LOGGER.info("method = searchProjectDetail()" + "into fetch");
 				List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(searchDetail.getProjId());
 				if(subProjectDocumentList.size() > 0){
 					model.addAttribute("subProjectDocumentList", subProjectDocumentList);
@@ -75,8 +98,17 @@ public class SearchController extends BaseController {
 				}else{
 					model.addAttribute("noDetailsFound", "No Sub Projects Found For The Selection.");
 				}
-			}
-			if(searchDetail.isSearchProjectDescription()){
+		}
+		return "SearchSubProject";
+	}
+	
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchProjectDescDetails.do", method = RequestMethod.POST)
+	public String searchProjectDescDetail(
+			@ModelAttribute("searchProjDescForm") SearchDetail searchDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		LOGGER.info("method = searchProjectDetail()");
+		searchValidator.validate(searchDetail, result);
+		if(!result.hasErrors()){
 				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
 				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(),searchUnderProject);
@@ -88,8 +120,7 @@ public class SearchController extends BaseController {
 					model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
 				}
 			}
-		}
-		return "SearchProject";
+		return "SearchProjectDescription";
 	}
 	
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {

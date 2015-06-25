@@ -11,7 +11,7 @@ public class SearchServiceImpl implements SearchService {
 	public SearchDetail buildSearchDetail(String search) {
 		LOGGER.debug("Method: buildSearchDetail");
 		SearchDetail searchDetail = new SearchDetail();
-		if(search.equalsIgnoreCase("project")){
+		/*if(search.equalsIgnoreCase("project")){
 			searchDetail.setEditProject(true);
 			searchDetail.setSearchProject("Y");
 		}else if(search.equalsIgnoreCase("subProject")){
@@ -20,7 +20,7 @@ public class SearchServiceImpl implements SearchService {
 		}else if(search.equalsIgnoreCase("projectDesc")){
 			searchDetail.setSearchProjectDescription(true);
 			searchDetail.setSearchProjectDesc("Y");
-		}
+		}*/
 		return searchDetail;
 	}
 

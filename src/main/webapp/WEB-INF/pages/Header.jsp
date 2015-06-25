@@ -42,13 +42,13 @@
 				<li><a href="#">Search</a>
 					<ul>
 						<li><a id="searchProject"
-							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=project">
+							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}">
 								Project</a></li>
 						<li><a id="searchSubProject"
-							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=subProject">
+							href="/pms/emp/myview/searchSubProject/${employeeObj.employeeId}">
 								Sub Project</a></li>
 						<li><a id="searchProjectDesc"
-							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}?search=projectDesc">
+							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
 								Project Description </a></li>
 					</ul></li>
 				<li><a href="#">EMD</a>
