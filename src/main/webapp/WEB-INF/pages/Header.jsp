@@ -96,13 +96,9 @@
 				Profile</a></li>
 		<li><a id="logout"
 			href="${pageContext.request.contextPath}/logout">Logout</a></li>
-
 		<li><a id="excelViewer"
 			href="/pms/emp/myview/excel/${empId}/editOrViewExcel.do"
 			class="active">Excel</a></li>
-		<li><a id="excelViewerTest"
-			href="/pms/emp/myview/excel/${empId}/editOrViewExcelTest.do"
-			class="active">ExcelTest</a></li>
 	</c:when>
 
 	<c:when test="${employeeObj.employeeTeam eq 'Management'}">
