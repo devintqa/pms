@@ -50,7 +50,7 @@ CREATE TABLE `emddetail` (
 
 LOCK TABLES `emddetail` WRITE;
 /*!40000 ALTER TABLE `emddetail` DISABLE KEYS */;
-INSERT INTO `emddetail` VALUES (3,NULL,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:05',1),(3,5,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:43',2,'');
+/*INSERT INTO `emddetail` VALUES (3,NULL,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:05',1),(3,5,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:43',2,'');*/
 /*!40000 ALTER TABLE `emddetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,7 +83,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES ('akumar','$2a$10$PZb8ORC45xFGG/kJ5wtiseot.0ikqTNe6CnqYWWRwh1FZmS5/nvRG','ajith','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Admin'),('mkumar','$2a$10$U9C.H3FqG8.J6HUwoh9CO.qGLigYFh7UUWFvz/2uVS1G54ozAJ/oK','manager','kumar','3 rd street','Male','9994254559','mail@mail.com','9994254559',0,'Management'),('tkumar','$2a$10$FvLt6u7AoqnbVwj46Ohf7eoxmQj.j13vulC2eZkkdPWQqARL..Lra','tech','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Technical');
+/*INSERT INTO `employee` VALUES ('akumar','$2a$10$PZb8ORC45xFGG/kJ5wtiseot.0ikqTNe6CnqYWWRwh1FZmS5/nvRG','ajith','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Admin'),('mkumar','$2a$10$U9C.H3FqG8.J6HUwoh9CO.qGLigYFh7UUWFvz/2uVS1G54ozAJ/oK','manager','kumar','3 rd street','Male','9994254559','mail@mail.com','9994254559',0,'Management'),('tkumar','$2a$10$FvLt6u7AoqnbVwj46Ohf7eoxmQj.j13vulC2eZkkdPWQqARL..Lra','tech','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Technical');*/
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -129,7 +129,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (3,'Life Insurance','LIC','12312','CER234',12345.00,'PSK','conpsk','mount road, chennai',12345.00,12345.00,12345.00,12.00,12.00,13.00,'2015-05-28 00:00:00','2015-05-03 00:00:00',1234.00,123.00,'tkumar','2015-05-29 22:22:53','2015-05-27 00:00:00','2015-05-27 00:00:00','2015-05-27 00:00:00',2);
+/*INSERT INTO `project` VALUES (3,'Life Insurance','LIC','12312','CER234',12345.00,'PSK','conpsk','mount road, chennai',12345.00,12345.00,12345.00,12.00,12.00,13.00,'2015-05-28 00:00:00','2015-05-03 00:00:00',1234.00,123.00,'tkumar','2015-05-29 22:22:53','2015-05-27 00:00:00','2015-05-27 00:00:00','2015-05-27 00:00:00',2);*/
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,7 +165,7 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-INSERT INTO `projectdesc` VALUES (3,5,'Main Work',123.00,'one two three','desc work','LICF1MW1',123.00,'312',122.00,'tkumar','2015-05-30 16:05:49',2);
+/*INSERT INTO `projectdesc` VALUES (3,5,'Main Work',123.00,'one two three','desc work','LICF1MW1',123.00,'312',122.00,'tkumar','2015-05-30 16:05:49',2);*/
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +211,7 @@ CREATE TABLE `subproject` (
 
 LOCK TABLES `subproject` WRITE;
 /*!40000 ALTER TABLE `subproject` DISABLE KEYS */;
-INSERT INTO `subproject` VALUES (5,'LIC 1st floor','LICF1','12212','3131',3123.00,'psk','conpsk','mt road',3123.00,3213.00,12321.00,31.00,32.00,32.00,12312.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00',1,'tkumar','2015-05-30 16:00:47',3);
+/*INSERT INTO `subproject` VALUES (5,'LIC 1st floor','LICF1','12212','3131',3123.00,'psk','conpsk','mt road',3123.00,3213.00,12321.00,31.00,32.00,32.00,12312.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00',1,'tkumar','2015-05-30 16:00:47',3);*/
 /*!40000 ALTER TABLE `subproject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,7 +234,7 @@ CREATE TABLE `userroles` (
 
 LOCK TABLES `userroles` WRITE;
 /*!40000 ALTER TABLE `userroles` DISABLE KEYS */;
-INSERT INTO `userroles` VALUES ('akumar','ROLE_USER'),('tkumar','ROLE_USER'),('mkumar','ROLE_USER');
+/*INSERT INTO `userroles` VALUES ('akumar','ROLE_USER'),('tkumar','ROLE_USER'),('mkumar','ROLE_USER');*/
 /*!40000 ALTER TABLE `userroles` ENABLE KEYS */;
 UNLOCK TABLES;
 

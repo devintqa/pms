@@ -21,5 +21,10 @@ public class BaseController {
 		Map<String, String> subAliasProjectNames = projectService.getSubAliasProjectNames(projectId);
 		return subAliasProjectNames;
 	}
+	
+	public Map<String, String> populateDescItemCodes(String itemCode) {
+		Map<String, String> subAliasProjectNames = projectService.getDescItemCodes(itemCode);
+		return subAliasProjectNames;
+	}
 
 }

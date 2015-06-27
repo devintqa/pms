@@ -6,6 +6,7 @@ import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.utils.PMSUtil;
+
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
@@ -213,6 +214,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject) {
 		List<ProjDescDetail> projectDescDetailList = projectDAO.getProjectDescDetailList(projId,searchUnderProject);
 		return projectDescDetailList;
+	}
+
+	@Override
+	public Map<String, String> getDescItemCodes(String itemCode) {
+		Map<String, String> aliasSubProjectList = projectDAO.getDescItemCodes(itemCode);
+		return aliasSubProjectList;
 	}
 
 	

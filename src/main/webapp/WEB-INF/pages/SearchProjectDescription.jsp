@@ -24,7 +24,22 @@
 	        }
 		});
 	});
+  
+  function openProjDescLoader(){
+	  $("#projDescLoader").toggle();
+	  $("#projDescLoader").attr("src", "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do");
+	  
+  }
+  
   </script>
+	<style type="text/css">
+	#floatframe {
+		position: absolute;
+		left: 200px;
+		top: 50px;
+		z-index: 100;
+	}
+	</style>
 </head>
 <body ng-app="sampleApp">
 	<header>
@@ -91,14 +106,16 @@
 					<c:if test="${not empty projDescDocList}">
 						<c:forEach var="projDesc" items="${projDescDocList}">
 							<tr>
-								<td>${projDesc.serialNumber}</td>
+								<td><a
+									href="javascript:openProjDescLoader()" 	class="userAction">${projDesc.serialNumber}</a></td>
 								<td>${projDesc.aliasDescription}</td>
 								<td>${projDesc.workType}</td>
 								<td>${projDesc.quantityInFig}</td>
 								<td>${projDesc.rateInFig}</td>
 								<td>${projDesc.projDescAmount}</td>
-								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
-										 class="userAction">Update</a></td>
+								<td><a
+									href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+									class="userAction">Update</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>
@@ -109,9 +126,11 @@
 		</c:if>
 		
 		</div>
- <footer>
+ 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
- 
+	<div id="floatframe">
+		<iframe style="display: none; position: absolute; width: 1024px; height: 620px; z-index: 1000;" id="projDescLoader" ></iframe>
+	</div>
 </body>
 </html>

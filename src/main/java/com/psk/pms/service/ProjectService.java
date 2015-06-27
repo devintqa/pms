@@ -43,5 +43,7 @@ public interface ProjectService {
 	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
 	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
+
+	public Map<String, String> getDescItemCodes(String itemCode);
 	
 }

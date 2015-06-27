@@ -5,6 +5,7 @@ import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -579,6 +580,23 @@ public class ProjectDAOImpl implements ProjectDAO {
 			+ "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
 	
 	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
+	
+	
+	@Override
+	public Map<String, String> getDescItemCodes(String itemCode) {
+		Map<String, String> descItems = new LinkedHashMap<String, String>();
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		String sql;
+		List<Map<String, Object>> rows = null;
+		if ("" != itemCode) {
+			sql = "select ProjId, AliasProjName from project where AliasProjName LIKE '%"+itemCode+"%'";
+			rows = jdbcTemplate.queryForList(sql);
+		}
+		for (Map<String, Object> row : rows) {
+			descItems.put(String.valueOf(row.get("ProjId")), (String)row.get("AliasProjName"));
+		}	 
+		return descItems;
+	}
 
 
 }

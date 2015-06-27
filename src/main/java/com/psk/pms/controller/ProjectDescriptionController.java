@@ -1,12 +1,14 @@
 package com.psk.pms.controller;
 
 import com.google.gson.Gson;
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjDescDetailValidator;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,6 +35,7 @@ public class ProjectDescriptionController {
 	ProjectService projectService;
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
+	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
 	public String buildProjDesc(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
@@ -165,4 +169,10 @@ public class ProjectDescriptionController {
 		return subAliasProjectList;
 	}
 
+	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do", method = RequestMethod.GET)
+	public String loadProjDesc(Model model) {
+		DescItemDetail descItemDetail = new  DescItemDetail();
+		model.addAttribute("descItemForm", descItemDetail);
+		return "Test";
+	}
 }
