@@ -80,6 +80,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 			   }else if(projectDescDetail.getRateInFig().length() > 15){
 		            errors.rejectValue("rateInFig", "rateInFig.incorrect", "Field must not exceed 15 characters.");
 		        }
+		}else{
+			projectDescDetail.setRateInFig("0");
 		}
 		
 		if (!StringUtils.isNullOrEmpty(projectDescDetail.getProjDescAmount())) {  
@@ -91,6 +93,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 			   }else if(projectDescDetail.getProjDescAmount().length() > 15){
 		            errors.rejectValue("projDescAmount", "projDescAmount.incorrect", "Field must not exceed 15 characters.");
 		        }
+		}else{
+			projectDescDetail.setProjDescAmount("0");
 		}
 		
 		if(projectDescDetail.getQuantityInWords().length() > 50){
@@ -98,6 +102,9 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
         }
 		if(projectDescDetail.getAliasDescription().length() > 100){
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
+        }
+		if(projectDescDetail.getRateInWords().length() > 50){
+            errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
         }
 		
 		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
@@ -117,10 +124,6 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 				errors.rejectValue("serialNumber", "serialNumber.incorrect","Serial Number Already Found To Be Existing.");
 			}
 		}
-		
-		if(projectDescDetail.getRateInWords().length() > 50){
-            errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
-        }
 		
 	}
 	

@@ -49,7 +49,7 @@ public class EmdValidator extends BaseValidator implements Validator {
 
         if("0".equalsIgnoreCase(emdDetail.getAliasProjectName()) && emdDetail.getEmdId() ==0)
         {
-            errors.rejectValue("aliasProjectName","required.aliasProjectName", "Please Select Alias ProjectName");
+            errors.rejectValue("aliasProjectName","required.aliasProjectName", "Please Select Alias Project Name");
         }
 
         if(emdDetail.isSubProjectEMD() && emdDetail.getEmdId()==0)
