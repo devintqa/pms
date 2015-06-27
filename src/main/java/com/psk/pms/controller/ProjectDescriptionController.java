@@ -175,4 +175,11 @@ public class ProjectDescriptionController {
 		model.addAttribute("descItemForm", descItemDetail);
 		return "Test";
 	}
+	
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
+	public void deleteProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
+		String projectDescriptionId = request.getParameter("projectDescriptionId");
+		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+		projectService.deleteProjectDescriptionDetail(projectDescriptionId);
+	}
 }

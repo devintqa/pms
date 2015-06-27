@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
@@ -7,12 +6,15 @@
 <script>
 
 	$(document).ready(function () {
-		$("#itemCode").autocomplete({
-			source: function (request, response) {
-				$.getJSON("/pms/emp/myview/searchProjectDescription/searchDescItems.do", {
-							itemCode: request.term
-	            	            }, response);
-			}
+		var selector = "input[name = 'itemCode']";
+		$(document).on('keydown.autocomplete', selector, function() {
+			$(this).autocomplete({
+				source: function (request, response) {
+					$.getJSON("/pms/emp/myview/searchProjectDescription/searchDescItems.do", {
+								itemCode: request.term
+		            	            }, response);
+				}
+			});
 		});
 	});
 	
@@ -41,6 +43,14 @@
 		var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
 		inp2.id += len;
 		inp2.value = '';
+		
+		var inp3 = new_row.cells[2].getElementsByTagName('input')[0];
+		inp3.id += len;
+		inp3.value = '';
+		
+		var inp4 = new_row.cells[2].getElementsByTagName('input')[0];
+		inp4.id += len;
+		inp4.value = '';
 
 		x.appendChild(new_row);
 
@@ -68,21 +78,25 @@
 	<form:form id="descItemForm" method="POST" commandName="descItemForm">
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
-				<th>Item</th>
+				<th>Material</th>
+				<th>Unit</th>
 				<th>Qty</th>
-				<th>Amount</th>
+				<th>Price</th>
+				<th>Cost</th>
 				<th>Action</th>
 			</tr>
 
 			<tr>
-				<td><form:input path="itemCode" id="itemCode"
-						cssClass="inputText" /></td>
-				<td><input size=25 type="text" id="lngbox" /></td>
-				<td><input size=25 type="text" id="latbox1" /></td>
+				<td><input name="itemCode" id="itemCode" type="text" /></td>
+				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
+				<td><input name="itemQty" id="itemQty" type="text" /></td>
+				<td><input name="itemPrice" id="itemPrice" type="text" /></td>
+				<td><input name="itemCost" id="itemCost" type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)">delete</a></td>
 			</tr>
 
 		</table>
+		<br>
 		<br>
 		<input type="button" id="addItem" value="Add"
 			onclick="insertItemRow()" />

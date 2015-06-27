@@ -1,18 +1,23 @@
 package com.psk.pms.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
+
 import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.utils.PMSUtil;
-
-import org.apache.log4j.Logger;
-import org.springframework.util.StringUtils;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 public class ProjectServiceImpl implements ProjectService {
 	
@@ -84,6 +89,20 @@ public class ProjectServiceImpl implements ProjectService {
 			subProjectDetail.setSubExPercentage(null);
 		}
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
+		return isInsertSuccessful;
+	}
+	
+	public boolean insertDataDescription(List<DescItemDetail> dataDetailList, String employeeId){
+		boolean isInsertSuccessful = false;
+		final List<DescItemDetail> dataDetails = new ArrayList<DescItemDetail>();
+		for(DescItemDetail dataDetail : dataDetailList){
+			dataDetail.setLastUpdatedBy(employeeId);
+			dataDetail.setLastUpdatedAt(getCurrentDateTime());
+			dataDetails.add(dataDetail);
+		}	
+		if(dataDetails != null){
+			isInsertSuccessful = projectDAO.insertDataDescription(dataDetails);
+		}
 		return isInsertSuccessful;
 	}
 
@@ -222,6 +241,8 @@ public class ProjectServiceImpl implements ProjectService {
 		return aliasSubProjectList;
 	}
 
-	
+	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
+		projectDAO.deleteProjectDescription(projectDescriptionId);
+	}
 
 }

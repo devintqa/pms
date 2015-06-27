@@ -1,12 +1,13 @@
 package com.psk.pms.dao;
 
+import java.util.List;
+import java.util.Map;
+
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
-
-import java.util.List;
-import java.util.Map;
 
 public interface ProjectDAO {
 	
@@ -46,5 +47,8 @@ public interface ProjectDAO {
 
 	public Map<String, String> getDescItemCodes(String itemCode);
 	
+	public void deleteProjectDescription(String projectDescriptionId);
+	
+	public boolean insertDataDescription(final List<DescItemDetail> dataDetails);
 	
 }

@@ -1,12 +1,13 @@
 package com.psk.pms.service;
 
+import java.util.List;
+import java.util.Map;
+
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
-
-import java.util.List;
-import java.util.Map;
 
 public interface ProjectService {
 	
@@ -45,5 +46,9 @@ public interface ProjectService {
 	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
 	public Map<String, String> getDescItemCodes(String itemCode);
+
+	public void deleteProjectDescriptionDetail(String projectDescriptionId);
+	
+	public boolean insertDataDescription(List<DescItemDetail> dataDetailList, String employeeId);
 	
 }

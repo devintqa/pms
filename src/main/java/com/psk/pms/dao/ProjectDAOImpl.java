@@ -1,17 +1,25 @@
 package com.psk.pms.dao;
 
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
-
-import org.apache.log4j.Logger;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -222,6 +230,33 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
 			});
 		}
+		return true;
+	}
+	
+	public boolean insertDataDescription(final List<DescItemDetail> dataDetails){
+		String sql = "INSERT INTO datadescription" +
+		"(ProjDescId, SerialNumber, Amount, Unit, Material, QuantityInFig, RateInFig, LastUpdatedBy, LastUpdatedAt) " +
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	jdbcTemplate = new JdbcTemplate(dataSource);	
+	jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){	 
+		@Override
+		public void setValues(PreparedStatement ps, int i) throws SQLException {
+			DescItemDetail dataDetail = dataDetails.get(i);
+			ps.setInt(1, dataDetail.getProjDescId());
+			ps.setString(2, dataDetail.getSerialNumber());
+			ps.setString(3, dataDetail.getAmount());		
+			ps.setString(4, dataDetail.getUnit());
+			ps.setString(5, dataDetail.getMaterial());
+			ps.setString(6, dataDetail.getQuantityInFig());
+			ps.setString(7, dataDetail.getRateInFig());
+			ps.setString(8, dataDetail.getLastUpdatedBy());
+			ps.setDate(9, new java.sql.Date(dataDetail.getLastUpdatedAt().getTime()));
+		} 
+		@Override
+		public int getBatchSize() {
+			return dataDetails.size();
+		}
+	  });		
 		return true;
 	}
 
@@ -555,6 +590,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return projDescDetail;
 	}
 
+	public void deleteProjectDescription(String projectDescriptionId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery, new Object []{projectDescriptionId});
+		LOGGER.info("Number of rows deleted : "+ noOfRows);
+	}
+
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage, "
@@ -598,5 +639,5 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return descItems;
 	}
 
-
+	private String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
 }
