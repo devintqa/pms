@@ -215,6 +215,9 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDescDetailList;
 	}
 
-	
+	@Override
+	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
+		projectDAO.deleteProjectDescription(projectDescriptionId);
+	}
 
 }
