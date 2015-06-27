@@ -24,6 +24,20 @@
 	        }
 		});
 	});
+  function deleteProjectDescription(projectDescriptionId) {
+    		$.ajax({
+    			type : 'POST',
+    			url : 'deleteProjectDescription.do',
+    			data : "projectDescriptionId="+projectDescriptionId,
+    			success : function(response) {
+    				location.reload();
+					console.log("Successfully deleted row ");
+    			},
+    			error : function(err) {
+    				alert("error - " + err);
+    			}
+    		});
+    	}
   </script>
 </head>
 <body ng-app="sampleApp">
@@ -98,7 +112,10 @@
 								<td>${projDesc.rateInFig}</td>
 								<td>${projDesc.projDescAmount}</td>
 								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
-										 class="userAction">Update</a></td>
+										 class="userAction">Update</a>
+									<strong> / </strong>
+									<p id ="deleteRow" onclick ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</p>
+                                </td>
 							</tr>
 						</c:forEach>
 					</c:if>

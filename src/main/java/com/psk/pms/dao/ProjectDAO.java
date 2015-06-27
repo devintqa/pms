@@ -44,5 +44,5 @@ public interface ProjectDAO {
 
 	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 	
-	
+	public void deleteProjectDescription(String projectDescriptionId);
 }

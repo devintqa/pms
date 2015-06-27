@@ -554,6 +554,12 @@ public class ProjectDAOImpl implements ProjectDAO {
 		return projDescDetail;
 	}
 
+	public void deleteProjectDescription(String projectDescriptionId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery, new Object []{projectDescriptionId});
+		LOGGER.info("Number of rows deleted : "+ noOfRows);
+	}
+
 	private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage, "
@@ -580,5 +586,5 @@ public class ProjectDAOImpl implements ProjectDAO {
 	
 	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
 
-
+	private String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
 }

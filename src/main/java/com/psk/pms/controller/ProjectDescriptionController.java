@@ -165,4 +165,11 @@ public class ProjectDescriptionController {
 		return subAliasProjectList;
 	}
 
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
+	public void deleteProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
+		String projectDescriptionId = request.getParameter("projectDescriptionId");
+		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+		projectService.deleteProjectDescriptionDetail(projectDescriptionId);
+	}
+
 }
