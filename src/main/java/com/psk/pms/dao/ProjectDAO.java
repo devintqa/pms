@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.DataDescriptionDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -45,4 +46,7 @@ public interface ProjectDAO {
 	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 	
 	public void deleteProjectDescription(String projectDescriptionId);
+	
+	public boolean insertDataDescription(final List<DataDescriptionDetail> dataDetails);
+	
 }

@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.DataDescriptionDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -45,5 +46,7 @@ public interface ProjectService {
 	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId);
+	
+	public boolean insertDataDescription(List<DataDescriptionDetail> dataDetailList, String employeeId);
 	
 }

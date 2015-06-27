@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.DataDescriptionDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -8,6 +9,9 @@ import com.psk.pms.model.SubProjectDetail;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import java.sql.PreparedStatement;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import java.sql.SQLException;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -221,6 +225,33 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projDescDetail.getProjDescAmount(),projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
 			});
 		}
+		return true;
+	}
+	
+	public boolean insertDataDescription(final List<DataDescriptionDetail> dataDetails){
+		String sql = "INSERT INTO datadescription" +
+		"(ProjDescId, SerialNumber, Amount, Unit, Material, QuantityInFig, RateInFig, LastUpdatedBy, LastUpdatedAt) " +
+		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	jdbcTemplate = new JdbcTemplate(dataSource);	
+	jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){	 
+		@Override
+		public void setValues(PreparedStatement ps, int i) throws SQLException {
+			DataDescriptionDetail dataDetail = dataDetails.get(i);
+			ps.setInt(1, dataDetail.getProjDescId());
+			ps.setString(2, dataDetail.getSerialNumber());
+			ps.setString(3, dataDetail.getAmount());		
+			ps.setString(4, dataDetail.getUnit());
+			ps.setString(5, dataDetail.getMaterial());
+			ps.setString(6, dataDetail.getQuantityInFig());
+			ps.setString(7, dataDetail.getRateInFig());
+			ps.setString(8, dataDetail.getLastUpdatedBy());
+			ps.setDate(9, new java.sql.Date(dataDetail.getLastUpdatedAt().getTime()));
+		} 
+		@Override
+		public int getBatchSize() {
+			return dataDetails.size();
+		}
+	  });		
 		return true;
 	}
 

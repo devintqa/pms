@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.model.DataDescriptionDetail;
 import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -83,6 +84,20 @@ public class ProjectServiceImpl implements ProjectService {
 			subProjectDetail.setSubExPercentage(null);
 		}
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
+		return isInsertSuccessful;
+	}
+	
+	public boolean insertDataDescription(List<DataDescriptionDetail> dataDetailList, String employeeId){
+		boolean isInsertSuccessful = false;
+		final List<DataDescriptionDetail> dataDetails = new ArrayList<DataDescriptionDetail>();
+		for(DataDescriptionDetail dataDetail : dataDetailList){
+			dataDetail.setLastUpdatedBy(employeeId);
+			dataDetail.setLastUpdatedAt(getCurrentDateTime());
+			dataDetails.add(dataDetail);
+		}	
+		if(dataDetails != null){
+			isInsertSuccessful = projectDAO.insertDataDescription(dataDetails);
+		}
 		return isInsertSuccessful;
 	}
 
