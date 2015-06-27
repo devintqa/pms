@@ -22,44 +22,33 @@ public class EmdDaoImpl implements EmdDAO {
 
     @Override
     public boolean saveEmd(final EMDDetail emdDetail) {
-        String createSql = "INSERT INTO emddetail (ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ," +
-                "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, LastUpdatedBy,LastUpdatedAt,EmdSubmitter)" +
-                "VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,?)";
-
-
-        String updateSql = "UPDATE emddetail set ProjId = ? , SubProjId = ? ,EmdAmount = ? , EmdStartDate = ? ,EmdEndDate = ?,EmdType =? , BGNumber =?," +
-                "EmdPeriod = ?,EmdExtensionDate = ? ,EmdLedgerNumber =? , " +
-                "LastUpdatedBy = ?,LastUpdatedAt =? ,EmdSubmitter =? WHERE EmdId = ? ";
-
+    	LOGGER.info("Save EMD DAO Start");
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(emdDetail.getIsUpdate())) {
-            jdbcTemplate.update(createSql, new Object[]{
+            jdbcTemplate.update(PMSMasterQuery.CREATEEMDDETAIL, new Object[]{
                     emdDetail.getAliasProjectName(), emdDetail.getAliasSubProjectName(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                     emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                     emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
                      emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(),emdDetail.getEmdSubmitter()
             });
         } else {
-            jdbcTemplate.update(updateSql, new Object[]
+            jdbcTemplate.update(PMSMasterQuery.UPDATEEMDDETAIL, new Object[]
                     {emdDetail.getProjId(), emdDetail.getSubProjId(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                             emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                             emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
                             emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(),emdDetail.getEmdSubmitter(), emdDetail.getEmdId()
                     });
         }
+        LOGGER.info("Save EMD DAO End");
         return true;
     }
 
     @Override
     public List<EMDDetail> getEmdDetails() {
-        List<EMDDetail> emdDetails = new ArrayList<>();
+    	LOGGER.info("Fetch EMD Details Start");
+        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        String emdDetailsQuery = "select e.EmdId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ," +
-                " s.SubProjName , e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate " +
-                "from emddetail e left join project as p on e.ProjId = p.ProjId " +
-                "left join subproject as s on e.SubProjId=s.SubProjId ";
-
-        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(emdDetailsQuery);
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.FETCHEMDDETAILS);
         for(Map<String,Object> row : rows)
         {
             EMDDetail emdDetail =new EMDDetail();
@@ -73,6 +62,7 @@ public class EmdDaoImpl implements EmdDAO {
             emdDetail.setEmdType((String) row.get("EmdType"));
             emdDetails.add(emdDetail);
         }
+        LOGGER.info("Fetch EMD Details End");
         return emdDetails;
     }
 
@@ -80,30 +70,11 @@ public class EmdDaoImpl implements EmdDAO {
     public EMDDetail getEmdDetailsByEmdId(String emdId) {
         EMDDetail emdDetail = new EMDDetail();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        String emdDetailByEmdIdQuery = "select  ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ," +
-                "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, EmdSubmitter from emddetail where EmdId = ?";
-        emdDetail = (EMDDetail) jdbcTemplate.queryForObject(emdDetailByEmdIdQuery,new Object[] {emdId},new EmdDetailRowMapper());
+        emdDetail = (EMDDetail) jdbcTemplate.queryForObject(PMSMasterQuery.FETCHEMDDETAILBYEMDID,new Object[] {emdId},new EmdDetailRowMapper());
         return emdDetail;
     }
 
-    public DriverManagerDataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DriverManagerDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
-    }
-
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
-
     private class EmdDetailRowMapper implements org.springframework.jdbc.core.RowMapper<Object> {
-
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
             EMDDetail emdDetail = new EMDDetail();
             emdDetail.setProjId(rs.getInt("ProjId"));
@@ -120,4 +91,13 @@ public class EmdDaoImpl implements EmdDAO {
             return emdDetail;
         }
     }
+    
+    public void setDataSource(DriverManagerDataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
 }

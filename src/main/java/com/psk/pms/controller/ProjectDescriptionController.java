@@ -46,8 +46,8 @@ public class ProjectDescriptionController {
 			Model model) {
 		
 		if(null!=descDetail){
-			Map<String, String> aliasProjectList = new HashMap<>();
-			Map<String, String> subAliasProjectList = new HashMap<>();
+			Map<String,String> aliasProjectList = new HashMap<String,String>();
+			Map<String,String> subAliasProjectList = new HashMap<String,String>();
 
 			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail,subProject);
 			projDescDetail.setIsUpdate("Y");
@@ -111,7 +111,7 @@ public class ProjectDescriptionController {
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 				model.addAttribute("aliasProjectList", aliasProjectList);
 				if (null != projDescDetail.getAliasSubProjectName()) {
-					HashMap<String, String> subAliasProjectList = new HashMap<>();
+					HashMap<String, String> subAliasProjectList = new HashMap<String,String>();
 					subAliasProjectList.put(projDescDetail.getSubProjId().toString(), projDescDetail.getAliasSubProjectName());
 					projDescDetail.setSubProjectDesc(true);
 					model.addAttribute("subAliasProjectList", subAliasProjectList);
