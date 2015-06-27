@@ -159,6 +159,20 @@ CREATE TABLE `projectdesc` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+CREATE TABLE `datadescription` (
+  `ProjDescId` int(10) NOT NULL,
+  `SerialNumber` varchar(10) NOT NULL,
+  `Amount` decimal(15,2) NULL,
+  `Unit` varchar(30) NOT NULL,
+  `Material` varchar(100) NOT NULL,
+  `QuantityInFig` decimal(15,2) NULL,
+  `RateInFig` decimal(15,2) NOT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `DataDescId` int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DataDescId`)
+);
+
 --
 -- Dumping data for table `projectdesc`
 --
