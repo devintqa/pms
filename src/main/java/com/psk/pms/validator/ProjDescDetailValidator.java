@@ -39,10 +39,10 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 				"required.description", "Enter Description.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasDescription",
 				"required.aliasDescription", "Enter Alias Description.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "rateInFig",
-				"required.rateInFig", "Enter Rate in Numbers,");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "rateInWords",
-				"required.rateInWords", "Enter Rate in Words.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
+				"required.quantityInFig", "Enter Quantity In Figures.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInWords",
+				"required.quantityInWords", "Enter Quantity In Words.");
 
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		

@@ -29,6 +29,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 
 	@Override
 	public void validate(Object target, Errors errors) {
+		LOGGER.info("Project Validation Start");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectName",
 				"required.projectName", "Enter Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
@@ -40,7 +41,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorName",
 				"required.contractorName", "Enter Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasContractorName",
-				"required.aliasContractorName", "Enter alias Contractor Name.");
+				"required.aliasContractorName", "Enter Alias Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorAddress",
 				"required.contractorAddress", "Enter Contractor Address.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractValue",
@@ -54,7 +55,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "addSecurityDeposit",
-                "required.addSecurityDeposit", "Enter additional security deposit amount.");
+                "required.addSecurityDeposit", "Enter Additional Security Deposit Amount.");
 		
 		ProjectDetail projectDetail = (ProjectDetail)target;
 		
