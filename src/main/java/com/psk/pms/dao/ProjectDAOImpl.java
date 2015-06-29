@@ -630,11 +630,11 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String sql;
 		List<Map<String, Object>> rows = null;
 		if ("" != itemCode) {
-			sql = "select ProjId, AliasProjName from project where AliasProjName LIKE '%"+itemCode+"%'";
+			sql = "select itemNo, itemName from itemcodes where itemName LIKE '%"+itemCode+"%'";
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map<String, Object> row : rows) {
-			descItems.put(String.valueOf(row.get("ProjId")), (String)row.get("AliasProjName"));
+			descItems.put(String.valueOf(row.get("itemNo")), (String)row.get("itemName"));
 		}	 
 		return descItems;
 	}

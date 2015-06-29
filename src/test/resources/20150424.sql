@@ -2,9 +2,9 @@ CREATE DATABASE  IF NOT EXISTS `pms` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `pms`;
 -- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
 --
--- Host: localhost    Database: pms
+-- Host: 127.0.0.1    Database: pms
 -- ------------------------------------------------------
--- Server version	5.7.7-rc-log
+-- Server version	5.5.43-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -39,9 +39,9 @@ CREATE TABLE `emddetail` (
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `EmdId` int(11) NOT NULL AUTO_INCREMENT,
-  `EmdSubmitter` varchar(50),
+  `EmdSubmitter` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`EmdId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,6 @@ CREATE TABLE `emddetail` (
 
 LOCK TABLES `emddetail` WRITE;
 /*!40000 ALTER TABLE `emddetail` DISABLE KEYS */;
-/*INSERT INTO `emddetail` VALUES (3,NULL,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:05',1),(3,5,12.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','Bank Guarantee','123',2,'2015-05-30 00:00:00','12','0','tkumar','2015-05-30 21:31:43',2,'');*/
 /*!40000 ALTER TABLE `emddetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -83,8 +82,32 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-/*INSERT INTO `employee` VALUES ('akumar','$2a$10$PZb8ORC45xFGG/kJ5wtiseot.0ikqTNe6CnqYWWRwh1FZmS5/nvRG','ajith','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Admin'),('mkumar','$2a$10$U9C.H3FqG8.J6HUwoh9CO.qGLigYFh7UUWFvz/2uVS1G54ozAJ/oK','manager','kumar','3 rd street','Male','9994254559','mail@mail.com','9994254559',0,'Management'),('tkumar','$2a$10$FvLt6u7AoqnbVwj46Ohf7eoxmQj.j13vulC2eZkkdPWQqARL..Lra','tech','kumar','3 rd street','Male','9994254559','mail@mail.com','porkodi',1,'Technical');*/
+INSERT INTO `employee` VALUES ('akumar','$2a$10$5ypDVRuwAlFVuIcWOrkM1OrYgLuxjsFJ1otT.Ig3QY1YJ6a4d9OTG','admin','kumar','2nd street','Male','9999999999','admin@gmail.com','admin',1,'Admin'),('tkumar','$2a$10$mykTtgpJNJbFU5AVhmnuWOjdF2Gm/ze3Se4jRl/vaqqMCZT/Erv5y','technical','kumar','2nd street','Male','9999999998','tech@gmail.com','admin',1,'Technical');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `itemcodes`
+--
+
+DROP TABLE IF EXISTS `itemcodes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `itemcodes` (
+  `itemName` varchar(100) NOT NULL,
+  `itemNo` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`itemNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `itemcodes`
+--
+
+LOCK TABLES `itemcodes` WRITE;
+/*!40000 ALTER TABLE `itemcodes` DISABLE KEYS */;
+INSERT INTO `itemcodes` VALUES ('CEMENT',1),('RIVER SAND',2),('SEWING SAND',3),('BRICKS',4),('STEEL',5),('BINDING WIRE',6),('40 MM  METAL',7),('20 MM METAL',8),('CHIPS',9),('EARTH FROM OUTSIDE',10),('GRAVEL',11),('QUARRY DUST',12),('BOULDERS',13),('WATER STOPPER',14),('EXTRA FOR STAGEING 4.25 TO 6.5 M',15),('EXTRA FOR STAGEING 4.25 TO 8.5 M',16),('STRUCTURAL STEEL',17),(' RR MASONARY',18),('SOLID BLOCK 200 MM TK.',19),('SOLID BLOCK 150 MM TK.',20),('SOLID BLOCK 100 MM TK.',21),('RMC M10',22),('RMC M15',23),('RMC M20',24),('RMC M25',25),('RMC M30',26),('RMC M35',27),('RMC M 40',28),('ANTI-TERMINATE',29),('FLY ASH CONC. BLOCK',30),('ARPHITA MESH',31),('CENTERING MATERIAL COST',32),('COLUMN CENTERING MATRIAL COST',33),('COLUMN CENTERING MATRIAL COST',34),('CENTERING MATERIAL COST',35),('AEROCON BLOCK',36),('EROCON. BLOCK WORK IN C.M 1:6  ',37),('FLY ASH',38),('WATER PROOFING COMPOUND',39),('MESH',40),('WATERPROOFING MATERIAL & LABOUR (CICO)',41);
+/*!40000 ALTER TABLE `itemcodes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -98,7 +121,7 @@ CREATE TABLE `project` (
   `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
-  `AgreementNum` varchar(50),
+  `AgreementNum` varchar(50) DEFAULT NULL,
   `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
@@ -108,8 +131,8 @@ CREATE TABLE `project` (
   `TenderValue` decimal(15,2) NOT NULL,
   `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
-  `ExcessInPercentage` decimal(15,2) NULL,
-  `LessInPercentage` decimal(15,2) NULL,
+  `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
+  `LessInPercentage` decimal(15,2) DEFAULT NULL,
   `TenderDate` datetime NOT NULL,
   `AddSecurityDeposit` decimal(15,2) NOT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
@@ -120,7 +143,7 @@ CREATE TABLE `project` (
   `AgreementPeriod` int(10) DEFAULT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,7 +152,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-/*INSERT INTO `project` VALUES (3,'Life Insurance','LIC','12312','CER234',12345.00,'PSK','conpsk','mount road, chennai',12345.00,12345.00,12345.00,12.00,12.00,13.00,'2015-05-28 00:00:00','2015-05-03 00:00:00',1234.00,123.00,'tkumar','2015-05-29 22:22:53','2015-05-27 00:00:00','2015-05-27 00:00:00','2015-05-27 00:00:00',2);*/
+INSERT INTO `project` VALUES (4,'Madras Medical College','MMC','AN2123','1234CER',1000.00,'PSK','PSK','12 godown street',1500.00,1250.00,2000.00,2500.00,10.00,NULL,'2015-06-26 00:00:00',500.00,'tkumar','2015-06-26 09:44:34','2015-06-26 00:00:00','2015-06-30 00:00:00','2015-06-26 00:00:00',12);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,35 +166,21 @@ DROP TABLE IF EXISTS `projectdesc`;
 CREATE TABLE `projectdesc` (
   `ProjId` int(10) NOT NULL,
   `SerialNumber` varchar(10) NOT NULL,
-  `SubProjId` int(10) NULL,
+  `SubProjId` int(10) DEFAULT NULL,
   `WorkType` varchar(30) NOT NULL,
-  `QuantityInFig` decimal(15,2) NULL,
-  `QuantityInWords` varchar(50) NULL,
+  `QuantityInFig` decimal(15,2) DEFAULT NULL,
+  `QuantityInWords` varchar(50) DEFAULT NULL,
   `Description` text NOT NULL,
   `AliasDescription` varchar(100) NOT NULL,
   `RateInFig` decimal(15,2) NOT NULL,
   `RateInWords` varchar(50) NOT NULL,
-  `Amount` decimal(15,2) NULL,
+  `Amount` decimal(15,2) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
-CREATE TABLE `datadescription` (
-  `ProjDescId` int(10) NOT NULL,
-  `SerialNumber` varchar(10) NOT NULL,
-  `Amount` decimal(15,2) NULL,
-  `Unit` varchar(30) NOT NULL,
-  `Material` varchar(100) NOT NULL,
-  `QuantityInFig` decimal(15,2) NULL,
-  `RateInFig` decimal(15,2) NOT NULL,
-  `LastUpdatedBy` varchar(30) NOT NULL,
-  `LastUpdatedAt` datetime NOT NULL,
-  `DataDescId` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`DataDescId`)
-);
 
 --
 -- Dumping data for table `projectdesc`
@@ -179,7 +188,7 @@ CREATE TABLE `datadescription` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-/*INSERT INTO `projectdesc` VALUES (3,5,'Main Work',123.00,'one two three','desc work','LICF1MW1',123.00,'312',122.00,'tkumar','2015-05-30 16:05:49',2);*/
+INSERT INTO `projectdesc` VALUES (4,'SER123',NULL,'Main Work',10.00,'ten','EARTH ESCAVATION','EE',1000.00,'Thousand',1000.00,'tkumar','2015-06-26 09:47:11',3);
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,7 +203,7 @@ CREATE TABLE `subproject` (
   `SubProjId` int(10) NOT NULL AUTO_INCREMENT,
   `SubProjName` text NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
-  `AgreementNum` varchar(50),
+  `AgreementNum` varchar(50) DEFAULT NULL,
   `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
@@ -204,8 +213,8 @@ CREATE TABLE `subproject` (
   `TenderValue` decimal(15,2) NOT NULL,
   `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
-  `ExcessInPercentage` decimal(15,2) NULL,
-  `LessInPercentage` decimal(15,2) NULL,
+  `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
+  `LessInPercentage` decimal(15,2) DEFAULT NULL,
   `SubAddSecurityDeposit` decimal(15,2) NOT NULL,
   `TenderDate` datetime NOT NULL,
   `AgreementDate` datetime DEFAULT NULL,
@@ -216,7 +225,7 @@ CREATE TABLE `subproject` (
   `LastUpdatedAt` datetime NOT NULL,
   `ProjId` int(10) NOT NULL,
   PRIMARY KEY (`SubProjId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -225,7 +234,6 @@ CREATE TABLE `subproject` (
 
 LOCK TABLES `subproject` WRITE;
 /*!40000 ALTER TABLE `subproject` DISABLE KEYS */;
-/*INSERT INTO `subproject` VALUES (5,'LIC 1st floor','LICF1','12212','3131',3123.00,'psk','conpsk','mt road',3123.00,3213.00,12321.00,31.00,32.00,32.00,12312.00,'2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00','2015-05-30 00:00:00',1,'tkumar','2015-05-30 16:00:47',3);*/
 /*!40000 ALTER TABLE `subproject` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -248,7 +256,7 @@ CREATE TABLE `userroles` (
 
 LOCK TABLES `userroles` WRITE;
 /*!40000 ALTER TABLE `userroles` DISABLE KEYS */;
-/*INSERT INTO `userroles` VALUES ('akumar','ROLE_USER'),('tkumar','ROLE_USER'),('mkumar','ROLE_USER');*/
+INSERT INTO `userroles` VALUES ('akumar','ROLE_USER'),('tkumar','ROLE_USER');
 /*!40000 ALTER TABLE `userroles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -285,4 +293,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-05-30 21:59:24
+-- Dump completed on 2015-06-28 22:40:48
