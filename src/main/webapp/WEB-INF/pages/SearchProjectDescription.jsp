@@ -25,11 +25,15 @@
 		});
 	});
   
-  function openProjDescLoader(){
+  function openProjDescLoader(projDescSerial, projId, subProjId, projDescId, employeeId){
 	  $("#projDescLoader").toggle();
-	  $("#projDescLoader").attr("src", "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do");
+	  if(subProjId == ''){
+		  subProjId = 0;
+	  }
+	  $("#projDescLoader").attr("src", "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId);
 	  
   }
+  
   
   function deleteProjectDescription(projectDescriptionId) {
     		$.ajax({
@@ -120,8 +124,7 @@
 					<c:if test="${not empty projDescDocList}">
 						<c:forEach var="projDesc" items="${projDescDocList}">
 							<tr>
-								<td><a
-									href="javascript:openProjDescLoader()" 	class="userAction">${projDesc.serialNumber}</a></td>
+								<td><a href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${employeeObj.employeeId}')" 	class="userAction">${projDesc.serialNumber}</a></td>
 								<td>${projDesc.aliasDescription}</td>
 								<td>${projDesc.workType}</td>
 								<td>${projDesc.quantityInFig}</td>
@@ -146,7 +149,7 @@
 		<jsp:include page="Footer.jsp" />
 	</footer>
 	<div id="floatframe">
-		<iframe style="display: none; position: absolute; width: 1024px; height: 620px; z-index: 1000;" id="projDescLoader" ></iframe>
+		<iframe style="display: none; position: absolute; width: 1100px; height: 620px; z-index: 1000;" id="projDescLoader" ></iframe>
 	</div>
 </body>
 </html>

@@ -125,9 +125,9 @@ public class SearchController extends BaseController {
 	
 	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchDescItems.do", method = RequestMethod.GET)
 	public @ResponseBody
-	List<String> getDescItem(@RequestParam("itemCode") String itemCode) {
+	List<String> getDescItem(@RequestParam("itemName") String itemName) {
 		LOGGER.info("method = getDescItem()");
-		return fetchItemCode(itemCode);
+		return fetchItemCode(itemName);
 	}
 	
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
@@ -160,12 +160,12 @@ public class SearchController extends BaseController {
 		return result;
 	}
 	
-	private List<String> fetchItemCode(String itemCode) {
+	private List<String> fetchItemCode(String itemName) {
 		LOGGER.info("method = fetchItemCode()");
 		List<String> result = new ArrayList<String>();
-		Map<String, String> itemCodeList = populateDescItemCodes(itemCode);
+		Map<String, String> itemCodeList = populateDescItemCodes(itemName);
 		for (Map.Entry<String, String> entry : itemCodeList.entrySet()) {
-			if (entry.getValue().toUpperCase().indexOf(itemCode.toUpperCase())!= -1) {
+			if (entry.getValue().toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
 				result.add(entry.getValue());
 			}
 		}

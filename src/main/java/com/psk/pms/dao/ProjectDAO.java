@@ -49,6 +49,7 @@ public interface ProjectDAO {
 	
 	public void deleteProjectDescription(String projectDescriptionId);
 	
-	public boolean insertDataDescription(final List<DescItemDetail> dataDetails);
+	public boolean insertDataDescription(DescItemDetail descItemDetail);
 	
+	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 }

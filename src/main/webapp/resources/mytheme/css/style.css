@@ -162,6 +162,7 @@ li:hover {
 	-moz-box-shadow: 1px 1px 5px #ffffff;
 	-webkit-box-shadow: 1px 1px 5px #ffffff;
 	box-shadow: 1px 1px 5px #ffffff;
+	z-index: 1000;
 }
 
 .nav li a {	

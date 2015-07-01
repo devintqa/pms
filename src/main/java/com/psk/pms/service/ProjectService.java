@@ -49,6 +49,8 @@ public interface ProjectService {
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId);
 	
-	public boolean insertDataDescription(List<DescItemDetail> dataDetailList, String employeeId);
+	public boolean insertDataDescription(DescItemDetail descItemDetail);
+	
+	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 	
 }

@@ -92,16 +92,10 @@ public class ProjectServiceImpl implements ProjectService {
 		return isInsertSuccessful;
 	}
 	
-	public boolean insertDataDescription(List<DescItemDetail> dataDetailList, String employeeId){
+	public boolean insertDataDescription(DescItemDetail descItemDetail){
 		boolean isInsertSuccessful = false;
-		final List<DescItemDetail> dataDetails = new ArrayList<DescItemDetail>();
-		for(DescItemDetail dataDetail : dataDetailList){
-			dataDetail.setLastUpdatedBy(employeeId);
-			dataDetail.setLastUpdatedAt(getCurrentDateTime());
-			dataDetails.add(dataDetail);
-		}	
-		if(dataDetails != null){
-			isInsertSuccessful = projectDAO.insertDataDescription(dataDetails);
+		if(descItemDetail.getItemDetail() != null){
+			isInsertSuccessful = projectDAO.insertDataDescription(descItemDetail);
 		}
 		return isInsertSuccessful;
 	}
@@ -243,6 +237,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
 		projectDAO.deleteProjectDescription(projectDescriptionId);
+	}
+	
+	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
+		return projectDAO.getDataDescription(descItemDetail); 
 	}
 
 }

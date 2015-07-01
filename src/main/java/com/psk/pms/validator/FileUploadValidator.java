@@ -29,16 +29,16 @@ public class FileUploadValidator  implements Validator {
 
         if("0".equalsIgnoreCase(fileUpload.getAliasProjectName()))
         {
-            errors.rejectValue("aliasProjectName","required.aliasProjectName", "Please Select Alias ProjectName");
+            errors.rejectValue("aliasProjectName","required.aliasProjectName", "Please Select Alias Project Name");
         }
 
         if(fileUpload.isSubProjectUpload())
         {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasSubProjectName",
-                    "required.aliasSubProjectName", "Please Select Alias Sub ProjectName");
+                    "required.aliasSubProjectName", "Please Select Alias Sub Project Name");
             if("0".equals(fileUpload.getAliasSubProjectName()))
             {
-                errors.rejectValue("aliasSubProjectName","required.aliasSubProjectName", "Please Select Alias Sub ProjectName");
+                errors.rejectValue("aliasSubProjectName","required.aliasSubProjectName", "Please Select Alias Sub Project Name");
             }
         }
 
