@@ -5,7 +5,6 @@
 <%@include file="Script.jsp"%>
 <script>
 
-	var testData = "[{\"itemName\":\"CEMENT\",\"itemUnit\":\"bag\",\"itemQty\":\"3\",\"itemPrice\":\"43\",\"itemCost\":\"129\"},{\"itemName\":\"RIVER SAND\",\"itemUnit\":\"cft\",\"itemQty\":\"45\",\"itemPrice\":\"42\",\"itemCost\":\"1890\"}]";
 	
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
@@ -59,10 +58,6 @@
 
 	}
 
-	function closeDescWin() {
-		$('#projDescLoader', window.parent.document).toggle();
-	}
-	
 	$(document).on("focusout","input[name = 'itemQty']",function(){
 		var qty = $(this).val()
 		var amnt = $(this).parents('tr:first').find('td:nth-child(4) input').val();
@@ -225,6 +220,5 @@
 		<br>
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input type="button" id="saveDesc" value="Save" onclick="saveItemDesc()" />
-		<input type="button" id="closeDesc" value="Close" onclick="closeDescWin()" />
 	</form:form>
 </body>
