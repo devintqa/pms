@@ -152,7 +152,9 @@
 		for (i = 0; i <= obj.length - 1; i++) {
 			fillItemRow(obj[i]);
 		}
-		document.getElementById('itemTable').rows[1].remove();
+		if(obj!= ''){
+			document.getElementById('itemTable').rows[1].remove();
+		}
 		calculateTotalItemCost();
 	}
 	
