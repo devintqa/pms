@@ -122,7 +122,6 @@
 				itemObjArray.push(obj); 
 			}
 		}
-		
 		itemDescForm["employeeId"] = document.getElementById('employeeId').value;
 		itemDescForm["projId"] = document.getElementById('projId').value;
 		itemDescForm["subProjId"] = document.getElementById('subProjId').value;

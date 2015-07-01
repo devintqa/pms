@@ -111,6 +111,38 @@ INSERT INTO `itemcodes` VALUES ('CEMENT',1),('RIVER SAND',2),('SEWING SAND',3),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `projdescitem`
+--
+
+DROP TABLE IF EXISTS `projdescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projdescitem` (
+  `ProjId` int(11) DEFAULT NULL,
+  `SubProjId` int(11) DEFAULT NULL,
+  `ProjDescId` int(11) DEFAULT NULL,
+  `ProjDescSerial` varchar(45) DEFAULT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT NULL,
+  `ItemPrice` varchar(45) DEFAULT NULL,
+  `ItemCost` varchar(45) DEFAULT NULL,
+  `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DescItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projdescitem`
+--
+
+LOCK TABLES `projdescitem` WRITE;
+/*!40000 ALTER TABLE `projdescitem` DISABLE KEYS */;
+INSERT INTO `projdescitem` VALUES (3,0,3,'SER123','RIVER SAND','cft','45','42','1890',26),(3,0,3,'SER123','CEMENT','bag','100','250','25000',27),(3,0,3,'SER123','SEWING SAND','cft','201','250','50250',28);
+/*!40000 ALTER TABLE `projdescitem` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `project`
 --
 
@@ -283,6 +315,14 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'pms'
+--
+
+--
+-- Dumping routines for database 'pms'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -293,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-06-28 22:40:48
+-- Dump completed on 2015-07-01 20:11:16
