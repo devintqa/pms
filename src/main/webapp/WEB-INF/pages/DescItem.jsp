@@ -135,7 +135,7 @@
 			data: JSON.stringify(itemDescForm),
 			success : function(response) {
 				if(response == true){
-					alert("IBS saved successfully");
+					alert("Data saved successfully");
 				}
 			}
 		});
