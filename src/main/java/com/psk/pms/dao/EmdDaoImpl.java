@@ -99,5 +99,12 @@ public class EmdDaoImpl implements EmdDAO {
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    public void deleteEmdDetailByEmdId(Integer emdId)
+    {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfRows = jdbcTemplate.update(PMSMasterQuery.DELTEPEMDDETAILBYEMDID ,new Object []{emdId});
+        LOGGER.info("method = deleteEmdDetailByEmdId , Number of rows deleted : "+ noOfRows +" subProjectId :" + emdId );
+    }
     
 }

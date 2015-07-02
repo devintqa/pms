@@ -45,7 +45,7 @@
 					console.log("Successfully deleted row ");
     			},
     			error : function(err) {
-    				alert("error - " + err);
+    				console.log("Error deleting project description ");
     			}
     		});
     	}
@@ -133,7 +133,7 @@
 								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
 										 class="userAction">Update</a>
 									<strong> / </strong>
-									<p id ="deleteRow" onclick ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</p>
+									<a id ="deleteRow" href ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</a>
                                 </td>
 							</tr>
 						</c:forEach>

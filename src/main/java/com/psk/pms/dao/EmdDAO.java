@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface EmdDAO {
 
-    public boolean saveEmd(EMDDetail emdDetail);
+    boolean saveEmd(EMDDetail emdDetail);
 
     List<EMDDetail> getEmdDetails();
 
     EMDDetail getEmdDetailsByEmdId(String emdId);
+
+    void deleteEmdDetailByEmdId(Integer emdId);
 }

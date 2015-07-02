@@ -1,23 +1,14 @@
 package com.psk.pms.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.model.*;
+import com.psk.pms.utils.PMSUtil;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import com.psk.pms.dao.ProjectDAO;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.utils.PMSUtil;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ProjectServiceImpl implements ProjectService {
 	
@@ -235,6 +226,7 @@ public class ProjectServiceImpl implements ProjectService {
 		return aliasSubProjectList;
 	}
 
+	@Override
 	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
 		projectDAO.deleteProjectDescription(projectDescriptionId);
 	}
@@ -243,4 +235,13 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.getDataDescription(descItemDetail); 
 	}
 
+	@Override
+	public void deleteProject(Integer projectId) {
+		projectDAO.deleteProject(projectId);
+	}
+
+	@Override
+	public void deleteSubProject(Integer subProjectId) {
+		projectDAO.deleteSubProjectBySubProjectId(subProjectId);
+	}
 }

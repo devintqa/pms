@@ -1,13 +1,9 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.*;
+
 import java.util.List;
 import java.util.Map;
-
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
 
 public interface ProjectDAO {
 	
@@ -50,6 +46,20 @@ public interface ProjectDAO {
 	public void deleteProjectDescription(String projectDescriptionId);
 	
 	public boolean insertDataDescription(DescItemDetail descItemDetail);
+
+	public void deleteProject(Integer projectId);
+
+	public void deleteSubProjectByProjectId(Integer projectId);
+
+	public void deleteSubProjectBySubProjectId(Integer subProjectId);
+
+	public void deleteEmddetailByProjectId(Integer projectId);
+
+	public void deleteEmddetailBySubProjectId(Integer subProjectId);
+
+	public void deleteProjectDescriptionByProjectId(Integer projectId);
+
+	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) ;
 	
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 }

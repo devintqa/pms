@@ -1,27 +1,19 @@
 package com.psk.pms.dao;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
+import static com.psk.pms.dao.PMSMasterQuery.*;
 public class ProjectDAOImpl implements ProjectDAO {
 
 	private DriverManagerDataSource dataSource;
@@ -670,4 +662,58 @@ public class ProjectDAOImpl implements ProjectDAO {
 	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
 	
 	private String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
+
+	@Override
+	public void deleteProject(Integer projectId) {
+		deleteEmddetailByProjectId(projectId);
+		deleteProjectDescriptionByProjectId(projectId);
+		deleteSubProjectByProjectId(projectId);
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteProject , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteSubProjectByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteSubProjectByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteSubProjectBySubProjectId(Integer subProjectId) {
+		deleteEmddetailBySubProjectId(subProjectId);
+		deleteProjectDescriptionBySubProjectId(subProjectId);
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteSubProjectBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
+
+	@Override
+	public void deleteEmddetailByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteEmddetailByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteEmddetailBySubProjectId(Integer subProjectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteEmddetailBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
+
+	@Override
+	public void deleteProjectDescriptionByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteProjectDescriptionBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
 }

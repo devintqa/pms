@@ -78,6 +78,10 @@ public class EmdServiceImpl implements EmdService {
         return getSQLDate(formattedDate,simpleDateFormat);
     }
 
+    public void deleteEmd(Integer numericEmdId) {
+        emdDAO.deleteEmdDetailByEmdId(numericEmdId);
+    }
+
     public EmdDAO getEmdDAO() {
         return emdDAO;
     }

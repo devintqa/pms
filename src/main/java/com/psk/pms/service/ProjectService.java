@@ -1,13 +1,9 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.*;
+
 import java.util.List;
 import java.util.Map;
-
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
 
 public interface ProjectService {
 	
@@ -49,6 +45,11 @@ public interface ProjectService {
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId);
 	
+
+	void deleteProject(Integer projectId);
+
+	void deleteSubProject(Integer subProjectId);
+
 	public boolean insertDataDescription(DescItemDetail descItemDetail);
 	
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);

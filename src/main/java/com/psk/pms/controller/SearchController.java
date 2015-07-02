@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -170,6 +172,23 @@ public class SearchController extends BaseController {
 			}
 		}
 		return result;
+	}
+
+	@RequestMapping(value = "/emp/myview/searchProject/deleteProject.do", method = RequestMethod.POST)
+	public void deleteProject(HttpServletRequest request, HttpServletResponse response) {
+		String projectId = request.getParameter("projectId");
+		LOGGER.info("method = deleteProject() , projectId :"+ projectId);
+		Integer projectIdNumeric = Integer.parseInt(projectId);
+		projectService.deleteProject(projectIdNumeric);
+	}
+
+	@RequestMapping(value = "/emp/myview/searchSubProject/deleteSubProject.do", method = RequestMethod.POST)
+	public void deleteSubProject(HttpServletRequest request, HttpServletResponse response) {
+		String subProjectId = request.getParameter("subProjectId");
+		LOGGER.info("method = deleteSubProject() , sub projectid : "+subProjectId );
+		Integer subProjectIdNumeric = Integer.parseInt(subProjectId);
+		projectService.deleteSubProject(subProjectIdNumeric);
+
 	}
 
 }
