@@ -4,6 +4,7 @@ import com.psk.pms.model.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ProjectDAO {
 	
@@ -62,4 +63,6 @@ public interface ProjectDAO {
 	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) ;
 	
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	
+	public Set<String> fetchItemNames();
 }

@@ -225,6 +225,12 @@ public class ProjectServiceImpl implements ProjectService {
 		Map<String, String> aliasSubProjectList = projectDAO.getDescItemCodes(itemCode);
 		return aliasSubProjectList;
 	}
+	
+	@Override
+	public Set<String> fetchItemNames() {
+		Set<String> itemNames = projectDAO.fetchItemNames();
+		return itemNames;
+	}
 
 	@Override
 	public void deleteProjectDescriptionDetail(String projectDescriptionId) {

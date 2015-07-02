@@ -100,6 +100,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 		}	 
 		return aliasProjects;
 	}
+	
+	@Override
+	public Set<String> fetchItemNames() {
+		String sql = "select itemName from itemcodes";	 
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		Set<String> itemNames = new HashSet<String>();
+		for (Map<String, Object> row : rows) {
+			itemNames.add((String)row.get("itemName"));
+		}
+		return itemNames;
+	}
 
 	public Map<String, String> getSubAliasProjectNames(String projectId) {
 		Map<String, String> aliasSubProjects = new LinkedHashMap<String, String>();
