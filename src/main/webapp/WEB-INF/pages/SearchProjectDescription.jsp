@@ -9,6 +9,7 @@
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
   <script>
+  var windowObjectReference = null;
   $(document).ready(function () {
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
@@ -26,11 +27,10 @@
 	});
   
   function openProjDescLoader(projDescSerial, projId, subProjId, projDescId, employeeId){
-	  $("#projDescLoader").toggle();
 	  if(subProjId == ''){
 		  subProjId = 0;
 	  }
-	  $("#projDescLoader").attr("src", "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId);
+	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1200,height=700');
 	  
   }
   
@@ -50,14 +50,6 @@
     		});
     	}
   </script>
-	<style type="text/css">
-	#floatframe {
-		position: absolute;
-		left: 200px;
-		top: 50px;
-		z-index: 100;
-	}
-	</style>
 </head>
 <body ng-app="sampleApp">
 	<header>
@@ -148,8 +140,5 @@
  	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
-	<div id="floatframe">
-		<iframe style="display: none; position: absolute; width: 1100px; height: 620px; z-index: 1000;" id="projDescLoader" ></iframe>
-	</div>
 </body>
 </html>
