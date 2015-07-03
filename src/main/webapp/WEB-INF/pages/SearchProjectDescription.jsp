@@ -8,7 +8,7 @@
   <title>PMS :: Search Project Description</title>
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
-  <script>
+<script>
   var windowObjectReference = null;
   $(document).ready(function () {
 		$("#aliasProjectName").autocomplete({
@@ -36,18 +36,42 @@
   
   
   function deleteProjectDescription(projectDescriptionId) {
-    		$.ajax({
-    			type : 'POST',
-    			url : 'deleteProjectDescription.do',
-    			data : "projectDescriptionId="+projectDescriptionId,
-    			success : function(response) {
-    				location.reload();
-					console.log("Successfully deleted row ");
-    			},
-    			error : function(err) {
-    				console.log("Error deleting project description ");
-    			}
-    		});
+	  
+	  $("#dialog-confirm").html("Please confirm to proceed");
+
+	    // Define the Dialog and its properties.
+	    $("#dialog-confirm").dialog({
+	        resizable: false,
+	        modal: true,
+	        title: "Modal",
+	        height: 250,
+	        width: 400,
+	        buttons: {
+	            "Yes": function () {
+	            	$.ajax({
+	        			type : 'POST',
+	        			url : 'deleteProjectDescription.do',
+	        			data : "projectDescriptionId="+projectDescriptionId,
+	        			success : function(response) {
+	        				location.reload();
+	    					console.log("Successfully deleted row ");
+	        			},
+	        			error : function(err) {
+	        				console.log("Error deleting project description ");
+	        			}
+	        		});
+	                $(this).dialog('close');
+	                window.location.reload();
+	                
+	            },
+	                "No": function () {
+	                $(this).dialog('close');
+	               
+	            }
+	        }
+	    });
+	    
+    		
     	}
   </script>
 </head>
@@ -168,6 +192,7 @@
 		</c:if>
 		
 		</div>
+		<div id="dialog-confirm"></div>
  	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
