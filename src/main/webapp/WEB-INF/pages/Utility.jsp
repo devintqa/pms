@@ -1,8 +1,65 @@
 <script>
+var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
+var tblEmdDocument = $("#emdDocumentList").dataTable();
+</script>
+
+
+<script>
+$(function() {
+    var table = $("#itemDescList").dataTable( {"pageLength": 10});
+	
+     $("#itemDescList_columnUl").on('change', 'input:checkbox', function(e) {
+        var columnName = $(this).attr('name');			  
+        
+		  var isColumnStatusChecked = $( this ).is( ":checked" ) 
+		  if(!isColumnStatusChecked){
+				$(this).attr('value', 'hidden');
+		  } else{
+				$(this).attr('value', '');
+		  }
+        $("table[id*=itemDescList] th").each(function(index, item) {			  
+            if (columnName == item.innerHTML) {
+                $('table[id*=itemDescList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+            }
+        })
+    });
+
+
+    $("#itemDescList_paginate").on('click', function(e) {
+        $("#itemDescList_columnUl").find('input:checkbox').each(function(index, item) {
+            var columnStatus = $(this).attr('value');
+            var columnName = $(this).attr('name');				  
+			  
+            if (columnStatus == 'hidden') {						
+                $("table[id*=itemDescList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#itemDescList tr').find("td:eq(" + index + ")").css('display');
+                        if (displayType != 'none') {
+                            $('table[id*=itemDescList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+            }else{					
+				 $("table[id*=itemDescList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#itemDescList tr').find("td:eq(" + index + ")").css('display');							  
+                        if (displayType == 'none') {
+                            $('table[id*=itemDescList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+			  }
+        });
+    });		  
+});
+</script>
+
+
+<script>
 $(function() {
     var table = $("#projectDocumentList").dataTable( {"pageLength": 10});
-    var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
-	var tblEmdDocument = $("#emdDocumentList").dataTable();
 	
      $("#projectDocumentList_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
@@ -56,8 +113,6 @@ $(function() {
 <script>
 $(function() {
     var table = $("#projDescDocList").dataTable( {"pageLength": 10});
-    var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
-	var tblEmdDocument = $("#emdDocumentList").dataTable();
 	
      $("#projDescDocList_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
@@ -110,8 +165,6 @@ $(function() {
 <script>
 $(function() {
     var table = $("#subProjectDocumentList").dataTable( {"pageLength": 10});
-    var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
-	var tblEmdDocument = $("#emdDocumentList").dataTable();
 	
      $("#subProjectDocumentList_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
