@@ -1,5 +1,6 @@
 package com.psk.pms.controller;
 
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
@@ -14,6 +15,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -109,6 +112,16 @@ public class SearchController extends BaseController {
 		LOGGER.info("method = searchProjectDetail()");
 		searchValidator.validate(searchDetail, result);
 		if(!result.hasErrors()){
+			if(searchDetail.isSearchAggregateItemDetails()){
+				List<ItemDetail> aggregateItemDetails = projectService.getProjectData(searchDetail.getProjId());
+				if(aggregateItemDetails.size() > 0){
+					model.addAttribute("aggregateItemDetails", aggregateItemDetails);
+					model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
+					model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Aggregate Material Data Found For The Project.");
+				}
+			} else{
 				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
 				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(),searchUnderProject);
@@ -120,6 +133,7 @@ public class SearchController extends BaseController {
 					model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
 				}
 			}
+		}
 		return "SearchProjectDescription";
 	}
 	
@@ -170,6 +184,23 @@ public class SearchController extends BaseController {
 			}
 		}
 		return result;
+	}
+
+	@RequestMapping(value = "/emp/myview/searchProject/deleteProject.do", method = RequestMethod.POST)
+	public void deleteProject(HttpServletRequest request, HttpServletResponse response) {
+		String projectId = request.getParameter("projectId");
+		LOGGER.info("method = deleteProject() , projectId :"+ projectId);
+		Integer projectIdNumeric = Integer.parseInt(projectId);
+		projectService.deleteProject(projectIdNumeric);
+	}
+
+	@RequestMapping(value = "/emp/myview/searchSubProject/deleteSubProject.do", method = RequestMethod.POST)
+	public void deleteSubProject(HttpServletRequest request, HttpServletResponse response) {
+		String subProjectId = request.getParameter("subProjectId");
+		LOGGER.info("method = deleteSubProject() , sub projectid : "+subProjectId );
+		Integer subProjectIdNumeric = Integer.parseInt(subProjectId);
+		projectService.deleteSubProject(subProjectIdNumeric);
+
 	}
 
 }

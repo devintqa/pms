@@ -1,17 +1,17 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+
 import java.util.List;
 import java.util.Map;
-
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
+import java.util.Set;
 
 public interface ProjectService {
 	
 	public boolean createEditProject(ProjectDetail projectDetail);
+	
+	public boolean createEditItem(Item item);
 	
 	public boolean createEditProjDesc(ProjDescDetail projDescDetail);
 	
@@ -39,6 +39,8 @@ public interface ProjectService {
 	
 	public boolean isAliasProjectAlreadyExisting(String aliasName);
 	
+	public boolean isItemAlreadyExisting(String itemName);
+	
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId);
 	
 	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
@@ -49,8 +51,16 @@ public interface ProjectService {
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId);
 	
+	void deleteProject(Integer projectId);
+
+	void deleteSubProject(Integer subProjectId);
+
 	public boolean insertDataDescription(DescItemDetail descItemDetail);
 	
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	
+	public Set<String> fetchItemNames();
+	
+	public List<ItemDetail> getProjectData(Integer projId);
 	
 }

@@ -16,7 +16,9 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EMDController {
@@ -149,5 +151,12 @@ public class EMDController {
 		return "updateEmd";
 	}
 
+	@RequestMapping(value = "/emp/myview/updateEmd/deleteEmd.do", method = RequestMethod.POST)
+	public void deleteEmd(HttpServletRequest request, HttpServletResponse response) {
+		String emdId = request.getParameter("emdId");
+		LOGGER.info("method = deleteEmd() , emd Id : " + emdId);
+		Integer numericEmdId = Integer.parseInt(emdId);
+		emdService.deleteEmd(numericEmdId);
+	}
 }
 

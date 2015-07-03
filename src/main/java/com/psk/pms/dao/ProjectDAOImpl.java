@@ -1,27 +1,19 @@
 package com.psk.pms.dao;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
 
+import static com.psk.pms.dao.PMSMasterQuery.*;
 public class ProjectDAOImpl implements ProjectDAO {
 
 	private DriverManagerDataSource dataSource;
@@ -36,13 +28,13 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String createSql = "INSERT INTO project (ProjName, AliasProjName, AgreementNum, CERNum, Amount, "
 				+ "ContractorName, ContractorAliasName , ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, LessInPercentage , TenderDate, "
-				+ "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+				+ "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit,PerformanceGuarantee) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
 		String updateSql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
 				"ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?," +
-				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=? WHERE ProjId = ?";
+				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=?,PerformanceGuarantee=? WHERE ProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
@@ -67,7 +59,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projectDetail.getAgreementPeriod(),
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
-                    projectDetail.getAddSecurityDeposit()
+                    projectDetail.getAddSecurityDeposit(),
+					projectDetail.getPerformanceGuarantee()
 			});
 		} else {
 			jdbcTemplate.update(updateSql, new Object[] { 
@@ -91,9 +84,19 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
                     projectDetail.getAddSecurityDeposit(),
+					projectDetail.getPerformanceGuarantee(),
 					projectDetail.getProjId()
 			});
 		}
+		return true;
+	}
+	
+	public boolean saveItem(Item item) {
+		String createSql = "INSERT INTO itemcodes (itemName, itemUnit) "
+				+ "VALUES (?, ?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update(createSql,
+				new Object[] { item.getItemName(), item.getItemUnit() });
 		return true;
 	}
 
@@ -107,6 +110,18 @@ public class ProjectDAOImpl implements ProjectDAO {
 			aliasProjects.put(String.valueOf(row.get("ProjId")), (String)row.get("AliasProjName"));
 		}	 
 		return aliasProjects;
+	}
+	
+	@Override
+	public Set<String> fetchItemNames() {
+		String sql = "select itemName from itemcodes";	 
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		Set<String> itemNames = new HashSet<String>();
+		for (Map<String, Object> row : rows) {
+			itemNames.add((String)row.get("itemName"));
+		}
+		return itemNames;
 	}
 
 	public Map<String, String> getSubAliasProjectNames(String projectId) {
@@ -131,13 +146,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
 		String insertSql = "INSERT INTO subproject (ProjId, SubProjName, AliasSubProjName, AgreementNum, CERNum, "
 				+ "Amount, ContractorName,ContractorAliasName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, ExcessInAmount, "
-				+ "ExcessInPercentage,LessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod,LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+				+ "ExcessInPercentage,LessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod," +
+				"LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit,SubPerformanceGuarantee) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)";
 
 		String updateSql = "UPDATE subproject set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
 				"ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+
-				"AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? WHERE SubProjId = ?";
+				"AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? ,SubPerformanceGuarantee = ? WHERE SubProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
@@ -164,7 +180,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 					subProjectDetail.getSubAgreementPeriod(),
                     subProjectDetail.getLastUpdatedBy(),
                     subProjectDetail.getLastUpdatedAt(),
-                    subProjectDetail.getSubAddSecurityDeposit()
+                    subProjectDetail.getSubAddSecurityDeposit(),
+					subProjectDetail.getSubPerformanceGuarantee()
 			});
 		}else {
 			jdbcTemplate.update(updateSql, new Object[] { 
@@ -188,6 +205,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                     subProjectDetail.getLastUpdatedBy(),
                     subProjectDetail.getLastUpdatedAt(),
                     subProjectDetail.getSubAddSecurityDeposit(),
+					subProjectDetail.getSubPerformanceGuarantee(),
                     subProjectDetail.getSubProjId()
 			});
 		}
@@ -243,26 +261,41 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String deleteSql = "DELETE from projdescitem where ProjDescId = "+descItemDetail.getProjDescId()+" and ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"'";
 		jdbcTemplate.execute(deleteSql);
 		
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){	 
-		@Override
-		public void setValues(PreparedStatement ps, int i) throws SQLException {
-			ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-			ps.setInt(1, descItemDetail.getProjDescId());
-			ps.setInt(2, descItemDetail.getSubProjId());
-			ps.setInt(3, descItemDetail.getProjDescId());
-			ps.setString(4, descItemDetail.getProjDescSerial());
-			ps.setString(5, itemDetail.getItemName());
-			ps.setString(6, itemDetail.getItemUnit());
-			ps.setString(7, itemDetail.getItemQty());
-			ps.setString(8, itemDetail.getItemPrice());		
-			ps.setString(9, itemDetail.getItemCost());
-		} 
-		@Override
-		public int getBatchSize() {
-			return descItemDetail.getItemDetail().size();
-		}
-	  });		
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
+				ps.setInt(1, descItemDetail.getProjId());
+				ps.setInt(2, descItemDetail.getSubProjId());
+				ps.setInt(3, descItemDetail.getProjDescId());
+				ps.setString(4, descItemDetail.getProjDescSerial());
+				ps.setString(5, itemDetail.getItemName());
+				ps.setString(6, itemDetail.getItemUnit());
+				ps.setString(7, itemDetail.getItemQty());
+				ps.setString(8, itemDetail.getItemPrice());
+				ps.setString(9, itemDetail.getItemCost());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return descItemDetail.getItemDetail().size();
+			}
+		});
 		return true;
+	}
+	
+	public List<ItemDetail> getProjectData(final Integer projId){
+		LOGGER.info("getProjectData projId:" + projId);
+		String sql = "Select * from projdescitem where ProjId = "+projId;
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<ItemDetail> itemDetailList = new ArrayList<ItemDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		LOGGER.info("getProjectData rows:" + rows.size());
+		for (Map<String, Object> row : rows) {
+			itemDetailList.add(buildItemDetail(row));
+		}
+		LOGGER.info("getProjectData itemDetailList:" + itemDetailList.size());
+		return itemDetailList;
 	}
 
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
@@ -399,6 +432,15 @@ public class ProjectDAOImpl implements ProjectDAO {
 
         BigDecimal addSecurityDeposit = (BigDecimal)row.get("AddSecurityDeposit");
         projDoc.setAddSecurityDeposit(addSecurityDeposit.toString());
+
+		BigDecimal performanceGuarantee = (BigDecimal)row.get("PerformanceGuarantee");
+		if (null == performanceGuarantee) {
+			projDoc.setPerformanceGuarantee("");
+		} else {
+			projDoc.setPerformanceGuarantee(performanceGuarantee.toString());
+		}
+		projDoc.setAddSecurityDeposit(addSecurityDeposit.toString());
+
 		return projDoc;
 	}
 
@@ -452,6 +494,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 
         BigDecimal addSecurityDeposit = (BigDecimal)row.get("SubAddSecurityDeposit");
         subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
+		subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
+
+		BigDecimal subPerformanceGuarantee = (BigDecimal)row.get("SubPerformanceGuarantee");
+		if (null == subPerformanceGuarantee) {
+			subProjDoc.setSubPerformanceGuarantee("");
+		} else {
+			subProjDoc.setSubPerformanceGuarantee(subPerformanceGuarantee.toString());
+		}
 		return subProjDoc;
 	}
 
@@ -504,6 +554,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		int total = jdbcTemplate.queryForObject(sql, Integer.class,
 				new Object[]{aliasName});
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isItemAlreadyExisting(String itemName){
+		String sql = "SELECT COUNT(*) FROM itemcodes where itemName = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[]{itemName});
 		if (total == 0) {
 			return false;
 		}
@@ -647,19 +708,19 @@ public class ProjectDAOImpl implements ProjectDAO {
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage, "
 			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod,AddSecurityDeposit FROM project";
+			+ "AgreementPeriod,AddSecurityDeposit,PerformanceGuarantee FROM project";
 
 	private String subProjQuery = "SELECT SubProjId, SubProjName, AliasSubProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage ,"
 			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod, ProjId, SubAddSecurityDeposit FROM subproject";
+			+ "AgreementPeriod, ProjId, SubAddSecurityDeposit,SubPerformanceGuarantee FROM subproject";
 
 	private String subProj = "SELECT s.SubProjId, s.SubProjName, s.AliasSubProjName, s.AgreementNum, "
 			+ "s.CERNum, s.Amount, s.ContractorName,s.ContractorAliasName, s.ContractorAdd, s.AgreementValue, "
 			+ "s.TenderValue, s.ContractorValue, s.ExcessInAmount, s.ExcessInPercentage,s.LessInPercentage, "
 			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
-			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit";
+			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit , s.SubPerformanceGuarantee";
 
 	private String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInWords, "
 			+ "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
@@ -670,4 +731,58 @@ public class ProjectDAOImpl implements ProjectDAO {
 	private String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
 	
 	private String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
+
+	@Override
+	public void deleteProject(Integer projectId) {
+		deleteEmddetailByProjectId(projectId);
+		deleteProjectDescriptionByProjectId(projectId);
+		deleteSubProjectByProjectId(projectId);
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteProject , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteSubProjectByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteSubProjectByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteSubProjectBySubProjectId(Integer subProjectId) {
+		deleteEmddetailBySubProjectId(subProjectId);
+		deleteProjectDescriptionBySubProjectId(subProjectId);
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteSubProjectBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
+
+	@Override
+	public void deleteEmddetailByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteEmddetailByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteEmddetailBySubProjectId(Integer subProjectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteEmddetailBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
+
+	@Override
+	public void deleteProjectDescriptionByProjectId(Integer projectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYPROJECTID, new Object []{projectId});
+		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+	}
+
+	@Override
+	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYSUBPROJECTID, new Object []{subProjectId});
+		LOGGER.info("method = deleteProjectDescriptionBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+	}
 }

@@ -45,7 +45,7 @@
 					console.log("Successfully deleted row ");
     			},
     			error : function(err) {
-    				alert("error - " + err);
+    				console.log("Error deleting project description ");
     			}
     		});
     	}
@@ -76,6 +76,11 @@
 								<td>Search Project Description? :</td>
 								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
 								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
+							</tr>
+							<tr id="showSearchItemDesc">
+								<td>Search Aggregate Item Details? :</td>
+								<td><form:checkbox path="searchAggregateItemDetails" id="searchAggregateItemDetails"/></td>
+								<td><form:errors path="searchAggregateItemDetails" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Search under :</td>
@@ -125,8 +130,34 @@
 								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
 										 class="userAction">Update</a>
 									<strong> / </strong>
-									<a href="" id ="deleteRow" onclick ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</a>
+									<a id ="deleteRow" href ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</a>
                                 </td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
+		
+		<c:if test="${aggregateItemDetailsSize gt 0}">
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Aggregate Material Details</h1>
+			<table id="itemDescList" class="gridView">
+				<thead>
+					<tr>
+						<th>Material</th>
+						<th>Quantity</th>
+						<th>Total Cost</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty aggregateItemDetails}">
+						<c:forEach var="item" items="${aggregateItemDetails}">
+							<tr>
+								<td>${item.itemName}</td>
+								<td>${item.itemQty}</td>
+								<td>${item.itemCost}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

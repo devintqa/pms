@@ -35,6 +35,7 @@ public class SubProjectDetail {
     private String lastUpdatedBy ;
     private Date lastUpdatedAt;
     private String subAddSecurityDeposit;
+	private String subPerformanceGuarantee;
 
 	public String getSubProjectName() {
 		return subProjectName;
@@ -231,6 +232,14 @@ public class SubProjectDetail {
 
 	public void setSubLessPercentage(String subLessPercentage) {
 		this.subLessPercentage = subLessPercentage;
+	}
+
+	public String getSubPerformanceGuarantee() {
+		return subPerformanceGuarantee;
+	}
+
+	public void setSubPerformanceGuarantee(String subPerformanceGuarantee) {
+		this.subPerformanceGuarantee = subPerformanceGuarantee;
 	}
 }
 

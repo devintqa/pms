@@ -85,9 +85,9 @@ public class EmdDaoImpl implements EmdDAO {
             emdDetail.setEmdPeriod(rs.getInt("EmdPeriod"));
             emdDetail.setEmdLedgerNumber(rs.getString("EmdLedgerNumber"));
             emdDetail.setEmdSubmitter(rs.getString("EmdSubmitter"));
-            emdDetail.setEmdStartDate(rs.getString("EmdStartDate"));
-            emdDetail.setEmdEndDate(rs.getString("EmdEndDate"));
-            emdDetail.setEmdExtensionDate(rs.getString("EmdExtensionDate"));
+            emdDetail.setSqlEmdStartDate(rs.getDate("EmdStartDate"));
+            emdDetail.setSqlEmdEndDate(rs.getDate("EmdEndDate"));
+            emdDetail.setEmdExtensionSqlDate(rs.getDate("EmdExtensionDate"));
             return emdDetail;
         }
     }
@@ -98,6 +98,13 @@ public class EmdDaoImpl implements EmdDAO {
 
     public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public void deleteEmdDetailByEmdId(Integer emdId)
+    {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfRows = jdbcTemplate.update(PMSMasterQuery.DELTEPEMDDETAILBYEMDID ,new Object []{emdId});
+        LOGGER.info("method = deleteEmdDetailByEmdId , Number of rows deleted : "+ noOfRows +" subProjectId :" + emdId );
     }
     
 }

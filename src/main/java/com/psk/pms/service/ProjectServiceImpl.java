@@ -1,23 +1,15 @@
 package com.psk.pms.service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
+import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.utils.PMSUtil;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
-import com.psk.pms.dao.ProjectDAO;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.EMDDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.utils.PMSUtil;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class ProjectServiceImpl implements ProjectService {
 	
@@ -39,7 +31,15 @@ public class ProjectServiceImpl implements ProjectService {
 		if (projectDetail.getExPercentage() == "") {
 			projectDetail.setExPercentage(null);
 		}
+		if (projectDetail.getPerformanceGuarantee() == "") {
+			projectDetail.setPerformanceGuarantee(null);
+		}
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
+		return isInsertSuccessful;
+	}
+	
+	public boolean createEditItem(Item item){
+		boolean isInsertSuccessful = projectDAO.saveItem(item);
 		return isInsertSuccessful;
 	}
 
@@ -88,6 +88,9 @@ public class ProjectServiceImpl implements ProjectService {
 		if (subProjectDetail.getSubExPercentage() == "") {
 			subProjectDetail.setSubExPercentage(null);
 		}
+		if (subProjectDetail.getSubPerformanceGuarantee() == "") {
+			subProjectDetail.setSubPerformanceGuarantee(null);
+		}
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;
 	}
@@ -103,6 +106,12 @@ public class ProjectServiceImpl implements ProjectService {
 	public boolean isAliasProjectAlreadyExisting(String aliasName){
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);
+		return isAvailable;
+	}
+	
+	public boolean isItemAlreadyExisting(String itemName){
+		boolean isAvailable = false;
+		isAvailable = projectDAO.isItemAlreadyExisting(itemName);
 		return isAvailable;
 	}
 	
@@ -231,10 +240,44 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Map<String, String> getDescItemCodes(String itemCode) {
-		Map<String, String> aliasSubProjectList = projectDAO.getDescItemCodes(itemCode);
-		return aliasSubProjectList;
+		Map<String, String> itemCodes = projectDAO.getDescItemCodes(itemCode);
+		return itemCodes;
+	}
+	
+	@Override
+	public List<ItemDetail> getProjectData(Integer projId){
+		List<ItemDetail> itemDetailList = projectDAO.getProjectData(projId);
+		List<ItemDetail> finalItemDetailList = new ArrayList<ItemDetail>();
+		if(itemDetailList.size() > 0){
+			Set<String> itemNames = projectDAO.fetchItemNames();
+			for(String itemName : itemNames){
+				ItemDetail item = new ItemDetail();
+				int itemQty = 0;
+				int itemCost = 0;
+				for(ItemDetail itemDetail : itemDetailList){
+					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
+						item.setItemName(itemDetail.getItemName());
+						itemQty = itemQty + Integer.valueOf(itemDetail.getItemQty());
+						itemCost = itemCost + Integer.valueOf(itemDetail.getItemCost());
+					}
+				}
+				if(item.getItemName() != null){
+					item.setItemQty(String.valueOf(itemQty));
+					item.setItemCost(String.valueOf(itemCost));
+					finalItemDetailList.add(item);
+				}
+			}
+		}
+		return finalItemDetailList;
+	}
+	
+	@Override
+	public Set<String> fetchItemNames() {
+		Set<String> itemNames = projectDAO.fetchItemNames();
+		return itemNames;
 	}
 
+	@Override
 	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
 		projectDAO.deleteProjectDescription(projectDescriptionId);
 	}
@@ -243,4 +286,13 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDAO.getDataDescription(descItemDetail); 
 	}
 
+	@Override
+	public void deleteProject(Integer projectId) {
+		projectDAO.deleteProject(projectId);
+	}
+
+	@Override
+	public void deleteSubProject(Integer subProjectId) {
+		projectDAO.deleteSubProjectBySubProjectId(subProjectId);
+	}
 }

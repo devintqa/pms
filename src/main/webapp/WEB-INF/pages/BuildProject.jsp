@@ -137,6 +137,13 @@ $(document).ready(function () {
                                 <td><form:errors path="addSecurityDeposit" cssClass="error" /></td>
                             </tr>
 							<tr>
+                                <td>Performance Guarantee <span id="colon">:</span>
+                                </td>
+                                <td><form:input path="performanceGuarantee"
+                                                placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
+                                <td><form:errors path="performanceGuarantee" cssClass="error" /></td>
+                            </tr>
+							<tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>
 								<td><form:input path="tenderDate" placeholder="DD-MM-YYYY"

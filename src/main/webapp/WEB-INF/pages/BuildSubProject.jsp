@@ -144,6 +144,13 @@ $(document).ready(function () {
                                                 placeholder="Enter additional security deposit" cssClass="inputText" /></td>
                                 <td><form:errors path="subAddSecurityDeposit" cssClass="error" /></td>
                             </tr>
+							<tr>
+                                <td>Performance Guarantee <span id="colon">:</span>
+                                </td>
+                                <td><form:input path="subPerformanceGuarantee"
+                                                placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
+                                <td><form:errors path="subPerformanceGuarantee" cssClass="error" /></td>
+                            </tr>
                             <tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>

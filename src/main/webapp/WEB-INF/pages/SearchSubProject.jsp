@@ -18,6 +18,21 @@
 	        }
 		});
 	});
+
+	function deleteSubProject(subProjectId) {
+        		$.ajax({
+        			type : 'POST',
+        			url : 'deleteSubProject.do',
+        			data : "subProjectId="+subProjectId,
+        			success : function(response) {
+        				location.reload();
+    					console.log("Successfully deleted row ");
+        			},
+        			error : function(err) {
+        				console.log("Error deleting emd");
+        			}
+        		});
+        	}
   </script>
 </head>
 <body ng-app="sampleApp">
@@ -88,7 +103,10 @@
 									<td>${subProjDoc.subContractorName}</td>
 									<td><a
 										href="/pms/emp/myview/updateSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=${action}"
-										class="userAction">Update</a></td>
+										class="userAction">Update</a>
+										<strong> / </strong>
+										<a id ="deleteRow" href ="javascript:deleteSubProject('${subProjDoc.subProjId}');" style="color:red"> Delete</a>
+									</td>
 								</tr>
 							</c:forEach>
 						</c:if>

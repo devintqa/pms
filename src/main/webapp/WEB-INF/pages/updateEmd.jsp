@@ -8,6 +8,22 @@
         <%@include file="Script.jsp" %>
         <%@include file="Utility.jsp" %>
     </head>
+    <script>
+    	function deleteEmd(emdId) {
+        		$.ajax({
+        			type : 'POST',
+        			url : 'deleteEmd.do',
+        			data : "emdId="+emdId,
+        			success : function(response) {
+        				location.reload();
+    					console.log("Successfully deleted row ");
+        			},
+        			error : function(err) {
+        				console.log("Error deleting emd");
+        			}
+        		});
+     	}
+    </script>
     <body>
 	    <header>
 		    <jsp:include page="Header.jsp" />
@@ -38,7 +54,10 @@
 									<td>${emd.emdStartDate}</td>
 									<td>${emd.emdEndDate}</td>
 									<td><a href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
-                                        class="userAction">Update</a></td>
+                                        class="userAction">Update</a>
+									<strong> / </strong>
+									<a id ="deleteRow" href ="javascript:deleteEmd('${emd.emdId}');" style="color:red"> Delete</a>
+									</td>
 								</tr>
 							</c:forEach>
 						</c:if>

@@ -18,4 +18,20 @@ public class PMSMasterQuery {
 	public static final String FETCHEMDDETAILBYEMDID = "select  ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ," +
     "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, EmdSubmitter from emddetail where EmdId = ?";
 
+    public static final String DELETEPROJECTBYPROJECTID = "DELETE FROM project WHERE ProjId = ?";
+
+    public static final String DELETESUBPROJECTBYPROJECTID = "DELETE FROM subproject WHERE ProjId = ?";
+
+    public static final String DELETESUBPROJECTBYSUBPROJECTID = "DELETE FROM subproject WHERE SubProjId = ?";
+
+    public static final String DELETEEMDDETAILBYPROJECTID = "DELETE FROM emddetail WHERE ProjId = ?";
+
+    public static final String DELETEEMDDETAILBYSUBPROJECTID = "DELETE FROM emddetail WHERE SubProjId = ?";
+
+    public static final String DELETEPROJECTDESCRIPTIONBYPROJECTID = "DELETE FROM projectdesc WHERE ProjId = ?";
+
+    public static final String DELETEPROJECTDESCRIPTIONBYSUBPROJECTID = "DELETE FROM projectdesc WHERE SubProjId = ?";
+
+    public static final String DELTEPEMDDETAILBYEMDID = "DELETE FROM emddetail WHERE EmdId = ?";
+
 }
