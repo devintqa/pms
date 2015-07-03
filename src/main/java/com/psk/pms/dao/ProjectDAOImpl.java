@@ -536,6 +536,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 		}
 		return true;
 	}
+	
+	public boolean isItemAlreadyExisting(String itemName){
+		String sql = "SELECT COUNT(*) FROM itemcodes where itemName = ?";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		int total = jdbcTemplate.queryForObject(sql, Integer.class,
+				new Object[]{itemName});
+		if (total == 0) {
+			return false;
+		}
+		return true;
+	}
 
 	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId) {
 		String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ? and ProjId = ?";

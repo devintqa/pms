@@ -3,7 +3,6 @@ package com.psk.pms.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -13,27 +12,37 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.Employee;
 import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.ItemValidator;
+import com.psk.pms.validator.ProjectDetailValidator;
 
 @Controller
 public class ItemController {
 	
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	ItemValidator itemValidator;
 	
 	private static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	
@@ -51,6 +60,27 @@ public class ItemController {
 	List<String> getProjectList(@RequestParam("term") String name) {
 		LOGGER.info("method = getItemList()");
 		return fetchItemInfo(name);
+	}
+	
+	@RequestMapping(value = "/emp/myview/buildItem/createItem.do", method = RequestMethod.POST)
+	public String saveItem(
+			@ModelAttribute("itemForm") Item item,
+			BindingResult result, Model model, SessionStatus status) {
+		boolean isItemSaveSuccessful = false;
+		itemValidator.validate(item, result);
+		if(!result.hasErrors()){
+			isItemSaveSuccessful = true;
+		}
+		if(result.hasErrors() || !isItemSaveSuccessful) {
+			return "BuildItem";
+		} else {
+			status.setComplete();
+			Employee employee = new Employee();
+			employee.setEmployeeId(item.getEmployeeId());
+			model.addAttribute("employee", employee);
+			model.addAttribute("itemCreationMessage", "Item Creation Successful.");
+			return "BuildItem";			
+		}
 	}
 	
 	private List<String> fetchItemInfo(String itemName) {
