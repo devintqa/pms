@@ -29,11 +29,9 @@ import com.google.gson.reflect.TypeToken;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ItemValidator;
-import com.psk.pms.validator.ProjectDetailValidator;
 
 @Controller
 public class ItemController {
@@ -69,7 +67,7 @@ public class ItemController {
 		boolean isItemSaveSuccessful = false;
 		itemValidator.validate(item, result);
 		if(!result.hasErrors()){
-			isItemSaveSuccessful = true;
+			isItemSaveSuccessful = projectService.createEditItem(item);
 		}
 		if(result.hasErrors() || !isItemSaveSuccessful) {
 			return "BuildItem";

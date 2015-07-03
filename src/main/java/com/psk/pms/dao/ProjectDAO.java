@@ -10,6 +10,8 @@ public interface ProjectDAO {
 	
 	public boolean saveProject(ProjectDetail projectDetail);
 	
+	public boolean saveItem(Item item);
+	
 	public boolean saveSubProject(SubProjectDetail subProjectDetail);
 	
 	public boolean saveProjDesc(ProjDescDetail projDescDetail);

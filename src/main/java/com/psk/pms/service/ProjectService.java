@@ -10,6 +10,8 @@ public interface ProjectService {
 	
 	public boolean createEditProject(ProjectDetail projectDetail);
 	
+	public boolean createEditItem(Item item);
+	
 	public boolean createEditProjDesc(ProjDescDetail projDescDetail);
 	
 	public boolean createEditSubProject(SubProjectDetail subProjectDetail);

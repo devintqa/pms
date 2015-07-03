@@ -90,6 +90,15 @@ public class ProjectDAOImpl implements ProjectDAO {
 		}
 		return true;
 	}
+	
+	public boolean saveItem(Item item) {
+		String createSql = "INSERT INTO itemcodes (itemName, itemUnit) "
+				+ "VALUES (?, ?)";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.update(createSql,
+				new Object[] { item.getItemName(), item.getItemUnit() });
+		return true;
+	}
 
 	public Map<String, String> getAliasProjectNames(){
 		String sql = "select ProjId, AliasProjName from project";	 

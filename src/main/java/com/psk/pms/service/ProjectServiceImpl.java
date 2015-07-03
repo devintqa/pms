@@ -36,6 +36,11 @@ public class ProjectServiceImpl implements ProjectService {
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
+	
+	public boolean createEditItem(Item item){
+		boolean isInsertSuccessful = projectDAO.saveItem(item);
+		return isInsertSuccessful;
+	}
 
     private Date getCurrentDateTime() {
         Calendar calendar = Calendar.getInstance();
