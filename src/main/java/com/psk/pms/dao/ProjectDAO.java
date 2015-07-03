@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 
 import java.util.List;
 import java.util.Map;
@@ -69,4 +70,6 @@ public interface ProjectDAO {
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 	
 	public Set<String> fetchItemNames();
+	
+	public List<ItemDetail> getProjectData(Integer projId);
 }

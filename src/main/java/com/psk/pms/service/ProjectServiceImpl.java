@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.utils.PMSUtil;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
@@ -239,8 +240,35 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public Map<String, String> getDescItemCodes(String itemCode) {
-		Map<String, String> aliasSubProjectList = projectDAO.getDescItemCodes(itemCode);
-		return aliasSubProjectList;
+		Map<String, String> itemCodes = projectDAO.getDescItemCodes(itemCode);
+		return itemCodes;
+	}
+	
+	@Override
+	public List<ItemDetail> getProjectData(Integer projId){
+		List<ItemDetail> itemDetailList = projectDAO.getProjectData(projId);
+		List<ItemDetail> finalItemDetailList = new ArrayList<ItemDetail>();
+		if(itemDetailList.size() > 0){
+			Set<String> itemNames = projectDAO.fetchItemNames();
+			for(String itemName : itemNames){
+				ItemDetail item = new ItemDetail();
+				int itemQty = 0;
+				int itemCost = 0;
+				for(ItemDetail itemDetail : itemDetailList){
+					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
+						item.setItemName(itemDetail.getItemName());
+						itemQty = itemQty + Integer.valueOf(itemDetail.getItemQty());
+						itemCost = itemCost + Integer.valueOf(itemDetail.getItemCost());
+					}
+				}
+				if(item.getItemName() != null){
+					item.setItemQty(String.valueOf(itemQty));
+					item.setItemCost(String.valueOf(itemCost));
+					finalItemDetailList.add(item);
+				}
+			}
+		}
+		return finalItemDetailList;
 	}
 	
 	@Override

@@ -283,6 +283,17 @@ public class ProjectDAOImpl implements ProjectDAO {
 		});
 		return true;
 	}
+	
+	public List<ItemDetail> getProjectData(final Integer projId){
+		String sql = "Select * from projdescitem where ProjDescId = "+projId+"";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<ItemDetail> itemDetailList = new ArrayList<ItemDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		for (Map<String, Object> row : rows) {
+			itemDetailList.add(buildItemDetail(row));
+		}
+		return itemDetailList;
+	}
 
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
 		String sql = "Select * from projdescitem where ProjDescId = "+descItemDetail.getProjDescId()+" and ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"'";

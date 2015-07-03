@@ -98,6 +98,13 @@ public class DescItemDetail {
 		public ItemDetail(){
 			
 		}
+		
+		public ItemDetail(String itemName, String itemQty, String itemCost){
+			this.itemName = itemName;
+			this.itemQty = itemQty;
+			this.itemCost = itemCost;
+		}
+
 		private String itemName;
 		private String itemUnit;
 		private String itemQty;
