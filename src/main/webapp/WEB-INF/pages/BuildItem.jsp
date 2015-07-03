@@ -8,6 +8,18 @@
 <title>PMS :: Create Item</title>
 <%@include file="Script.jsp" %>
 
+<script>
+$(document).ready(function () {
+	$("#itemName").autocomplete({
+		source: function (request, response) {
+			$.getJSON("/pms/emp/myview/buildItem/searchItem.do", {
+            	                term: request.term
+            	            }, response);
+        }
+	});
+});
+</script>
+
 </head>
 
 <body ng-app="sampleApp">

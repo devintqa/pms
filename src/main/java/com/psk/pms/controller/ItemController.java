@@ -1,7 +1,9 @@
 package com.psk.pms.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -39,12 +41,29 @@ public class ItemController {
 	public String buildItem(@PathVariable String employeeId, Model model) {		
 		LOGGER.info("method = buildItem()");
 		Item item = new Item();
-		Set<String> itemNames = projectService.fetchItemNames();
-		LOGGER.info("The Item Name Size:" + itemNames.size());
-		item.setItemNames(itemNames);
 		item.setEmployeeId(employeeId);
 		model.addAttribute("itemForm", item);
 		return "BuildItem";
+	}
+	
+	@RequestMapping(value = "/emp/myview/buildItem/searchItem.do", method = RequestMethod.GET)
+	public @ResponseBody
+	List<String> getProjectList(@RequestParam("term") String name) {
+		LOGGER.info("method = getItemList()");
+		return fetchItemInfo(name);
+	}
+	
+	private List<String> fetchItemInfo(String itemName) {
+		LOGGER.info("method = fetchItemInfo()");
+		List<String> result = new ArrayList<String>();
+		Set<String> itemNames = projectService.fetchItemNames();
+		LOGGER.info("The Item Name Size:" + itemNames.size());
+		for (String item : itemNames) {
+			if (item.toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
