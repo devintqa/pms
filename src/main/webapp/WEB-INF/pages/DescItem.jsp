@@ -22,17 +22,24 @@
 	});
 	
 	function deleteItemRow(row) {
+		var itemTable = document.getElementById('itemTable');
 		var noOfRow = document.getElementById('itemTable').rows.length;
 		if (noOfRow > 2) {
 			var i = row.parentNode.parentNode.rowIndex;
 			document.getElementById('itemTable').deleteRow(i);
+		} else{
+			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[3].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[4].getElementsByTagName('input')[0].value = '';
 		}
 	}
 
 	function insertItemRow() {
-		var x = document.getElementById('itemTable');
-		var new_row = x.rows[1].cloneNode(true);
-		var len = x.rows.length;
+		var itemTable = document.getElementById('itemTable');
+		var new_row = itemTable.rows[1].cloneNode(true);
+		var len = itemTable.rows.length;
 
 		var inp0 = new_row.cells[0].getElementsByTagName('input')[0];
 		inp0.id += len;
@@ -54,7 +61,7 @@
 		inp4.id += len;
 		inp4.value = '';
 
-		x.appendChild(new_row);
+		itemTable.appendChild(new_row);
 
 	}
 
