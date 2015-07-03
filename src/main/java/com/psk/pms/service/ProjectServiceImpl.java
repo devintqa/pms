@@ -30,6 +30,9 @@ public class ProjectServiceImpl implements ProjectService {
 		if (projectDetail.getExPercentage() == "") {
 			projectDetail.setExPercentage(null);
 		}
+		if (projectDetail.getPerformanceGuarantee() == "") {
+			projectDetail.setPerformanceGuarantee(null);
+		}
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
@@ -78,6 +81,9 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		if (subProjectDetail.getSubExPercentage() == "") {
 			subProjectDetail.setSubExPercentage(null);
+		}
+		if (subProjectDetail.getSubPerformanceGuarantee() == "") {
+			subProjectDetail.setSubPerformanceGuarantee(null);
 		}
 		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
 		return isInsertSuccessful;

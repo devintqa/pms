@@ -178,6 +178,17 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage()) && !StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {
 			errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Only one among Excess or Less in Percentage can be entered.");
 		}
+
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubPerformanceGuarantee())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(subProjectDetail.getSubPerformanceGuarantee());
+			if (!matcher.matches()) {
+				errors.rejectValue("subPerformanceGuarantee", "subPerformanceGuarantee.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			} else if (subProjectDetail.getSubPerformanceGuarantee().length() > 15) {
+				errors.rejectValue("subPerformanceGuarantee", "subPerformanceGuarantee.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
 	}
 }
 

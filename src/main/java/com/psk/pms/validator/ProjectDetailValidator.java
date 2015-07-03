@@ -172,6 +172,17 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		if (!StringUtils.isNullOrEmpty(projectDetail.getExPercentage()) && !StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
 			errors.rejectValue("exPercentage", "exPercentage.incorrect", "Only one among Excess or Less in Percentage can be entered.");
 		}
+
+		if (!StringUtils.isNullOrEmpty(projectDetail.getPerformanceGuarantee())) {
+			pattern = Pattern.compile(AMOUNT_PATTERN);
+			matcher = pattern.matcher(projectDetail.getPerformanceGuarantee());
+			if (!matcher.matches()) {
+				errors.rejectValue("performanceGuarantee", "performanceGuarantee.incorrect",
+						"Enter a numeric value and only a single dot is allowed");
+			}else if(projectDetail.getPerformanceGuarantee().length() > 15){
+				errors.rejectValue("performanceGuarantee", "performanceGuarantee.incorrect", "Field must not exceed 15 characters.");
+			}
+		}
 	}
 
 }

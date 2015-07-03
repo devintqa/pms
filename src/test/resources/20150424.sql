@@ -173,6 +173,7 @@ CREATE TABLE `project` (
   `CommencementDate` datetime DEFAULT NULL,
   `CompletedDate` datetime DEFAULT NULL,
   `AgreementPeriod` int(10) DEFAULT NULL,
+  `PerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -184,7 +185,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (4,'Madras Medical College','MMC','AN2123','1234CER',1000.00,'PSK','PSK','12 godown street',1500.00,1250.00,2000.00,2500.00,10.00,NULL,'2015-06-26 00:00:00',500.00,'tkumar','2015-06-26 09:44:34','2015-06-26 00:00:00','2015-06-30 00:00:00','2015-06-26 00:00:00',12);
+INSERT INTO `project` VALUES (4,'Madras Medical College','MMC','AN2123','1234CER',1000.00,'PSK','PSK','12 godown street',1500.00,1250.00,2000.00,2500.00,10.00,NULL,'2015-06-26 00:00:00',500.00,'tkumar','2015-06-26 09:44:34','2015-06-26 00:00:00','2015-06-30 00:00:00','2015-06-26 00:00:00',12,13);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,6 +256,7 @@ CREATE TABLE `subproject` (
   `AgreementPeriod` int(10) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
+  `SubPerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   `ProjId` int(10) NOT NULL,
   PRIMARY KEY (`SubProjId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

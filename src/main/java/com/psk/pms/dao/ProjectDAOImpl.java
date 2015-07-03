@@ -28,13 +28,13 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String createSql = "INSERT INTO project (ProjName, AliasProjName, AgreementNum, CERNum, Amount, "
 				+ "ContractorName, ContractorAliasName , ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
 				"ExcessInAmount, ExcessInPercentage, LessInPercentage , TenderDate, "
-				+ "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+				+ "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit,PerformanceGuarantee) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
 
 		String updateSql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
 				"ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?," +
-				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=? WHERE ProjId = ?";
+				"CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=?,PerformanceGuarantee=? WHERE ProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
@@ -59,7 +59,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 					projectDetail.getAgreementPeriod(),
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
-                    projectDetail.getAddSecurityDeposit()
+                    projectDetail.getAddSecurityDeposit(),
+					projectDetail.getPerformanceGuarantee()
 			});
 		} else {
 			jdbcTemplate.update(updateSql, new Object[] { 
@@ -83,6 +84,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
                     projectDetail.getAddSecurityDeposit(),
+					projectDetail.getPerformanceGuarantee(),
 					projectDetail.getProjId()
 			});
 		}
@@ -123,13 +125,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 	public boolean saveSubProject(final SubProjectDetail subProjectDetail){
 		String insertSql = "INSERT INTO subproject (ProjId, SubProjName, AliasSubProjName, AgreementNum, CERNum, "
 				+ "Amount, ContractorName,ContractorAliasName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, ExcessInAmount, "
-				+ "ExcessInPercentage,LessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod,LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?)";
+				+ "ExcessInPercentage,LessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod," +
+				"LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit,SubPerformanceGuarantee) " +
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)";
 
 		String updateSql = "UPDATE subproject set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
 				"ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
 				"ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+
-				"AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? WHERE SubProjId = ?";
+				"AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? ,SubPerformanceGuarantee = ? WHERE SubProjId = ?";
 
 		jdbcTemplate = new JdbcTemplate(dataSource);	
 		if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
@@ -156,7 +159,8 @@ public class ProjectDAOImpl implements ProjectDAO {
 					subProjectDetail.getSubAgreementPeriod(),
                     subProjectDetail.getLastUpdatedBy(),
                     subProjectDetail.getLastUpdatedAt(),
-                    subProjectDetail.getSubAddSecurityDeposit()
+                    subProjectDetail.getSubAddSecurityDeposit(),
+					subProjectDetail.getSubPerformanceGuarantee()
 			});
 		}else {
 			jdbcTemplate.update(updateSql, new Object[] { 
@@ -180,6 +184,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                     subProjectDetail.getLastUpdatedBy(),
                     subProjectDetail.getLastUpdatedAt(),
                     subProjectDetail.getSubAddSecurityDeposit(),
+					subProjectDetail.getSubPerformanceGuarantee(),
                     subProjectDetail.getSubProjId()
 			});
 		}
@@ -235,25 +240,26 @@ public class ProjectDAOImpl implements ProjectDAO {
 		String deleteSql = "DELETE from projdescitem where ProjDescId = "+descItemDetail.getProjDescId()+" and ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"'";
 		jdbcTemplate.execute(deleteSql);
 		
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter(){	 
-		@Override
-		public void setValues(PreparedStatement ps, int i) throws SQLException {
-			ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-			ps.setInt(1, descItemDetail.getProjDescId());
-			ps.setInt(2, descItemDetail.getSubProjId());
-			ps.setInt(3, descItemDetail.getProjDescId());
-			ps.setString(4, descItemDetail.getProjDescSerial());
-			ps.setString(5, itemDetail.getItemName());
-			ps.setString(6, itemDetail.getItemUnit());
-			ps.setString(7, itemDetail.getItemQty());
-			ps.setString(8, itemDetail.getItemPrice());		
-			ps.setString(9, itemDetail.getItemCost());
-		} 
-		@Override
-		public int getBatchSize() {
-			return descItemDetail.getItemDetail().size();
-		}
-	  });		
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
+				ps.setInt(1, descItemDetail.getProjDescId());
+				ps.setInt(2, descItemDetail.getSubProjId());
+				ps.setInt(3, descItemDetail.getProjDescId());
+				ps.setString(4, descItemDetail.getProjDescSerial());
+				ps.setString(5, itemDetail.getItemName());
+				ps.setString(6, itemDetail.getItemUnit());
+				ps.setString(7, itemDetail.getItemQty());
+				ps.setString(8, itemDetail.getItemPrice());
+				ps.setString(9, itemDetail.getItemCost());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return descItemDetail.getItemDetail().size();
+			}
+		});
 		return true;
 	}
 
@@ -391,6 +397,15 @@ public class ProjectDAOImpl implements ProjectDAO {
 
         BigDecimal addSecurityDeposit = (BigDecimal)row.get("AddSecurityDeposit");
         projDoc.setAddSecurityDeposit(addSecurityDeposit.toString());
+
+		BigDecimal performanceGuarantee = (BigDecimal)row.get("PerformanceGuarantee");
+		if (null == performanceGuarantee) {
+			projDoc.setPerformanceGuarantee("");
+		} else {
+			projDoc.setPerformanceGuarantee(performanceGuarantee.toString());
+		}
+		projDoc.setAddSecurityDeposit(addSecurityDeposit.toString());
+
 		return projDoc;
 	}
 
@@ -444,6 +459,14 @@ public class ProjectDAOImpl implements ProjectDAO {
 
         BigDecimal addSecurityDeposit = (BigDecimal)row.get("SubAddSecurityDeposit");
         subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
+		subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
+
+		BigDecimal subPerformanceGuarantee = (BigDecimal)row.get("SubPerformanceGuarantee");
+		if (null == subPerformanceGuarantee) {
+			subProjDoc.setSubPerformanceGuarantee("");
+		} else {
+			subProjDoc.setSubPerformanceGuarantee(subPerformanceGuarantee.toString());
+		}
 		return subProjDoc;
 	}
 
@@ -639,19 +662,19 @@ public class ProjectDAOImpl implements ProjectDAO {
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage, "
 			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod,AddSecurityDeposit FROM project";
+			+ "AgreementPeriod,AddSecurityDeposit,PerformanceGuarantee FROM project";
 
 	private String subProjQuery = "SELECT SubProjId, SubProjName, AliasSubProjName, AgreementNum, "
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage ,"
 			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod, ProjId, SubAddSecurityDeposit FROM subproject";
+			+ "AgreementPeriod, ProjId, SubAddSecurityDeposit,SubPerformanceGuarantee FROM subproject";
 
 	private String subProj = "SELECT s.SubProjId, s.SubProjName, s.AliasSubProjName, s.AgreementNum, "
 			+ "s.CERNum, s.Amount, s.ContractorName,s.ContractorAliasName, s.ContractorAdd, s.AgreementValue, "
 			+ "s.TenderValue, s.ContractorValue, s.ExcessInAmount, s.ExcessInPercentage,s.LessInPercentage, "
 			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
-			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit";
+			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit , s.SubPerformanceGuarantee";
 
 	private String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInWords, "
 			+ "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
