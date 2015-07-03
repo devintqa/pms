@@ -265,7 +265,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-				ps.setInt(1, descItemDetail.getProjDescId());
+				ps.setInt(1, descItemDetail.getProjId());
 				ps.setInt(2, descItemDetail.getSubProjId());
 				ps.setInt(3, descItemDetail.getProjDescId());
 				ps.setString(4, descItemDetail.getProjDescSerial());
