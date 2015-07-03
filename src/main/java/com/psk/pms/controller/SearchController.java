@@ -1,5 +1,6 @@
 package com.psk.pms.controller;
 
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
@@ -111,6 +112,16 @@ public class SearchController extends BaseController {
 		LOGGER.info("method = searchProjectDetail()");
 		searchValidator.validate(searchDetail, result);
 		if(!result.hasErrors()){
+			if(searchDetail.isSearchAggregateItemDetails()){
+				List<ItemDetail> aggregateItemDetails = projectService.getProjectData(searchDetail.getProjId());
+				if(aggregateItemDetails.size() > 0){
+					model.addAttribute("aggregateItemDetails", aggregateItemDetails);
+					model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
+					model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Aggregate Material Data Found For The Project.");
+				}
+			} else{
 				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
 				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(),searchUnderProject);
@@ -122,6 +133,7 @@ public class SearchController extends BaseController {
 					model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
 				}
 			}
+		}
 		return "SearchProjectDescription";
 	}
 	

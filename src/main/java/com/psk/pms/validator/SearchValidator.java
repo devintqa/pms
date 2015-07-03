@@ -38,6 +38,15 @@ public class SearchValidator extends BaseValidator implements Validator{
         		searchDetail.setProjId(Integer.valueOf(projId));
         	}
         }
+        
+        if(searchDetail.isSearchAggregateItemDetails()){
+        	String projId = fetchProjectId(searchDetail.getAliasProjectName());
+        	if(projId == null){
+        		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
+        	}else{
+        		searchDetail.setProjId(Integer.valueOf(projId));
+        	}
+        }
 
 		if (searchDetail.isSearchProjectDescription() && !StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())) {
 			String projId;

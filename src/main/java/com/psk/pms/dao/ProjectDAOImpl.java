@@ -285,13 +285,16 @@ public class ProjectDAOImpl implements ProjectDAO {
 	}
 	
 	public List<ItemDetail> getProjectData(final Integer projId){
-		String sql = "Select * from projdescitem where ProjDescId = "+projId+"";
+		LOGGER.info("getProjectData projId:" + projId);
+		String sql = "Select * from projdescitem where ProjId = "+projId;
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		List<ItemDetail> itemDetailList = new ArrayList<ItemDetail>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		LOGGER.info("getProjectData rows:" + rows.size());
 		for (Map<String, Object> row : rows) {
 			itemDetailList.add(buildItemDetail(row));
 		}
+		LOGGER.info("getProjectData itemDetailList:" + itemDetailList.size());
 		return itemDetailList;
 	}
 
