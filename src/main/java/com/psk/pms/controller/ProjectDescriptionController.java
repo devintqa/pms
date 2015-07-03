@@ -1,6 +1,5 @@
 package com.psk.pms.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,16 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,11 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -136,6 +126,13 @@ public class ProjectDescriptionController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
+	public void deleteProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
+		String projectDescriptionId = request.getParameter("projectDescriptionId");
+		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+		projectService.deleteProjectDescriptionDetail(projectDescriptionId);
+	}
 
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
@@ -183,42 +180,4 @@ public class ProjectDescriptionController {
 		return subAliasProjectList;
 	}
 
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
-	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
-								@RequestParam String projId, @RequestParam String subProjId, 
-								@RequestParam String projDescId, @RequestParam String employeeId) {
-		DescItemDetail descItemDetail = new  DescItemDetail();
-		descItemDetail.setProjId(new Integer(projId));
-		descItemDetail.setSubProjId(new Integer(subProjId));
-		descItemDetail.setProjDescId(new Integer(projDescId));
-		descItemDetail.setProjDescSerial(projDescSerial);
-		descItemDetail = projectService.getDataDescription(descItemDetail);
-		
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
-		if (! element.isJsonArray()) {
-			
-		}
-		JsonArray jsonArray = element.getAsJsonArray();
-		descItemDetail.setProjDescItemDetail(jsonArray.toString());
-		descItemDetail.setEmployeeId(employeeId);
-		model.addAttribute("descItemForm", descItemDetail);
-		return "DescItem";
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
-		ObjectMapper mapper = new ObjectMapper();
-		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
-		descItemDetail.setItemDetail(itemList);
-		boolean status = projectService.insertDataDescription(descItemDetail);
-		return status;
-	}
-	
-	@RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
-	public void deleteProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
-		String projectDescriptionId = request.getParameter("projectDescriptionId");
-		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-		projectService.deleteProjectDescriptionDetail(projectDescriptionId);
-	}
 }

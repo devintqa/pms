@@ -4,6 +4,7 @@ import com.psk.pms.model.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface ProjectService {
 	
@@ -45,7 +46,6 @@ public interface ProjectService {
 
 	public void deleteProjectDescriptionDetail(String projectDescriptionId);
 	
-
 	void deleteProject(Integer projectId);
 
 	void deleteSubProject(Integer subProjectId);
@@ -53,5 +53,7 @@ public interface ProjectService {
 	public boolean insertDataDescription(DescItemDetail descItemDetail);
 	
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	
+	public Set<String> fetchItemNames();
 	
 }

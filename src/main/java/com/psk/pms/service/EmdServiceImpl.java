@@ -54,7 +54,12 @@ public class EmdServiceImpl implements EmdService {
 
     @Override
     public EMDDetail getEmdDetailsByEmdId(String emdId) {
-        return emdDAO.getEmdDetailsByEmdId(emdId);
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        EMDDetail emdDetail = emdDAO.getEmdDetailsByEmdId(emdId);
+        emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+    	emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+    	emdDetail.setEmdExtensionDate(PMSUtil.getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
+    	return emdDetail;
     }
 
     private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter){
