@@ -257,6 +257,7 @@ public class ProjectServiceImpl implements ProjectService {
 				for(ItemDetail itemDetail : itemDetailList){
 					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
 						item.setItemName(itemDetail.getItemName());
+						item.setItemPrice(itemDetail.getItemPrice());
 						itemQty = itemQty + Integer.valueOf(itemDetail.getItemQty());
 						itemCost = itemCost + Integer.valueOf(itemDetail.getItemCost());
 					}

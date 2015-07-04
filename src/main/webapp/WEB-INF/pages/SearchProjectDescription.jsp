@@ -172,6 +172,7 @@
 					<tr>
 						<th>Material</th>
 						<th>Quantity</th>
+						<th>Price</th>
 						<th>Total Cost</th>
 					</tr>
 				</thead>
@@ -181,6 +182,7 @@
 							<tr>
 								<td>${item.itemName}</td>
 								<td>${item.itemQty}</td>
+								<td>${item.itemPrice}</td>
 								<td>${item.itemCost}</td>
 							</tr>
 						</c:forEach>
