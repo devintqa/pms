@@ -95,7 +95,7 @@
 		calculateTotalItemCost();
 	});
 	
-	$(document).on("focusout","input[name = 'itemPrice']",function(){
+	$(document).on("keyup","input[name = 'itemPrice']",function(){
 		var qty = $(this).val()
 		var amnt = $(this).parents('tr:first').find('td:nth-child(3) input').val();
 		var cost = qty*amnt;
@@ -218,13 +218,13 @@
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 				<td><input name="itemQty" id="itemQty" type="text" /></td>
 				<td><input name="itemPrice" id="itemPrice" type="text" /></td>
-				<td><input name="itemCost" id="itemCost" type="text" /></td>
+				<td><input name="itemCost" readonly="readonly" id="itemCost" type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img src="<c:url value="/resources/images/delete.png" />"/></a></td>
 			</tr>
 
 		</table>
 		<br>
-		Amount : <input name="totalItemCost" id="totalItemCost" type="text" />
+		Amount : <input name="totalItemCost" readonly="readonly" id="totalItemCost" type="text" />
 		<br>
 			
 		<br>
