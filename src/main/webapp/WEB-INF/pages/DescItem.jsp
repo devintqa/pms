@@ -65,7 +65,7 @@
 
 	}
 
-	$(document).on("focusout","input[name = 'itemQty']",function(){
+	$(document).on("keyup","input[name = 'itemQty']",function(){
 		var qty = $(this).val()
 		var amnt = $(this).parents('tr:first').find('td:nth-child(4) input').val();
 		var cost = qty*amnt;
@@ -91,6 +91,9 @@
 		calculateTotalItemCost();
 	});
 	
+	$(document).on("keyup","input",function(){
+		calculateTotalItemCost();
+	});
 	
 	$(document).on("focusout","input[name = 'itemPrice']",function(){
 		var qty = $(this).val()

@@ -35,15 +35,15 @@
   }
   
   
-  function deleteProjectDescription(projectDescriptionId) {
+  function deleteProjectDescription(projectDescriptionAlias, projectDescriptionId) {
 	  
-	  $("#dialog-confirm").html("Please confirm to proceed");
+	  $("#dialog-confirm").html(projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
 
 	    // Define the Dialog and its properties.
 	    $("#dialog-confirm").dialog({
 	        resizable: false,
 	        modal: true,
-	        title: "Modal",
+	        title: "Warning!",
 	        height: 250,
 	        width: 400,
 	        buttons: {
@@ -154,7 +154,7 @@
 								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
 										 class="userAction">Update</a>
 									<strong> / </strong>
-									<a id ="deleteRow" href ="javascript:deleteProjectDescription('${projDesc.projDescId}');" style="color:red"> Delete</a>
+									<a id ="deleteRow" href ="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}');" style="color:red"> Delete</a>
                                 </td>
 							</tr>
 						</c:forEach>
