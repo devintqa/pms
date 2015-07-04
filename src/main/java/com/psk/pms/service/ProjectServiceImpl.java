@@ -7,6 +7,7 @@ import com.psk.pms.utils.PMSUtil;
 import org.apache.log4j.Logger;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -252,15 +253,15 @@ public class ProjectServiceImpl implements ProjectService {
 			Set<String> itemNames = projectDAO.fetchItemNames();
 			for(String itemName : itemNames){
 				ItemDetail item = new ItemDetail();
-				int itemQty = 0;
-				int itemCost = 0;
+				Double itemQty = 0.0;
+				Double itemCost = 0.0;
 				for(ItemDetail itemDetail : itemDetailList){
 					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
 						item.setItemName(itemDetail.getItemName());
 						item.setItemPrice(itemDetail.getItemPrice());
-						item.setItemUnit(itemDetail.getItemUnit());
-						itemQty = itemQty + Integer.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost + Integer.valueOf(itemDetail.getItemCost());
+						item.setItemUnit(itemDetail.getItemUnit());			
+						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());					
+						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
 					}
 				}
 				if(item.getItemName() != null){
