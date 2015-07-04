@@ -171,8 +171,9 @@
 				<thead>
 					<tr>
 						<th>Material</th>
-						<th>Quantity</th>
 						<th>Price</th>
+						<th>Unit</th>
+						<th>Quantity</th>
 						<th>Total Cost</th>
 					</tr>
 				</thead>
@@ -181,8 +182,9 @@
 						<c:forEach var="item" items="${aggregateItemDetails}">
 							<tr>
 								<td>${item.itemName}</td>
-								<td>${item.itemQty}</td>
 								<td>${item.itemPrice}</td>
+								<td>${item.itemUnit}</td>
+								<td>${item.itemQty}</td>				
 								<td>${item.itemCost}</td>
 							</tr>
 						</c:forEach>
