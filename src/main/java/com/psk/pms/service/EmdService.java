@@ -14,4 +14,8 @@ public interface EmdService {
     EMDDetail getEmdDetailsByEmdId(String emdId);
 
     void deleteEmd(Integer numericEmdId);
+
+    List<EMDDetail> getEmdDetailsByProjectId(Integer projectId);
+
+    List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
 }

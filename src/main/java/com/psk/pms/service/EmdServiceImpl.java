@@ -83,6 +83,30 @@ public class EmdServiceImpl implements EmdService {
         return getSQLDate(formattedDate,simpleDateFormat);
     }
 
+    @Override
+    public List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
+        List<EMDDetail> emdDetails = emdDAO.getEmdDetailsBySubProjectId(subProjectId);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        for(EMDDetail emdDetail : emdDetails)
+        {
+            emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+            emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+        }
+        return emdDetails;
+    }
+
+    @Override
+    public List<EMDDetail> getEmdDetailsByProjectId(Integer projectId) {
+        List<EMDDetail> emdDetails = emdDAO.getEmdDetailsByProjectId(projectId);
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        for(EMDDetail emdDetail : emdDetails)
+        {
+            emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+            emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+        }
+        return emdDetails;
+    }
+
     public void deleteEmd(Integer numericEmdId) {
         emdDAO.deleteEmdDetailByEmdId(numericEmdId);
     }

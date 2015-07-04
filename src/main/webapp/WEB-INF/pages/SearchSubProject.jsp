@@ -19,20 +19,40 @@
 		});
 	});
 
-	function deleteSubProject(subProjectId) {
-        		$.ajax({
-        			type : 'POST',
-        			url : 'deleteSubProject.do',
-        			data : "subProjectId="+subProjectId,
-        			success : function(response) {
-        				location.reload();
-    					console.log("Successfully deleted row ");
-        			},
-        			error : function(err) {
-        				console.log("Error deleting emd");
-        			}
-        		});
-        	}
+	function deleteSubProject(subprojectAlias,subProjectId) {
+  	$("#dialog-confirm").html(subprojectAlias + " : Deletion Operation!, Please confirm to proceed");
+   	    // Define the Dialog and its properties.
+   	    $("#dialog-confirm").dialog({
+   	        resizable: false,
+   	        modal: true,
+   	        title: "Warning!",
+   	        height: 200,
+   	        width: 400,
+   	        buttons: {
+   	            "Yes": function () {
+   	            	$.ajax({
+   	        			type : 'POST',
+                          url : 'deleteSubProject.do',
+                          data : "subProjectId="+subProjectId,
+   	        			success : function(response) {
+   	        				location.reload();
+   	    					console.log("Successfully deleted row ");
+   	        			},
+   	        			error : function(err) {
+   	        				console.log("Error deleting sub project  ");
+   	        			}
+   	        		});
+   	                $(this).dialog('close');
+   	                window.location.reload();
+
+   	            },
+   	                "No": function () {
+   	                $(this).dialog('close');
+
+   	            }
+   	        }
+   	    });
+}
   </script>
 </head>
 <body ng-app="sampleApp">
@@ -105,7 +125,7 @@
 										href="/pms/emp/myview/updateSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${subProjDoc.projId}&subproject=${subProjDoc.subProjId}&action=${action}"
 										class="userAction">Update</a>
 										<strong> / </strong>
-										<a id ="deleteRow" href ="javascript:deleteSubProject('${subProjDoc.subProjId}');" style="color:red"> Delete</a>
+										<a id ="deleteRow" href ="javascript:deleteSubProject('${subProjDoc.aliasSubProjName}','${subProjDoc.subProjId}');" style="color:red"> Delete</a>
 									</td>
 								</tr>
 							</c:forEach>
@@ -117,6 +137,7 @@
 			</c:if>
 		
 		</div>
+		<div id="dialog-confirm"></div>
  <footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>

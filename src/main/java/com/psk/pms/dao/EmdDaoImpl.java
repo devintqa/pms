@@ -106,5 +106,49 @@ public class EmdDaoImpl implements EmdDAO {
         int noOfRows = jdbcTemplate.update(PMSMasterQuery.DELTEPEMDDETAILBYEMDID ,new Object []{emdId});
         LOGGER.info("method = deleteEmdDetailByEmdId , Number of rows deleted : "+ noOfRows +" subProjectId :" + emdId );
     }
+
+    @Override
+    public List<EMDDetail> getEmdDetailsByProjectId(Integer projectId) {
+        LOGGER.info("Fetch EMD Details By ProjectId :"+projectId);
+        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.GETEMDDETAILSBYPROJECTID,new Object[] {projectId});
+        for(Map<String,Object> row : rows)
+        {
+            EMDDetail emdDetail =new EMDDetail();
+            emdDetail.setEmdId((Integer) row.get("EmdId"));
+            emdDetail.setAliasProjectName((String) row.get("AliasProjName"));
+            emdDetail.setAliasSubProjectName("");
+            BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
+            emdDetail.setEmdAmount(emdAmount.toString());
+            emdDetail.setSqlEmdStartDate((Date) row.get("EmdStartDate"));
+            emdDetail.setSqlEmdEndDate((Date) row.get("EmdEndDate"));
+            emdDetail.setEmdType((String) row.get("EmdType"));
+            emdDetails.add(emdDetail);
+        }
+        return emdDetails;
+    }
+
+    @Override
+    public List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
+        LOGGER.info("Fetch EMD Details By  subProjectId :"+ subProjectId);
+        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.GETEMDDETAILSBYSUBPROJECTID,new Object[] {subProjectId} );
+        for(Map<String,Object> row : rows)
+        {
+            EMDDetail emdDetail =new EMDDetail();
+            emdDetail.setEmdId((Integer) row.get("EmdId"));
+            emdDetail.setAliasProjectName((String) row.get("AliasProjName"));
+            emdDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
+            BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
+            emdDetail.setEmdAmount(emdAmount.toString());
+            emdDetail.setSqlEmdStartDate((Date) row.get("EmdStartDate"));
+            emdDetail.setSqlEmdEndDate((Date) row.get("EmdEndDate"));
+            emdDetail.setEmdType((String) row.get("EmdType"));
+            emdDetails.add(emdDetail);
+        }
+        return emdDetails;
+    }
     
 }

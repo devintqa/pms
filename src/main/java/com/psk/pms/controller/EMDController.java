@@ -151,7 +151,7 @@ public class EMDController {
 		return "updateEmd";
 	}
 
-	@RequestMapping(value = "/emp/myview/updateEmd/deleteEmd.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/emp/myview/searchEmd/deleteEmd.do", method = RequestMethod.POST)
 	public void deleteEmd(HttpServletRequest request, HttpServletResponse response) {
 		String emdId = request.getParameter("emdId");
 		LOGGER.info("method = deleteEmd() , emd Id : " + emdId);

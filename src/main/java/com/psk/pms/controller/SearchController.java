@@ -1,10 +1,8 @@
 package com.psk.pms.controller;
 
+import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SearchDetail;
-import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.EmdService;
 import com.psk.pms.service.SearchService;
 import com.psk.pms.validator.SearchValidator;
 import org.apache.log4j.Logger;
@@ -31,6 +29,9 @@ public class SearchController extends BaseController {
 	
 	@Autowired
 	SearchService searchService;
+
+	@Autowired
+	EmdService emdService;
 	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
 	public String searchProject(@PathVariable String employeeId,Model model) {		
@@ -124,7 +125,7 @@ public class SearchController extends BaseController {
 			} else{
 				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
-				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(),searchUnderProject);
+				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(), searchUnderProject);
 				if(projDescDocList.size() > 0){
 					model.addAttribute("projDescDocList", projDescDocList);
 					model.addAttribute("projDescDocListSize", projDescDocList.size());
@@ -136,7 +137,33 @@ public class SearchController extends BaseController {
 		}
 		return "SearchProjectDescription";
 	}
-	
+
+	@RequestMapping(value = "/emp/myview/searchEmd/searchEmdDetails.do", method = RequestMethod.POST)
+	public String searchProjectEmdDetails(
+			@ModelAttribute("searchEmdForm") SearchDetail searchDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		List<EMDDetail> emdDetails;
+		searchValidator.validate(searchDetail, result);
+		if (!result.hasErrors()) {
+			LOGGER.info("method = searchProjectEmdDetails()" + searchDetail.getProjId());
+			boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder()) ? true : false;
+			if (searchUnderProject) {
+				emdDetails = emdService.getEmdDetailsByProjectId(null != searchDetail.getProjId() ? Integer.valueOf(searchDetail.getProjId()) : Integer.valueOf(0));
+			} else {
+				emdDetails = emdService.getEmdDetailsBySubProjectId(null != searchDetail.getProjId() ? Integer.valueOf(searchDetail.getProjId()) : Integer.valueOf(0));
+			}
+			if (emdDetails.size() > 0) {
+				model.addAttribute("emdList", emdDetails);
+				model.addAttribute("emdDetailsSize", emdDetails.size());
+				model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+			} else {
+				model.addAttribute("noDetailsFound", "No Project Emd Details Found For The Selection.");
+			}
+		}
+		return "SearchEmd";
+	}
+
+
 	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchDescItems.do", method = RequestMethod.GET)
 	public @ResponseBody
 	List<String> getDescItem(@RequestParam("itemName") String itemName) {
@@ -202,5 +229,15 @@ public class SearchController extends BaseController {
 		projectService.deleteSubProject(subProjectIdNumeric);
 
 	}
+
+	@RequestMapping(value = "/emp/myview/searchEmd/{employeeId}", method = RequestMethod.GET)
+	public String searchEmd(@PathVariable String employeeId,Model model) {
+		LOGGER.info("Search Controller : searchProjectEmd()");
+		SearchDetail searchDetail = new SearchDetail();
+		searchDetail.setSearchProjectDescription(true);
+		model.addAttribute("searchEmdForm", searchDetail);
+		return "SearchEmd";
+	}
+
 
 }
