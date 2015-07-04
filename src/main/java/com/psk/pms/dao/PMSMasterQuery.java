@@ -34,4 +34,13 @@ public class PMSMasterQuery {
 
     public static final String DELTEPEMDDETAILBYEMDID = "DELETE FROM emddetail WHERE EmdId = ?";
 
+    public static final String GETEMDDETAILSBYPROJECTID = "select e.EmdId ,e.ProjId , p.AliasProjName, e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate " +
+            "                from emddetail e  left join project as p on e.ProjId = p.ProjId " +
+            "                where e.ProjId = ? and e.SubProjId is null ";
+
+    public static final String GETEMDDETAILSBYSUBPROJECTID =
+            "select e.EmdId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ," +
+            "     s.SubProjName , e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate " +
+            "    from emddetail e left join project as p on e.ProjId = p.ProjId " +
+            "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 }

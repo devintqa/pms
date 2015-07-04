@@ -9,19 +9,39 @@
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
 <script>
-function deleteProject(projectId) {
-    		$.ajax({
-    			type : 'POST',
-    			url : 'deleteProject.do',
-    			data : "projectId="+projectId,
-    			success : function(response) {
-    				location.reload();
-					console.log("Successfully deleted row ");
-    			},
-    			error : function(err) {
-    				console.log("Error deleting emd");
-    			}
-    		});
+function deleteProject(projectAlias,projectId) {
+  $("#dialog-confirm").html(projectAlias + " : Deletion Operation!, Please confirm to proceed");
+   	    // Define the Dialog and its properties.
+   	    $("#dialog-confirm").dialog({
+   	        resizable: false,
+   	        modal: true,
+   	        title: "Warning!",
+   	        height: 200,
+   	        width: 400,
+   	        buttons: {
+   	            "Yes": function () {
+   	            	$.ajax({
+   	        			type : 'POST',
+                          url : 'deleteProject.do',
+                          data : "projectId="+projectId,
+   	        			success : function(response) {
+   	        				location.reload();
+   	    					console.log("Successfully deleted row ");
+   	        			},
+   	        			error : function(err) {
+   	        				console.log("Error deleting Project ");
+   	        			}
+   	        		});
+   	                $(this).dialog('close');
+   	                window.location.reload();
+
+   	            },
+   	                "No": function () {
+   	                $(this).dialog('close');
+
+   	            }
+   	        }
+   	    });
  }
 </script>
 </head>
@@ -63,7 +83,7 @@ function deleteProject(projectId) {
 									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=${action}"
 									class="userAction">Update</a>
 									<strong> / </strong>
-									<a id ="deleteRow" href ="javascript:deleteProject('${projDoc.projId}');" style="color:red"> Delete</a>
+									<a id ="deleteRow" href ="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');" style="color:red"> Delete</a>
 									</td>
 							</tr>
 						</c:forEach>
@@ -74,6 +94,7 @@ function deleteProject(projectId) {
 		</c:if>
 		
 </div>
+<div id="dialog-confirm"></div>
 <footer>
 		<jsp:include page="Footer.jsp" />
 </footer>

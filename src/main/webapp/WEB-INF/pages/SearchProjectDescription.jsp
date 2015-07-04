@@ -44,7 +44,7 @@
 	        resizable: false,
 	        modal: true,
 	        title: "Warning!",
-	        height: 250,
+	        height: 200,
 	        width: 400,
 	        buttons: {
 	            "Yes": function () {

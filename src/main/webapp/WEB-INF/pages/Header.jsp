@@ -52,11 +52,9 @@
 						<li><a id="searchProjectDesc"
 							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
 								Project Description </a></li>
-					</ul></li>
-				<li><a href="#">EMD</a>
-					<ul>
-						<li><a id="updateEmd"
-							href="/pms/emp/myview/updateEmd/${employeeObj.employeeId}">Update</a></li>
+						<li><a id="searchEmd"
+							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
+								EMD </a></li>
 					</ul></li>
 				<li><a href="#">File</a>
 					<ul>
