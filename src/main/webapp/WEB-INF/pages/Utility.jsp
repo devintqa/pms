@@ -6,6 +6,57 @@ var tblEmdDocument = $("#emdDocumentList").dataTable();
 
 <script>
 $(function() {
+    var table = $("#emdList").dataTable( {"pageLength": 10});
+	
+     $("#emdList_columnUl").on('change', 'input:checkbox', function(e) {
+        var columnName = $(this).attr('name');			  
+        
+		  var isColumnStatusChecked = $( this ).is( ":checked" ) 
+		  if(!isColumnStatusChecked){
+				$(this).attr('value', 'hidden');
+		  } else{
+				$(this).attr('value', '');
+		  }
+        $("table[id*=emdList] th").each(function(index, item) {			  
+            if (columnName == item.innerHTML) {
+                $('table[id*=emdList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+            }
+        })
+    });
+
+
+    $("#emdList_paginate").on('click', function(e) {
+        $("#emdList_columnUl").find('input:checkbox').each(function(index, item) {
+            var columnStatus = $(this).attr('value');
+            var columnName = $(this).attr('name');				  
+			  
+            if (columnStatus == 'hidden') {						
+                $("table[id*=emdList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#emdList tr').find("td:eq(" + index + ")").css('display');
+                        if (displayType != 'none') {
+                            $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+            }else{					
+				 $("table[id*=emdList] th").each(function(index, item) {						
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#emdList tr').find("td:eq(" + index + ")").css('display');							  
+                        if (displayType == 'none') {
+                            $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+
+                    }
+                })
+			  }
+        });
+    });		  
+});
+</script>
+<script>
+$(function() {
     var table = $("#itemDescList").dataTable( {"pageLength": 10});
 	
      $("#itemDescList_columnUl").on('change', 'input:checkbox', function(e) {
