@@ -1,11 +1,16 @@
 package com.psk.pms.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.Item;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.ItemValidator;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -14,25 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.validator.ItemValidator;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ItemController {
@@ -42,6 +35,9 @@ public class ItemController {
 	
 	@Autowired
 	ItemValidator itemValidator;
+
+	@Autowired
+	ItemService itemService;
 	
 	private static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	
@@ -68,7 +64,7 @@ public class ItemController {
 		boolean isItemSaveSuccessful = false;
 		itemValidator.validate(item, result);
 		if(!result.hasErrors()){
-			isItemSaveSuccessful = projectService.createEditItem(item);
+			isItemSaveSuccessful = itemService.createEditItem(item);
 		}
 		if(result.hasErrors() || !isItemSaveSuccessful) {
 			return "BuildItem";
@@ -85,7 +81,7 @@ public class ItemController {
 	private List<String> fetchItemInfo(String itemName) {
 		LOGGER.info("method = fetchItemInfo()");
 		List<String> result = new ArrayList<String>();
-		Set<String> itemNames = projectService.fetchItemNames();
+		Set<String> itemNames = itemService.fetchItemNames();
 		LOGGER.info("The Item Name Size:" + itemNames.size());
 		for (String item : itemNames) {
 			if (item.toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
@@ -104,7 +100,7 @@ public class ItemController {
 		descItemDetail.setSubProjId(new Integer(subProjId));
 		descItemDetail.setProjDescId(new Integer(projDescId));
 		descItemDetail.setProjDescSerial(projDescSerial);
-		descItemDetail = projectService.getDataDescription(descItemDetail);
+		descItemDetail = itemService.getDataDescription(descItemDetail);
 		
 		Gson gson = new Gson();
 		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
@@ -123,7 +119,7 @@ public class ItemController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
 		descItemDetail.setItemDetail(itemList);
-		boolean status = projectService.insertDataDescription(descItemDetail);
+		boolean status = itemService.insertDataDescription(descItemDetail);
 		return status;
 	}
 

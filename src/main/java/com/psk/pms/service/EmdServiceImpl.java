@@ -107,6 +107,24 @@ public class EmdServiceImpl implements EmdService {
         return emdDetails;
     }
 
+    public List<EMDDetail> getEmdEndAlertList() {
+        Date todayDate = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        List<EMDDetail> projectDocumentList = emdDAO.getEMDDatesList();
+        List<EMDDetail> emdDocumentList = new ArrayList<EMDDetail>();
+        for(EMDDetail emdDetail : projectDocumentList){
+            long diff = emdDetail.getSqlEmdEndDate().getTime() - todayDate.getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+            if(diffDays < 14){
+                emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
+                emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
+                emdDetail.setEmdExtensionDate(PMSUtil.getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
+                emdDocumentList.add(emdDetail);
+            }
+        }
+        return emdDocumentList;
+    }
+
     public void deleteEmd(Integer numericEmdId) {
         emdDAO.deleteEmdDetailByEmdId(numericEmdId);
     }

@@ -1,5 +1,6 @@
 package com.psk.pms.validator;
 
+import com.psk.pms.service.ItemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -13,6 +14,9 @@ public class ItemValidator extends BaseValidator implements Validator{
 	
 	@Autowired
 	ProjectService projectService;
+
+	@Autowired
+	ItemService itemService;
 
 	private static final Logger LOGGER = Logger.getLogger(ItemValidator.class);
 
@@ -38,7 +42,7 @@ public class ItemValidator extends BaseValidator implements Validator{
         if(item.getItemName().length() > 100){
             errors.rejectValue("itemName", "itemName.incorrect","Field must not exceed 50 characters.");
         } else {
-        	boolean isItemAlreadyExisting = projectService.isItemAlreadyExisting(item.getItemName());
+        	boolean isItemAlreadyExisting = itemService.isItemAlreadyExisting(item.getItemName());
 			if(isItemAlreadyExisting){
 				errors.rejectValue("itemName", "itemName.incorrect","Item Name Already Found To Be Existing.");
 			}

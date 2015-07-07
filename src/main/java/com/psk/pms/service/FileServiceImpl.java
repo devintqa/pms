@@ -17,6 +17,9 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private SubProjectService subProjectService;
+
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
 
     @Override
@@ -26,7 +29,7 @@ public class FileServiceImpl implements FileService {
         ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
         LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
         if (fileUpload.isSubProjectUpload()) {
-            SubProjectDetail subProjDetail = projectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+            SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
             files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
         } else {
@@ -68,7 +71,7 @@ public class FileServiceImpl implements FileService {
         LOGGER.info("method = downloadFile(), Alias Project Name :" + projectDetail.getAliasName());
 
         if (downloadForm.isSubProjectUpload()) {
-            SubProjectDetail subProjDetail = projectService.getSubProjectDocument(downloadForm.getAliasSubProjectName());
+            SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(downloadForm.getAliasSubProjectName());
             path = "C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName();
         } else {
             path = "C:\\PMS\\" + projectDetail.getAliasName();

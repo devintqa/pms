@@ -1,7 +1,9 @@
 package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 	
 	@Autowired
 	ProjectService projectService;
+
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
 
 	private static final Logger LOGGER = Logger.getLogger(ProjDescDetailValidator.class);
 	@Override
@@ -110,7 +115,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
 			LOGGER.info("Project description detail is update: " + projectDescDetail.getIsUpdate());
 			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
-			boolean isAliasDescriptionAlreadyExisting = projectService.isAliasDescriptionAlreadyExisting(projectDescDetail);
+			boolean isAliasDescriptionAlreadyExisting = projectDescriptionService.isAliasDescriptionAlreadyExisting(projectDescDetail);
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("aliasDescription", "aliasDescription.incorrect","Alias Description Already Found To Be Existing.");
 			}
@@ -119,7 +124,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
 			LOGGER.info("Project description detail is update: "+projectDescDetail.getIsUpdate());
 			LOGGER.info(" project description detail Id "+ projectDescDetail.getProjId());
-			boolean isAliasDescriptionAlreadyExisting = projectService.isSerialNumberAlreadyExisting(projectDescDetail);
+			boolean isAliasDescriptionAlreadyExisting = projectDescriptionService.isSerialNumberAlreadyExisting(projectDescDetail);
 			if(isAliasDescriptionAlreadyExisting){
 				errors.rejectValue("serialNumber", "serialNumber.incorrect","Serial Number Already Found To Be Existing.");
 			}

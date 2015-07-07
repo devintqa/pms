@@ -38,7 +38,25 @@
 	<bean id="emdDAO" class="com.psk.pms.dao.EmdDaoImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
+
+	<bean id="subProjectDAO" class="com.psk.pms.dao.SubProjectDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="projectDescriptionDAO" class="com.psk.pms.dao.ProjectDescriptionDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="itemDAO" class="com.psk.pms.dao.ItemDAOImpl">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="itemService" class="com.psk.pms.service.ItemServiceImpl"></bean>
+
+	<bean id="subProjectService" class="com.psk.pms.service.SubProjectServiceImpl"></bean>
+
+	<bean id="projectDescriptionService" class="com.psk.pms.service.ProjectDescriptionServiceImpl"></bean>
+
 	<bean class="com.psk.pms.validator.EmployeeValidator" />
 	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
 	<bean class="com.psk.pms.validator.SearchValidator" />
