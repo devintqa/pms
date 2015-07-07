@@ -34,8 +34,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.projectName", "Enter Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
 			"required.aliasName", "Enter Alias Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "cerNo",
-				"required.cerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount",
 				"required.amount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorName",

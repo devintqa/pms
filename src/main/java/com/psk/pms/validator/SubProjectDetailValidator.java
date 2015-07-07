@@ -39,8 +39,6 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subProjectName", "Enter Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "AliasSubProjName",
 				"required.subAliasName", "Enter Alias Sub Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subCerNo",
-				"required.subCerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAmount",
 				"required.subAmount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorName",
