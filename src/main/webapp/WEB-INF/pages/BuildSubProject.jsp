@@ -49,7 +49,7 @@ $(document).ready(function () {
 								<td>Sub Project Name<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subProjectName"
-										placeholder="Enter Sub Project Name" cssClass="inputText" rows="5" cols="40" /></td>
+										placeholder="Enter Sub Project Name" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -77,7 +77,7 @@ $(document).ready(function () {
 								<td>Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subContractorName"
-										placeholder="Enter Name of Contractor" cssClass="inputText" rows="5" cols="40" /></td>
+										placeholder="Enter Name of Contractor" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subContractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -91,7 +91,7 @@ $(document).ready(function () {
 								<td>Address of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subContractorAddress"
-										placeholder="Enter Address of Contractor" cssClass="inputText" rows="5" cols="40" /></td>
+										placeholder="Enter Address of Contractor" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subContractorAddress"
 										cssClass="error" /></td>
 							</tr>

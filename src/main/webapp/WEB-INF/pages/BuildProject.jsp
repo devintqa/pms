@@ -42,7 +42,7 @@ $(document).ready(function () {
 								<td>Project Name<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="projectName"
-										placeholder="Enter Project Name" cssClass="inputText" rows="5" cols="40"/></td>
+										placeholder="Enter Project Name" cssClass="inputText" maxlength="2000" rows="5" cols="40"/></td>
 								<td><form:errors path="projectName" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -70,21 +70,21 @@ $(document).ready(function () {
 								<td>Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="contractorName"
-										placeholder="Enter Name of Contractor" cssClass="inputText" rows="5" cols="40" /></td>
+										placeholder="Enter Name of Contractor" cssClass="inputText" rows="5" cols="40" maxlength="2000" /></td>
 								<td><form:errors path="contractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Alias Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasContractorName"
-										placeholder="Enter Alias Contractor Name" cssClass="inputText" /></td>
+										placeholder="Enter Alias Contractor Name" cssClass="inputText"/></td>
 								<td><form:errors path="aliasContractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Address of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="contractorAddress"
-										placeholder="Enter Address of Contractor" cssClass="inputText" rows="5" cols="40" /></td>
+										placeholder="Enter Address of Contractor" cssClass="inputText" rows="5" cols="40" maxlength="2000"/></td>
 								<td><form:errors path="contractorAddress" cssClass="error" /></td>
 							</tr>
 							<tr>
