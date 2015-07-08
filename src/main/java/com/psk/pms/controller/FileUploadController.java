@@ -5,6 +5,7 @@ import com.psk.pms.model.Employee;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.service.FileService;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.FileUploadValidator;
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
@@ -38,6 +39,9 @@ public class FileUploadController {
 
 	@Autowired
 	FileService fileService;
+
+	@Autowired
+	SubProjectService subProjectService;
 
 	private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
  
@@ -195,7 +199,7 @@ public class FileUploadController {
 	}
     
 	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
+		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
 	

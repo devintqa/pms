@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.psk.pms.dao.PMSMasterQuery.*;
+
 public class EmdDaoImpl implements EmdDAO {
 
     private DriverManagerDataSource dataSource;
@@ -25,14 +27,14 @@ public class EmdDaoImpl implements EmdDAO {
     	LOGGER.info("Save EMD DAO Start");
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(emdDetail.getIsUpdate())) {
-            jdbcTemplate.update(PMSMasterQuery.CREATEEMDDETAIL, new Object[]{
+            jdbcTemplate.update(CREATEEMDDETAIL, new Object[]{
                     emdDetail.getAliasProjectName(), emdDetail.getAliasSubProjectName(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                     emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                     emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
                      emdDetail.getLastUpdatedBy(), emdDetail.getLastUpdatedAt(),emdDetail.getEmdSubmitter()
             });
         } else {
-            jdbcTemplate.update(PMSMasterQuery.UPDATEEMDDETAIL, new Object[]
+            jdbcTemplate.update(UPDATEEMDDETAIL, new Object[]
                     {emdDetail.getProjId(), emdDetail.getSubProjId(), emdDetail.getEmdAmount(), emdDetail.getSqlEmdStartDate(),
                             emdDetail.getSqlEmdEndDate(), emdDetail.getEmdType(), emdDetail.getBgNumber(), emdDetail.getEmdPeriod(),
                             emdDetail.getEmdExtensionSqlDate(), emdDetail.getEmdLedgerNumber(),
@@ -48,7 +50,7 @@ public class EmdDaoImpl implements EmdDAO {
     	LOGGER.info("Fetch EMD Details Start");
         List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.FETCHEMDDETAILS);
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(FETCHEMDDETAILS);
         for(Map<String,Object> row : rows)
         {
             EMDDetail emdDetail =new EMDDetail();
@@ -70,7 +72,7 @@ public class EmdDaoImpl implements EmdDAO {
     public EMDDetail getEmdDetailsByEmdId(String emdId) {
         EMDDetail emdDetail = new EMDDetail();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        emdDetail = (EMDDetail) jdbcTemplate.queryForObject(PMSMasterQuery.FETCHEMDDETAILBYEMDID,new Object[] {emdId},new EmdDetailRowMapper());
+        emdDetail = (EMDDetail) jdbcTemplate.queryForObject(FETCHEMDDETAILBYEMDID,new Object[] {emdId},new EmdDetailRowMapper());
         return emdDetail;
     }
 
@@ -103,7 +105,7 @@ public class EmdDaoImpl implements EmdDAO {
     public void deleteEmdDetailByEmdId(Integer emdId)
     {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-        int noOfRows = jdbcTemplate.update(PMSMasterQuery.DELTEPEMDDETAILBYEMDID ,new Object []{emdId});
+        int noOfRows = jdbcTemplate.update(DELTEPEMDDETAILBYEMDID, new Object[]{emdId});
         LOGGER.info("method = deleteEmdDetailByEmdId , Number of rows deleted : "+ noOfRows +" subProjectId :" + emdId );
     }
 
@@ -112,7 +114,7 @@ public class EmdDaoImpl implements EmdDAO {
         LOGGER.info("Fetch EMD Details By ProjectId :"+projectId);
         List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.GETEMDDETAILSBYPROJECTID,new Object[] {projectId});
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(GETEMDDETAILSBYPROJECTID, new Object[]{projectId});
         for(Map<String,Object> row : rows)
         {
             EMDDetail emdDetail =new EMDDetail();
@@ -134,7 +136,7 @@ public class EmdDaoImpl implements EmdDAO {
         LOGGER.info("Fetch EMD Details By  subProjectId :"+ subProjectId);
         List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(PMSMasterQuery.GETEMDDETAILSBYSUBPROJECTID,new Object[] {subProjectId} );
+        List<Map<String, Object>> rows =  jdbcTemplate.queryForList(GETEMDDETAILSBYSUBPROJECTID,new Object[] {subProjectId} );
         for(Map<String,Object> row : rows)
         {
             EMDDetail emdDetail =new EMDDetail();
@@ -150,5 +152,44 @@ public class EmdDaoImpl implements EmdDAO {
         }
         return emdDetails;
     }
+
+    @Override
+    public void deleteEmddetailBySubProjectId(Integer subProjectId) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYSUBPROJECTID, new Object []{subProjectId});
+        LOGGER.info("method = deleteEmddetailBySubProjectId , Number of rows deleted : "+ noOfRows +" subProjectId :" + subProjectId );
+    }
+
+    @Override
+    public void deleteEmddetailByProjectId(Integer projectId) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfRows = jdbcTemplate.update(DELETEEMDDETAILBYPROJECTID, new Object []{projectId});
+        LOGGER.info("method = deleteEmddetailByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+    }
+
+    public List<EMDDetail> getEMDDatesList() {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+
+        List<EMDDetail> emdList = new ArrayList<EMDDetail>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(emdDatesQuery);
+
+        for (Map<String, Object> row : rows) {
+            emdList.add(buildEMDDetail(row));
+        }
+        return emdList;
+    }
+
+    private EMDDetail buildEMDDetail(Map<String, Object> row){
+        EMDDetail emdDetail = new EMDDetail();
+        BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
+        emdDetail.setEmdAmount(emdAmount.toString());
+        emdDetail.setSqlEmdStartDate((Date)row.get("EmdStartDate"));
+        emdDetail.setSqlEmdEndDate((Date)row.get("EmdEndDate"));
+        emdDetail.setEmdType((String)row.get("EmdType"));
+        emdDetail.setEmdExtensionSqlDate((Date) row.get("EmdExtensionDate"));
+        return emdDetail;
+    }
+
+
     
 }

@@ -4,6 +4,7 @@ import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,9 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
+
+	@Autowired
+	SubProjectService subProjectService;
 	
 	private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
 
@@ -106,7 +110,7 @@ public class ProjectController {
 	}
 	
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
+		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
 	}
 

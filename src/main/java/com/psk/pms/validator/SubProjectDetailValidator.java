@@ -3,6 +3,7 @@ package com.psk.pms.validator;
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -20,6 +21,9 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 	@Autowired
 	ProjectService projectService;
 
+	@Autowired
+	SubProjectService subProjectService;
+
 	private static final Logger LOGGER = Logger.getLogger(SubProjectDetailValidator.class);
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -35,8 +39,6 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subProjectName", "Enter Sub Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "AliasSubProjName",
 				"required.subAliasName", "Enter Alias Sub Project Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subCerNo",
-				"required.subCerNo", "Enter CER Number.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAmount",
 				"required.subAmount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorName",
@@ -66,7 +68,7 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 		if (subProjectDetail.getAliasSubProjName().length() > 50) {
 			errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Field must not exceed 50 characters.");
 		} else if (!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
-			boolean isAliasSubProjectAlreadyExisting = projectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName(), subProjectDetail.getProjId());
+			boolean isAliasSubProjectAlreadyExisting = subProjectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName(), subProjectDetail.getProjId());
 			if (isAliasSubProjectAlreadyExisting) {
 				errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Alias Sub Project Name Already Found To Be Existing.");
 			}

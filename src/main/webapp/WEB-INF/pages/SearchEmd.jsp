@@ -88,7 +88,7 @@
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchProjectDesc">
-								<td>Search Project Description? :</td>
+								<td>Search EMD? :</td>
 								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
 								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
 							</tr>

@@ -3,7 +3,9 @@ package com.psk.pms.controller;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.SubProjectDetailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +26,22 @@ public class SubProjectController {
 	SubProjectDetailValidator subProjectDetailValidator;
 
 	@Autowired
+	SubProjectService subProjectService;
+
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
+
+	@Autowired
 	ProjectService projectService;
 
 	private static final Logger LOGGER = Logger.getLogger(SubProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildSubProject/{employeeId}", method = RequestMethod.GET)
-	public String buildSubProject(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team, 
-			@RequestParam(value="action", required=false) String action, 
+	public String buildSubProject(@PathVariable String employeeId,
+			@RequestParam(value="team", required=true) String team,
+			@RequestParam(value="action", required=false) String action,
 			@RequestParam(value="project", required=false) String project,
-			@RequestParam(value="subproject", required=false) String subProject, 
+			@RequestParam(value="subproject", required=false) String subProject,
 			Model model) {
 			SubProjectDetail subProjectDetail = new SubProjectDetail();
 			subProjectDetail.setEmployeeId(employeeId);
@@ -49,27 +57,27 @@ public class SubProjectController {
 
 		return "BuildSubProject";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/updateSubProject/{employeeId}", method = RequestMethod.GET)
-	public String updateSubProject(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team, 
-			@RequestParam(value="action", required=false) String action, 
+	public String updateSubProject(@PathVariable String employeeId,
+			@RequestParam(value="team", required=true) String team,
+			@RequestParam(value="action", required=false) String action,
 			@RequestParam(value="project", required=false) String project,
-			@RequestParam(value="subproject", required=false) String subProject, 
+			@RequestParam(value="subproject", required=false) String subProject,
 			Model model) {
-			
+
 		LOGGER.info("method = updateSubProject() , Action :" + action);
-		
+
 		if("editProjectDesc".equalsIgnoreCase(action)){
-			SubProjectDetail subProjectDetail = projectService.getSubProjectDocument(subProject);
+			SubProjectDetail subProjectDetail = subProjectService.getSubProjectDocument(subProject);
 			subProjectDetail.setEmployeeId(employeeId);
-			List<ProjDescDetail> projDescDocList = projectService.getSubProjectDescDetailList(subProjectDetail.getSubProjId());
+			List<ProjDescDetail> projDescDocList = projectDescriptionService.getSubProjectDescDetailList(subProjectDetail.getSubProjId());
 			model.addAttribute("projDescDocList", projDescDocList);
 			model.addAttribute("projDescDocListSize", projDescDocList.size());
 			model.addAttribute("subProjectAliasName", subProjectDetail.getAliasSubProjName());
 			return "UpdateProjectDesc";
 		}else {
-			SubProjectDetail subProjectDetail = projectService.getSubProjectDocument(subProject);
+			SubProjectDetail subProjectDetail = subProjectService.getSubProjectDocument(subProject);
 			subProjectDetail.setEmployeeId(employeeId);
 			subProjectDetail.setIsUpdate("Y");
 			Map<String, String> aliasProjectList = new HashMap<String, String>();
@@ -83,14 +91,14 @@ public class SubProjectController {
 	@RequestMapping(value = "/emp/myview/buildSubProject/createSubProject.do", method = RequestMethod.POST)
 	public String saveSubProjectAction(
 			@ModelAttribute("subProjectForm") SubProjectDetail subProjectDetail,
-			BindingResult result, 
+			BindingResult result,
 			Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
-		
+
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createEditSubProject(subProjectDetail);
+			isProjectSaveSuccessful = subProjectService.createEditSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -102,21 +110,21 @@ public class SubProjectController {
 			model.addAttribute("employee", employee);
 			model.addAttribute("subProjectCreationMessage", "Sub Project Creation Successful.");
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			return "BuildSubProject";			
+			return "BuildSubProject";
 		}
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/updateSubProject/createSubProject.do", method = RequestMethod.POST)
 	public String updateSubProjectAction(
 			@ModelAttribute("subProjectForm") SubProjectDetail subProjectDetail,
-			BindingResult result, 
+			BindingResult result,
 			Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
-		
+
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createEditSubProject(subProjectDetail);
+			isProjectSaveSuccessful = subProjectService.createEditSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -128,11 +136,9 @@ public class SubProjectController {
 			model.addAttribute("employee", employee);
 			model.addAttribute("subProjectCreationMessage", "Sub Project Updated Successfully.");
 			model.addAttribute("aliasProjectList", aliasProjectList);
-			return "BuildSubProject";			
+			return "BuildSubProject";
 		}
 	}
-
-	
 
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();

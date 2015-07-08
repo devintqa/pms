@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EmdService {
 
-    public boolean createEditEmd(EMDDetail emdDetail);
+    boolean createEditEmd(EMDDetail emdDetail);
 
     List<EMDDetail> getEmdDetails();
 
@@ -18,4 +18,6 @@ public interface EmdService {
     List<EMDDetail> getEmdDetailsByProjectId(Integer projectId);
 
     List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
+
+    List<EMDDetail> getEmdEndAlertList();
 }

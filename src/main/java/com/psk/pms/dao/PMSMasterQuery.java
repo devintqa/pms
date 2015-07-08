@@ -43,4 +43,14 @@ public class PMSMasterQuery {
             "     s.SubProjName , e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate " +
             "    from emddetail e left join project as p on e.ProjId = p.ProjId " +
             "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
+
+    public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInWords, "
+            + "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
+
+    public static String projDescDetail = "SELECT d.ProjId, d.SubProjId , d.SerialNumber , d.WorkType, d.QuantityInFig, d.QuantityInWords, "
+            + "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
+
+    public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
+
+    public static String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
 }

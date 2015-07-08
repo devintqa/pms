@@ -31,6 +31,8 @@ import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ItemValidator;
 
@@ -41,7 +43,13 @@ public class ItemController {
 	ProjectService projectService;
 	
 	@Autowired
+	ProjectDescriptionService projectDescService;
+	
+	@Autowired
 	ItemValidator itemValidator;
+
+	@Autowired
+	ItemService itemService;
 	
 	private static final Logger LOGGER = Logger.getLogger(ItemController.class);
 	
@@ -68,7 +76,7 @@ public class ItemController {
 		boolean isItemSaveSuccessful = false;
 		itemValidator.validate(item, result);
 		if(!result.hasErrors()){
-			isItemSaveSuccessful = projectService.createEditItem(item);
+			isItemSaveSuccessful = itemService.createEditItem(item);
 		}
 		if(result.hasErrors() || !isItemSaveSuccessful) {
 			return "BuildItem";
@@ -85,7 +93,7 @@ public class ItemController {
 	private List<String> fetchItemInfo(String itemName) {
 		LOGGER.info("method = fetchItemInfo()");
 		List<String> result = new ArrayList<String>();
-		Set<String> itemNames = projectService.fetchItemNames();
+		Set<String> itemNames = itemService.fetchItemNames();
 		LOGGER.info("The Item Name Size:" + itemNames.size());
 		for (String item : itemNames) {
 			if (item.toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
@@ -104,7 +112,7 @@ public class ItemController {
 		descItemDetail.setSubProjId(new Integer(subProjId));
 		descItemDetail.setProjDescId(new Integer(projDescId));
 		descItemDetail.setProjDescSerial(projDescSerial);
-		descItemDetail = projectService.getDataDescription(descItemDetail);
+		descItemDetail = itemService.getDataDescription(descItemDetail);
 		
 		Gson gson = new Gson();
 		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
@@ -116,7 +124,7 @@ public class ItemController {
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
 		
-		ProjDescDetail projDescDetail = projectService.getProjectDescDetail(projDescId, null);
+		ProjDescDetail projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
 		model.addAttribute("projDescForm", projDescDetail);
 		
 		return "DescItem";
@@ -127,7 +135,7 @@ public class ItemController {
 		ObjectMapper mapper = new ObjectMapper();
 		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
 		descItemDetail.setItemDetail(itemList);
-		boolean status = projectService.insertDataDescription(descItemDetail);
+		boolean status = itemService.insertDataDescription(descItemDetail);
 		return status;
 	}
 

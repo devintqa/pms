@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.psk.pms.service.EmdService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -47,6 +48,8 @@ public class EmployeeController {
 	EmployeeService employeeService;
 	@Autowired
 	ProjectService projectService;
+	@Autowired
+	EmdService emdService;
 
 	private static final Logger LOGGER = Logger.getLogger(EmployeeController.class);
 
@@ -89,7 +92,7 @@ public class EmployeeController {
 			}
 		}
 		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
-			List<EMDDetail> emdEndAlertList = projectService.getEmdEndAlertList();
+			List<EMDDetail> emdEndAlertList = emdService.getEmdEndAlertList();
 			if(emdEndAlertList.size() > 0){
 				model.addAttribute("emdDocumentList", emdEndAlertList);
 			}

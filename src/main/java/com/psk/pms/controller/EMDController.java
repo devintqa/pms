@@ -5,6 +5,7 @@ import com.psk.pms.model.EMDDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmdService;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.EmdValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class EMDController {
 
 	@Autowired
 	EmdValidator emdValidator;
+
+	@Autowired
+	SubProjectService subProjectService;
 
 	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
 
@@ -80,7 +84,7 @@ public class EMDController {
 	}
 
 	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
+		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
 

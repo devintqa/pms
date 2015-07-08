@@ -1,9 +1,8 @@
 package com.psk.pms.controller;
 
-import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.service.EmdService;
-import com.psk.pms.service.SearchService;
+import com.psk.pms.model.*;
+import com.psk.pms.service.*;
 import com.psk.pms.validator.SearchValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,15 @@ public class SearchController extends BaseController {
 
 	@Autowired
 	EmdService emdService;
+
+	@Autowired
+	SubProjectService subProjectService;
+
+	@Autowired
+	ItemService itemService;
+
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
 	
 	@RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
 	public String searchProject(@PathVariable String employeeId,Model model) {		
@@ -114,7 +122,7 @@ public class SearchController extends BaseController {
 		searchValidator.validate(searchDetail, result);
 		if(!result.hasErrors()){
 			if(searchDetail.isSearchAggregateItemDetails()){
-				List<ItemDetail> aggregateItemDetails = projectService.getProjectData(searchDetail.getProjId());
+				List<ItemDetail> aggregateItemDetails = itemService.getProjectData(searchDetail.getProjId());
 				if(aggregateItemDetails.size() > 0){
 					model.addAttribute("aggregateItemDetails", aggregateItemDetails);
 					model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
@@ -125,7 +133,7 @@ public class SearchController extends BaseController {
 			} else{
 				boolean searchUnderProject = "project".equalsIgnoreCase(searchDetail.getSearchUnder())?true:false;
 				LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
-				List<ProjDescDetail> projDescDocList = projectService.getProjectDescDetailList(searchDetail.getProjId(), searchUnderProject);
+				List<ProjDescDetail> projDescDocList = projectDescriptionService.getProjectDescDetailList(searchDetail.getProjId(), searchUnderProject);
 				if(projDescDocList.size() > 0){
 					model.addAttribute("projDescDocList", projDescDocList);
 					model.addAttribute("projDescDocListSize", projDescDocList.size());
@@ -172,7 +180,7 @@ public class SearchController extends BaseController {
 	}
 	
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
+		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
 	}
 	
@@ -226,7 +234,7 @@ public class SearchController extends BaseController {
 		String subProjectId = request.getParameter("subProjectId");
 		LOGGER.info("method = deleteSubProject() , sub projectid : "+subProjectId );
 		Integer subProjectIdNumeric = Integer.parseInt(subProjectId);
-		projectService.deleteSubProject(subProjectIdNumeric);
+		subProjectService.deleteSubProject(subProjectIdNumeric);
 
 	}
 

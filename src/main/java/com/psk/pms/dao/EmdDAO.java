@@ -17,4 +17,10 @@ public interface EmdDAO {
     List<EMDDetail> getEmdDetailsByProjectId(Integer projectId);
 
     List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
+
+    List<EMDDetail> getEMDDatesList();
+
+    void deleteEmddetailByProjectId(Integer projectId);
+
+    void deleteEmddetailBySubProjectId(Integer subProjectId);
 }

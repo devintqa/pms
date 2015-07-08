@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.SubProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,12 @@ public class ProjectDescriptionController {
 	@Autowired
 	ProjectService projectService;
 
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
+
+	@Autowired
+	SubProjectService subProjectService;
+
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
@@ -53,7 +61,7 @@ public class ProjectDescriptionController {
 			Map<String,String> aliasProjectList = new HashMap<String,String>();
 			Map<String,String> subAliasProjectList = new HashMap<String,String>();
 
-			ProjDescDetail projDescDetail = projectService.getProjectDescDetail(descDetail,subProject);
+			ProjDescDetail projDescDetail = projectDescriptionService.getProjectDescDetail(descDetail,subProject);
 			projDescDetail.setIsUpdate("Y");
 			projDescDetail.setEmployeeId(employeeId);
 
@@ -91,7 +99,7 @@ public class ProjectDescriptionController {
 		projDescDetailValidator.validate(projDescDetail, result);
 		LOGGER.info("Result has errors ?? "+ result.hasErrors());
 		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
+			isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
@@ -108,8 +116,8 @@ public class ProjectDescriptionController {
 				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 				return "BuildDescription";
 			} else{
-				isProjectSaveSuccessful = projectService.createEditProjDesc(projDescDetail);
-				projDescDetail = projectService.getProjectDescDetail(String.valueOf(projDescDetail.getProjDescId()), projDescDetail.getAliasSubProjectName());
+				isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
+				projDescDetail = projectDescriptionService.getProjectDescDetail(String.valueOf(projDescDetail.getProjDescId()), projDescDetail.getAliasSubProjectName());
 				projDescDetail.setIsUpdate("Y");
 				aliasProjectList = new HashMap<String, String>();
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
@@ -131,7 +139,7 @@ public class ProjectDescriptionController {
 	public void deleteProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
 		String projectDescriptionId = request.getParameter("projectDescriptionId");
 		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-		projectService.deleteProjectDescriptionDetail(projectDescriptionId);
+		projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId);
 	}
 
 	public Map<String, String> populateAliasProjectList() {
@@ -151,7 +159,7 @@ public class ProjectDescriptionController {
 	}
 
 	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = projectService.getSubAliasProjectNames(project);
+		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
 
@@ -170,7 +178,7 @@ public class ProjectDescriptionController {
 	}
 
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = projectService.getSubProjectDocumentList(projectId);
+		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
 	}
 	

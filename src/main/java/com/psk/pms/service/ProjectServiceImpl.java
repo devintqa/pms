@@ -1,21 +1,22 @@
 package com.psk.pms.service;
 
 import com.psk.pms.dao.ProjectDAO;
-import com.psk.pms.model.*;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.utils.PMSUtil;
 import org.apache.log4j.Logger;
-import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class ProjectServiceImpl implements ProjectService {
-	
+
 	private ProjectDAO projectDAO;
 
-	private static final Logger LOGGER = Logger.getLogger(ProjectService.class);
+	private static final Logger LOGGER = Logger.getLogger(ProjectServiceImpl.class);
 
 	public boolean createEditProject(ProjectDetail projectDetail){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -37,11 +38,6 @@ public class ProjectServiceImpl implements ProjectService {
 		boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
 		return isInsertSuccessful;
 	}
-	
-	public boolean createEditItem(Item item){
-		boolean isInsertSuccessful = projectDAO.saveItem(item);
-		return isInsertSuccessful;
-	}
 
     private Date getCurrentDateTime() {
         Calendar calendar = Calendar.getInstance();
@@ -52,95 +48,15 @@ public class ProjectServiceImpl implements ProjectService {
         return getSQLDate(formattedDate,simpleDateFormat);
     }
 
-    public boolean createEditProjDesc(ProjDescDetail projDescDetail){
-		fillEmptyProjDesValuesWithNull(projDescDetail);
-		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
-        projDescDetail.setLastUpdatedAt(getCurrentDateTime());
-		boolean isInsertSuccessful = projectDAO.saveProjDesc(projDescDetail);
-		return isInsertSuccessful;
-	}
-
-	private void fillEmptyProjDesValuesWithNull(ProjDescDetail projDescDetail) {
-		if (!projDescDetail.isSubProjectDesc()) {
-			projDescDetail.setAliasSubProjectName(null);
-		}
-		if (StringUtils.isEmpty(projDescDetail.getQuantityInFig())) {
-			projDescDetail.setQuantityInFig(null);
-		}
-		if (StringUtils.isEmpty(projDescDetail.getQuantityInWords())) {
-			projDescDetail.setQuantityInWords(null);
-		}
-		if (StringUtils.isEmpty(projDescDetail.getProjDescAmount())) {
-			projDescDetail.setProjDescAmount(null);
-		}
-	}
-	public boolean createEditSubProject(SubProjectDetail subProjectDetail){
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		subProjectDetail.setSubTenderSqlDate(getSQLDate(subProjectDetail.getSubTenderDate(), formatter));
-		subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
-		subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
-		subProjectDetail.setSubCompletionSqlDate(getSQLDate(subProjectDetail.getSubCompletionDate(), formatter));
-        subProjectDetail.setLastUpdatedBy(subProjectDetail.getEmployeeId());
-        subProjectDetail.setLastUpdatedAt(getCurrentDateTime());
-		if (subProjectDetail.getSubLessPercentage() == "") {
-			subProjectDetail.setSubLessPercentage(null);
-		}
-		if (subProjectDetail.getSubExPercentage() == "") {
-			subProjectDetail.setSubExPercentage(null);
-		}
-		if (subProjectDetail.getSubPerformanceGuarantee() == "") {
-			subProjectDetail.setSubPerformanceGuarantee(null);
-		}
-		boolean isInsertSuccessful = projectDAO.saveSubProject(subProjectDetail);
-		return isInsertSuccessful;
-	}
-	
-	public boolean insertDataDescription(DescItemDetail descItemDetail){
-		boolean isInsertSuccessful = false;
-		if(descItemDetail.getItemDetail() != null){
-			isInsertSuccessful = projectDAO.insertDataDescription(descItemDetail);
-		}
-		return isInsertSuccessful;
-	}
-
 	public boolean isAliasProjectAlreadyExisting(String aliasName){
 		boolean isAvailable = false;
 		isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);
 		return isAvailable;
 	}
-	
-	public boolean isItemAlreadyExisting(String itemName){
-		boolean isAvailable = false;
-		isAvailable = projectDAO.isItemAlreadyExisting(itemName);
-		return isAvailable;
-	}
-	
-	public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId) {
-		boolean isAvailable = false;
-		isAvailable = projectDAO.isAliasSubProjectAlreadyExisting(subAliasName, projectId);
-		return isAvailable;
-	}
-	
-	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
-		boolean isAvailable = false;
-		isAvailable = projectDAO.isAliasDescriptionAlreadyExisting(projectDescDetail);
-		return isAvailable;
-	}
 
-	public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail) {
-		boolean isAvailable = false;
-		isAvailable = projectDAO.isSerialNumberAlreadyExisting(projectDescDetail);
-		return isAvailable;
-	}
-	
 	public Map<String, String> getAliasProjectNames(){
 		Map<String, String> aliasProjects = projectDAO.getAliasProjectNames();
 		return aliasProjects;
-	}
-	
-	public Map<String, String> getSubAliasProjectNames(String projectId) {
-		Map<String, String> aliasSubProjectList = projectDAO.getSubAliasProjectNames(projectId);
-		return aliasSubProjectList;
 	}
 
 	public void setProjectDAO(ProjectDAO projectDAO) {
@@ -172,24 +88,6 @@ public class ProjectServiceImpl implements ProjectService {
 		}
 		return projectDocumentList;
 	}
-	
-	public List<EMDDetail> getEmdEndAlertList() {
-		Date todayDate = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		List<EMDDetail> projectDocumentList = projectDAO.getEMDDatesList();
-		List<EMDDetail> emdDocumentList = new ArrayList<EMDDetail>();
-		for(EMDDetail emdDetail : projectDocumentList){
-			long diff = emdDetail.getSqlEmdEndDate().getTime() - todayDate.getTime();
-			long diffDays = diff / (24 * 60 * 60 * 1000);
-			if(diffDays < 14){
-				emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
-				emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
-				emdDetail.setEmdExtensionDate(PMSUtil.getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
-				emdDocumentList.add(emdDetail);
-			}
-		}
-		return emdDocumentList;
-	}
 
 	@Override
 	public ProjectDetail getProjectDocument(String projectId) {
@@ -201,98 +99,11 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDetail.setCompletionDate(PMSUtil.getStringDate(projectDetail.getCompletionSqlDate(), formatter));
 		return projectDetail;
 	}
-	
-	@Override
-	public SubProjectDetail getSubProjectDocument(String subProjectId) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		SubProjectDetail subProjectDetail = projectDAO.getSubProjectDocument(subProjectId);
-		subProjectDetail.setSubTenderDate(PMSUtil.getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
-		subProjectDetail.setSubAgreementDate(PMSUtil.getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
-		subProjectDetail.setSubCommencementDate(PMSUtil.getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
-		subProjectDetail.setSubCompletionDate(PMSUtil.getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
-		return subProjectDetail;
-	}
-	
-	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
-		ProjDescDetail projDescDetail = projectDAO.getProjectDescDetail(projDescId, subProject);
-		projDescDetail.setIsUpdate("Y");
-		return projDescDetail;
-	}
-
-	@Override
-	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = projectDAO.getSubProjectDocumentList(projectId);
-		return subProjectDocumentList;
-	}
-	
-	@Override
-	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
-		List<ProjDescDetail> projectDescDetailList = projectDAO.getSubProjectDescDetailList(subProjectId);
-		return projectDescDetailList;
-	}
-	
-	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject) {
-		List<ProjDescDetail> projectDescDetailList = projectDAO.getProjectDescDetailList(projId,searchUnderProject);
-		return projectDescDetailList;
-	}
-
-	@Override
-	public Map<String, String> getDescItemCodes(String itemCode) {
-		Map<String, String> itemCodes = projectDAO.getDescItemCodes(itemCode);
-		return itemCodes;
-	}
-	
-	@Override
-	public List<ItemDetail> getProjectData(Integer projId){
-		List<ItemDetail> itemDetailList = projectDAO.getProjectData(projId);
-		List<ItemDetail> finalItemDetailList = new ArrayList<ItemDetail>();
-		if(itemDetailList.size() > 0){
-			Set<String> itemNames = projectDAO.fetchItemNames();
-			for(String itemName : itemNames){
-				ItemDetail item = new ItemDetail();
-				int itemQty = 0;
-				int itemCost = 0;
-				for(ItemDetail itemDetail : itemDetailList){
-					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
-						item.setItemName(itemDetail.getItemName());
-						itemQty = itemQty + Integer.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost + Integer.valueOf(itemDetail.getItemCost());
-					}
-				}
-				if(item.getItemName() != null){
-					item.setItemQty(String.valueOf(itemQty));
-					item.setItemCost(String.valueOf(itemCost));
-					finalItemDetailList.add(item);
-				}
-			}
-		}
-		return finalItemDetailList;
-	}
-	
-	@Override
-	public Set<String> fetchItemNames() {
-		Set<String> itemNames = projectDAO.fetchItemNames();
-		return itemNames;
-	}
-
-	@Override
-	public void deleteProjectDescriptionDetail(String projectDescriptionId) {
-		projectDAO.deleteProjectDescription(projectDescriptionId);
-	}
-	
-	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
-		return projectDAO.getDataDescription(descItemDetail); 
-	}
 
 	@Override
 	public void deleteProject(Integer projectId) {
 		projectDAO.deleteProject(projectId);
 	}
 
-	@Override
-	public void deleteSubProject(Integer subProjectId) {
-		projectDAO.deleteSubProjectBySubProjectId(subProjectId);
-	}
+
 }

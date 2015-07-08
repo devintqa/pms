@@ -1,7 +1,9 @@
 package com.psk.pms.validator;
+
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.SearchDetail;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -13,7 +15,10 @@ public class SearchValidator extends BaseValidator implements Validator{
 	
 	@Autowired
 	ProjectService projectService;
-	
+
+	@Autowired
+	SubProjectService subProjectService;
+
 	private static final Logger LOGGER = Logger.getLogger(SearchValidator.class);
 
 	@Override
@@ -91,7 +96,7 @@ public class SearchValidator extends BaseValidator implements Validator{
 		return aliasProjectName;
 	}
 	public Map<String, String> populateAliasSubProjectList() {
-		Map<String, String> subAliasProjectNames = projectService.getSubAliasProjectNames("");
+		Map<String, String> subAliasProjectNames = subProjectService.getSubAliasProjectNames("");
 		return subAliasProjectNames;
 	}
 
