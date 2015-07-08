@@ -4,6 +4,7 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
@@ -24,7 +25,9 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 	@Autowired
 	SubProjectService subProjectService;
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(SubProjectDetailValidator.class);
+	
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return SubProjectDetail.class.isAssignableFrom(clazz);

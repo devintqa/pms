@@ -138,5 +138,13 @@ public class ItemController {
 		boolean status = itemService.insertDataDescription(descItemDetail);
 		return status;
 	}
+	
+	@RequestMapping(value = "/emp/myview/buildProjectItems/{employeeId}/project={project}", method = RequestMethod.GET)
+	public String buildProjectItems(@PathVariable String employeeId, @PathVariable String project,  Model model) {		
+		DescItemDetail descItemDetail = new DescItemDetail();
+		descItemDetail.setEmployeeId(employeeId);
+		model.addAttribute("projectItemForm", descItemDetail);
+		return "BuildProjectItems";
+	}
 
 }

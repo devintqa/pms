@@ -1,18 +1,18 @@
 package com.psk.pms.validator;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.dao.ProjectDescriptionDAO;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.ProjectService;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.ProjectService;
 
 public class ProjDescDetailValidator extends BaseValidator implements Validator{
 	

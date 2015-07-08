@@ -1,6 +1,6 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.EmdDetail;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -13,17 +13,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.dao.PMSMasterQuery.*;
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
-public class EmdDaoImpl implements EmdDAO {
+public class EmdDAOImpl implements EmdDAO {
 
     private DriverManagerDataSource dataSource;
     private JdbcTemplate jdbcTemplate;
 
-    private static final Logger LOGGER = Logger.getLogger(EmdDaoImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(EmdDAOImpl.class);
 
     @Override
-    public boolean saveEmd(final EMDDetail emdDetail) {
+    public boolean saveEmd(final EmdDetail emdDetail) {
     	LOGGER.info("Save EMD DAO Start");
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(emdDetail.getIsUpdate())) {
@@ -46,14 +46,14 @@ public class EmdDaoImpl implements EmdDAO {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetails() {
+    public List<EmdDetail> getEmdDetails() {
     	LOGGER.info("Fetch EMD Details Start");
-        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
+        List<EmdDetail> emdDetails = new ArrayList<EmdDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows =  jdbcTemplate.queryForList(FETCHEMDDETAILS);
         for(Map<String,Object> row : rows)
         {
-            EMDDetail emdDetail =new EMDDetail();
+            EmdDetail emdDetail =new EmdDetail();
             emdDetail.setEmdId((Integer) row.get("EmdId"));
             emdDetail.setAliasProjectName((String) row.get("AliasProjName"));
             emdDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
@@ -69,16 +69,16 @@ public class EmdDaoImpl implements EmdDAO {
     }
 
     @Override
-    public EMDDetail getEmdDetailsByEmdId(String emdId) {
-        EMDDetail emdDetail = new EMDDetail();
+    public EmdDetail getEmdDetailsByEmdId(String emdId) {
+        EmdDetail emdDetail = new EmdDetail();
         jdbcTemplate = new JdbcTemplate(dataSource);
-        emdDetail = (EMDDetail) jdbcTemplate.queryForObject(FETCHEMDDETAILBYEMDID,new Object[] {emdId},new EmdDetailRowMapper());
+        emdDetail = (EmdDetail) jdbcTemplate.queryForObject(FETCHEMDDETAILBYEMDID,new Object[] {emdId},new EmdDetailRowMapper());
         return emdDetail;
     }
 
     private class EmdDetailRowMapper implements org.springframework.jdbc.core.RowMapper<Object> {
         public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
-            EMDDetail emdDetail = new EMDDetail();
+            EmdDetail emdDetail = new EmdDetail();
             emdDetail.setProjId(rs.getInt("ProjId"));
             emdDetail.setSubProjId(rs.getInt("SubProjId"));
             emdDetail.setEmdAmount(rs.getString("EmdAmount"));
@@ -110,14 +110,14 @@ public class EmdDaoImpl implements EmdDAO {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetailsByProjectId(Integer projectId) {
+    public List<EmdDetail> getEmdDetailsByProjectId(Integer projectId) {
         LOGGER.info("Fetch EMD Details By ProjectId :"+projectId);
-        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
+        List<EmdDetail> emdDetails = new ArrayList<EmdDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows =  jdbcTemplate.queryForList(GETEMDDETAILSBYPROJECTID, new Object[]{projectId});
         for(Map<String,Object> row : rows)
         {
-            EMDDetail emdDetail =new EMDDetail();
+            EmdDetail emdDetail =new EmdDetail();
             emdDetail.setEmdId((Integer) row.get("EmdId"));
             emdDetail.setAliasProjectName((String) row.get("AliasProjName"));
             emdDetail.setAliasSubProjectName("");
@@ -132,14 +132,14 @@ public class EmdDaoImpl implements EmdDAO {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
+    public List<EmdDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
         LOGGER.info("Fetch EMD Details By  subProjectId :"+ subProjectId);
-        List<EMDDetail> emdDetails = new ArrayList<EMDDetail>();
+        List<EmdDetail> emdDetails = new ArrayList<EmdDetail>();
         jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows =  jdbcTemplate.queryForList(GETEMDDETAILSBYSUBPROJECTID,new Object[] {subProjectId} );
         for(Map<String,Object> row : rows)
         {
-            EMDDetail emdDetail =new EMDDetail();
+            EmdDetail emdDetail =new EmdDetail();
             emdDetail.setEmdId((Integer) row.get("EmdId"));
             emdDetail.setAliasProjectName((String) row.get("AliasProjName"));
             emdDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
@@ -167,10 +167,10 @@ public class EmdDaoImpl implements EmdDAO {
         LOGGER.info("method = deleteEmddetailByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
     }
 
-    public List<EMDDetail> getEMDDatesList() {
+    public List<EmdDetail> getEMDDatesList() {
         jdbcTemplate = new JdbcTemplate(dataSource);
 
-        List<EMDDetail> emdList = new ArrayList<EMDDetail>();
+        List<EmdDetail> emdList = new ArrayList<EmdDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(emdDatesQuery);
 
         for (Map<String, Object> row : rows) {
@@ -179,8 +179,8 @@ public class EmdDaoImpl implements EmdDAO {
         return emdList;
     }
 
-    private EMDDetail buildEMDDetail(Map<String, Object> row){
-        EMDDetail emdDetail = new EMDDetail();
+    private EmdDetail buildEMDDetail(Map<String, Object> row){
+        EmdDetail emdDetail = new EmdDetail();
         BigDecimal emdAmount = (BigDecimal)row.get("EmdAmount");
         emdDetail.setEmdAmount(emdAmount.toString());
         emdDetail.setSqlEmdStartDate((Date)row.get("EmdStartDate"));

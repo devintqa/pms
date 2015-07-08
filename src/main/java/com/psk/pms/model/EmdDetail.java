@@ -2,7 +2,7 @@ package com.psk.pms.model;
 
 import java.util.Date;
 
-public class EMDDetail {
+public class EmdDetail {
 	private int emdId;
 	private int projId;
 	private int subProjId;

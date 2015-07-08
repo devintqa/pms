@@ -150,7 +150,7 @@ public class SearchController extends BaseController {
 	public String searchProjectEmdDetails(
 			@ModelAttribute("searchEmdForm") SearchDetail searchDetail,
 			BindingResult result, Model model, SessionStatus status) {
-		List<EMDDetail> emdDetails;
+		List<EmdDetail> emdDetails;
 		searchValidator.validate(searchDetail, result);
 		if (!result.hasErrors()) {
 			LOGGER.info("method = searchProjectEmdDetails()" + searchDetail.getProjId());

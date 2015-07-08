@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Item;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,7 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     ItemDAO itemDAO;
 
+    @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
     public boolean createEditItem(Item item){

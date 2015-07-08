@@ -8,7 +8,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import java.math.BigDecimal;
 import java.util.*;
 
-import static com.psk.pms.dao.PMSMasterQuery.*;
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
