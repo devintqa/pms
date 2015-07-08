@@ -96,6 +96,7 @@ DROP TABLE IF EXISTS `itemcodes`;
 CREATE TABLE `itemcodes` (
   `itemName` varchar(100) NOT NULL,
   `itemUnit` varchar(20) NOT NULL,
+  `itemType` varchar(20) NOT NULL,
   `itemNo` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`itemNo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
@@ -107,15 +108,16 @@ CREATE TABLE `itemcodes` (
 
 LOCK TABLES `itemcodes` WRITE;
 /*!40000 ALTER TABLE `itemcodes` DISABLE KEYS */;
-INSERT INTO `itemcodes` VALUES ('CEMENT','Bag',1),('RIVER SAND','Bag',2),('SEWING SAND','Bag',3),('BRICKS','Bag',4),('STEEL','Bag',5),
-('BINDING WIRE','Bag',6),('40 MM  METAL','Bag',7),('20 MM METAL','Bag',8),('CHIPS','Bag',9),('EARTH FROM OUTSIDE','Bag',10),('GRAVEL','Bag',11),
-('QUARRY DUST','Bag',12),('BOULDERS','Bag',13),('WATER STOPPER','Bag',14),('EXTRA FOR STAGEING 4.25 TO 6.5 M','Bag',15),
-('EXTRA FOR STAGEING 4.25 TO 8.5 M','Bag',16),('STRUCTURAL STEEL','Bag',17),(' RR MASONARY','Bag',18),('SOLID BLOCK 200 MM TK.','Bag',19),
-('SOLID BLOCK 150 MM TK.','Bag',20),('SOLID BLOCK 100 MM TK.','Bag',21),('RMC M10','Bag',22),('RMC M15','Bag',23),('RMC M20','Bag',24),('RMC M25','Bag',25),
-('RMC M30','Bag',26),('RMC M35','Bag',27),('RMC M 40','Bag',28),('ANTI-TERMINATE','Bag',29),('FLY ASH CONC. BLOCK','Bag',30),('ARPHITA MESH','Bag',31),
-('CENTERING MATERIAL COST','Bag',32),('COLUMN CENTERING MATRIAL COST','Bag',33),('COLUMN CENTERING MATRIAL COST','Bag',34),
-('CENTERING MATERIAL COST','Bag',35),('AEROCON BLOCK','Bag',36),('EROCON. BLOCK WORK IN C.M 1:6  ','Bag',37),('FLY ASH','Bag',38),
-('WATER PROOFING COMPOUND','Bag',39),('MESH','Bag',40),('WATERPROOFING MATERIAL & LABOUR (CICO)','Bag',41);
+INSERT INTO `itemcodes` VALUES
+('CEMENT','BAG','Material',1),
+('RIVER SAND','CFT','Material',2),
+('SEWING SAND','CFT','Material',3),
+('BRICKS','NO','Material',4),
+('STEEL','MT','Material',5),
+('MASON I','NO','Labour',6),
+('MASON II','NO','Labour',7),
+('CARPENTER I','NO','Labour',8),
+('CARPENTER II','NO','Labour',9);
 /*!40000 ALTER TABLE `itemcodes` ENABLE KEYS */;
 UNLOCK TABLES;
 
