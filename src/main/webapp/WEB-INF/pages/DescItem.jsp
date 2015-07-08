@@ -3,6 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
 <%@include file="Script.jsp"%>
+
+<script src="<c:url value="/resources/js/jquery.tabSlideOut.v1.3.js" />"></script>
+
 <script>
 
 	
@@ -19,7 +22,19 @@
 		});
 		
 		fillItemDesc();
+		
+		 
+	      $('#slideOpen').click(function(){
+	    	  	$(this).toggle();
+	    	  	$('#slideClose').toggle();
+			});
+	      
+	      $('#slideClose').click(function(){
+	    	  	$(this).toggle();
+	    	  	$('#slideOpen').toggle();
+			});
 	});
+	
 	
 	function deleteItemRow(row) {
 		var itemTable = document.getElementById('itemTable');
@@ -191,8 +206,121 @@
 
 	}
 </script>
+<script type="text/javascript">
+    $(function(){
+        $('.slide-out-div').tabSlideOut({
+            tabHandle: '.handle',                     //class of the element that will become your tab
+            imageHeight: '122px',                     //height of tab image           //Optionally can be set using css
+            imageWidth: '40px',                       //width of tab image            //Optionally can be set using css
+            tabLocation: 'left',                      //side of screen where tab lives, top, right, bottom, or left
+            speed: 300,                               //speed of animation
+            action: 'click',                          //options: 'click' or 'hover', action to trigger animation
+            topPos: '0px',                          //position from the top/ use if tabLocation is left or right
+            leftPos: '25px',                          //position from left/ use if tabLocation is bottom or top
+            fixedPosition: false                      //options: true makes it stick(fixed position) on scroll
+        });
+
+    });
+
+    </script>
+    <style type="text/css">
+     
+	     .slide-out-div {
+	         padding: 20px;
+	         width: 1024px;
+	         background: #ccc;
+	         border: 1px solid #29216d;
+	     }      
+     
+     </style>
+     
 </head>
 <body>
+ <div class="slide-out-div">
+            <a class="handle" href="#">
+            
+            <img id="slideClose"  style="display:none;" src="<c:url value="/resources/images/slide-close.png" />"/>
+            <img id="slideOpen" style="display:block;"  src="<c:url value="/resources/images/slide-open.png" />"/>
+            </a>
+            
+            
+            <form:form id="projDescForm" method="POST" commandName="projDescForm">
+					<fieldset style="margin: 1em; text-align: left;">
+						<legend><h3>Project Description Details</h3></legend>
+						<table>
+							<tr>
+								<td>Alias Project Name <span id="colon">:</span>
+								</td>
+								<td><form:input id="aliasProjectName" path="aliasProjectName"
+										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true"/>
+									</td>
+							</tr>
+							
+							<c:if test="${projDescForm.subProjId gt '0'}">
+							<tr>
+								<td>Alias Project Name <span id="colon">:</span>
+								</td>
+								<td><form:input id="aliasSubProjectName" path="aliasSubProjectName"
+										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true" /></td>
+							</tr>
+							
+							</c:if>
+										
+							<tr>
+								<td>Serial Number<span id="colon">:</span>
+								</td>
+								<td><form:input id="serialNumber" path="serialNumber"
+										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Quantity in Figures<span id="colon">:</span>
+								</td>
+								<td><form:input id="quantityInFig" path="quantityInFig"
+										placeholder="Enter Quantity in Figures" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Quantity in Words<span id="colon">:</span>
+								</td>
+								<td><form:input path="quantityInWords"
+										placeholder="Enter Quantity in Words"
+										data-validation="length numeric" data-validation-length="min4"
+										cssClass="inputText"  readonly="true" /></td>
+							</tr>
+							<tr>
+								<td>Description<span id="colon">:</span>
+								</td>
+								<td><form:textarea path="description"
+										placeholder="Enter Description" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Alias Description<span id="colon">:</span>
+								</td>
+								<td><form:input path="aliasDescription"
+										placeholder="Enter Alias Description" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Rate in Figures<span id="colon">:</span>
+								</td>
+								<td><form:input path="rateInFig"
+										placeholder="Enter Rate in Figures" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Rate in Words<span id="colon">:</span>
+								</td>
+								<td><form:input path="rateInWords"
+										placeholder="Enter Rate in Words" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr>
+								<td>Amount in Rupees<span id="colon">:</span>
+								</td>
+								<td><form:input path="projDescAmount"
+										placeholder="Enter Amount" cssClass="inputText"  readonly="true"/></td>
+							</tr>
+							<tr></tr>
+						</table>
+					</fieldset>
+					</form:form>
+        </div>
 	<h1 style="text-align: center; color: #007399; font-size: 24px;">Item Breakdown Structure</h1>
 	<form:form id="descItemForm" method="POST"  commandName="descItemForm" action="createProjDesc.do">
 	

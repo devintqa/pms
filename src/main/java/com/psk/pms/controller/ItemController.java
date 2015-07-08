@@ -2,7 +2,6 @@ package com.psk.pms.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,9 +27,10 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Item;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ItemValidator;
 
@@ -115,6 +115,10 @@ public class ItemController {
 		descItemDetail.setProjDescItemDetail(jsonArray.toString());
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
+		
+		ProjDescDetail projDescDetail = projectService.getProjectDescDetail(projDescId, null);
+		model.addAttribute("projDescForm", projDescDetail);
+		
 		return "DescItem";
 	}
 	

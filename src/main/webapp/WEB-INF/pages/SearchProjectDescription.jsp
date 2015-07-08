@@ -30,7 +30,7 @@
 	  if(subProjId == ''){
 		  subProjId = 0;
 	  }
-	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=no,resizable=no,width=1200,height=700');
+	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 	  
   }
   

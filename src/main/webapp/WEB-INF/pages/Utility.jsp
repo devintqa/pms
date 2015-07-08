@@ -47,7 +47,6 @@ $(function() {
                         if (displayType == 'none') {
                             $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
                         }
-
                     }
                 })
 			  }
