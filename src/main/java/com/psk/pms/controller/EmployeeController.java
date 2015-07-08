@@ -132,6 +132,7 @@ public class EmployeeController {
 		session.invalidate();
 		Employee employee = new Employee();
 		model.addAttribute("employeeForm", employee);
+		model.addAttribute("sessionTimeOutMessage", "Session has got timed out. Please re-login.");
 		return "SignIn";
 	}
 
