@@ -1,6 +1,6 @@
 package com.psk.pms.dao;
 
-public class PMSMasterQuery {
+public class PmsMasterQuery {
 	
 	public static final String CREATEEMDDETAIL = "INSERT INTO emddetail (ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ," +
     "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, LastUpdatedBy,LastUpdatedAt,EmdSubmitter)" +

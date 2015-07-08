@@ -73,7 +73,10 @@ function deleteProject(projectAlias,projectId) {
 						<c:forEach var="projDoc" items="${projectDocumentList}">
 							<tr>
 								<td>${projDoc.projectName}</td>
-								<td>${projDoc.aliasName}</td>
+								<td>
+								<a href="/pms/emp/myview/buildProjectItems/${employeeObj.employeeId}/project=${projDoc.projId}"
+									class="userAction">${projDoc.aliasName}</a>
+									</td>
 								<td>${projDoc.agreementNo}</td>
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>

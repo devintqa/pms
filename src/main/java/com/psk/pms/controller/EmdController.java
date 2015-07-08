@@ -1,7 +1,7 @@
 package com.psk.pms.controller;
 
 import com.google.gson.Gson;
-import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.EmdDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmdService;
 import com.psk.pms.service.ProjectService;
@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class EMDController {
+public class EmdController {
 
 	@Autowired
 	ProjectService projectService;
@@ -36,7 +36,7 @@ public class EMDController {
 	@Autowired
 	SubProjectService subProjectService;
 
-	private static final Logger LOGGER = Logger.getLogger(EMDController.class);
+	private static final Logger LOGGER = Logger.getLogger(EmdController.class);
 
 	@RequestMapping(value = "/emp/myview/buildEmd/{employeeId}", method = RequestMethod.GET)
 	public String buildEmd(@PathVariable String employeeId,@RequestParam(value="emdId", required=false) String emdId,
@@ -44,7 +44,7 @@ public class EMDController {
 						   @RequestParam(value="aliasSubProjectName", required=false) String aliasSubProjectName,
 			Model model) {
 		LOGGER.info("Into Build EMD");
-		EMDDetail emdDetail = new EMDDetail();
+		EmdDetail emdDetail = new EmdDetail();
 		if("updateEmd".equalsIgnoreCase(action))
 		{
 			emdDetail = emdService.getEmdDetailsByEmdId(emdId);
@@ -107,7 +107,7 @@ public class EMDController {
 
 	@RequestMapping(value = "/emp/myview/buildEmd/createEmd.do", method = RequestMethod.POST)
 	public String saveEmdAction(
-			@ModelAttribute("emdForm") EMDDetail emdDetail, BindingResult result, Model model, SessionStatus status) {
+			@ModelAttribute("emdForm") EmdDetail emdDetail, BindingResult result, Model model, SessionStatus status) {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(emdDetail.getAliasProjectName());
 		boolean isEmdSaveSuccessful = false;
@@ -149,7 +149,7 @@ public class EMDController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-        List<EMDDetail> emdDetails = emdService.getEmdDetails();
+        List<EmdDetail> emdDetails = emdService.getEmdDetails();
 		model.addAttribute("emdDetailsSize", emdDetails.size());
 		model.addAttribute("emdDetails", emdDetails);
 		return "updateEmd";

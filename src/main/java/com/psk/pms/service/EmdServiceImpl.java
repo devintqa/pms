@@ -1,7 +1,7 @@
 package com.psk.pms.service;
 
 import com.psk.pms.dao.EmdDAO;
-import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.EmdDetail;
 import com.psk.pms.utils.PMSUtil;
 
 import org.apache.log4j.Logger;
@@ -20,7 +20,7 @@ public class EmdServiceImpl implements EmdService {
     private static final Logger LOGGER = Logger.getLogger(EmdServiceImpl.class);
 
     @Override
-    public boolean createEditEmd(EMDDetail emdDetail) {
+    public boolean createEditEmd(EmdDetail emdDetail) {
     	if(!emdDetail.isSubProjectEMD())
         {
     		emdDetail.setAliasSubProjectName(null);
@@ -40,11 +40,11 @@ public class EmdServiceImpl implements EmdService {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetails() {
+    public List<EmdDetail> getEmdDetails() {
     	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-    	List<EMDDetail> emdDetails = emdDAO.getEmdDetails();
-    	List<EMDDetail> emdFinalList = new ArrayList<EMDDetail>();
-    	for(EMDDetail emdDetail : emdDetails){
+    	List<EmdDetail> emdDetails = emdDAO.getEmdDetails();
+    	List<EmdDetail> emdFinalList = new ArrayList<EmdDetail>();
+    	for(EmdDetail emdDetail : emdDetails){
             emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
     		emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
     		emdFinalList.add(emdDetail);
@@ -53,9 +53,9 @@ public class EmdServiceImpl implements EmdService {
     }
 
     @Override
-    public EMDDetail getEmdDetailsByEmdId(String emdId) {
+    public EmdDetail getEmdDetailsByEmdId(String emdId) {
     	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        EMDDetail emdDetail = emdDAO.getEmdDetailsByEmdId(emdId);
+        EmdDetail emdDetail = emdDAO.getEmdDetailsByEmdId(emdId);
         emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
     	emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
     	emdDetail.setEmdExtensionDate(PMSUtil.getStringDate(emdDetail.getEmdExtensionSqlDate(), formatter));
@@ -84,10 +84,10 @@ public class EmdServiceImpl implements EmdService {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
-        List<EMDDetail> emdDetails = emdDAO.getEmdDetailsBySubProjectId(subProjectId);
+    public List<EmdDetail> getEmdDetailsBySubProjectId(Integer subProjectId) {
+        List<EmdDetail> emdDetails = emdDAO.getEmdDetailsBySubProjectId(subProjectId);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        for(EMDDetail emdDetail : emdDetails)
+        for(EmdDetail emdDetail : emdDetails)
         {
             emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
             emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
@@ -96,10 +96,10 @@ public class EmdServiceImpl implements EmdService {
     }
 
     @Override
-    public List<EMDDetail> getEmdDetailsByProjectId(Integer projectId) {
-        List<EMDDetail> emdDetails = emdDAO.getEmdDetailsByProjectId(projectId);
+    public List<EmdDetail> getEmdDetailsByProjectId(Integer projectId) {
+        List<EmdDetail> emdDetails = emdDAO.getEmdDetailsByProjectId(projectId);
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        for(EMDDetail emdDetail : emdDetails)
+        for(EmdDetail emdDetail : emdDetails)
         {
             emdDetail.setEmdStartDate(PMSUtil.getStringDate(emdDetail.getSqlEmdStartDate(), formatter));
             emdDetail.setEmdEndDate(PMSUtil.getStringDate(emdDetail.getSqlEmdEndDate(), formatter));
@@ -107,12 +107,12 @@ public class EmdServiceImpl implements EmdService {
         return emdDetails;
     }
 
-    public List<EMDDetail> getEmdEndAlertList() {
+    public List<EmdDetail> getEmdEndAlertList() {
         Date todayDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        List<EMDDetail> projectDocumentList = emdDAO.getEMDDatesList();
-        List<EMDDetail> emdDocumentList = new ArrayList<EMDDetail>();
-        for(EMDDetail emdDetail : projectDocumentList){
+        List<EmdDetail> projectDocumentList = emdDAO.getEMDDatesList();
+        List<EmdDetail> emdDocumentList = new ArrayList<EmdDetail>();
+        for(EmdDetail emdDetail : projectDocumentList){
             long diff = emdDetail.getSqlEmdEndDate().getTime() - todayDate.getTime();
             long diffDays = diff / (24 * 60 * 60 * 1000);
             if(diffDays < 14){

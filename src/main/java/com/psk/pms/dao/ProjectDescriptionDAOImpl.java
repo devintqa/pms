@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.dao.PMSMasterQuery.*;
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.

@@ -1,6 +1,7 @@
 package com.psk.pms.validator;
 
 import com.psk.pms.model.FileUpload;
+
 import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 
 public class FileUploadValidator  implements Validator {
 
+	@SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(FileUploadValidator.class);
 
     @Override

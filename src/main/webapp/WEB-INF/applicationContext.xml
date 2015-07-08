@@ -35,7 +35,7 @@
 		<property name="emdDAO" ref="emdDAO"/>
 	</bean>
 
-	<bean id="emdDAO" class="com.psk.pms.dao.EmdDaoImpl">
+	<bean id="emdDAO" class="com.psk.pms.dao.EmdDAOImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 

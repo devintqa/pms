@@ -1,6 +1,7 @@
 package com.psk.pms.validator;
 
 import com.psk.pms.model.Employee;
+
 import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -14,6 +15,7 @@ public class EditDetailValidator extends BaseValidator implements Validator {
 	private Pattern pattern;
 	private Matcher matcher;
 
+	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(EditDetailValidator.class);
 	
 	@Override

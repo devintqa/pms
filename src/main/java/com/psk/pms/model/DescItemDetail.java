@@ -6,11 +6,6 @@ import java.util.List;
 
 public class DescItemDetail {
 	
-//	private String itemName;
-//	private String itemUnit;
-//	private String itemQty;
-//	private String itemPrice;
-//	private String itemCost;
 	private String projDescSerial;
 	private Integer projDescId;
 	private Integer projId;
@@ -19,37 +14,6 @@ public class DescItemDetail {
 	private String projDescItemDetail;
 	
 	private List<ItemDetail> itemDetail;
-	
-//	public String getItemUnit() {
-//		return itemUnit;
-//	}
-//	public void setItemUnit(String itemUnit) {
-//		this.itemUnit = itemUnit;
-//	}
-//	public String getItemQty() {
-//		return itemQty;
-//	}
-//	public void setItemQty(String itemQty) {
-//		this.itemQty = itemQty;
-//	}
-//	public String getItemPrice() {
-//		return itemPrice;
-//	}
-//	public void setItemPrice(String itemPrice) {
-//		this.itemPrice = itemPrice;
-//	}
-//	public String getItemCost() {
-//		return itemCost;
-//	}
-//	public void setItemCost(String itemCost) {
-//		this.itemCost = itemCost;
-//	}
-//	public String getItemName() {
-//		return itemName;
-//	}
-//	public void setItemName(String itemName) {
-//		this.itemName = itemName;
-//	}
 	public Integer getProjDescId() {
 		return projDescId;
 	}
@@ -68,7 +32,6 @@ public class DescItemDetail {
 	public void setProjDescItemDetail(String projDescItemDetail) {
 		this.projDescItemDetail = projDescItemDetail;
 	}
-	
 	public String getProjDescSerial() {
 		return projDescSerial;
 	}

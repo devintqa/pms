@@ -1,23 +1,23 @@
 package com.psk.pms.service;
 
-import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.EmdDetail;
 
 import java.util.List;
 
 
 public interface EmdService {
 
-    boolean createEditEmd(EMDDetail emdDetail);
+    boolean createEditEmd(EmdDetail emdDetail);
 
-    List<EMDDetail> getEmdDetails();
+    List<EmdDetail> getEmdDetails();
 
-    EMDDetail getEmdDetailsByEmdId(String emdId);
+    EmdDetail getEmdDetailsByEmdId(String emdId);
 
     void deleteEmd(Integer numericEmdId);
 
-    List<EMDDetail> getEmdDetailsByProjectId(Integer projectId);
+    List<EmdDetail> getEmdDetailsByProjectId(Integer projectId);
 
-    List<EMDDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
+    List<EmdDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
 
-    List<EMDDetail> getEmdEndAlertList();
+    List<EmdDetail> getEmdEndAlertList();
 }

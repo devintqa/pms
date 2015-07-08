@@ -1,7 +1,8 @@
 package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
-import com.psk.pms.model.EMDDetail;
+import com.psk.pms.model.EmdDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -15,11 +16,12 @@ public class EmdValidator extends BaseValidator implements Validator {
     private Pattern pattern;
     private Matcher matcher;
 
+    @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(EmdValidator.class);
 
     @Override
     public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {
-        return EMDDetail.class.isAssignableFrom(clazz);
+        return EmdDetail.class.isAssignableFrom(clazz);
     }
 
     @Override
@@ -40,7 +42,7 @@ public class EmdValidator extends BaseValidator implements Validator {
         ValidationUtils.rejectIfEmpty(errors,"emdLedgerNumber",
                 "required.emdLedgerNumber","Enter EMD Ledger Number");
 
-        EMDDetail emdDetail = (EMDDetail) target;
+        EmdDetail emdDetail = (EmdDetail) target;
 
         if(0 == emdDetail.getEmdId()) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasProjectName",
