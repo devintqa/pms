@@ -1,7 +1,9 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.Item;
 import com.psk.pms.model.SubProjectDetail;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -21,8 +23,13 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
     private EmdDAO emdDAO;
 
+    @Autowired
+    private ItemDAO itemDAO;
+
+    @Autowired
     private ProjectDescriptionDAO projectDescriptionDAO;
 
     @Override
@@ -233,6 +240,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     @Override
     public void deleteSubProjectBySubProjectId(Integer subProjectId) {
+        itemDAO.deleteItemBySubProjectId(subProjectId);
         emdDAO.deleteEmddetailBySubProjectId(subProjectId);
         projectDescriptionDAO.deleteProjectDescriptionBySubProjectId(subProjectId);
         jdbcTemplate = new JdbcTemplate(dataSource);

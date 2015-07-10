@@ -81,6 +81,12 @@ public class ItemServiceImpl implements ItemService {
         return itemDAO.getDataDescription(descItemDetail);
     }
 
+    @Override
+    public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
+        itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
+    }
+
+
 
     public boolean insertDataDescription(DescItemDetail descItemDetail){
         boolean isInsertSuccessful = false;

@@ -3,6 +3,7 @@ package com.psk.pms.dao;
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.ProjDescDetail;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -24,6 +25,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private ItemDAO itemDAO;
+
     @Override
     public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -39,6 +43,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     }
 
     public void deleteProjectDescription(String projectDescriptionId) {
+        itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId);
         jdbcTemplate = new JdbcTemplate(dataSource);
         int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery, new Object[]{projectDescriptionId});
         LOGGER.info("Number of rows deleted : " + noOfRows);

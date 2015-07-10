@@ -25,4 +25,6 @@ public interface ItemService {
     boolean insertDataDescription(DescItemDetail descItemDetail);
 
     DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+
+    void deleteItemByDescriptionItemId(Integer subProjectid);
 }

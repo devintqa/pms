@@ -25,4 +25,13 @@ public interface ItemDAO {
     DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
     List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+
+    void deleteItemByProjectId(Integer projectId);
+
+    void deleteItemBySubProjectId(Integer subProjectId);
+
+    void deleteItemByProjectDescriptionId(String projectDescId);
+
+    void deleteItemByProjectDescItemId(Integer itemId);
+
 }

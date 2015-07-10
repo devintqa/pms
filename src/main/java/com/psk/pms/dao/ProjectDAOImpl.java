@@ -2,6 +2,7 @@ package com.psk.pms.dao;
 
 import com.psk.pms.model.ProjectDetail;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -12,11 +13,17 @@ import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
+    @Autowired
     private SubProjectDAO subProjectDAO;
 
+    @Autowired
     private ProjectDescriptionDAO projectDescriptionDAO;
 
+    @Autowired
     private EmdDAO emdDAO;
+
+    @Autowired
+    private ItemDAO itemDAO;
 
     private DriverManagerDataSource dataSource;
     private JdbcTemplate jdbcTemplate;
@@ -214,6 +221,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public void deleteProject(Integer projectId) {
+        itemDAO.deleteItemByProjectId(projectId);
         emdDAO.deleteEmddetailByProjectId(projectId);
         projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
         subProjectDAO.deleteSubProjectByProjectId(projectId);

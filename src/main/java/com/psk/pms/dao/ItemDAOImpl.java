@@ -141,6 +141,42 @@ public class ItemDAOImpl implements ItemDAO {
         return itemDetail;
     }
 
+    public void deleteItemByProjectId(Integer projectId)
+    {
+        LOGGER.info("method = deleteItemByProjectId()");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfrowsDeleted =jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCITEMBYPROJECTID,new Object[] {projectId});
+        LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
+    }
+
+
+    public void deleteItemBySubProjectId(Integer subProjectId)
+    {
+        LOGGER.info("method = deleteItemBySubProjectId()");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfrowsDeleted =jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCITEMBYSUBPROJECTID,new Object[] {subProjectId});
+        LOGGER.info("No of rows deleted :"+noOfrowsDeleted);
+    }
+
+
+    @Override
+    public void deleteItemByProjectDescriptionId(String projectDescId)
+    {
+        LOGGER.info("method = deleteItemByProjectDescriptionId()");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfrowsDeleted =jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCID,new Object[] {projectDescId});
+        LOGGER.info("No of rows deleted :"+noOfrowsDeleted);
+    }
+
+    @Override
+    public void deleteItemByProjectDescItemId(Integer projectDescItemId)
+    {
+        LOGGER.info("method = deleteItemByProjectDescriptionItemId()");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        int noOfrowsDeleted =jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCITEMID,new Object[] {projectDescItemId});
+        LOGGER.info("No of rows deleted :"+noOfrowsDeleted);
+    }
+
     public DriverManagerDataSource getDataSource() {
         return dataSource;
     }
