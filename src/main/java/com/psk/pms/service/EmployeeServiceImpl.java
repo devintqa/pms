@@ -8,6 +8,7 @@ import com.psk.pms.utils.MailClient;
 import org.apache.log4j.Logger;
 
 import java.util.List;
+import java.util.Map;
 
 public class EmployeeServiceImpl implements EmployeeService {
 		
@@ -23,6 +24,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 			return false;
 		}
 		return true;
+	}
+	
+	public Map<String, String> fetchTeamNames(){
+		Map<String, String> teamList = employeeDAO.fetchTeamNames();
+		return teamList;
 	}
 	
 	public List<Employee> getNewRegistrationRequest(String fromDate){

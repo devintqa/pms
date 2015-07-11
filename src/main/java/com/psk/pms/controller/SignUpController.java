@@ -65,13 +65,7 @@ public class SignUpController {
 
 	@ModelAttribute("employeeTeamList")
 	public Map<String, String> populateTeamList() {
-		Map<String, String> employeeTeam = new LinkedHashMap<String, String>();
-		employeeTeam.put("Admin", "Admin");
-		employeeTeam.put("Account", "Account");
-		employeeTeam.put("Management", "Management");
-		employeeTeam.put("Purchase", "Purchase");
-		employeeTeam.put("Technical", "Technical");
-		employeeTeam.put("Store", "Store");
+		Map<String, String> employeeTeam = employeeService.fetchTeamNames();
 		LOGGER.info("method = populateTeamList()");
 		return employeeTeam;
 	}

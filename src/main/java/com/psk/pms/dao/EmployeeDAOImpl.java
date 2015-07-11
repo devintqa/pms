@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -140,6 +141,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 sql, new Object[] { name }, Integer.class);
 		return count;
 	}
+	
+	@Override
+	public Map<String, String> fetchTeamNames() {
+        String sql = "select teamName from team";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        Map<String, String> teamNames = new LinkedHashMap<String, String>();
+        for (Map<String, Object> row : rows) {
+        	teamNames.put((String) row.get("teamName"), (String) row.get("teamName"));
+        }
+        return teamNames;
+    }
 
 	@Override
 	public List<Employee> getNewRegistrationRequest(String fromDate) {

@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.model.Employee;
 
@@ -31,6 +32,8 @@ public interface EmployeeDAO {
 	public boolean isEmployeeMailExisting(String mail);
 	
 	public boolean isEmployeeMobNumExisting(String mobile);
+	
+	public Map<String, String> fetchTeamNames();
 
 
 }

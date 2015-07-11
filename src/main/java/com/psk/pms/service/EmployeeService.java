@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.model.Employee;
 
@@ -11,6 +12,8 @@ public interface EmployeeService {
 	public boolean isEmployeeExisting(String userName);
 	
 	public boolean signupEmployee(Employee employee);
+	
+	public Map<String, String> fetchTeamNames();
 	
 	public Employee getEmployeeDetails(String empId);
 	
