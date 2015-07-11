@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
  
 @Controller
-public class FileUploadController {
+public class FileUploadController extends BaseController {
 	
 	@Autowired
 	ProjectService projectService;
@@ -196,16 +196,6 @@ public class FileUploadController {
 				e.printStackTrace();
 			}
 		}
-	}
-    
-	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
-		return aliasSubProjectName;
-	}
-	
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
 	}
 	
 }
