@@ -68,6 +68,45 @@
               	})
  
                     });
+
+ function deleteFile(fileName, filePath) {
+
+    var encodeUrl = encodeURI(filePath);
+ 	  $("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
+
+ 	    // Define the Dialog and its properties.
+ 	    $("#dialog-confirm").dialog({
+ 	        resizable: false,
+ 	        modal: true,
+ 	        title: "Warning!",
+ 	        height: 200,
+ 	        width: 400,
+ 	        buttons: {
+ 	            "Yes": function () {
+ 	            	$.ajax({
+ 	        			type : 'POST',
+ 	        			url : 'deleteFile.do',
+ 	        			data : "filePath="+encodeUrl,
+ 	        			success : function(response) {
+ 	        				location.reload();
+ 	    					console.log("Successfully deleted file ");
+ 	        			},
+ 	        			error : function(err) {
+ 	        				console.log("Error deleting file ");
+ 	        		    contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15"
+ 	        			}
+ 	        		});
+ 	                $(this).dialog('close');
+ 	                window.location.reload();
+
+ 	            },
+ 	                "No": function () {
+ 	                $(this).dialog('close');
+
+ 	            }
+ 	        }
+ 	    });
+ }
 </script>
 </head>
 <body ng-app="sampleApp">
@@ -107,7 +146,7 @@
 							</tr>
 							</table>
             <br />
-            <input type="submit" value="Download" />
+            <input type="submit" value="Show Files ." />
         </form:form>
  
         <br />
@@ -121,13 +160,20 @@
 					<thead>
 						<tr>
 							<th>File Name</th>
+							<th> Action </th>
 						</tr>
 					</thead>
 					<tbody>
 						<c:if test="${not empty projectFileList}">
 							<c:forEach var="fileDoc" items="${projectFileList}">
 								<tr>
-									<td><a href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}">${fileDoc.fileName}</a></td>
+									<td>${fileDoc.fileName}</a></td>
+                                    <td>
+								        <a href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}"> Download File </a>
+								          <strong> / </strong>
+								        <a href=
+								        "javascript: var encodeUri = encodeURI('${fileDoc.filePath}'); deleteFile('${fileDoc.fileName}', encodeUri);" style="color:red"> Delete </a>
+								    </td>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -138,6 +184,7 @@
 			</c:if>
 		
 	</div>
+	<div id="dialog-confirm"></div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>

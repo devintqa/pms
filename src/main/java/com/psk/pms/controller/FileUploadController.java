@@ -18,10 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
  
@@ -196,6 +193,23 @@ public class FileUploadController extends BaseController {
 				e.printStackTrace();
 			}
 		}
+	}
+
+    @RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
+    public void deleteFile(HttpServletRequest request, HttpServletResponse response) {
+        String filePath = request.getParameter("filePath");
+        fileService.deleteFile(filePath);
+        LOGGER.info("method = deleteFile() ,file Name :" + filePath);
+    }
+    
+	public Map<String, String> populateSubAliasProjectList(String project) {
+		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
+		return aliasSubProjectName;
+	}
+	
+	public Map<String, String> populateAliasProjectList() {
+		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
+		return aliasProjectName;
 	}
 	
 }

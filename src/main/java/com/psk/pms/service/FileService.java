@@ -10,4 +10,6 @@ public interface FileService {
     void uploadFiles(FileUpload fileUpload) throws IOException;
 
     List<FileUpload> downloadFiles(FileUpload fileUpload);
+
+    void deleteFile(String filePath);
 }

@@ -93,4 +93,12 @@ public class FileServiceImpl implements FileService {
         }
         return projectFileList;
     }
+    @Override
+    public void deleteFile(String filePath) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            LOGGER.info("File exists and proceeding to delete ");
+            file.delete();
+        }
+    }
 }
