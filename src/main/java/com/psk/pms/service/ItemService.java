@@ -27,4 +27,6 @@ public interface ItemService {
     DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
     void deleteItemByDescriptionItemId(Integer subProjectid);
+
+    List<String> fetchItemTypes();
 }

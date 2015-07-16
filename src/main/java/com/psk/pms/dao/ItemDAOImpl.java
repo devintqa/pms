@@ -50,11 +50,11 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     public boolean saveItem(Item item) {
-        String createSql = "INSERT INTO itemcodes (itemName, itemUnit) "
-                + "VALUES (?, ?)";
+        String createSql = "INSERT INTO itemcodes (itemName, itemUnit,itemType) "
+                + "VALUES (?, ? , ?)";
         jdbcTemplate = new JdbcTemplate(dataSource);
         jdbcTemplate.update(createSql,
-                new Object[] { item.getItemName(), item.getItemUnit() });
+                new Object[] { item.getItemName(), item.getItemUnit() ,item.getItemType()});
         return true;
     }
 
@@ -175,6 +175,16 @@ public class ItemDAOImpl implements ItemDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
         int noOfrowsDeleted =jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCITEMID,new Object[] {projectDescItemId});
         LOGGER.info("No of rows deleted :"+noOfrowsDeleted);
+    }
+
+    @Override
+    public List<String> fetchItemTypes()
+    {
+        LOGGER.info("method = deleteItemfetchItemTypes");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<String> itemTypes =  jdbcTemplate.queryForList(PmsMasterQuery.FETCHITEMTYPES,String.class);
+        LOGGER.info("No of rows fetched :"+itemTypes.size());
+        return itemTypes;
     }
 
     public DriverManagerDataSource getDataSource() {

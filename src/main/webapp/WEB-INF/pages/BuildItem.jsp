@@ -54,6 +54,13 @@ $(document).ready(function () {
 										placeholder="Enter Item Unit" cssClass="inputText" /></td>
 								<td><form:errors path="itemUnit" cssClass="error" /></td>
 							</tr>
+							<tr>
+								<td>Item Type<span id="colon">:</span>
+								</td>
+								<td><form:select path="itemType"
+								cssClass="itemType" items="${itemTypes}"/></td>
+								<td><form:errors path="itemType" cssClass="error" /></td>
+							</tr>
 							<tr></tr>
 						</table>
 					</fieldset>

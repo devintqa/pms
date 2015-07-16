@@ -8,6 +8,7 @@ public class Item {
 	private String itemUnit;
 	private String employeeId;
 	private Set<String> itemNames;
+    private String itemType;
 	
 	public Set<String> getItemNames() {
 		return itemNames;
@@ -33,5 +34,11 @@ public class Item {
 	public void setItemUnit(String itemUnit) {
 		this.itemUnit = itemUnit;
 	}
+    public String getItemType() {
+        return itemType;
+    }
 
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
 }

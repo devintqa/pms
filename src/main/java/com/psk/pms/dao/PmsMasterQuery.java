@@ -61,4 +61,6 @@ public class PmsMasterQuery {
     public static String DELETEPROJDESCAITEMBYPROJECTDESCID = "DELETE FROM projdescitem WHERE ProjDescId = ?";
 
     public static String DELETEPROJDESCAITEMBYPROJECTDESCITEMID = "DELETE FROM projdescitem WHERE DescItemId = ?";
+
+    public static String FETCHITEMTYPES = "SELECT itemTypeName FROM itemtype";
 }

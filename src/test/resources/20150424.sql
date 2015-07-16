@@ -360,6 +360,31 @@ UNLOCK TABLES;
 --
 
 --
+-- Table structure for table `itemtype`
+--
+
+DROP TABLE IF EXISTS `itemtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `itemtype` (
+  `itemId` int(10) NOT NULL AUTO_INCREMENT primary key,
+  `itemTypeName` varchar(20) NOT NULL)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Dumping events for database 'pms'
+--
+
+LOCK TABLES `users` WRITE;
+insert into itemtype values (1,'Material');
+insert into itemtype values (2,'Labour');
+insert into itemtype values (3,'Machinery');
+insert into itemtype values (4,'Other');
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'pms'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

@@ -96,5 +96,10 @@ public class ItemServiceImpl implements ItemService {
         return isInsertSuccessful;
     }
 
+    public List<String> fetchItemTypes()
+    {
+        List<String> itemTypes = itemDAO.fetchItemTypes();
+        return itemTypes;
+    }
 
 }
