@@ -20,6 +20,9 @@
 	<bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
 	</bean>
 	
+	<bean id="projectDescriptionDetailBuilder" class="com.psk.pms.builder.ProjectDescriptionDetailBuilder">
+	</bean>
+	
 	<bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>

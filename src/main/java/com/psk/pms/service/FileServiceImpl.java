@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -19,8 +20,30 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private SubProjectService subProjectService;
+    
+    @Autowired
+    private ProjectDescriptionDetailBuilder projectDescriptionDetailBuilder;
 
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
+    
+    @Override
+    public void saveProjectDescription(FileUpload fileUpload) throws IOException{
+        String saveDirectory;
+        ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+        LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
+        if (fileUpload.isSubProjectUpload()) {
+            SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+            saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
+        } else {
+            saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
+        }
+        List<MultipartFile> pmsFiles = fileUpload.getFiles();
+        if (null != pmsFiles && pmsFiles.size() > 0) {
+            for (MultipartFile multipartFile : pmsFiles) {      
+            	projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);          
+            }
+        }
+    }
 
     @Override
     public void uploadFiles(FileUpload fileUpload) throws IOException {
