@@ -60,7 +60,7 @@ public class ProjectDescriptionDetailBuilder {
                         case Cell.CELL_TYPE_STRING:	
                         		if(cell.getColumnIndex() == 0 && row.getCell(1) != null)projDescDetail.setSerialNumber(cell.getStringCellValue());
                         		if(cell.getColumnIndex() == 1)projDescDetail.setWorkType(cell.getStringCellValue());
-                        		if(cell.getColumnIndex() == 3)projDescDetail.setQuantityInWords(cell.getStringCellValue());
+                        		if(cell.getColumnIndex() == 3)projDescDetail.setQuantityInUnit(cell.getStringCellValue());
                         		if(cell.getColumnIndex() == 4)projDescDetail.setDescription(cell.getStringCellValue());
                         		if(cell.getColumnIndex() == 5)projDescDetail.setAliasDescription(cell.getStringCellValue());
                             break;
@@ -75,7 +75,7 @@ public class ProjectDescriptionDetailBuilder {
             	LOGGER.info(descDetail.getSerialNumber());
             	LOGGER.info(descDetail.getWorkType());
             	LOGGER.info(descDetail.getQuantityInFig());
-            	LOGGER.info(descDetail.getQuantityInWords());
+            	LOGGER.info(descDetail.getQuantityInUnit());
             	LOGGER.info(descDetail.getDescription());
             	LOGGER.info(descDetail.getAliasDescription());
             }
