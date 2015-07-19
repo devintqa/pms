@@ -32,16 +32,13 @@ public class FileServiceImpl implements FileService {
     
     @Override
     public void saveProjectDescription(FileUpload fileUpload) throws IOException{
-        File files;
         String saveDirectory;
         ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
         LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
         if (fileUpload.isSubProjectUpload()) {
             SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
-            files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
         } else {
-            files = new File("C:\\PMS\\" + projectDetail.getAliasName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
         }
         List<MultipartFile> pmsFiles = fileUpload.getFiles();
@@ -65,7 +62,7 @@ public class FileServiceImpl implements FileService {
                     {
                         Row row = rowIterator.next();
                         ProjDescDetail projDescDetail = new ProjDescDetail();
-                        if(row.getRowNum()==1 || row.getRowNum()==2){
+                        if(row.getRowNum()==0){
                             continue; //just skip the rows if row number is 1 or 2
                          }
                         //For each row, iterate through all the columns
@@ -78,11 +75,11 @@ public class FileServiceImpl implements FileService {
                             switch (cell.getCellType())
                             {
                                 case Cell.CELL_TYPE_NUMERIC:
-                                	if (row.getRowNum()>=3 && cell.getColumnIndex() == 0 && row.getCell(1) != null)
+                                	if (row.getRowNum()>=1 && cell.getColumnIndex() == 0 && row.getCell(1) != null)
                                     {	
                                 		if(cell.getColumnIndex() == 0)projDescDetail.setSerialNumber(String.valueOf(cell.getNumericCellValue()));
                                     }
-                                	if (row.getRowNum()>=3 && cell.getColumnIndex() == 2 && row.getCell(3) != null)
+                                	if (row.getRowNum()>=1 && cell.getColumnIndex() == 2 && row.getCell(3) != null)
                                     {	
                                 		if(cell.getColumnIndex() == 2)projDescDetail.setQuantityInFig(String.valueOf(cell.getNumericCellValue()));
                                     }
@@ -100,7 +97,7 @@ public class FileServiceImpl implements FileService {
                                 		}
                                 		
                                     }
-                                	if (row.getRowNum()>=3)
+                                	if (row.getRowNum()>=1)
                                     {	
                                 		if(cell.getColumnIndex() == 0 && row.getCell(1) != null)projDescDetail.setSerialNumber(cell.getStringCellValue());
                                 		if(cell.getColumnIndex() == 1)projDescDetail.setWorkType(cell.getStringCellValue());
@@ -111,7 +108,7 @@ public class FileServiceImpl implements FileService {
                                     break;
                             }
                         }
-                        if (row.getRowNum()>=3 && !StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber()))
+                        if (row.getRowNum()>=1 && !StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber()))
                         {
                     		detailList.add(projDescDetail);
                         }          
