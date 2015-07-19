@@ -50,10 +50,8 @@ public class FileServiceImpl implements FileService {
                     List<ProjDescDetail> detailList = new ArrayList<ProjDescDetail>();
                     //Create Workbook instance holding reference to .xlsx file
                     XSSFWorkbook workbook = new XSSFWorkbook(file);
-         
                     //Get first/desired sheet from the workbook
                     XSSFSheet sheet = workbook.getSheetAt(0);
-         
                     //Iterate through each rows one by one
                     Iterator<Row> rowIterator = sheet.iterator();
                     while (rowIterator.hasNext())
@@ -61,7 +59,7 @@ public class FileServiceImpl implements FileService {
                         Row row = rowIterator.next();
                         ProjDescDetail projDescDetail = new ProjDescDetail();
                         if(row.getRowNum()==0){
-                            continue; //just skip the rows if row number is 1 or 2
+                            continue;
                          }
                         //For each row, iterate through all the columns
                         Iterator<Cell> cellIterator = row.cellIterator();
