@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public interface ItemService {
 
     boolean isItemAlreadyExisting(String itemName);
 
-    Map<String, String> getDescItemCodes(String itemCode);
+    List<ItemDetail> getDescItemNames(Map<String, Object> request);
+    
+    List<ItemDetail> searchItemName(String itemName, String itemType);
 
     Set<String> fetchItemNames();
 

@@ -73,10 +73,7 @@ function deleteProject(projectAlias,projectId) {
 						<c:forEach var="projDoc" items="${projectDocumentList}">
 							<tr>
 								<td>${projDoc.projectName}</td>
-								<td>
-								<a href="/pms/emp/myview/buildProjectItems/${employeeObj.employeeId}/project=${projDoc.projId}"
-									class="userAction">${projDoc.aliasName}</a>
-									</td>
+								<td>${projDoc.aliasName}</td>
 								<td>${projDoc.agreementNo}</td>
 								<td>${projDoc.cerNo}</td>
 								<td>${projDoc.amount}</td>
@@ -86,7 +83,10 @@ function deleteProject(projectAlias,projectId) {
 									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=${action}"
 									class="userAction">Update</a>
 									<strong> / </strong>
-									<a id ="deleteRow" href ="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');" style="color:red"> Delete</a>
+									<a href="/pms/emp/myview/configureItems/${employeeObj.employeeId}?project=${projDoc.projId}"
+									class="userAction"> Configure</a>
+									<strong> / </strong>
+									<a id ="deleteRow" href ="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');" style="color:red"> Delete</a> 
 									</td>
 							</tr>
 						</c:forEach>

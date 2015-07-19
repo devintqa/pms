@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 
 import org.apache.log4j.Logger;
@@ -17,84 +18,90 @@ import java.util.Set;
  */
 public class ItemServiceImpl implements ItemService {
 
-    @Autowired
-    ItemDAO itemDAO;
+	@Autowired
+	ItemDAO itemDAO;
 
-    @SuppressWarnings("unused")
-    private static final Logger LOGGER = Logger.getLogger(ItemService.class);
+	@SuppressWarnings("unused")
+	private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
-    public boolean createEditItem(Item item){
-        boolean isInsertSuccessful = itemDAO.saveItem(item);
-        return isInsertSuccessful;
-    }
+	public boolean createEditItem(Item item){
+		boolean isInsertSuccessful = itemDAO.saveItem(item);
+		return isInsertSuccessful;
+	}
 
-    public boolean isItemAlreadyExisting(String itemName){
-        boolean isAvailable = false;
-        isAvailable = itemDAO.isItemAlreadyExisting(itemName);
-        return isAvailable;
-    }
-
-
-    @Override
-    public Map<String, String> getDescItemCodes(String itemCode) {
-        Map<String, String> itemCodes = itemDAO.getDescItemCodes(itemCode);
-        return itemCodes;
-    }
-
-    @Override
-    public List<DescItemDetail.ItemDetail> getProjectData(Integer projId){
-        List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projId);
-        List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
-        if(itemDetailList.size() > 0){
-            Set<String> itemNames = itemDAO.fetchItemNames();
-            for(String itemName : itemNames){
-                DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
-                Double itemQty = 0.0;
-                Double itemCost = 0.0;
-                for(DescItemDetail.ItemDetail itemDetail : itemDetailList){
-                    if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
-                        item.setItemName(itemDetail.getItemName());
-                        item.setItemPrice(itemDetail.getItemPrice());
-                        item.setItemUnit(itemDetail.getItemUnit());
-                        itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
-                        itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
-                    }
-                }
-                if(item.getItemName() != null){
-                    item.setItemQty(String.valueOf(itemQty));
-                    item.setItemCost(String.valueOf(itemCost));
-                    finalItemDetailList.add(item);
-                }
-            }
-        }
-        return finalItemDetailList;
-    }
-
-    @Override
-    public Set<String> fetchItemNames() {
-        Set<String> itemNames = itemDAO.fetchItemNames();
-        return itemNames;
-    }
+	public boolean isItemAlreadyExisting(String itemName){
+		boolean isAvailable = false;
+		isAvailable = itemDAO.isItemAlreadyExisting(itemName);
+		return isAvailable;
+	}
 
 
-    public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
-        return itemDAO.getDataDescription(descItemDetail);
-    }
+	@Override
+	public List<ItemDetail> searchItemName(String itemName, String itemType) {
+		List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName, itemType);
+		return itemsDetail;
+	}
 
-    @Override
-    public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
-        itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
-    }
+	@Override
+	public List<DescItemDetail.ItemDetail> getProjectData(Integer projId){
+		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projId);
+		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
+		if(itemDetailList.size() > 0){
+			Set<String> itemNames = itemDAO.fetchItemNames();
+			for(String itemName : itemNames){
+				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
+				Double itemQty = 0.0;
+				Double itemCost = 0.0;
+				for(DescItemDetail.ItemDetail itemDetail : itemDetailList){
+					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
+						item.setItemName(itemDetail.getItemName());
+						item.setItemPrice(itemDetail.getItemPrice());
+						item.setItemUnit(itemDetail.getItemUnit());
+						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
+						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
+					}
+				}
+				if(item.getItemName() != null){
+					item.setItemQty(String.valueOf(itemQty));
+					item.setItemCost(String.valueOf(itemCost));
+					finalItemDetailList.add(item);
+				}
+			}
+		}
+		return finalItemDetailList;
+	}
+
+	@Override
+	public Set<String> fetchItemNames() {
+		Set<String> itemNames = itemDAO.fetchItemNames();
+		return itemNames;
+	}
+
+
+	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
+		return itemDAO.getDataDescription(descItemDetail);
+	}
+
+	@Override
+	public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
+		itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
+	}
 
 
 
-    public boolean insertDataDescription(DescItemDetail descItemDetail){
-        boolean isInsertSuccessful = false;
-        if(descItemDetail.getItemDetail() != null){
-            isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
-        }
-        return isInsertSuccessful;
-    }
+	public boolean insertDataDescription(DescItemDetail descItemDetail){
+		boolean isInsertSuccessful = false;
+		if(descItemDetail.getItemDetail() != null){
+			isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
+		}
+		return isInsertSuccessful;
+	}
+
+	@Override
+	public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
+		List<ItemDetail> itemsDetail = itemDAO.getDescItemNames(request);
+		return itemsDetail;
+	}
 
 
 }

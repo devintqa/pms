@@ -1,12 +1,13 @@
 package com.psk.pms.controller;
 
-import com.psk.pms.service.ItemService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.service.SubProjectService;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.util.Map;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.service.SubProjectService;
  
 @Controller
 public class BaseController {
@@ -30,9 +31,5 @@ public class BaseController {
 		return subAliasProjectNames;
 	}
 	
-	public Map<String, String> populateDescItemCodes(String itemCode) {
-		Map<String, String> subAliasProjectNames = itemService.getDescItemCodes(itemCode);
-		return subAliasProjectNames;
-	}
 
 }

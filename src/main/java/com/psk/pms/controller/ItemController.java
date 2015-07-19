@@ -66,7 +66,16 @@ public class ItemController {
 	public @ResponseBody
 	List<String> getProjectList(@RequestParam("term") String name) {
 		LOGGER.info("method = getItemList()");
-		return fetchItemInfo(name);
+		LOGGER.info("method = fetchItemInfo()");
+		List<String> result = new ArrayList<String>();
+		Set<String> itemNames = itemService.fetchItemNames();
+		LOGGER.info("The Item Name Size:" + itemNames.size());
+		for (String item : itemNames) {
+			if (item.toUpperCase().indexOf(name.toUpperCase())!= -1) {
+				result.add(item);
+			}
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "/emp/myview/buildItem/createItem.do", method = RequestMethod.POST)
@@ -90,17 +99,13 @@ public class ItemController {
 		}
 	}
 	
-	private List<String> fetchItemInfo(String itemName) {
-		LOGGER.info("method = fetchItemInfo()");
-		List<String> result = new ArrayList<String>();
-		Set<String> itemNames = itemService.fetchItemNames();
-		LOGGER.info("The Item Name Size:" + itemNames.size());
-		for (String item : itemNames) {
-			if (item.toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
-				result.add(item);
-			}
-		}
-		return result;
+	@RequestMapping(value = "/emp/myview/configureItems/{employeeId}", params = {"project"}, method = RequestMethod.GET)
+	public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId, Model model) {		
+		DescItemDetail descItemDetail = new DescItemDetail();
+		descItemDetail.setEmployeeId(employeeId);
+		descItemDetail.setProjId(projectId);
+		model.addAttribute("projectItemForm", descItemDetail);
+		return "ConfigureItems";
 	}
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
@@ -139,12 +144,14 @@ public class ItemController {
 		return status;
 	}
 	
-	@RequestMapping(value = "/emp/myview/buildProjectItems/{employeeId}/project={project}", method = RequestMethod.GET)
-	public String buildProjectItems(@PathVariable String employeeId, @PathVariable String project,  Model model) {		
-		DescItemDetail descItemDetail = new DescItemDetail();
-		descItemDetail.setEmployeeId(employeeId);
-		model.addAttribute("projectItemForm", descItemDetail);
-		return "BuildProjectItems";
+	
+	@RequestMapping(value = "/pms/emp/myview/configureItems/save.do", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody boolean saveConfiguredItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+		System.out.println(itemList);
+		return true;
 	}
+	
 
 }

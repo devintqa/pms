@@ -1,22 +1,38 @@
 package com.psk.pms.controller;
 
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.*;
-import com.psk.pms.service.*;
-import com.psk.pms.validator.SearchValidator;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.EmdDetail;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.SearchDetail;
+import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.service.EmdService;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.SearchService;
+import com.psk.pms.service.SubProjectService;
+import com.psk.pms.validator.SearchValidator;
 
 @Controller
 public class SearchController extends BaseController {
@@ -63,7 +79,7 @@ public class SearchController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/emp/myview/searchProjectDescription/{employeeId}", method = RequestMethod.GET)
-	public String searchProjectDescription(@PathVariable String employeeId,Model model) {		
+	public String searchProjectDescription(@PathVariable String employeeId, Model model) {		
 		LOGGER.info("Search Controller : searchProjectDescription()");
 		SearchDetail searchDetail = new SearchDetail();
 		searchDetail.setSearchProjectDescription(true);
@@ -174,11 +190,53 @@ public class SearchController extends BaseController {
 
 	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchDescItems.do", method = RequestMethod.GET)
 	public @ResponseBody
-	List<String> getDescItem(@RequestParam("itemName") String itemName) {
+	List<ItemDetail> getDescItem(@RequestParam("itemName") String itemName, @RequestParam("itemType") String itemType,
+			@RequestParam("projectId") String projectId, @RequestParam("subProjectId") String subProjectId) {
 		LOGGER.info("method = getDescItem()");
-		return fetchItemCode(itemName);
+		Map<String, Object> request= new Hashtable<String, Object>();
+		request.put("itemName", itemName);
+		request.put("itemType", itemType);
+		request.put("projectId", projectId);
+		request.put("subProjectId", subProjectId);
+		List<ItemDetail> itemsDetail = itemService.getDescItemNames(request);
+		return itemsDetail;
 	}
 	
+	@RequestMapping(value = "/emp/myview/configureItems/searchItems.do", method = RequestMethod.GET)
+	public @ResponseBody
+	List<ItemDetail> getItemNames(@RequestParam("itemName") String itemName, @RequestParam("itemType") String itemType) {
+		LOGGER.info("method = getItemNames()");
+		List<ItemDetail> itemsDetail = itemService.searchItemName(itemName, itemType);
+		return itemsDetail;
+	}
+	
+	@RequestMapping(value = "/emp/myview/searchProject/deleteProject.do", method = RequestMethod.POST)
+	public void deleteProject(HttpServletRequest request, HttpServletResponse response) {
+		String projectId = request.getParameter("projectId");
+		LOGGER.info("method = deleteProject() , projectId :"+ projectId);
+		Integer projectIdNumeric = Integer.parseInt(projectId);
+		projectService.deleteProject(projectIdNumeric);
+	}
+
+	@RequestMapping(value = "/emp/myview/searchSubProject/deleteSubProject.do", method = RequestMethod.POST)
+	public void deleteSubProject(HttpServletRequest request, HttpServletResponse response) {
+		String subProjectId = request.getParameter("subProjectId");
+		LOGGER.info("method = deleteSubProject() , sub projectid : "+subProjectId );
+		Integer subProjectIdNumeric = Integer.parseInt(subProjectId);
+		subProjectService.deleteSubProject(subProjectIdNumeric);
+
+	}
+
+	@RequestMapping(value = "/emp/myview/searchEmd/{employeeId}", method = RequestMethod.GET)
+	public String searchEmd(@PathVariable String employeeId,Model model) {
+		LOGGER.info("Search Controller : searchProjectEmd()");
+		SearchDetail searchDetail = new SearchDetail();
+		searchDetail.setSearchProjectDescription(true);
+		model.addAttribute("searchEmdForm", searchDetail);
+		return "SearchEmd";
+	}
+
+
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
 		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
@@ -208,44 +266,5 @@ public class SearchController extends BaseController {
 		}
 		return result;
 	}
-	
-	private List<String> fetchItemCode(String itemName) {
-		LOGGER.info("method = fetchItemCode()");
-		List<String> result = new ArrayList<String>();
-		Map<String, String> itemCodeList = populateDescItemCodes(itemName);
-		for (Map.Entry<String, String> entry : itemCodeList.entrySet()) {
-			if (entry.getValue().toUpperCase().indexOf(itemName.toUpperCase())!= -1) {
-				result.add(entry.getValue());
-			}
-		}
-		return result;
-	}
-
-	@RequestMapping(value = "/emp/myview/searchProject/deleteProject.do", method = RequestMethod.POST)
-	public void deleteProject(HttpServletRequest request, HttpServletResponse response) {
-		String projectId = request.getParameter("projectId");
-		LOGGER.info("method = deleteProject() , projectId :"+ projectId);
-		Integer projectIdNumeric = Integer.parseInt(projectId);
-		projectService.deleteProject(projectIdNumeric);
-	}
-
-	@RequestMapping(value = "/emp/myview/searchSubProject/deleteSubProject.do", method = RequestMethod.POST)
-	public void deleteSubProject(HttpServletRequest request, HttpServletResponse response) {
-		String subProjectId = request.getParameter("subProjectId");
-		LOGGER.info("method = deleteSubProject() , sub projectid : "+subProjectId );
-		Integer subProjectIdNumeric = Integer.parseInt(subProjectId);
-		subProjectService.deleteSubProject(subProjectIdNumeric);
-
-	}
-
-	@RequestMapping(value = "/emp/myview/searchEmd/{employeeId}", method = RequestMethod.GET)
-	public String searchEmd(@PathVariable String employeeId,Model model) {
-		LOGGER.info("Search Controller : searchProjectEmd()");
-		SearchDetail searchDetail = new SearchDetail();
-		searchDetail.setSearchProjectDescription(true);
-		model.addAttribute("searchEmdForm", searchDetail);
-		return "SearchEmd";
-	}
-
 
 }
