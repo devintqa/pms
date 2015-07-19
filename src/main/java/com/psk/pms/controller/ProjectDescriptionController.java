@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.SubProjectService;
 import org.apache.log4j.Logger;
@@ -46,9 +47,17 @@ public class ProjectDescriptionController {
 	@Autowired
 	SubProjectService subProjectService;
 
+    @Autowired
+    ItemService itemService;
+
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
-	
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
+
+    @ModelAttribute("itemUnits")
+    public List<String> populateItemUnits() {
+        return itemService.fetchUniqueItemUnits();
+    }
+
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
 	public String buildProjDesc(@PathVariable String employeeId, 
 			@RequestParam(value="team", required=true) String team, 
 			@RequestParam(value="action", required=false) String action, 

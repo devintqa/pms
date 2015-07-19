@@ -44,10 +44,10 @@ public class PmsMasterQuery {
             "    from emddetail e left join project as p on e.ProjId = p.ProjId " +
             "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 
-    public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInWords, "
+    public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber , WorkType, QuantityInFig, QuantityInUnit, "
             + "Description, AliasDescription, RateInFig, RateInWords, Amount, ProjDescId FROM projectdesc";
 
-    public static String projDescDetail = "SELECT d.ProjId, d.SubProjId , d.SerialNumber , d.WorkType, d.QuantityInFig, d.QuantityInWords, "
+    public static String projDescDetail = "SELECT d.ProjId, d.SubProjId , d.SerialNumber , d.WorkType, d.QuantityInFig, d.QuantityInUnit, "
             + "d.Description, d.AliasDescription, d.RateInFig, d.RateInWords, d.Amount, d.ProjDescId";
 
     public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
@@ -61,4 +61,10 @@ public class PmsMasterQuery {
     public static String DELETEPROJDESCAITEMBYPROJECTDESCID = "DELETE FROM projdescitem WHERE ProjDescId = ?";
 
     public static String DELETEPROJDESCAITEMBYPROJECTDESCITEMID = "DELETE FROM projdescitem WHERE DescItemId = ?";
+
+    public static String FETCHITEMTYPES = "SELECT itemTypeName FROM itemtype";
+
+    public static String FETCHEMDTYPES = "SELECT emdTypeName FROM emdtype";
+
+    public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
 }

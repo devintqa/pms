@@ -34,4 +34,7 @@ public interface ItemDAO {
 
     void deleteItemByProjectDescItemId(Integer itemId);
 
+    List<String> fetchItemTypes();
+
+    List<String> fetchUniqueItemUnits();
 }

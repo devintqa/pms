@@ -164,7 +164,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 
 		if (StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "exPercentage",
-				"required.exPercentage", "Enter one among Expected or Less in Percentage.");
+				"required.exPercentage", "Enter one among Excess or Less in Percentage.");
 		}
 
 		if (!StringUtils.isNullOrEmpty(projectDetail.getExPercentage()) && !StringUtils.isNullOrEmpty(projectDetail.getLessPercentage())) {

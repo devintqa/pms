@@ -19,6 +19,13 @@ $(document).ready(function () {
 	    }
 	   });
 });
+
+$(function(){
+    if($('#isUpdate').val()=='Y') {
+          	  	$("#aliasSubProjName").attr("readonly", "readonly");
+     }
+});
+
 </script>
 </head>
 
@@ -55,7 +62,7 @@ $(document).ready(function () {
 							<tr>
 								<td>Alias Sub Project Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasSubProjName"
+								<td><form:input path="aliasSubProjName" id="aliasSubProjName"
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasSubProjName" cssClass="error" /></td>
 							</tr>

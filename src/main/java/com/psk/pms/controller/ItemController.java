@@ -59,6 +59,8 @@ public class ItemController {
 		Item item = new Item();
 		item.setEmployeeId(employeeId);
 		model.addAttribute("itemForm", item);
+        List<String> itemTypeNames = fetchItemTypes();
+        model.addAttribute("itemTypes", itemTypeNames);
 		return "BuildItem";
 	}
 	
@@ -79,12 +81,17 @@ public class ItemController {
 			isItemSaveSuccessful = itemService.createEditItem(item);
 		}
 		if(result.hasErrors() || !isItemSaveSuccessful) {
+            List<String> itemTypes = fetchItemTypes();
+            model.addAttribute("itemTypes", itemTypes);
 			return "BuildItem";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(item.getEmployeeId());
 			model.addAttribute("employee", employee);
+            List<String> itemTypes = new ArrayList<>();
+            itemTypes.add(item.getItemType());
+            model.addAttribute("itemTypes",itemTypes);
 			model.addAttribute("itemCreationMessage", "Item Creation Successful.");
 			return "BuildItem";			
 		}
@@ -102,6 +109,17 @@ public class ItemController {
 		}
 		return result;
 	}
+
+    private List<String> fetchItemTypes() {
+        LOGGER.info("method = fetchTypes()");
+        List<String> result = new ArrayList<String>();
+        List<String> itemNames = itemService.fetchItemTypes();
+        LOGGER.info("The Item Name Size:" + itemNames.size());
+        for (String item : itemNames) {
+                result.add(item);
+        }
+        return result;
+    }
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
 	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
