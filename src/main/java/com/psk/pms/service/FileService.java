@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ public interface FileService {
 
     void uploadFiles(FileUpload fileUpload) throws IOException;
     
-    void saveProjectDescription(FileUpload fileUpload) throws IOException;
+    ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException;
 
     List<FileUpload> downloadFiles(FileUpload fileUpload);
 

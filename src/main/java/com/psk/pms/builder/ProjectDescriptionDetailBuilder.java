@@ -23,10 +23,12 @@ public class ProjectDescriptionDetailBuilder {
 	public List<ProjDescDetail> buildDescDetailList(String saveDirectory, MultipartFile multipartFile){
         List<ProjDescDetail> detailList = new ArrayList<ProjDescDetail>();
         try
-        {
-            FileInputStream file = new FileInputStream(new File(saveDirectory + multipartFile.getOriginalFilename()));
+        {	
+        	String path = saveDirectory + multipartFile.getOriginalFilename();
+        	File file = new File(path);
+            FileInputStream fileInputStream = new FileInputStream(file);
             //Create Workbook instance holding reference to .xlsx file
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
             //Get first/desired sheet from the workbook
             XSSFSheet sheet = workbook.getSheetAt(0);
             //Iterate through each rows one by one
@@ -79,7 +81,7 @@ public class ProjectDescriptionDetailBuilder {
             	LOGGER.info(descDetail.getDescription());
             	LOGGER.info(descDetail.getAliasDescription());
             }
-            file.close();
+            fileInputStream.close();
         }
         catch (Exception e)
         {

@@ -2,6 +2,7 @@ package com.psk.pms.controller;
  
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.service.FileService;
 import com.psk.pms.service.ProjectService;
@@ -147,7 +148,15 @@ public class FileUploadController extends BaseController {
 		if(!result.hasErrors())
 		{	
 			fileService.uploadFiles(uploadForm);
-			fileService.saveProjectDescription(uploadForm);
+			ExcelDetail excelDetail = fileService.saveProjectDescription(uploadForm);
+			if(!excelDetail.isExcel()){
+				map.addAttribute("fileAdditionSuccessful", "Please Select Valid File Format");
+				map.addAttribute("aliasProjectList", aliasProjectList);
+				subAliasProjectList.put("0", "--Please Select--");
+				map.addAttribute("subAliasProjectList",subAliasProjectList);
+				map.addAttribute("aliasProjectList", aliasProjectList);
+				return "UploadExcel";
+			}
 		}else
 		{
 			if(uploadForm.getFiles().size()==0)
@@ -163,7 +172,7 @@ public class FileUploadController extends BaseController {
 		subAliasProjectList.put("0", "--Please Select--");
 		map.addAttribute("subAliasProjectList", subAliasProjectList);
         map.addAttribute("aliasProjectList", aliasProjectList);
-        map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
+        map.addAttribute("fileAdditionSuccessful", "Project Description Creation Successful");
         return "UploadExcel";
     }
 
