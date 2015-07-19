@@ -17,6 +17,11 @@ $(document).ready(function () {
 	    }
 	   });
 });
+$(function(){
+    if($('#isUpdate').val()=='Y') {
+          	  	$("#aliasName").attr("readonly", "readonly");
+     }
+});
 </script>
 </head>
 

@@ -190,6 +190,15 @@ public class EmdDAOImpl implements EmdDAO {
         return emdDetail;
     }
 
+    @Override
+    public List<String> fetchEmdTypes()
+    {
+        LOGGER.info("method = fetchEmdTypes");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<String> itemTypes =  jdbcTemplate.queryForList(PmsMasterQuery.FETCHEMDTYPES,String.class);
+        LOGGER.info("No of rows fetched :"+itemTypes.size());
+        return itemTypes;
+    }
 
-    
+
 }

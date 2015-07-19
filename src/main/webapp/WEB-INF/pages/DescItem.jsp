@@ -279,10 +279,10 @@
 										placeholder="Enter Quantity in Figures" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
-								<td>Quantity in Words<span id="colon">:</span>
+								<td>Quantity in unit<span id="colon">:</span>
 								</td>
-								<td><form:input path="quantityInWords"
-										placeholder="Enter Quantity in Words"
+								<td><form:input path="quantityInUnit"
+										placeholder="Enter Quantity in Unit"
 										data-validation="length numeric" data-validation-length="min4"
 										cssClass="inputText"  readonly="true" /></td>
 							</tr>

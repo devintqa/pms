@@ -9,7 +9,7 @@ public class ProjDescDetail {
 	private String serialNumber;
 	private String workType;
 	private String quantityInFig;
-	private String quantityInWords;
+	private String quantityInUnit;
 	private String description;	
 	private String aliasDescription;
 	private String rateInFig;
@@ -42,11 +42,11 @@ public class ProjDescDetail {
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
-	public String getQuantityInWords() {
-		return quantityInWords;
+	public String getQuantityInUnit() {
+		return quantityInUnit;
 	}
-	public void setQuantityInWords(String quantityInWords) {
-		this.quantityInWords = quantityInWords;
+	public void setQuantityInUnit(String quantityInUnit) {
+		this.quantityInUnit = quantityInUnit;
 	}
 	public String getDescription() {
 		return description;

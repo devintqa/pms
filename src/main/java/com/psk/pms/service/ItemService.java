@@ -29,4 +29,6 @@ public interface ItemService {
     void deleteItemByDescriptionItemId(Integer subProjectid);
 
     List<String> fetchItemTypes();
+
+    List<String> fetchUniqueItemUnits();
 }

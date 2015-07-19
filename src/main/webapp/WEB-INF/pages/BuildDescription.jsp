@@ -127,13 +127,12 @@ $(document).ready(function () {
 								<td><form:errors path="quantityInFig" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Quantity in Words<span id="colon">:</span>
+								<td>Quantity in Unit<span id="colon">:</span>
 								</td>
-								<td><form:input path="quantityInWords"
-										placeholder="Enter Quantity in Words"
-										data-validation="length numeric" data-validation-length="min4"
+								<td><form:select path="quantityInUnit"
+										items = "${itemUnits}"
 										cssClass="inputText" /></td>
-								<td><form:errors path="quantityInWords" cssClass="error" /></td>
+								<td><form:errors path="quantityInUnit" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Description<span id="colon">:</span>

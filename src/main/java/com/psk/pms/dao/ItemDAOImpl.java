@@ -180,11 +180,21 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<String> fetchItemTypes()
     {
-        LOGGER.info("method = deleteItemfetchItemTypes");
+        LOGGER.info("method = fetchItemTypes");
         jdbcTemplate = new JdbcTemplate(dataSource);
-        List<String> itemTypes =  jdbcTemplate.queryForList(PmsMasterQuery.FETCHITEMTYPES,String.class);
+        List<String> itemTypes =  jdbcTemplate.queryForList(PmsMasterQuery.FETCHITEMTYPES, String.class);
         LOGGER.info("No of rows fetched :"+itemTypes.size());
         return itemTypes;
+    }
+
+    @Override
+    public List<String> fetchUniqueItemUnits()
+    {
+        LOGGER.info("method = fetchUniqueItemUnit");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<String> uniqueItemUnits = jdbcTemplate.queryForList(PmsMasterQuery.FETCHUNIQUEITEMUNIT,String.class);
+        LOGGER.info("No of rows fetched :" + uniqueItemUnits.size());
+        return uniqueItemUnits;
     }
 
     public DriverManagerDataSource getDataSource() {

@@ -239,7 +239,7 @@ CREATE TABLE `projectdesc` (
   `SubProjId` int(10) DEFAULT NULL,
   `WorkType` varchar(30) NOT NULL,
   `QuantityInFig` decimal(15,2) DEFAULT NULL,
-  `QuantityInWords` varchar(50) DEFAULT NULL,
+  `QuantityInUnit` varchar(50) DEFAULT NULL,
   `Description` text NOT NULL,
   `AliasDescription` varchar(100) NOT NULL,
   `RateInFig` decimal(15,2) NOT NULL,
@@ -384,6 +384,32 @@ insert into itemtype values (3,'Machinery');
 insert into itemtype values (4,'Other');
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `itemtype`
+--
+
+DROP TABLE IF EXISTS `emdtype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `emdtype` (
+  `emdTypeId` int(10) NOT NULL AUTO_INCREMENT primary key,
+  `emdTypeName` varchar(20) NOT NULL)
+ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+--
+-- Dumping data into emdtype table
+--
+
+LOCK TABLES `users` WRITE;
+insert into emdtype values (1,'Bank Guarantee');
+insert into emdtype values (2,'DD');
+insert into emdtype values (3,'FD');
+insert into emdtype values (4,'IVP');
+insert into emdtype values (5,'KVP');
+UNLOCK TABLES;
 --
 -- Dumping routines for database 'pms'
 --
