@@ -1,23 +1,16 @@
 package com.psk.pms.service;
 
-import com.mysql.jdbc.StringUtils;
+import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
 import com.psk.pms.model.FileUpload;
-import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import org.apache.log4j.Logger;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class FileServiceImpl implements FileService {
@@ -27,6 +20,9 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private SubProjectService subProjectService;
+    
+    @Autowired
+    private ProjectDescriptionDetailBuilder projectDescriptionDetailBuilder;
 
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
     
@@ -44,71 +40,7 @@ public class FileServiceImpl implements FileService {
         List<MultipartFile> pmsFiles = fileUpload.getFiles();
         if (null != pmsFiles && pmsFiles.size() > 0) {
             for (MultipartFile multipartFile : pmsFiles) {      
-                try
-                {
-                    FileInputStream file = new FileInputStream(new File(saveDirectory + multipartFile.getOriginalFilename()));
-                    List<ProjDescDetail> detailList = new ArrayList<ProjDescDetail>();
-                    //Create Workbook instance holding reference to .xlsx file
-                    XSSFWorkbook workbook = new XSSFWorkbook(file);
-                    //Get first/desired sheet from the workbook
-                    XSSFSheet sheet = workbook.getSheetAt(0);
-                    //Iterate through each rows one by one
-                    Iterator<Row> rowIterator = sheet.iterator();
-                    while (rowIterator.hasNext())
-                    {
-                        Row row = rowIterator.next();
-                        ProjDescDetail projDescDetail = new ProjDescDetail();
-                        if(row.getRowNum()==0){
-                            continue;
-                         }
-                        //For each row, iterate through all the columns
-                        Iterator<Cell> cellIterator = row.cellIterator();
-                         
-                        while (cellIterator.hasNext())
-                        {
-                            Cell cell = cellIterator.next();
-                            //Check the cell type and format accordingly
-                            switch (cell.getCellType())
-                            {
-                                case Cell.CELL_TYPE_NUMERIC:
-                                	if (cell.getColumnIndex() == 0 && row.getCell(1) != null)
-                                    {	
-                                		if(cell.getColumnIndex() == 0)projDescDetail.setSerialNumber(String.valueOf(cell.getNumericCellValue()));
-                                    }
-                                	if (cell.getColumnIndex() == 2 && row.getCell(3) != null)
-                                    {	
-                                		if(cell.getColumnIndex() == 2)projDescDetail.setQuantityInFig(String.valueOf(cell.getNumericCellValue()));
-                                    }
-                                	break;
-                                case Cell.CELL_TYPE_STRING:	
-                                		if(cell.getColumnIndex() == 0 && row.getCell(1) != null)projDescDetail.setSerialNumber(cell.getStringCellValue());
-                                		if(cell.getColumnIndex() == 1)projDescDetail.setWorkType(cell.getStringCellValue());
-                                		if(cell.getColumnIndex() == 3)projDescDetail.setQuantityInWords(cell.getStringCellValue());
-                                		if(cell.getColumnIndex() == 4)projDescDetail.setDescription(cell.getStringCellValue());
-                                		if(cell.getColumnIndex() == 5)projDescDetail.setAliasDescription(cell.getStringCellValue());
-                                    break;
-                            }
-                        }
-                        if (!StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber()))
-                        {
-                    		detailList.add(projDescDetail);
-                        }          
-                    }
-                    for(ProjDescDetail descDetail : detailList){
-                    	LOGGER.info(descDetail.getSerialNumber());
-                    	LOGGER.info(descDetail.getWorkType());
-                    	LOGGER.info(descDetail.getQuantityInFig());
-                    	LOGGER.info(descDetail.getQuantityInWords());
-                    	LOGGER.info(descDetail.getDescription());
-                    	LOGGER.info(descDetail.getAliasDescription());
-                    }
-                    file.close();
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-                
+            	projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);          
             }
         }
     }
