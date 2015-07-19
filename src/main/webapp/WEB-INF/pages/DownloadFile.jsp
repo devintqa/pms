@@ -146,7 +146,7 @@
 							</tr>
 							</table>
             <br />
-            <input type="submit" value="Show Files ." />
+            <input type="submit" value="Show Files" />
         </form:form>
  
         <br />
