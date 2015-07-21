@@ -70,10 +70,8 @@
                     });
 
  function deleteFile(fileName, filePath) {
-
-    var encodeUrl = encodeURI(filePath);
  	  $("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
-
+	alert(filePath);
  	    // Define the Dialog and its properties.
  	    $("#dialog-confirm").dialog({
  	        resizable: false,
@@ -86,14 +84,13 @@
  	            	$.ajax({
  	        			type : 'POST',
  	        			url : 'deleteFile.do',
- 	        			data : "filePath="+encodeUrl,
+ 	        			data : "path="+filePath,
  	        			success : function(response) {
  	        				location.reload();
- 	    					console.log("Successfully deleted file ");
+ 	    					console.log("Successfully deleted file");
  	        			},
  	        			error : function(err) {
  	        				console.log("Error deleting file ");
- 	        		    contentType: "application/x-www-form-urlencoded;charset=ISO-8859-15"
  	        			}
  	        		});
  	                $(this).dialog('close');
@@ -160,6 +157,7 @@
 					<thead>
 						<tr>
 							<th>File Name</th>
+							<th>File Path</th>
 							<th> Action </th>
 						</tr>
 					</thead>
@@ -167,12 +165,12 @@
 						<c:if test="${not empty projectFileList}">
 							<c:forEach var="fileDoc" items="${projectFileList}">
 								<tr>
-									<td>${fileDoc.fileName}</a></td>
+									<td>${fileDoc.fileName}</td>
+									<td>${fileDoc.filePath}</td>
                                     <td>
 								        <a href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}"> Download File </a>
 								          <strong> / </strong>
-								        <a href=
-								        "javascript: var encodeUri = encodeURI('${fileDoc.filePath}'); deleteFile('${fileDoc.fileName}', encodeUri);" style="color:red"> Delete </a>
+								          <a id ="deleteRow" href ="javascript:deleteFile('${fileDoc.fileName}',encodeURIComponent('${fileDoc.filePath}'));" style="color:red"> Delete</a>
 								    </td>
 								</tr>
 							</c:forEach>

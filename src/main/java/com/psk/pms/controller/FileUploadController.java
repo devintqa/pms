@@ -225,7 +225,7 @@ public class FileUploadController extends BaseController {
 	@RequestMapping(value = "/emp/myview/downloadFile/downloadFiles.web", method = RequestMethod.GET)
 	public @ResponseBody void downloadFiles(@RequestParam(value="path", required=true) String path, HttpServletRequest request,
 			HttpServletResponse response) {
-		
+		LOGGER.info("download file" + path);
 		File downloadFile = new File(path);
 		FileInputStream inputStream = null;
 		OutputStream outStream = null;
@@ -260,10 +260,9 @@ public class FileUploadController extends BaseController {
 	}
 
     @RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
-    public void deleteFile(HttpServletRequest request, HttpServletResponse response) {
-        String filePath = request.getParameter("filePath");
-        fileService.deleteFile(filePath);
-        LOGGER.info("method = deleteFile() ,file Name :" + filePath);
+    public void deleteFile(@RequestParam(value="path", required=true) String path, HttpServletRequest request, HttpServletResponse response) {
+    	LOGGER.info("method = deleteFile() ,file Name :" + path);
+    	fileService.deleteFile(path);
     }
     
 	public Map<String, String> populateSubAliasProjectList(String project) {
