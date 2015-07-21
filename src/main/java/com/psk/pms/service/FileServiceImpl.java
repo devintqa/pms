@@ -1,5 +1,8 @@
 package com.psk.pms.service;
 
+import com.psk.pms.Constants;
+import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
+import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -9,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +25,53 @@ public class FileServiceImpl implements FileService {
 
     @Autowired
     private SubProjectService subProjectService;
+    
+    @Autowired
+    private ProjectDescriptionDetailBuilder projectDescriptionDetailBuilder;
 
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
+    
+    @Override
+    public ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException{
+        String saveDirectory;
+        ExcelDetail excelDetail = new ExcelDetail();
+        ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+        LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
+        if (fileUpload.isSubProjectUpload()) {
+            SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+            saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
+        } else {
+            saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
+        }
+        List<MultipartFile> pmsFiles = fileUpload.getFiles();
+        if (null != pmsFiles && pmsFiles.size() > 0) {
+            for (MultipartFile multipartFile : pmsFiles) {
+            	String path = saveDirectory + multipartFile.getOriginalFilename();
+            	boolean isExcel = isExcelType(path);
+            	if(!isExcel){
+            		excelDetail.setExcel(false);
+            		return excelDetail;
+            	}
+            	projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);          
+            }
+        }
+        return excelDetail;
+    }
+    
+	private boolean isExcelType(String pathText) {
+		try {
+	    Path path = Paths.get(pathText);
+	    String type = Files.probeContentType(path);
+	    LOGGER.info("The uploaded file type" + type);
+	    if(Constants.EXCEL_FILE_TYPE.equalsIgnoreCase(type)){
+	    	LOGGER.info("Inside if type path");
+	    	return true;
+	    }
+		} catch(Exception e){
+			LOGGER.info("Error In Determining The Excel Type");
+		}
+	    return false;
+	 }
 
     @Override
     public void uploadFiles(FileUpload fileUpload) throws IOException {

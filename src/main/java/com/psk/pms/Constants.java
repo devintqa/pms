@@ -6,5 +6,6 @@ public interface Constants {
 	String ENABLE_EMPLOYEE_ACCESS = "1";
 	String DENY_EMPLOYEE_ACCESS = "2";
 	String DISABLE_EMPLOYEE_ACCESS = "3";
+	String EXCEL_FILE_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
 }

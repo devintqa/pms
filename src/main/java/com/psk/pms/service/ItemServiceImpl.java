@@ -4,6 +4,7 @@ import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,5 +104,29 @@ public class ItemServiceImpl implements ItemService {
 		return itemsDetail;
 	}
 
+    public List<String> fetchItemTypes() {
+        List<String> itemTypes = itemDAO.fetchItemTypes();
+        return itemTypes;
+    }
+
+    public List<String> fetchUniqueItemUnits() {
+        List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
+        return itemUnits;
+    }
+
+	@Override
+	public boolean configureItemPrice(ProjectConfiguration projectItemConfiguration) {
+		boolean isInsertSuccessful = false;
+		if(projectItemConfiguration.getItemDetail() != null){
+			isInsertSuccessful = itemDAO.configureItemPrice(projectItemConfiguration);
+		}
+		return isInsertSuccessful;
+	}
+
+	@Override
+	public ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration) {
+		return itemDAO.getProjectItemConfiguration(projectConfiguration);
+	}
 
 }

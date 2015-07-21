@@ -11,7 +11,7 @@
 	
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
-				
+		fillItemDesc();		
 		$(document).on('keydown.autocomplete', selector, function() {
 				$(this).autocomplete({
 					source: function (request, response) {
@@ -92,14 +92,13 @@
 			itemDescForm["employeeId"] = document.getElementById('employeeId').value;
 			itemDescForm["projId"] = document.getElementById('projId').value;
 			itemDescForm["subProjId"] = document.getElementById('subProjId').value;
-			itemDescForm["projDescItemDetail"] = JSON.stringify(itemObjArray);
-			
+			itemDescForm["items"] = JSON.stringify(itemObjArray);
 			
 			console.log("data = " + JSON.stringify(itemDescForm));
 			
 			$.ajax({
 				type : "POST",
-				url : "save.do",
+				url : "saveItemPrice.do",
 				contentType: "application/json",
 				cache : false,
 				data: JSON.stringify(itemDescForm),
@@ -113,7 +112,7 @@
 		
 		function fillItemDesc() {
 			var len = document.getElementById('itemTable').rows.length;
-			var obj = JSON.parse(document.getElementById('projDescItemDetail').value);
+			var obj = JSON.parse(document.getElementById('itemPriceConfiguration').value);
 			for (i = 0; i <= obj.length - 1; i++) {
 				fillItemRow(obj[i]);
 			}
@@ -189,6 +188,7 @@
 		<br>
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input type="button" id="saveDesc" value="Save" onclick="saveItemDesc()" />
+		<form:hidden path="itemPriceConfiguration" id="itemPriceConfiguration"/>
 		<form:hidden path="projId" id="projId"/>
 		<form:hidden path="subProjId" id="subProjId"/>
 		<form:hidden path="employeeId" id="employeeId"/>

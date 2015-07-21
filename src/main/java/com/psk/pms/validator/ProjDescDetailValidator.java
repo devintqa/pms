@@ -46,8 +46,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 				"required.aliasDescription", "Enter Alias Description.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
 				"required.quantityInFig", "Enter Quantity In Figures.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInWords",
-				"required.quantityInWords", "Enter Quantity In Words.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInUnit",
+				"required.quantityInUnit", "Enter Quantity In Unit.");
 
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		
@@ -101,10 +101,7 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		}else{
 			projectDescDetail.setProjDescAmount("0");
 		}
-		
-		if(projectDescDetail.getQuantityInWords().length() > 50){
-            errors.rejectValue("quantityInWords","quantityInWords.incorrect", "Field Should Not Exceed 50 characters");
-        }
+
 		if(projectDescDetail.getAliasDescription().length() > 100){
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
         }

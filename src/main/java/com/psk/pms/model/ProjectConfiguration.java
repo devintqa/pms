@@ -4,40 +4,23 @@ import java.util.List;
 
 
 
-public class DescItemDetail {
+public class ProjectConfiguration {
 	
-	private String projDescSerial;
-	private Integer projDescId;
+	public ProjectConfiguration(){
+		
+	}
+	private String itemPriceConfiguration;
 	private Integer projId;
-	private Integer subProjId;
+	private Integer subProjId = 0;
 	private String employeeId;
-	private String projDescItemDetail;
 	private String itemType;
 	
 	private List<ItemDetail> itemDetail;
-	public Integer getProjDescId() {
-		return projDescId;
-	}
-	public void setProjDescId(Integer projDescId) {
-		this.projDescId = projDescId;
-	}
 	public Integer getProjId() {
 		return projId;
 	}
 	public void setProjId(Integer projId) {
 		this.projId = projId;
-	}
-	public String getProjDescItemDetail() {
-		return projDescItemDetail;
-	}
-	public void setProjDescItemDetail(String projDescItemDetail) {
-		this.projDescItemDetail = projDescItemDetail;
-	}
-	public String getProjDescSerial() {
-		return projDescSerial;
-	}
-	public void setProjDescSerial(String projDescSerial) {
-		this.projDescSerial = projDescSerial;
 	}
 	public Integer getSubProjId() {
 		return subProjId;
@@ -63,17 +46,22 @@ public class DescItemDetail {
 	public void setItemType(String itemType) {
 		this.itemType = itemType;
 	}
+	public String getItemPriceConfiguration() {
+		return itemPriceConfiguration;
+	}
+	public void setItemPriceConfiguration(String itemPriceConfiguration) {
+		this.itemPriceConfiguration = itemPriceConfiguration;
+	}
 	public static class ItemDetail {
 		
 		public ItemDetail(){
 			
 		}
 		
-		public ItemDetail(String itemName, String itemQty, String itemPrice, String itemCost){
+		public ItemDetail(String itemName, String itemQty, String itemPrice){
 			this.itemName = itemName;
 			this.itemQty = itemQty;
 			this.itemPrice = itemPrice;
-			this.itemCost = itemCost;
 		}
 		
 		private String label;
@@ -82,7 +70,6 @@ public class DescItemDetail {
 		private String itemUnit;
 		private String itemQty;
 		private String itemPrice;
-		private String itemCost;
 		public String getItemName() {
 			return itemName;
 		}
@@ -106,12 +93,6 @@ public class DescItemDetail {
 		}
 		public void setItemPrice(String itemPrice) {
 			this.itemPrice = itemPrice;
-		}
-		public String getItemCost() {
-			return itemCost;
-		}
-		public void setItemCost(String itemCost) {
-			this.itemCost = itemCost;
 		}
 
 		public String getItemType() {

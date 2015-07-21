@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 
 import java.util.List;
 import java.util.Map;
@@ -30,4 +31,12 @@ public interface ItemService {
     DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
     void deleteItemByDescriptionItemId(Integer subProjectid);
+
+    List<String> fetchItemTypes();
+
+    List<String> fetchUniqueItemUnits();
+
+	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
+
+	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
 }

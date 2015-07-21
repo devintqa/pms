@@ -20,4 +20,6 @@ public interface EmdService {
     List<EmdDetail> getEmdDetailsBySubProjectId(Integer subProjectId);
 
     List<EmdDetail> getEmdEndAlertList();
+
+    List<String> fetchEmdTypes();
 }

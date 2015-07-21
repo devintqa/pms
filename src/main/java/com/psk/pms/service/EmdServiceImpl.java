@@ -125,6 +125,10 @@ public class EmdServiceImpl implements EmdService {
         return emdDocumentList;
     }
 
+    public List<String> fetchEmdTypes() {
+        return emdDAO.fetchEmdTypes();
+    }
+
     public void deleteEmd(Integer numericEmdId) {
         emdDAO.deleteEmdDetailByEmdId(numericEmdId);
     }

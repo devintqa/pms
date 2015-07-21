@@ -127,38 +127,8 @@
 		</c:if>
 
 		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
-				Documents</h1>
-			<table id="projectDocumentList" class="gridView">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Alias</th>
-						<th>Agreement No</th>
-						<th>CER No</th>
-						<th>Amount</th>
-						<th>Contractor Name</th>
-						<th>Project Status</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${not empty projectDocumentList}">
-						<c:forEach var="projDoc" items="${projectDocumentList}">
-							<tr>
-								<td><a
-									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=${action}"
-									class="userAction">${projDoc.projectName}</a></td>
-								<td>${projDoc.aliasName}</td>
-								<td>${projDoc.agreementNo}</td>
-								<td>${projDoc.cerNo}</td>
-								<td>${projDoc.amount}</td>
-								<td>${projDoc.contractorName}</td>
-								<td>${projDoc.projectStatus}</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-				</tbody>
-			</table>
+			
+			
 			<br>
 			<br>
 		</c:if>

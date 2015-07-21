@@ -31,6 +31,7 @@ import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
@@ -59,6 +60,8 @@ public class ItemController {
 		Item item = new Item();
 		item.setEmployeeId(employeeId);
 		model.addAttribute("itemForm", item);
+        List<String> itemTypeNames = fetchItemTypes();
+        model.addAttribute("itemTypes", itemTypeNames);
 		return "BuildItem";
 	}
 	
@@ -88,12 +91,17 @@ public class ItemController {
 			isItemSaveSuccessful = itemService.createEditItem(item);
 		}
 		if(result.hasErrors() || !isItemSaveSuccessful) {
+            List<String> itemTypes = fetchItemTypes();
+            model.addAttribute("itemTypes", itemTypes);
 			return "BuildItem";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(item.getEmployeeId());
 			model.addAttribute("employee", employee);
+            List<String> itemTypes = new ArrayList<>();
+            itemTypes.add(item.getItemType());
+            model.addAttribute("itemTypes",itemTypes);
 			model.addAttribute("itemCreationMessage", "Item Creation Successful.");
 			return "BuildItem";			
 		}
@@ -101,12 +109,36 @@ public class ItemController {
 	
 	@RequestMapping(value = "/emp/myview/configureItems/{employeeId}", params = {"project"}, method = RequestMethod.GET)
 	public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId, Model model) {		
-		DescItemDetail descItemDetail = new DescItemDetail();
-		descItemDetail.setEmployeeId(employeeId);
-		descItemDetail.setProjId(projectId);
-		model.addAttribute("projectItemForm", descItemDetail);
-		return "ConfigureItems";
+		ProjectConfiguration projectConfiguration = new ProjectConfiguration();
+		projectConfiguration.setEmployeeId(employeeId);
+		projectConfiguration.setProjId(projectId);
+		
+		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
+		model.addAttribute("projectItemForm", projectConfiguration);
+		
+		Gson gson = new Gson();
+		JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
+		if (! element.isJsonArray()) {
+			
+		}
+		JsonArray jsonArray = element.getAsJsonArray();
+		projectConfiguration.setItemPriceConfiguration(jsonArray.toString());
+		projectConfiguration.setEmployeeId(employeeId);
+		model.addAttribute("projectItemForm", projectConfiguration);
+		
+		return "ItemPriceConfigurator";
 	}
+
+    private List<String> fetchItemTypes() {
+        LOGGER.info("method = fetchTypes()");
+        List<String> result = new ArrayList<String>();
+        List<String> itemNames = itemService.fetchItemTypes();
+        LOGGER.info("The Item Name Size:" + itemNames.size());
+        for (String item : itemNames) {
+                result.add(item);
+        }
+        return result;
+    }
 	
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
 	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
@@ -144,13 +176,13 @@ public class ItemController {
 		return status;
 	}
 	
-	
-	@RequestMapping(value = "/pms/emp/myview/configureItems/save.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody boolean saveConfiguredItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
+	@RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody boolean saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{
 		ObjectMapper mapper = new ObjectMapper();
-		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
-		System.out.println(itemList);
-		return true;
+		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
+		projectItemConfiguration.setItemDetail(itemList);
+		boolean status = itemService.configureItemPrice(projectItemConfiguration);
+		return status;
 	}
 	
 

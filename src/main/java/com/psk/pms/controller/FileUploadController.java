@@ -2,6 +2,7 @@ package com.psk.pms.controller;
  
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.service.FileService;
 import com.psk.pms.service.ProjectService;
@@ -62,9 +63,35 @@ public class FileUploadController extends BaseController {
         return "UploadFile";
     }
     
+    @RequestMapping(value = "/emp/myview/uploadExcel/{employeeId}", method = RequestMethod.GET)
+    public String pmsExcelUploadForm(@PathVariable String employeeId, 
+			Model model) {
+    	LOGGER.info("Into Excel Upload");
+    	FileUpload fileUpload = new FileUpload();
+    	fileUpload.setEmployeeId(employeeId);
+		model.addAttribute("uploadForm", fileUpload);
+    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		if(aliasProjectList.size() == 0){
+			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
+			return "Welcome";
+		} else{
+			model.addAttribute("aliasProjectList", aliasProjectList);
+		}
+    	Employee employee = new Employee();
+		employee.setEmployeeId(employeeId);
+		model.addAttribute("employee", employee);
+        return "UploadExcel";
+    }
+    
     @RequestMapping(value = "/emp/myview/uploadFile/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
+    	return getAliasSubProjectNames(request);
+	}
+    
+    @RequestMapping(value = "/emp/myview/uploadExcel/getSubAliasProject.do", method = RequestMethod.GET)
+	@ResponseBody 
+	public String getSubAliasProjectForExcelUpload(HttpServletRequest request, HttpServletResponse response) {
     	return getAliasSubProjectNames(request);
 	}
     
@@ -110,6 +137,43 @@ public class FileUploadController extends BaseController {
         map.addAttribute("aliasProjectList", aliasProjectList);
         map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
         return "UploadFile";
+    }
+    
+    @RequestMapping(value = "/emp/myview/uploadExcel/saveProjectDescription.do", method = RequestMethod.POST)
+    public String saveProjectDescription(@ModelAttribute("uploadForm") FileUpload uploadForm,BindingResult result,Model map) 
+    										throws IllegalStateException, IOException {
+    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
+		fileUploadValidator.validate(uploadForm, result);
+		if(!result.hasErrors())
+		{	
+			fileService.uploadFiles(uploadForm);
+			ExcelDetail excelDetail = fileService.saveProjectDescription(uploadForm);
+			if(!excelDetail.isExcel()){
+				map.addAttribute("fileAdditionSuccessful", "Please Select Valid File Format");
+				map.addAttribute("aliasProjectList", aliasProjectList);
+				subAliasProjectList.put("0", "--Please Select--");
+				map.addAttribute("subAliasProjectList",subAliasProjectList);
+				map.addAttribute("aliasProjectList", aliasProjectList);
+				return "UploadExcel";
+			}
+		}else
+		{
+			if(uploadForm.getFiles().size()==0)
+			{
+				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
+			}
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			subAliasProjectList.put("0", "--Please Select--");
+			map.addAttribute("subAliasProjectList",subAliasProjectList);
+			map.addAttribute("aliasProjectList", aliasProjectList);
+			return "UploadExcel";
+		}
+		subAliasProjectList.put("0", "--Please Select--");
+		map.addAttribute("subAliasProjectList", subAliasProjectList);
+        map.addAttribute("aliasProjectList", aliasProjectList);
+        map.addAttribute("fileAdditionSuccessful", "Project Description Creation Successful");
+        return "UploadExcel";
     }
 
 

@@ -88,7 +88,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         } else {
             projDescDetail.setQuantityInFig(quantityInFig.toString());
         }
-        projDescDetail.setQuantityInWords((String) row.get("QuantityInWords"));
+        projDescDetail.setQuantityInUnit((String) row.get("QuantityInUnit"));
         projDescDetail.setDescription((String) row.get("Description"));
         projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
         BigDecimal rateInFig = (BigDecimal) row.get("RateInFig");
@@ -159,27 +159,27 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
     public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
 
-        String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInWords = ?, Description = ?," +
+        String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInUnit = ?, Description = ?," +
                 "AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
         String insertSql = null;
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
             if (projDescDetail.isSubProjectDesc()) {
-                insertSql = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInWords, "
+                insertSql = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
                         + "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
                         "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
                 jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(), projDescDetail.getSerialNumber(),
-                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(),
+                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                         projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
                         projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
                         projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
                 });
             } else {
-                insertSql = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInWords, "
+                insertSql = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
                         + "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
                         "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?,?)";
                 jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getSerialNumber(),
-                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(),
+                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                         projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
                         projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
                         projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
@@ -188,7 +188,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 
         } else {
-            jdbcTemplate.update(updateSql, new Object[]{projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInWords(),
+            jdbcTemplate.update(updateSql, new Object[]{projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                     projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
                     projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
                     projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()

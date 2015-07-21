@@ -23,4 +23,6 @@ public interface EmdDAO {
     void deleteEmddetailByProjectId(Integer projectId);
 
     void deleteEmddetailBySubProjectId(Integer subProjectId);
+
+    List<String> fetchEmdTypes();
 }

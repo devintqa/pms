@@ -1,18 +1,25 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -164,6 +171,14 @@ public class ItemDAOImpl implements ItemDAO {
 		itemDetail.setItemCost((String) row.get("ItemCost"));
 		return itemDetail;
 	}
+	
+	private ProjectConfiguration.ItemDetail buildPricedItem(Map<String, Object> row) {
+		ProjectConfiguration.ItemDetail itemDetail = new ProjectConfiguration.ItemDetail();
+		itemDetail.setItemName((String) row.get("ItemName"));
+		itemDetail.setItemUnit((String) row.get("ItemUnit"));
+		itemDetail.setItemPrice(row.get("ItemPrice").toString());
+		return itemDetail;
+	}
 
 	public void deleteItemByProjectId(Integer projectId)
 	{
@@ -237,4 +252,71 @@ public class ItemDAOImpl implements ItemDAO {
 		}
 		return itemsDetail;
 	}
+
+	 @Override
+	    public List<String> fetchItemTypes()
+	    {
+	        LOGGER.info("method = fetchItemTypes");
+	        jdbcTemplate = new JdbcTemplate(dataSource);
+	        List<String> itemTypes =  jdbcTemplate.queryForList(PmsMasterQuery.FETCHITEMTYPES, String.class);
+	        LOGGER.info("No of rows fetched :"+itemTypes.size());
+	        return itemTypes;
+	    }
+
+	    @Override
+	    public List<String> fetchUniqueItemUnits()
+	    {
+	        LOGGER.info("method = fetchUniqueItemUnit");
+	        jdbcTemplate = new JdbcTemplate(dataSource);
+	        List<String> uniqueItemUnits = jdbcTemplate.queryForList(PmsMasterQuery.FETCHUNIQUEITEMUNIT,String.class);
+	        LOGGER.info("No of rows fetched :" + uniqueItemUnits.size());
+	        return uniqueItemUnits;
+	    }
+
+		@Override
+		public boolean configureItemPrice(final ProjectConfiguration projectItemConfiguration){
+				String sql = "INSERT INTO pricedetail" +
+						"(projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ?)";
+				jdbcTemplate = new JdbcTemplate(dataSource);
+				
+				jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration.getItemDetail().get(i);
+						ps.setInt(1, projectItemConfiguration.getProjId());
+						if(projectItemConfiguration.getSubProjId()==null){
+							ps.setInt(2, 0);
+						}
+						ps.setString(3, itemDetail.getItemName());
+						ps.setString(4, itemDetail.getItemUnit());
+						ps.setString(5, itemDetail.getItemPrice());
+						ps.setString(6, itemDetail.getItemUnit());
+						ps.setString(7, itemDetail.getItemType());
+						ps.setDate(7, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+					}
+
+					@Override
+					public int getBatchSize() {
+						return projectItemConfiguration.getItemDetail().size();
+					}
+				});
+				return true;
+		}
+
+		@Override
+		public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration) {
+			String sql = "Select * from pricedetail where projectId = '"+projectConfiguration.getProjId()+"'";
+			jdbcTemplate = new JdbcTemplate(dataSource);
+
+			List<ProjectConfiguration.ItemDetail> itemList = new ArrayList<ProjectConfiguration.ItemDetail>();
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+			for (Map<String, Object> row : rows) {
+				itemList.add(buildPricedItem(row));
+			}
+			projectConfiguration.setItemDetail(itemList);
+			return projectConfiguration;
+		}
+
 }

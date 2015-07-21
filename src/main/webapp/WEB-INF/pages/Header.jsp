@@ -40,6 +40,8 @@
 							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
+						<li><a id="uploadExcel"
+							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Upload</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>

@@ -17,7 +17,6 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -94,13 +93,8 @@ public class EmdController {
 	}
 
 	@ModelAttribute("emdTypeList")
-	public Map<String, String> populateEmdTypeList() {
-		Map<String, String> emdType = new LinkedHashMap<String, String>();
-		emdType.put("Bank Guarantee", "Bank Guarantee");
-		emdType.put("DD", "DD");
-		emdType.put("FD", "FD");
-		emdType.put("IVP", "IVP");
-		emdType.put("KVP", "KVP");
+	public List<String> populateEmdTypeList() {
+		List<String> emdType =  emdService.fetchEmdTypes();
 		return emdType;
 	}
 

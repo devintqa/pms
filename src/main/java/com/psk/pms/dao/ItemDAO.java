@@ -7,6 +7,7 @@ import java.util.Set;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -39,4 +40,11 @@ public interface ItemDAO {
 
     void deleteItemByProjectDescItemId(Integer itemId);
 
+    List<String> fetchItemTypes();
+
+    List<String> fetchUniqueItemUnits();
+
+	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
+
+	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
 }
