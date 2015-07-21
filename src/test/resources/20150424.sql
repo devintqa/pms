@@ -41,7 +41,7 @@ CREATE TABLE `emddetail` (
   `EmdId` int(11) NOT NULL AUTO_INCREMENT,
   `EmdSubmitter` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`EmdId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,6 +50,7 @@ CREATE TABLE `emddetail` (
 
 LOCK TABLES `emddetail` WRITE;
 /*!40000 ALTER TABLE `emddetail` DISABLE KEYS */;
+INSERT INTO `emddetail` VALUES (1,NULL,1200.00,'2015-07-11 00:00:00','2015-07-15 00:00:00','Bank Guarantee','18271278238',24,'2015-07-21 00:00:00','1020','0','tkumar','2015-07-04 15:13:22',1,'PSK');
 /*!40000 ALTER TABLE `emddetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,8 +97,8 @@ DROP TABLE IF EXISTS `itemcodes`;
 CREATE TABLE `itemcodes` (
   `itemName` varchar(100) NOT NULL,
   `itemUnit` varchar(20) NOT NULL,
-  `itemType` varchar(20) NOT NULL,
   `itemNo` int(11) NOT NULL AUTO_INCREMENT,
+  `itemType` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`itemNo`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -108,43 +109,38 @@ CREATE TABLE `itemcodes` (
 
 LOCK TABLES `itemcodes` WRITE;
 /*!40000 ALTER TABLE `itemcodes` DISABLE KEYS */;
-INSERT INTO `itemcodes` VALUES
-('CEMENT','BAG','Material',1),
-('RIVER SAND','CFT','Material',2),
-('SEWING SAND','CFT','Material',3),
-('BRICKS','NO','Material',4),
-('STEEL','MT','Material',5),
-('MASON I','NO','Labour',6),
-('MASON II','NO','Labour',7),
-('CARPENTER I','NO','Labour',8),
-('CARPENTER II','NO','Labour',9);
+INSERT INTO `itemcodes` VALUES ('CEMENT','Bag',1,'MATERIAL'),('RIVER SAND','Bag',2,'MATERIAL'),('SEWING SAND','Bag',3,'MATERIAL'),('BRICKS','Bag',4,'MATERIAL'),('STEEL','Bag',5,'MATERIAL'),('BINDING WIRE','Bag',6,'MATERIAL'),('40 MM  METAL','Bag',7,'MATERIAL'),('20 MM METAL','Bag',8,'MATERIAL'),('CHIPS','Bag',9,'MATERIAL'),('EARTH FROM OUTSIDE','Bag',10,'MATERIAL'),('GRAVEL','Bag',11,'MATERIAL'),('QUARRY DUST','Bag',12,'MATERIAL'),('BOULDERS','Bag',13,'MATERIAL'),('WATER STOPPER','Bag',14,'MATERIAL'),('EXTRA FOR STAGEING 4.25 TO 6.5 M','Bag',15,'MATERIAL'),('EXTRA FOR STAGEING 4.25 TO 8.5 M','Bag',16,'MATERIAL'),('STRUCTURAL STEEL','Bag',17,'MATERIAL'),(' RR MASONARY','Bag',18,'MATERIAL'),('SOLID BLOCK 200 MM TK.','Bag',19,'MATERIAL'),('SOLID BLOCK 150 MM TK.','Bag',20,'MATERIAL'),('SOLID BLOCK 100 MM TK.','Bag',21,'MATERIAL'),('RMC M10','Bag',22,'MATERIAL'),('RMC M15','Bag',23,'MATERIAL'),('RMC M20','Bag',24,'MATERIAL'),('RMC M25','Bag',25,'MATERIAL'),('RMC M30','Bag',26,'MATERIAL'),('RMC M35','Bag',27,'MATERIAL'),('RMC M 40','Bag',28,'MATERIAL'),('ANTI-TERMINATE','Bag',29,'MATERIAL'),('FLY ASH CONC. BLOCK','Bag',30,'MATERIAL'),('ARPHITA MESH','Bag',31,'MATERIAL'),('CENTERING MATERIAL COST','Bag',32,'MATERIAL'),('COLUMN CENTERING MATRIAL COST','Bag',33,'MATERIAL'),('COLUMN CENTERING MATRIAL COST','Bag',34,'MATERIAL'),('CENTERING MATERIAL COST','Bag',35,'MATERIAL'),('AEROCON BLOCK','Bag',36,'MATERIAL'),('EROCON. BLOCK WORK IN C.M 1:6  ','Bag',37,'MATERIAL'),('FLY ASH','Bag',38,'MATERIAL'),('WATER PROOFING COMPOUND','Bag',39,'MATERIAL'),('MESH','Bag',40,'MATERIAL'),('WATERPROOFING MATERIAL & LABOUR (CICO)','Bag',41,'MATERIAL');
 /*!40000 ALTER TABLE `itemcodes` ENABLE KEYS */;
 UNLOCK TABLES;
 
-DROP TABLE IF EXISTS `team`;
+--
+-- Table structure for table `pricedetail`
+--
+
+DROP TABLE IF EXISTS `pricedetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `team` (
-  `teamName` varchar(100) NOT NULL,
-  `teamNumber` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`teamNumber`)
+CREATE TABLE `pricedetail` (
+  `itemName` varchar(100) NOT NULL,
+  `itemUnit` varchar(20) NOT NULL,
+  `itemType` varchar(45) NOT NULL,
+  `itemPrice` decimal(15,2) DEFAULT '0.00',
+  `projectId` int(11) NOT NULL DEFAULT '0',
+  `subProjectId` int(11) NOT NULL DEFAULT '0',
+  `priceFeed` datetime NOT NULL,
+  `entryId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`entryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `itemcodes`
+-- Dumping data for table `pricedetail`
 --
 
-LOCK TABLES `team` WRITE;
-/*!40000 ALTER TABLE `itemcodes` DISABLE KEYS */;
-INSERT INTO `team` VALUES
-('Admin',1),
-('Account',2),
-('Management',3),
-('Purchase',4),
-('Technical',5),
-('Store',6);
-/*!40000 ALTER TABLE `itemcodes` ENABLE KEYS */;
+LOCK TABLES `pricedetail` WRITE;
+/*!40000 ALTER TABLE `pricedetail` DISABLE KEYS */;
+INSERT INTO `pricedetail` VALUES ('CEMENT','BAG','MATERIAL',450.00,1,0,'2015-07-18 10:03:38',1),('RIVER SAND','BAG','MATERIAL',100.00,1,0,'2015-07-18 10:03:38',2),('SEWER SAND','BAG','MATERIAL',200.00,1,0,'2015-07-18 10:03:38',3),('MASON','1','LABOUR',200.00,1,0,'2015-07-18 10:03:38',4),('BINDING WIRE','Bag','Bag',560.00,1,0,'2015-07-20 00:00:00',5);
+/*!40000 ALTER TABLE `pricedetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -166,7 +162,7 @@ CREATE TABLE `projdescitem` (
   `ItemCost` varchar(45) DEFAULT NULL,
   `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`DescItemId`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +171,7 @@ CREATE TABLE `projdescitem` (
 
 LOCK TABLES `projdescitem` WRITE;
 /*!40000 ALTER TABLE `projdescitem` DISABLE KEYS */;
-INSERT INTO `projdescitem` VALUES (3,0,3,'SER123','RIVER SAND','cft','45','42','1890',26),(3,0,3,'SER123','CEMENT','bag','100','250','25000',27),(3,0,3,'SER123','SEWING SAND','cft','201','250','50250',28);
+INSERT INTO `projdescitem` VALUES (1,0,1,'SNO1','CEMENT','bag','200','500','100000',1),(1,0,1,'SNO1','RIVER SAND','cft','1000','100','100000',2),(1,0,1,'SNO1','SEWING SAND','cft','2000','200','400000',3),(1,0,2,'SER234','CEMENT','bag','122','301','36722',11),(1,0,4,'SER123','RIVER SAND','BAG','5','100.00','15',18),(1,0,4,'SER123','SEWER SAND','BAG','2','200.00','400',19),(1,0,4,'SER123','MASON','1','6','200.00','1200',20),(1,0,4,'SER123','CEMENT','BAG','5','450.00','2250',21);
 /*!40000 ALTER TABLE `projdescitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -191,7 +187,7 @@ CREATE TABLE `project` (
   `ProjName` text NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
@@ -213,7 +209,7 @@ CREATE TABLE `project` (
   `PerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +218,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (4,'Madras Medical College','MMC','AN2123','1234CER',1000.00,'PSK','PSK','12 godown street',1500.00,1250.00,2000.00,2500.00,10.00,NULL,'2015-06-26 00:00:00',500.00,'tkumar','2015-06-26 09:44:34','2015-06-26 00:00:00','2015-06-30 00:00:00','2015-06-26 00:00:00',12,13);
+INSERT INTO `project` VALUES (1,'Madras Medical College','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,200000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00),(2,'Better Homes','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,200000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-21 19:48:49','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +245,7 @@ CREATE TABLE `projectdesc` (
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +254,7 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-INSERT INTO `projectdesc` VALUES (4,'SER123',NULL,'Main Work',10.00,'ten','EARTH ESCAVATION','EE',1000.00,'Thousand',1000.00,'tkumar','2015-06-26 09:47:11',3);
+INSERT INTO `projectdesc` VALUES (1,'SER234',NULL,'Main Work',12000.00,'twelve thousand','Earth excavation','EE2',12000.00,'twelve thousand',25000.00,'tkumar','2015-07-03 23:39:59',2),(1,'SER123',NULL,'Main Work',12000.00,'twelve thousand','Earth Excavation','EE3',12000.00,'twelve thousand',25000.00,'tkumar','2015-07-08 22:21:55',4);
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +270,7 @@ CREATE TABLE `subproject` (
   `SubProjName` text NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
@@ -354,65 +350,6 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-
---
--- Dumping events for database 'pms'
---
-
---
--- Table structure for table `itemtype`
---
-
-DROP TABLE IF EXISTS `itemtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `itemtype` (
-  `itemId` int(10) NOT NULL AUTO_INCREMENT primary key,
-  `itemTypeName` varchar(20) NOT NULL)
-ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping events for database 'pms'
---
-
-LOCK TABLES `users` WRITE;
-insert into itemtype values (1,'Material');
-insert into itemtype values (2,'Labour');
-insert into itemtype values (3,'Machinery');
-insert into itemtype values (4,'Other');
-UNLOCK TABLES;
-
-
---
--- Table structure for table `itemtype`
---
-
-DROP TABLE IF EXISTS `emdtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emdtype` (
-  `emdTypeId` int(10) NOT NULL AUTO_INCREMENT primary key,
-  `emdTypeName` varchar(20) NOT NULL)
-ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping data into emdtype table
---
-
-LOCK TABLES `users` WRITE;
-insert into emdtype values (1,'Bank Guarantee');
-insert into emdtype values (2,'DD');
-insert into emdtype values (3,'FD');
-insert into emdtype values (4,'IVP');
-insert into emdtype values (5,'KVP');
-UNLOCK TABLES;
---
--- Dumping routines for database 'pms'
---
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -423,4 +360,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-01 20:11:16
+-- Dump completed on 2015-07-21 21:33:47
