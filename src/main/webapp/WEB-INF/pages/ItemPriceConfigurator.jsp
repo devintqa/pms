@@ -22,12 +22,12 @@
 					},
 					select: function(event, ui) { 
 				         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
+				         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
 				    }
 				});
 			});
 			
 		});
-		
 		
 		$(document).on("keyup","input[name = 'itemPrice']",function(){
 
@@ -41,6 +41,7 @@
 				document.getElementById('itemTable').deleteRow(i);
 			} else{
 				document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
+				document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[1].value = '';
 				document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
 				document.getElementById('itemTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
 			}
@@ -51,40 +52,47 @@
 			var new_row = itemTable.rows[1].cloneNode(true);
 			var len = itemTable.rows.length;
 	
-			var inp0 = new_row.cells[0].getElementsByTagName('input')[0];
-			inp0.id += len;
-			inp0.value = '';
+			var itemName = new_row.cells[0].getElementsByTagName('input')[0];
+			itemName.id += len;
+			itemName.value = '';
+			
+			var itemType = new_row.cells[0].getElementsByTagName('input')[1];
+			itemType.id += len;
+			itemType.value = '';
+			
+			var itemUnit = new_row.cells[1].getElementsByTagName('input')[0];
+			itemUnit.id += len;
+			itemUnit.value = '';
+			
 	
-			var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
-			inp1.id += len;
-			inp1.value = '';
-	
-			var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
-			inp2.id += len;
-			inp2.value = '';
+			var itemPrice = new_row.cells[2].getElementsByTagName('input')[0];
+			itemPrice.id += len;
+			itemPrice.value = '';
 			
 			itemTable.appendChild(new_row);
 	
 		}
 	
 		
-		function ItemDetail(itemName, itemUnit, itemPrice) {
+		function ItemDetail(itemName, itemType, itemUnit, itemPrice) {
 			this.itemName = itemName;
+			this.itemType = itemType;
 			this.itemUnit = itemUnit;
 			this.itemPrice = itemPrice;
 			} 
 		
-		function saveItemDesc() {
+		function saveItemPrice() {
 			var itemTable = document.getElementById('itemTable');
 			var itemObjArray = [];
 			var itemDescForm = {};
 			var len = itemTable.rows.length;
 			for (i = 1; i <= len - 1; i++) {
 				var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+				var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
 				var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
 				var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
 				
-				var obj = new ItemDetail(itemName, itemUnit, itemPrice );
+				var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
 				if(itemName){
 					itemObjArray.push(obj); 
 				}
@@ -125,17 +133,21 @@
 			var row = document.getElementById('itemTable').rows[1].cloneNode(true);
 			var len = document.getElementById('itemTable').rows.length;
 	
-			var inp0 = row.cells[0].getElementsByTagName('input')[0];
-			inp0.id += len;
-			inp0.value = item.itemName;
-	
-			var inp1 = row.cells[1].getElementsByTagName('input')[0];
-			inp1.id += len;
-			inp1.value = item.itemUnit;
+			var itemName = new_row.cells[0].getElementsByTagName('input')[0];
+			itemName.id += len;
+			itemName.value = item.itemName;;
 			
-			var inp2 = row.cells[2].getElementsByTagName('input')[0];
-			inp2.id += len;
-			inp2.value = item.itemPrice;
+			var itemType = new_row.cells[0].getElementsByTagName('input')[1];
+			itemType.id += len;
+			itemType.value = item.itemType;
+			
+			var itemUnit = new_row.cells[1].getElementsByTagName('input')[0];
+			itemUnit.id += len;
+			itemUnit.value = item.itemUnit;
+			
+			var itemPrice = new_row.cells[2].getElementsByTagName('input')[0];
+			itemPrice.id += len;
+			itemPrice.value = item.itemPrice;
 	
 			document.getElementById('itemTable').appendChild(row);
 
@@ -174,10 +186,11 @@
 			</tr>
 
 			<tr>
-				<td><input name="itemName" id="itemName" type="text" /></td>
+				<td><input name="itemName" id="itemName" type="text" />
+				<input name="itemType" id="itemType" type="hidden" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" id="itemPrice" type="text" /></td>
-				<td><a id="deleteItem" onclick="deleteItemRow(this)">
+				<td><a id="deleteItem" onclick="deleteItemRow(this)"> 
 				<img src="<c:url value="/resources/images/delete.png" />" /></a></td>
 			</tr>
 
@@ -187,7 +200,7 @@
 
 		<br>
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
-		<input type="button" id="saveDesc" value="Save" onclick="saveItemDesc()" />
+		<input type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />
 		<form:hidden path="itemPriceConfiguration" id="itemPriceConfiguration"/>
 		<form:hidden path="projId" id="projId"/>
 		<form:hidden path="subProjId" id="subProjId"/>

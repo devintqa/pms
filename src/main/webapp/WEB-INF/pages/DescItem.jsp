@@ -65,25 +65,25 @@
 		var new_row = itemTable.rows[1].cloneNode(true);
 		var len = itemTable.rows.length;
 
-		var inp0 = new_row.cells[0].getElementsByTagName('input')[0];
-		inp0.id += len;
-		inp0.value = '';
+		var itemName = row.cells[0].getElementsByTagName('input')[0];
+		itemName.id += len;
+		itemName.value = '';
 
-		var inp1 = new_row.cells[1].getElementsByTagName('input')[0];
-		inp1.id += len;
-		inp1.value = '';
-
-		var inp2 = new_row.cells[2].getElementsByTagName('input')[0];
-		inp2.id += len;
-		inp2.value = '';
+		var itemUnit = row.cells[1].getElementsByTagName('input')[0];
+		itemUnit.id += len;
+		itemUnit.value = '';
 		
-		var inp3 = new_row.cells[3].getElementsByTagName('input')[0];
-		inp3.id += len;
-		inp3.value = '';
+		var itemPrice = row.cells[2].getElementsByTagName('input')[0];
+		itemPrice.id += len;
+		itemPrice.value = '';
 		
-		var inp4 = new_row.cells[4].getElementsByTagName('input')[0];
-		inp4.id += len;
-		inp4.value = '';
+		var itemQty = row.cells[3].getElementsByTagName('input')[0];
+		itemQty.id += len;
+		itemQty.value = '';
+		
+		var itemCost = row.cells[4].getElementsByTagName('input')[0];
+		itemCost.id += len;
+		itemCost.value = '';
 
 		itemTable.appendChild(new_row);
 
@@ -191,26 +191,26 @@
 	function fillItemRow(item) {
 		var row = document.getElementById('itemTable').rows[1].cloneNode(true);
 		var len = document.getElementById('itemTable').rows.length;
+		
+		var itemName = row.cells[0].getElementsByTagName('input')[0];
+		itemName.id += len;
+		itemName.value = item.itemName;
 
-		var inp0 = row.cells[0].getElementsByTagName('input')[0];
-		inp0.id += len;
-		inp0.value = item.itemName;
-
-		var inp1 = row.cells[1].getElementsByTagName('input')[0];
-		inp1.id += len;
-		inp1.value = item.itemUnit;
+		var itemUnit = row.cells[1].getElementsByTagName('input')[0];
+		itemUnit.id += len;
+		itemUnit.value = item.itemUnit;
 		
-		var inp2 = row.cells[2].getElementsByTagName('input')[0];
-		inp2.id += len;
-		inp2.value = item.itemPrice;
+		var itemPrice = row.cells[2].getElementsByTagName('input')[0];
+		itemPrice.id += len;
+		itemPrice.value = item.itemPrice;
 		
-		var inp3 = row.cells[3].getElementsByTagName('input')[0];
-		inp3.id += len;
-		inp3.value = item.itemQty;
+		var itemQty = row.cells[3].getElementsByTagName('input')[0];
+		itemQty.id += len;
+		itemQty.value = item.itemQty;
 		
-		var inp4 = row.cells[4].getElementsByTagName('input')[0];
-		inp4.id += len;
-		inp4.value = item.itemCost;
+		var itemCost = row.cells[4].getElementsByTagName('input')[0];
+		itemCost.id += len;
+		itemCost.value = item.itemCost;
 
 		document.getElementById('itemTable').appendChild(row);
 
