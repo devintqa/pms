@@ -343,12 +343,6 @@
 										placeholder="Enter Rate in Figures" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
-								<td>Rate in Words<span id="colon">:</span>
-								</td>
-								<td><form:input path="rateInWords"
-										placeholder="Enter Rate in Words" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
 								<td>Amount in Rupees<span id="colon">:</span>
 								</td>
 								<td><form:input path="projDescAmount"
