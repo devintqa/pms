@@ -115,7 +115,7 @@ public class ItemController {
 		
 		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
 		model.addAttribute("projectItemForm", projectConfiguration);
-		
+		System.out.println(projectConfiguration);
 		Gson gson = new Gson();
 		JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
 		if (! element.isJsonArray()) {

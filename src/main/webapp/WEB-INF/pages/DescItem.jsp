@@ -65,23 +65,23 @@
 		var new_row = itemTable.rows[1].cloneNode(true);
 		var len = itemTable.rows.length;
 
-		var itemName = row.cells[0].getElementsByTagName('input')[0];
+		var itemName = new_row.cells[0].getElementsByTagName('input')[0];
 		itemName.id += len;
 		itemName.value = '';
 
-		var itemUnit = row.cells[1].getElementsByTagName('input')[0];
+		var itemUnit = new_row.cells[1].getElementsByTagName('input')[0];
 		itemUnit.id += len;
 		itemUnit.value = '';
 		
-		var itemPrice = row.cells[2].getElementsByTagName('input')[0];
+		var itemPrice = new_row.cells[2].getElementsByTagName('input')[0];
 		itemPrice.id += len;
 		itemPrice.value = '';
 		
-		var itemQty = row.cells[3].getElementsByTagName('input')[0];
+		var itemQty = new_row.cells[3].getElementsByTagName('input')[0];
 		itemQty.id += len;
 		itemQty.value = '';
 		
-		var itemCost = row.cells[4].getElementsByTagName('input')[0];
+		var itemCost = new_row.cells[4].getElementsByTagName('input')[0];
 		itemCost.id += len;
 		itemCost.value = '';
 

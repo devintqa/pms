@@ -11,7 +11,7 @@
 	
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
-		fillItemDesc();		
+		fillItemPrice();		
 		$(document).on('keydown.autocomplete', selector, function() {
 				$(this).autocomplete({
 					source: function (request, response) {
@@ -118,7 +118,7 @@
 			});
 		}
 		
-		function fillItemDesc() {
+		function fillItemPrice() {
 			var len = document.getElementById('itemTable').rows.length;
 			var obj = JSON.parse(document.getElementById('itemPriceConfiguration').value);
 			for (i = 0; i <= obj.length - 1; i++) {
@@ -133,19 +133,19 @@
 			var row = document.getElementById('itemTable').rows[1].cloneNode(true);
 			var len = document.getElementById('itemTable').rows.length;
 	
-			var itemName = new_row.cells[0].getElementsByTagName('input')[0];
+			var itemName = row.cells[0].getElementsByTagName('input')[0];
 			itemName.id += len;
 			itemName.value = item.itemName;;
 			
-			var itemType = new_row.cells[0].getElementsByTagName('input')[1];
+			var itemType = row.cells[0].getElementsByTagName('input')[1];
 			itemType.id += len;
 			itemType.value = item.itemType;
 			
-			var itemUnit = new_row.cells[1].getElementsByTagName('input')[0];
+			var itemUnit = row.cells[1].getElementsByTagName('input')[0];
 			itemUnit.id += len;
 			itemUnit.value = item.itemUnit;
 			
-			var itemPrice = new_row.cells[2].getElementsByTagName('input')[0];
+			var itemPrice = row.cells[2].getElementsByTagName('input')[0];
 			itemPrice.id += len;
 			itemPrice.value = item.itemPrice;
 	
