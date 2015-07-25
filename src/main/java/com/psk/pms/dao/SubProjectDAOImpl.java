@@ -1,16 +1,21 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.Item;
-import com.psk.pms.model.SubProjectDetail;
+import static com.psk.pms.dao.PmsMasterQuery.DELETESUBPROJECTBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.DELETESUBPROJECTBYSUBPROJECTID;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import com.psk.pms.model.SubProjectDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.

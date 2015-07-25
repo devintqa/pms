@@ -185,5 +185,10 @@ public class ItemController {
 		return status;
 	}
 	
+	@RequestMapping(value = "/emp/myview/testRes/down.do", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody String saveConfiguredItems(){
+		return "";
+	}
+	
 
 }
