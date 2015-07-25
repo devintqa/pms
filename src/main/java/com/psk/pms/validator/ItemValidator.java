@@ -1,5 +1,11 @@
 package com.psk.pms.validator;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import com.psk.pms.Constants;
 import com.psk.pms.service.ItemService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +14,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.service.ProjectService;
 
 public class ItemValidator extends BaseValidator implements Validator{
@@ -47,6 +54,23 @@ public class ItemValidator extends BaseValidator implements Validator{
 				errors.rejectValue("itemName", "itemName.incorrect","Item Name Already Found To Be Existing.");
 			}
         }
+	}
+	
+	public String validateItem(String result,
+			ProjectConfiguration projectItemConfiguration) {
+		List<String> itemNames = new ArrayList<String>();
+		Set<String> itemName = new HashSet<String>();
+		if (projectItemConfiguration.getItemDetail() != null) {
+			for (ProjectConfiguration.ItemDetail items : projectItemConfiguration
+					.getItemDetail()) {
+				itemNames.add(items.getItemName());
+				itemName.add(items.getItemName());
+			}
+			if (itemNames.size() != itemName.size()) {
+				return Constants.DUPLICATED_ITEM_NAMES;
+			}
+		}
+		return result;
 	}
 }
 

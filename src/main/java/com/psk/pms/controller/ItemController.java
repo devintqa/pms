@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.psk.pms.Constants;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Employee;
@@ -99,7 +100,7 @@ public class ItemController {
 			Employee employee = new Employee();
 			employee.setEmployeeId(item.getEmployeeId());
 			model.addAttribute("employee", employee);
-            List<String> itemTypes = new ArrayList<>();
+            List<String> itemTypes = new ArrayList<String>();
             itemTypes.add(item.getItemType());
             model.addAttribute("itemTypes",itemTypes);
 			model.addAttribute("itemCreationMessage", "Item Creation Successful.");
@@ -182,9 +183,13 @@ public class ItemController {
 		String result = "";
 		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
 		projectItemConfiguration.setItemDetail(itemList);
+		result = itemValidator.validateItem(result,projectItemConfiguration);
+		if(result != ""){
+			return result;
+		}
 		boolean status = itemService.configureItemPrice(projectItemConfiguration);
 		if(status){
-			result = "Items Configured Successfully";
+			result = Constants.ITEM_SAVE_SUCCESSFUL;
 		}
         return result;
 	}
