@@ -9,4 +9,6 @@ public interface Constants {
 	String EXCEL_FILE_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 	String ITEM_SAVE_SUCCESSFUL = "Items Configured Successfully.";
 	String DUPLICATED_ITEM_NAMES = "Same Item Name Cannot Be Added More Than Once Per Project.";
+    String EXISTS = "Exists";
+    String DOESNOTEXISTS = "Does not Exists";
 }

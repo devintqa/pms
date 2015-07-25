@@ -113,4 +113,26 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
     public void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
         projectDescriptionDAO.saveSubProjectDescriptionDetails(projDescDetails);
     }
+
+    @Override
+    public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
+        return projectDescriptionDAO.isProjectDescriptionDetailsExistsForProject(projectId);
+    }
+
+    @Override
+    public boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId) {
+        return projectDescriptionDAO.isProjectDescriptionDetailsExistsForSubProject(subProjectId);
+    }
+
+    @Override
+    public void deleteAllTheDescriptionDetailsOfProject(int projectId) {
+        LOGGER.info("Deleting all the project description items for project Id: " +projectId);
+        projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
+    }
+
+    @Override
+    public void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId) {
+        LOGGER.info("Deleting all the project description items for Sub project Id: " +subProjectId);
+        projectDescriptionDAO.deleteProjectDescriptionBySubProjectId(subProjectId);
+    }
 }

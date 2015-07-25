@@ -75,4 +75,9 @@ public class PmsMasterQuery {
     public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
             + "Description, AliasDescription, LastUpdatedBy ,LastUpdatedAt) " +
             "VALUES (?, ?, ? , ?, ?, ?, ?, ?,?)";
+
+    public static String NOOFPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM projectdesc WHERE ProjId = ?";
+
+    public static String NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT = "SELECT count(*) FROM projectdesc WHERE SubProjId = ?";
+
 }

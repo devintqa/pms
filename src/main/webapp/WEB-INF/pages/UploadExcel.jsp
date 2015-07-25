@@ -41,7 +41,8 @@
               	        }else {
               	        	$("#showSubProject").hide();
               	        }
-              		}); 
+              		});
+
               	  $('#projId').change(function() {
               		  $("#showSubProject").hide();
               		  $('#subProjectUpload').attr('checked', false);
@@ -50,8 +51,65 @@
               	  if($('#subProjectUpload').is(':checked')) {
               	  		$("#showSubProject").show();
               	  };
- 
-                    });
+
+              	  $('#projId').change(
+                         function() {
+                                if(!$('#subProjectUpload').is(':checked')) {
+                                      var projectId = this.value;
+                                              $.ajax({
+                                    				type : "GET",
+                                    				url : "checkProjectDesc.do",
+                                    				cache : false,
+                                    				data: "projectId="+projectId,
+                                    				success : function(data) {
+                                    				if(data == "Exists") {
+                                    				    $( "#dialog-alert" ).html("Project contains ProjectDescription data. Uploading file will over write the existing data.");
+                                    				    $( "#dialog-alert" ).dialog({
+                                    				         modal: true,
+                                    				         height: 200,
+                                                             width: 400,
+                                                                 buttons: {
+                                                                    Ok: function() {
+                                                                      $( this ).dialog( "close" );
+                                                                    }
+                                    				             }
+                                    				    });
+                                    		        }
+                                                 }
+                                    		  });
+                                }
+              	          }
+                  )
+
+                  $('#aliasSubProjectName').change(
+                           function() {
+                                var subProjectId = this.value;
+                                     $.ajax({
+                                          type : "GET",
+                                          url : "checkSubProjectDesc.do",
+                                          cache : false,
+                                          data: "subProjectId="+subProjectId,
+                                          success : function(data) {
+                                          if(data == "Exists"){
+                                                $( "#dialog-alert" ).html("Sub Project already contains ProjectDescription data. Uploading file will over write the existing data.");
+                                                $( "#dialog-alert" ).dialog({
+                                                    modal: true,
+                                                    height: 200,
+                                                    width: 400,
+                                                        buttons: {
+                                                          Ok: function() {
+                                                            $( this ).dialog( "close" );
+                                                          }
+                                                        }
+                                                })
+                                          }
+                                     }
+                                });
+                           }
+
+                  )
+            });
+
 </script>
 </head>
 <body ng-app="sampleApp">
@@ -108,6 +166,7 @@
         </form:form>
         <br />
     </div>
+    <div id="dialog-alert" title="Warning"></div>
     </div>
 </body>
 </html>

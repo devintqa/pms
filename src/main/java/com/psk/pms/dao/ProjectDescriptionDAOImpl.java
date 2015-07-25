@@ -277,6 +277,30 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         });
     }
 
+    @Override
+    public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
+        int noOfrows = 0;
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOPROJECT, Integer.class, new Object[]{(Integer)projectId} );
+        LOGGER.info("method = isProjectDescriptionDetailsExistsForProject , isDataPresent :" + (noOfrows!=0) );
+        if(noOfrows != 0){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId) {
+        int noOfrows = 0;
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT, Integer.class, new Object[]{(Integer) subProjectId} );
+        LOGGER.info("method = isProjectDescriptionDetailsExistsForSubProject , isDataPresent :" + (noOfrows!=0) );
+        if(noOfrows != 0){
+            return true;
+        }
+        return false;
+    }
+
     public DriverManagerDataSource getDataSource() {
         return dataSource;
     }

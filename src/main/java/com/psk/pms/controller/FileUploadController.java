@@ -1,10 +1,12 @@
 package com.psk.pms.controller;
  
 import com.google.gson.Gson;
+import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.service.FileService;
+import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.FileUploadValidator;
@@ -40,6 +42,9 @@ public class FileUploadController extends BaseController {
 
 	@Autowired
 	SubProjectService subProjectService;
+
+    @Autowired
+    ProjectDescriptionService projectDescriptionService;
 
 	private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
  
@@ -274,5 +279,29 @@ public class FileUploadController extends BaseController {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
 	}
-	
+
+    @RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String checkProjectDescriptionAlreadyExistForProject(HttpServletRequest request, HttpServletResponse response) {
+        int projectId = Integer.parseInt(request.getParameter("projectId"));
+        LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , project Id  :"+projectId);
+        if (projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId)) {
+            return Constants.EXISTS;
+        } else {
+            return Constants.DOESNOTEXISTS;
+        }
+    }
+
+    @RequestMapping(value = "/emp/myview/uploadExcel/checkSubProjectDesc.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String checkProjectDescriptionAlreadyExistForSubProject(HttpServletRequest request, HttpServletResponse response) {
+        int subProjectId = Integer.parseInt(request.getParameter("subProjectId"));
+        LOGGER.info("method = checkProjectDescriptionAlreadyExistForSubProject , project Id  :"+subProjectId);
+        if (projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId)) {
+            return Constants.EXISTS;
+        } else {
+            return Constants.DOESNOTEXISTS;
+        }
+    }
+
 }

@@ -30,4 +30,9 @@ public interface ProjectDescriptionDAO {
     void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
     void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+
+    boolean isProjectDescriptionDetailsExistsForProject(int projectId);
+
+    boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+
 }

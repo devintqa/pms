@@ -65,9 +65,11 @@ public class FileServiceImpl implements FileService {
                 populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
 
                 if (isSubProjectFileUpload) {
+                    projectDescriptionService.deleteAllTheDescriptionDetailsOfSubProject(subProjDetail.getSubProjId());
                     populateSubProjectId(extractedProjDescDetails, subProjDetail);
                     projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
                 } else {
+                    projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
                     projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
                 }
             }

@@ -27,4 +27,12 @@ public interface ProjectDescriptionService {
 
     void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
+    boolean isProjectDescriptionDetailsExistsForProject(int projectId);
+
+    boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+
+    void deleteAllTheDescriptionDetailsOfProject(int projectId);
+
+    void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
+
 }
