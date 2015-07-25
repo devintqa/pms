@@ -126,7 +126,7 @@ public class ItemController {
 		projectConfiguration.setEmployeeId(employeeId);
 		model.addAttribute("projectItemForm", projectConfiguration);
 		
-		return "ItemPriceConfigurator";
+		return "ConfigureItems";
 	}
 
     private List<String> fetchItemTypes() {

@@ -285,14 +285,11 @@ public class ItemDAOImpl implements ItemDAO {
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
 						ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration.getItemDetail().get(i);
 						ps.setInt(1, projectItemConfiguration.getProjId());
-						if(projectItemConfiguration.getSubProjId()==null){
-							ps.setInt(2, 0);
-						}
+						ps.setInt(2, projectItemConfiguration.getSubProjId()==null?projectItemConfiguration.getSubProjId():0);
 						ps.setString(3, itemDetail.getItemName());
 						ps.setString(4, itemDetail.getItemUnit());
 						ps.setString(5, itemDetail.getItemPrice());
-						ps.setString(6, itemDetail.getItemUnit());
-						ps.setString(7, itemDetail.getItemType());
+						ps.setString(6, itemDetail.getItemType());
 						ps.setDate(7, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 					}
 
