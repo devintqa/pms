@@ -100,7 +100,7 @@
 			itemDescForm["employeeId"] = document.getElementById('employeeId').value;
 			itemDescForm["projId"] = document.getElementById('projId').value;
 			itemDescForm["subProjId"] = document.getElementById('subProjId').value;
-			itemDescForm["items"] = JSON.stringify(itemObjArray);
+			itemDescForm["itemPriceConfiguration"] = JSON.stringify(itemObjArray);
 			
 			console.log("data = " + JSON.stringify(itemDescForm));
 			
