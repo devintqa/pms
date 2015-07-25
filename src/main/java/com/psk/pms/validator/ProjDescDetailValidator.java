@@ -105,9 +105,6 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		if(projectDescDetail.getAliasDescription().length() > 100){
             errors.rejectValue("aliasDescription","aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
         }
-		if(projectDescDetail.getRateInWords().length() > 50){
-            errors.rejectValue("rateInWords", "rateInWords.incorrect", "Field Should Not Exceed 50 characters");
-        }
 		
 		if(!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
 			LOGGER.info("Project description detail is update: " + projectDescDetail.getIsUpdate());

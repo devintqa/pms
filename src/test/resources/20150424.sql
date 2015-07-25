@@ -239,7 +239,6 @@ CREATE TABLE `projectdesc` (
   `Description` text NOT NULL,
   `AliasDescription` varchar(100) NOT NULL,
   `RateInFig` decimal(15,2) DEFAULT NULL,
-  `RateInWords` varchar(50) DEFAULT NULL,
   `Amount` decimal(15,2) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
