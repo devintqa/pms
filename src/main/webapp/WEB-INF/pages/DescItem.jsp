@@ -161,6 +161,7 @@
 		var itemTable = document.getElementById('itemTable');
 		var itemObjArray = [];
 		var itemDescForm = {};
+		var err = null;
 		var len = itemTable.rows.length;
 		for (i = 1; i <= len - 1; i++) {
 			var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
@@ -170,8 +171,10 @@
 			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
 			
 			var obj = new ItemDetail(itemName, itemUnit, itemPrice, itemQty, itemCost);
-			if(itemName){
+			if(itemName && itemUnit && itemPrice && itemQty && itemCost){
 				itemObjArray.push(obj); 
+			}else{
+				err = true;
 			}
 		}
 		itemDescForm["employeeId"] = document.getElementById('employeeId').value;
@@ -183,19 +186,22 @@
 		
 		
 		console.log("data = " + JSON.stringify(itemDescForm));
-		
-		$.ajax({
-			type : "POST",
-			url : "saveProjDescItems.do",
-			contentType: "application/json",
-			cache : false,
-			data: JSON.stringify(itemDescForm),
-			success : function(response) {
-				if(response == true){
-					alert("Data saved successfully");
+		if(err){
+			alert("Please make sure that all the required fields are entered");
+		}else{
+			$.ajax({
+				type : "POST",
+				url : "saveProjDescItems.do",
+				contentType: "application/json",
+				cache : false,
+				data: JSON.stringify(itemDescForm),
+				success : function(response) {
+					if(response == true){
+						alert("Data saved successfully");
+					}
 				}
-			}
-		});
+			});
+		}
 	}
 	
 	function fillItemDesc() {

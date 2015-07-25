@@ -93,6 +93,7 @@
 			var itemObjArray = [];
 			var itemDescForm = {};
 			var len = itemTable.rows.length;
+			var err = null;
 			for (i = 1; i <= len - 1; i++) {
 				var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
 				var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
@@ -100,8 +101,10 @@
 				var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
 				
 				var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
-				if(itemName){
+				if(itemName && itemType && itemUnit && itemPrice){
 					itemObjArray.push(obj); 
+				}else{
+					err = true;
 				}
 			}
 			itemDescForm["employeeId"] = document.getElementById('employeeId').value;
@@ -110,19 +113,22 @@
 			itemDescForm["itemPriceConfiguration"] = JSON.stringify(itemObjArray);
 			
 			console.log("data = " + JSON.stringify(itemDescForm));
-			
-			$.ajax({
-				type : "POST",
-				url : "saveItemPrice.do",
-				contentType: "application/json",
-				cache : false,
-				data: JSON.stringify(itemDescForm),
-				success : function(response) {
-					if(response == true){
-						alert("Data saved successfully");
+			if(err){
+				alert("Please make sure that all the required fields are entered");
+			}else{
+				$.ajax({
+					type : "POST",
+					url : "saveItemPrice.do",
+					contentType: "application/json",
+					cache : false,
+					data: JSON.stringify(itemDescForm),
+					success : function(response) {
+						if(response == true){
+							alert("Data saved successfully");
+						}
 					}
-				}
-			});
+				});
+			}
 		}
 		
 		function fillItemPrice() {
