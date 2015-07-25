@@ -77,7 +77,8 @@ public class FileServiceImpl implements FileService {
 
     private void populateSubProjectId(List<ProjDescDetail> extractedProjDescDetails, SubProjectDetail subProjectDetail) {
         for (ProjDescDetail extractedProjDescDetail : extractedProjDescDetails) {
-            extractedProjDescDetail.setProjId(subProjectDetail.getSubProjId());
+            extractedProjDescDetail.setProjId(subProjectDetail.getProjId());
+            extractedProjDescDetail.setSubProjId(subProjectDetail.getSubProjId());
         }
     }
 
