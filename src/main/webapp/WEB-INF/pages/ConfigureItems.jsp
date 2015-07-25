@@ -190,9 +190,9 @@
 		<br>
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
-				<th>Item</th>
-				<th>Unit</th>
-				<th>Unit Price</th>
+				<th>Item*</th>
+				<th>Unit*</th>
+				<th>Unit Price*</th>
 				<th>Action</th>
 			</tr>
 
@@ -207,6 +207,8 @@
 
 		</table>
 		<br>
+		<br>
+		<p><font size="3" color="red">* - Required field to be filled.</font></p>
 		<br>
 		<div id="result" style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
 		<br>
