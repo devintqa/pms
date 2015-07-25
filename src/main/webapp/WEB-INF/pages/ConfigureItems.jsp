@@ -114,7 +114,7 @@
 			
 			console.log("data = " + JSON.stringify(itemDescForm));
 			if(err){
-				alert("Please make sure that all the required fields are entered");
+				alert("Please make sure that all the required fields are entered.");
 			}else{
 				$.ajax({
 					type : "POST",
@@ -122,10 +122,8 @@
 					contentType: "application/json",
 					cache : false,
 					data: JSON.stringify(itemDescForm),
-					success : function(response) {
-						if(response == true){
-							alert("Data saved successfully");
-						}
+					success : function(data) {
+						$('#result').html(data);
 					}
 				});
 			}
@@ -210,7 +208,7 @@
 		</table>
 		<br>
 		<br>
-
+		<div id="result" style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
 		<br>
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />

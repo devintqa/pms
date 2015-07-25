@@ -177,12 +177,16 @@ public class ItemController {
 	}
 	
 	@RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody boolean saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{
+	public @ResponseBody String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{
 		ObjectMapper mapper = new ObjectMapper();
+		String result = "";
 		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
 		projectItemConfiguration.setItemDetail(itemList);
 		boolean status = itemService.configureItemPrice(projectItemConfiguration);
-		return status;
+		if(status){
+			result = "Items Configured Successfully";
+		}
+        return result;
 	}
 	
 	@RequestMapping(value = "/emp/myview/testRes/down.do", method = RequestMethod.POST, consumes="application/json")
