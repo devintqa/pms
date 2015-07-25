@@ -102,7 +102,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         } else {
             projDescDetail.setRateInFig(rateInFig.toString());
         }
-        projDescDetail.setRateInWords((String) row.get("RateInWords"));
         BigDecimal amount = (BigDecimal) row.get("Amount");
         if (null == amount) {
             projDescDetail.setProjDescAmount("");
@@ -169,28 +168,28 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
 
         String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInUnit = ?, Description = ?," +
-                "AliasDescription = ?, RateInFig = ?, RateInWords = ?, Amount=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
+                "AliasDescription = ?, RateInFig = ?, Amount=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
         String insertSql = null;
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
             if (projDescDetail.isSubProjectDesc()) {
                 insertSql = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
-                        + "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
-                        "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+                        + "Description, AliasDescription, RateInFig, Amount,LastUpdatedBy ,LastUpdatedAt) " +
+                        "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
                 jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(), projDescDetail.getSerialNumber(),
                         projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                         projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
-                        projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
+                        projDescDetail.getRateInFig(),
                         projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
                 });
             } else {
                 insertSql = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
-                        + "Description, AliasDescription, RateInFig, RateInWords, Amount,LastUpdatedBy ,LastUpdatedAt) " +
-                        "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?,?)";
+                        + "Description, AliasDescription, RateInFig, Amount,LastUpdatedBy ,LastUpdatedAt) " +
+                        "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?)";
                 jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getSerialNumber(),
                         projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                         projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
-                        projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
+                        projDescDetail.getRateInFig(),
                         projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
                 });
             }
@@ -199,7 +198,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         } else {
             jdbcTemplate.update(updateSql, new Object[]{projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
                     projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
-                    projDescDetail.getRateInFig(), projDescDetail.getRateInWords(),
+                    projDescDetail.getRateInFig(),
                     projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
             });
         }

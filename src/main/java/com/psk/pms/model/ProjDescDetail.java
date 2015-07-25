@@ -13,7 +13,6 @@ public class ProjDescDetail {
 	private String description;	
 	private String aliasDescription;
 	private String rateInFig;
-	private String rateInWords;
 	private String projDescAmount;
 	private String employeeId;
 	private Integer projId;
@@ -59,12 +58,6 @@ public class ProjDescDetail {
 	}
 	public void setAliasDescription(String aliasDescription) {
 		this.aliasDescription = aliasDescription;
-	}
-	public String getRateInWords() {
-		return rateInWords;
-	}
-	public void setRateInWords(String rateInWords) {
-		this.rateInWords = rateInWords;
 	}
 	public String getEmployeeId() {
 		return employeeId;
