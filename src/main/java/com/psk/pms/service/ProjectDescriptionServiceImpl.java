@@ -106,5 +106,11 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
         return date;
     }
 
+    public void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
+        projectDescriptionDAO.saveProjectDescriptionDetails(projDescDetails);
+    }
 
+    public void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
+        projectDescriptionDAO.saveSubProjectDescriptionDetails(projDescDetails);
+    }
 }

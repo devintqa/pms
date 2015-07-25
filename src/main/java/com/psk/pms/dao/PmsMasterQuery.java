@@ -67,4 +67,12 @@ public class PmsMasterQuery {
     public static String FETCHEMDTYPES = "SELECT emdTypeName FROM emdtype";
 
     public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
+
+    public static String INSERTSUBPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
+            + "Description, AliasDescription,LastUpdatedBy ,LastUpdatedAt) " +
+            "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
+            + "Description, AliasDescription, LastUpdatedBy ,LastUpdatedAt) " +
+            "VALUES (?, ?, ? , ?, ?, ?, ?, ?,?)";
 }

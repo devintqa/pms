@@ -4,11 +4,15 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.ProjDescDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -91,8 +95,13 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         projDescDetail.setQuantityInUnit((String) row.get("QuantityInUnit"));
         projDescDetail.setDescription((String) row.get("Description"));
         projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
+
         BigDecimal rateInFig = (BigDecimal) row.get("RateInFig");
-        projDescDetail.setRateInFig(rateInFig.toString());
+        if (null == rateInFig) {
+            projDescDetail.setRateInFig("");
+        } else {
+            projDescDetail.setRateInFig(rateInFig.toString());
+        }
         projDescDetail.setRateInWords((String) row.get("RateInWords"));
         BigDecimal amount = (BigDecimal) row.get("Amount");
         if (null == amount) {
@@ -218,6 +227,55 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
             return false;
         }
         return true;
+    }
+
+    public void saveProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.batchUpdate(INSERTPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ProjDescDetail projDescDetail = projDescDetails.get(i);
+                ps.setInt(1, projDescDetail.getProjId());
+                ps.setString(2, projDescDetail.getSerialNumber());
+                ps.setString(3, projDescDetail.getWorkType());
+                ps.setString(4, projDescDetail.getQuantityInFig());
+                ps.setString(5, projDescDetail.getQuantityInUnit());
+                ps.setString(6, projDescDetail.getDescription());
+                ps.setString(7, projDescDetail.getAliasDescription());
+                ps.setString(8, projDescDetail.getLastUpdatedBy());
+                ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return projDescDetails.size();
+            }
+        });
+    }
+
+    public void saveSubProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.batchUpdate(INSERTSUBPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ProjDescDetail projDescDetail = projDescDetails.get(i);
+                ps.setInt(1, projDescDetail.getProjId());
+                ps.setInt(2, projDescDetail.getSubProjId());
+                ps.setString(3, projDescDetail.getSerialNumber());
+                ps.setString(4, projDescDetail.getWorkType());
+                ps.setString(5, projDescDetail.getQuantityInFig());
+                ps.setString(6, projDescDetail.getQuantityInUnit());
+                ps.setString(7, projDescDetail.getDescription());
+                ps.setString(8, projDescDetail.getAliasDescription());
+                ps.setString(9, projDescDetail.getLastUpdatedBy());
+                ps.setDate(10, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+            }
+
+            @Override
+            public int getBatchSize() {
+                return projDescDetails.size();
+            }
+        });
     }
 
     public DriverManagerDataSource getDataSource() {

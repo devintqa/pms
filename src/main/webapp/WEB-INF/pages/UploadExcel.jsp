@@ -104,6 +104,7 @@
             </table>
             <br />
             <input type="submit" value="Upload" />
+            <form:hidden path="employeeId" />
         </form:form>
         <br />
     </div>

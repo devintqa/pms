@@ -23,4 +23,8 @@ public interface ProjectDescriptionService {
 
     void deleteProjectDescriptionDetail(String projectDescriptionId);
 
+    void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+
+    void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+
 }

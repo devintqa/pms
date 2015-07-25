@@ -2,10 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.Constants;
 import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
-import com.psk.pms.model.ExcelDetail;
-import com.psk.pms.model.FileUpload;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
+import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,36 +26,69 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private ProjectDescriptionDetailBuilder projectDescriptionDetailBuilder;
 
+    @Autowired
+    private ProjectDescriptionService projectDescriptionService;
+
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
     
     @Override
     public ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException{
         String saveDirectory;
         ExcelDetail excelDetail = new ExcelDetail();
-        ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+        ProjectDetail projectDetail = null;
+        SubProjectDetail subProjDetail = null;
+        List<MultipartFile> pmsFiles;
+        boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
+
+        projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
         LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
-        if (fileUpload.isSubProjectUpload()) {
-            SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+
+        if (isSubProjectFileUpload) {
+            subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
         } else {
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
         }
-        List<MultipartFile> pmsFiles = fileUpload.getFiles();
+
+        pmsFiles = fileUpload.getFiles();
         if (null != pmsFiles && pmsFiles.size() > 0) {
             for (MultipartFile multipartFile : pmsFiles) {
-            	String path = saveDirectory + multipartFile.getOriginalFilename();
-            	boolean isExcel = isExcelType(path);
-            	if(!isExcel){
-            		excelDetail.setExcel(false);
-            		return excelDetail;
-            	}
-            	projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);          
+                String path = saveDirectory + multipartFile.getOriginalFilename();
+
+                boolean isExcel = isExcelType(path);
+                if (!isExcel) {
+                    excelDetail.setExcel(false);
+                    return excelDetail;
+                }
+
+                List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);
+                populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
+
+                if (isSubProjectFileUpload) {
+                    populateSubProjectId(extractedProjDescDetails, subProjDetail);
+                    projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
+                } else {
+                    projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
+                }
             }
         }
         return excelDetail;
     }
-    
-	private boolean isExcelType(String pathText) {
+
+    private void populateSubProjectId(List<ProjDescDetail> extractedProjDescDetails, SubProjectDetail subProjectDetail) {
+        for (ProjDescDetail extractedProjDescDetail : extractedProjDescDetails) {
+            extractedProjDescDetail.setProjId(subProjectDetail.getSubProjId());
+        }
+    }
+
+    private void populateProjectDetail(List<ProjDescDetail> extractedProjDescDetails, ProjectDetail projectDetail, String employeeId) {
+        for (ProjDescDetail extractedProjDescDetail : extractedProjDescDetails) {
+            extractedProjDescDetail.setProjId(projectDetail.getProjId());
+            extractedProjDescDetail.setLastUpdatedBy(employeeId);
+        }
+    }
+
+    private boolean isExcelType(String pathText) {
 		try {
 	    Path path = Paths.get(pathText);
 	    String type = Files.probeContentType(path);
