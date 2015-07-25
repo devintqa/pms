@@ -88,12 +88,34 @@
 		itemTable.appendChild(new_row);
 
 	}
-
+	
+	$(document).on("keyup","input[name = 'itemPrice']",function(){
+		 var valid = /^\d+(\.\d{0,2})?$/.test(this.value),
+	        val = this.value;
+	    
+	    if(!valid){
+	        console.log("Invalid input!");
+	        this.value = val.substring(0, val.length - 1);
+	    }
+	});
+	
+	
 	$(document).on("keyup","input[name = 'itemQty']",function(){
-		var qty = $(this).val()
-		var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
-		var cost = qty*price;
-		$(this).parents('tr:first').find('td:nth-child(5) input').val(cost);
+		
+		 var valid = /^\d{0,9}?$/.test(this.value),
+	        val = this.value;
+	    
+	    if(valid){
+	        var qty = $(this).val()
+			var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
+			var cost = qty*price;
+			$(this).parents('tr:first').find('td:nth-child(5) input').val(cost);
+	    }
+	    else{
+	    	 console.log("Invalid input!");
+		     this.value = val.substring(0, val.length - 1);
+	    }
+		
 	});
 	
 
@@ -370,8 +392,8 @@
 			<tr>
 				<td><input name="itemName" id="itemName" type="text" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
-				<td><input name="itemPrice" id="itemPrice" type="text" /></td>
-				<td><input name="itemQty" id="itemQty" type="text" /></td>
+				<td><input name="itemPrice" readonly="readonly" id="itemPrice" type="text" /></td>
+				<td><input name="itemQty" id="itemQty" type="text" pattern="([0-9]+\.)?[0-9]+"/></td>
 				<td><input name="itemCost" readonly="readonly" id="itemCost" type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img src="<c:url value="/resources/images/delete.png" />"/></a></td>
 			</tr>
