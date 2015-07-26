@@ -129,9 +129,12 @@ CREATE TABLE `pricedetail` (
   `subProjectId` int(11) NOT NULL DEFAULT '0',
   `priceFeed` datetime NOT NULL,
   `entryId` int(11) NOT NULL AUTO_INCREMENT,
+  `active` int(1) DEFAULT '1',
   PRIMARY KEY (`entryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
 
 --
 -- Dumping data for table `pricedetail`

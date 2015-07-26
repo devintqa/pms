@@ -2,8 +2,6 @@ package com.psk.pms.model;
 
 import java.util.List;
 
-
-
 public class DescItemDetail {
 	
 	private String projDescSerial;

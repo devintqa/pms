@@ -274,7 +274,7 @@ public class FileUploadController extends BaseController {
 		File file = null;
 		FileInputStream fStream = null;
 		try {
-			url = classLoader.getResource("formatex.xls");
+			url = classLoader.getResource("ProjectDescription.xlsx");
 			file = new File(url.getPath());
 			fStream = new FileInputStream(file);
 			String headerValue = String.format("attachment; filename=\"%s\"",file.getName());

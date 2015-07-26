@@ -175,6 +175,7 @@ public class ItemDAOImpl implements ItemDAO {
 	private ProjectConfiguration.ItemDetail buildPricedItem(Map<String, Object> row) {
 		ProjectConfiguration.ItemDetail itemDetail = new ProjectConfiguration.ItemDetail();
 		itemDetail.setItemName((String) row.get("ItemName"));
+		itemDetail.setItemType((String) row.get("ItemType"));
 		itemDetail.setItemUnit((String) row.get("ItemUnit"));
 		itemDetail.setItemPrice(row.get("ItemPrice").toString());
 		return itemDetail;
@@ -280,6 +281,9 @@ public class ItemDAOImpl implements ItemDAO {
 						"VALUES (?, ?, ?, ?, ?, ?, ?)";
 				jdbcTemplate = new JdbcTemplate(dataSource);
 				
+				String updateSql = "update pricedetail set active ='0' where projectId = "+projectItemConfiguration.getProjId();
+				jdbcTemplate.execute(updateSql);
+				
 				jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 					@Override
 					public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -303,7 +307,7 @@ public class ItemDAOImpl implements ItemDAO {
 
 		@Override
 		public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration) {
-			String sql = "Select * from pricedetail where projectId = '"+projectConfiguration.getProjId()+"'";
+			String sql = "Select * from pricedetail where active = 1 and projectId = '"+projectConfiguration.getProjId()+"'";
 			jdbcTemplate = new JdbcTemplate(dataSource);
 
 			List<ProjectConfiguration.ItemDetail> itemList = new ArrayList<ProjectConfiguration.ItemDetail>();
