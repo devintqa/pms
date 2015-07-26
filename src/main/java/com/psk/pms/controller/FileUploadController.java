@@ -1,5 +1,5 @@
 package com.psk.pms.controller;
- 
+
 import com.google.gson.Gson;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
@@ -10,6 +10,7 @@ import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.FileUploadValidator;
+
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,20 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.*;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
- 
+
 @Controller
 public class FileUploadController extends BaseController {
-	
+
 	@Autowired
 	ProjectService projectService;
-	
+
 	@Autowired
-    ServletContext context;
+	ServletContext context;
 
 	@Autowired
 	FileUploadValidator fileUploadValidator;
@@ -43,83 +46,83 @@ public class FileUploadController extends BaseController {
 	@Autowired
 	SubProjectService subProjectService;
 
-    @Autowired
-    ProjectDescriptionService projectDescriptionService;
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
 
 	private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
- 
-    @RequestMapping(value = "/emp/myview/uploadFile/{employeeId}", method = RequestMethod.GET)
-    public String pmsDisplayForm(@PathVariable String employeeId, 
+
+	@RequestMapping(value = "/emp/myview/uploadFile/{employeeId}", method = RequestMethod.GET)
+	public String pmsDisplayForm(@PathVariable String employeeId, 
 			Model model) {
-    	LOGGER.info("Into File Upload");
-    	FileUpload fileUpload = new FileUpload();
-    	fileUpload.setEmployeeId(employeeId);
+		LOGGER.info("Into File Upload");
+		FileUpload fileUpload = new FileUpload();
+		fileUpload.setEmployeeId(employeeId);
 		model.addAttribute("uploadForm", fileUpload);
-    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		if(aliasProjectList.size() == 0){
 			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 			return "Welcome";
 		} else{
 			model.addAttribute("aliasProjectList", aliasProjectList);
 		}
-    	Employee employee = new Employee();
+		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
-        return "UploadFile";
-    }
-    
-    @RequestMapping(value = "/emp/myview/uploadExcel/{employeeId}", method = RequestMethod.GET)
-    public String pmsExcelUploadForm(@PathVariable String employeeId, 
+		return "UploadFile";
+	}
+
+	@RequestMapping(value = "/emp/myview/uploadExcel/{employeeId}", method = RequestMethod.GET)
+	public String pmsExcelUploadForm(@PathVariable String employeeId, 
 			Model model) {
-    	LOGGER.info("Into Excel Upload");
-    	FileUpload fileUpload = new FileUpload();
-    	fileUpload.setEmployeeId(employeeId);
+		LOGGER.info("Into Excel Upload");
+		FileUpload fileUpload = new FileUpload();
+		fileUpload.setEmployeeId(employeeId);
 		model.addAttribute("uploadForm", fileUpload);
-    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		if(aliasProjectList.size() == 0){
 			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 			return "Welcome";
 		} else{
 			model.addAttribute("aliasProjectList", aliasProjectList);
 		}
-    	Employee employee = new Employee();
+		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
-        return "UploadExcel";
-    }
-    
-    @RequestMapping(value = "/emp/myview/uploadFile/getSubAliasProject.do", method = RequestMethod.GET)
+		return "UploadExcel";
+	}
+
+	@RequestMapping(value = "/emp/myview/uploadFile/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
-    	return getAliasSubProjectNames(request);
+		return getAliasSubProjectNames(request);
 	}
-    
-    @RequestMapping(value = "/emp/myview/uploadExcel/getSubAliasProject.do", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/emp/myview/uploadExcel/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProjectForExcelUpload(HttpServletRequest request, HttpServletResponse response) {
-    	return getAliasSubProjectNames(request);
+		return getAliasSubProjectNames(request);
 	}
-    
-    @RequestMapping(value = "/emp/myview/downloadFile/getSubAliasProject.do", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/emp/myview/downloadFile/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProjectDownload(HttpServletRequest request, HttpServletResponse response) {
-    	return getAliasSubProjectNames(request);
+		return getAliasSubProjectNames(request);
 	}
-    
-    private String getAliasSubProjectNames(HttpServletRequest request){
-    	LOGGER.info("Alias Project Name" + request.getParameter("aliasProjectName"));
+
+	private String getAliasSubProjectNames(HttpServletRequest request){
+		LOGGER.info("Alias Project Name" + request.getParameter("aliasProjectName"));
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
 		subAliasProjectList.put("0", "--Please Select--");
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
 		return subAliasProjectJson;
-    }
- 
-    @RequestMapping(value = "/emp/myview/uploadFile/saveFiles.do", method = RequestMethod.POST)
-    public String fileSave(
-            @ModelAttribute("uploadForm") FileUpload uploadForm
-            ,BindingResult result,Model map) throws IllegalStateException, IOException {
-    	Map<String, String> aliasProjectList = populateAliasProjectList();
+	}
+
+	@RequestMapping(value = "/emp/myview/uploadFile/saveFiles.do", method = RequestMethod.POST)
+	public String fileSave(
+			@ModelAttribute("uploadForm") FileUpload uploadForm
+			,BindingResult result,Model map) throws IllegalStateException, IOException {
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
 		fileUploadValidator.validate(uploadForm, result);
 		if(!result.hasErrors())
@@ -139,15 +142,15 @@ public class FileUploadController extends BaseController {
 		}
 		subAliasProjectList.put("0", "--Please Select--");
 		map.addAttribute("subAliasProjectList", subAliasProjectList);
-        map.addAttribute("aliasProjectList", aliasProjectList);
-        map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
-        return "UploadFile";
-    }
-    
-    @RequestMapping(value = "/emp/myview/uploadExcel/saveProjectDescription.do", method = RequestMethod.POST)
-    public String saveProjectDescription(@ModelAttribute("uploadForm") FileUpload uploadForm,BindingResult result,Model map) 
-    										throws IllegalStateException, IOException {
-    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		map.addAttribute("aliasProjectList", aliasProjectList);
+		map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
+		return "UploadFile";
+	}
+
+	@RequestMapping(value = "/emp/myview/uploadExcel/saveProjectDescription.do", method = RequestMethod.POST)
+	public String saveProjectDescription(@ModelAttribute("uploadForm") FileUpload uploadForm,BindingResult result,Model map) 
+			throws IllegalStateException, IOException {
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
 		fileUploadValidator.validate(uploadForm, result);
 		if(!result.hasErrors())
@@ -176,36 +179,36 @@ public class FileUploadController extends BaseController {
 		}
 		subAliasProjectList.put("0", "--Please Select--");
 		map.addAttribute("subAliasProjectList", subAliasProjectList);
-        map.addAttribute("aliasProjectList", aliasProjectList);
-        map.addAttribute("fileAdditionSuccessful", "Project Description Creation Successful");
-        return "UploadExcel";
-    }
+		map.addAttribute("aliasProjectList", aliasProjectList);
+		map.addAttribute("fileAdditionSuccessful", "Project Description Creation Successful");
+		return "UploadExcel";
+	}
 
 
-    @RequestMapping(value = "/emp/myview/downloadFile/{employeeId}", method = RequestMethod.GET)
-    public String pmsDownloadFile(@PathVariable String employeeId,
+	@RequestMapping(value = "/emp/myview/downloadFile/{employeeId}", method = RequestMethod.GET)
+	public String pmsDownloadFile(@PathVariable String employeeId,
 			Model model) {
-    	LOGGER.info("Into File Download");
-    	FileUpload fileUpload = new FileUpload();
-    	fileUpload.setEmployeeId(employeeId);
+		LOGGER.info("Into File Download");
+		FileUpload fileUpload = new FileUpload();
+		fileUpload.setEmployeeId(employeeId);
 		model.addAttribute("downloadForm", fileUpload);
-    	Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> aliasProjectList = populateAliasProjectList();
 		if(aliasProjectList.size() == 0){
 			model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 			return "Welcome";
 		} else{
 			model.addAttribute("aliasProjectList", aliasProjectList);
 		}
-    	Employee employee = new Employee();
+		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
-        return "DownloadFile";
-    }
-    
+		return "DownloadFile";
+	}
+
 	@RequestMapping(value = "/emp/myview/downloadFile/getFiles.do", method = RequestMethod.POST)
 	public String fileDownload(
 			@ModelAttribute("downloadForm") FileUpload downloadForm,BindingResult result, Model map)
-			throws IllegalStateException, IOException {
+					throws IllegalStateException, IOException {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String,String> subAliasProjectList = populateSubAliasProjectList(downloadForm.getAliasProjectName());
 		map.addAttribute("aliasProjectList", aliasProjectList);
@@ -234,22 +237,22 @@ public class FileUploadController extends BaseController {
 		File downloadFile = new File(path);
 		FileInputStream inputStream = null;
 		OutputStream outStream = null;
-		
+
 		try {
 			inputStream = new FileInputStream(downloadFile);
- 
+
 			response.setContentLength((int) downloadFile.length());
 			response.setContentType(context.getMimeType(path));			
- 
+
 			// response header
 			String headerKey = "Content-Disposition";
 			String headerValue = String.format("attachment; filename=\"%s\"",downloadFile.getName());
 			response.setHeader(headerKey, headerValue);
- 
+
 			// Write response
 			outStream = response.getOutputStream();
 			IOUtils.copy(inputStream, outStream);
- 
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -264,44 +267,66 @@ public class FileUploadController extends BaseController {
 		}
 	}
 
-    @RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
-    public void deleteFile(@RequestParam(value="path", required=true) String path, HttpServletRequest request, HttpServletResponse response) {
-    	LOGGER.info("method = deleteFile() ,file Name :" + path);
-    	fileService.deleteFile(path);
-    }
-    
+	@RequestMapping(value = "/emp/myview/downloadTemplate.do", method = RequestMethod.GET)
+	public void getTemplate(HttpServletRequest request, HttpServletResponse response) {
+		ClassLoader classLoader = this.getClass().getClassLoader();
+		URL url = null;
+		File file = null;
+		FileInputStream fStream = null;
+		try {
+			url = classLoader.getResource("formatex.xls");
+			file = new File(url.getPath());
+			fStream = new FileInputStream(file);
+			String headerValue = String.format("attachment; filename=\"%s\"",file.getName());
+			response.setHeader("Content-Disposition", headerValue);
+			response.setContentLength((int) file.length());
+			response.setContentType(context.getMimeType(url.getPath()));			
+			org.apache.commons.io.IOUtils.copy(fStream, response.getOutputStream());
+			response.flushBuffer();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
+	public void deleteFile(@RequestParam(value="path", required=true) String path, HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.info("method = deleteFile() ,file Name :" + path);
+		fileService.deleteFile(path);
+	}
+
 	public Map<String, String> populateSubAliasProjectList(String project) {
 		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
 		return aliasSubProjectName;
 	}
-	
+
 	public Map<String, String> populateAliasProjectList() {
 		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
 		return aliasProjectName;
 	}
 
-    @RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)
-    @ResponseBody
-    public String checkProjectDescriptionAlreadyExistForProject(HttpServletRequest request, HttpServletResponse response) {
-        int projectId = Integer.parseInt(request.getParameter("projectId"));
-        LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , project Id  :"+projectId);
-        if (projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId)) {
-            return Constants.EXISTS;
-        } else {
-            return Constants.DOESNOTEXISTS;
-        }
-    }
+	@RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String checkProjectDescriptionAlreadyExistForProject(HttpServletRequest request, HttpServletResponse response) {
+		int projectId = Integer.parseInt(request.getParameter("projectId"));
+		LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , project Id  :"+projectId);
+		if (projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId)) {
+			return Constants.EXISTS;
+		} else {
+			return Constants.DOESNOTEXISTS;
+		}
+	}
 
-    @RequestMapping(value = "/emp/myview/uploadExcel/checkSubProjectDesc.do", method = RequestMethod.GET)
-    @ResponseBody
-    public String checkProjectDescriptionAlreadyExistForSubProject(HttpServletRequest request, HttpServletResponse response) {
-        int subProjectId = Integer.parseInt(request.getParameter("subProjectId"));
-        LOGGER.info("method = checkProjectDescriptionAlreadyExistForSubProject , project Id  :"+subProjectId);
-        if (projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId)) {
-            return Constants.EXISTS;
-        } else {
-            return Constants.DOESNOTEXISTS;
-        }
-    }
+	@RequestMapping(value = "/emp/myview/uploadExcel/checkSubProjectDesc.do", method = RequestMethod.GET)
+	@ResponseBody
+	public String checkProjectDescriptionAlreadyExistForSubProject(HttpServletRequest request, HttpServletResponse response) {
+		int subProjectId = Integer.parseInt(request.getParameter("subProjectId"));
+		LOGGER.info("method = checkProjectDescriptionAlreadyExistForSubProject , project Id  :"+subProjectId);
+		if (projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId)) {
+			return Constants.EXISTS;
+		} else {
+			return Constants.DOESNOTEXISTS;
+		}
+	}
 
 }

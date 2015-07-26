@@ -128,7 +128,7 @@
 
 		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
 			
-			
+				Click here to <a href="downloadTemplate.do" class="userAction">download template</a>
 			<br>
 			<br>
 		</c:if>
