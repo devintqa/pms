@@ -92,7 +92,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         } else {
             projDescDetail.setQuantityInFig(quantityInFig.toString());
         }
-        projDescDetail.setQuantityInUnit((String) row.get("QuantityInUnit"));
+//        projDescDetail.setQuantityInUnit((String) row.get("QuantityInUnit"));
         projDescDetail.setDescription((String) row.get("Description"));
         projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
 
@@ -164,7 +164,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         }
         return projectDescDetailList;
     }
-
+/*
     public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
 
         String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, QuantityInUnit = ?, Description = ?," +
@@ -197,6 +197,46 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
         } else {
             jdbcTemplate.update(updateSql, new Object[]{projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(), projDescDetail.getQuantityInUnit(),
+                    projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
+                    projDescDetail.getRateInFig(),
+                    projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
+            });
+        }
+        return true;
+    }
+    */
+    public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
+
+        String updateSql = "UPDATE projectDesc set WorkType  = ?, QuantityInFig = ?, Description = ?," +
+                "AliasDescription = ?, RateInFig = ?, Amount=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
+        String insertSql = null;
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+            if (projDescDetail.isSubProjectDesc()) {
+                insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, SerialNumber, WorkType, QuantityInFig, "
+                        + "Description, AliasDescription, RateInFig, Amount, LastUpdatedBy ,LastUpdatedAt) " +
+                        "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getAliasSubProjectName(), projDescDetail.getSerialNumber(),
+                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(),
+                        projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
+                        projDescDetail.getRateInFig(),
+                        projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
+                });
+            } else {
+                insertSql = "INSERT INTO projectDesc (ProjId, SerialNumber, WorkType, QuantityInFig, "
+                        + "Description, AliasDescription, RateInFig, Amount, LastUpdatedBy, LastUpdatedAt) " +
+                        "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?)";
+                jdbcTemplate.update(insertSql, new Object[]{projDescDetail.getAliasProjectName(), projDescDetail.getSerialNumber(),
+                        projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(),
+                        projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
+                        projDescDetail.getRateInFig(),
+                        projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt()
+                });
+            }
+
+
+        } else {
+            jdbcTemplate.update(updateSql, new Object[]{projDescDetail.getWorkType(), projDescDetail.getQuantityInFig(),
                     projDescDetail.getDescription(), projDescDetail.getAliasDescription(),
                     projDescDetail.getRateInFig(),
                     projDescDetail.getProjDescAmount(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
@@ -238,11 +278,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
                 ps.setString(2, projDescDetail.getSerialNumber());
                 ps.setString(3, projDescDetail.getWorkType());
                 ps.setString(4, projDescDetail.getQuantityInFig());
-                ps.setString(5, projDescDetail.getQuantityInUnit());
+              /*  ps.setString(5, projDescDetail.getQuantityInUnit());
                 ps.setString(6, projDescDetail.getDescription());
                 ps.setString(7, projDescDetail.getAliasDescription());
                 ps.setString(8, projDescDetail.getLastUpdatedBy());
-                ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));*/
+                ps.setString(5, projDescDetail.getDescription());
+                ps.setString(6, projDescDetail.getAliasDescription());
+                ps.setString(7, projDescDetail.getLastUpdatedBy());
+                ps.setDate(8, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
             }
 
             @Override
@@ -263,11 +307,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
                 ps.setString(3, projDescDetail.getSerialNumber());
                 ps.setString(4, projDescDetail.getWorkType());
                 ps.setString(5, projDescDetail.getQuantityInFig());
-                ps.setString(6, projDescDetail.getQuantityInUnit());
+                /*ps.setString(6, projDescDetail.getQuantityInUnit());
                 ps.setString(7, projDescDetail.getDescription());
                 ps.setString(8, projDescDetail.getAliasDescription());
                 ps.setString(9, projDescDetail.getLastUpdatedBy());
-                ps.setDate(10, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                ps.setDate(10, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));*/
+                ps.setString(6, projDescDetail.getDescription());
+                ps.setString(7, projDescDetail.getAliasDescription());
+                ps.setString(8, projDescDetail.getLastUpdatedBy());
+                ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
             }
 
             @Override

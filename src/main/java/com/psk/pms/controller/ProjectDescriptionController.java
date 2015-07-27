@@ -106,7 +106,7 @@ public class ProjectDescriptionController {
 		boolean isProjectSaveSuccessful = false;
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		projDescDetailValidator.validate(projDescDetail, result);
-		LOGGER.info("Result has errors ?? "+ result.hasErrors());
+		LOGGER.info("Result has errors ?? "+ result.hasErrors() + result.toString());
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
 		}

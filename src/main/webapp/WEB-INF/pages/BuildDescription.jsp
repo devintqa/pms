@@ -109,7 +109,7 @@ $(document).ready(function () {
 								<td>Serial Number<span id="colon">:</span>
 								</td>
 								<td><form:input id="serialNumber" path="serialNumber"
-										placeholder="Enter Serial Number" cssClass="inputText" /></td>
+										placeholder="Enter serial number" cssClass="inputText" /></td>
 								<td><form:errors path="serialNumber" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -123,40 +123,40 @@ $(document).ready(function () {
 								<td>Quantity in Figures<span id="colon">:</span>
 								</td>
 								<td><form:input id="quantityInFig" path="quantityInFig"
-										placeholder="Enter Quantity in Figures" cssClass="inputText" /></td>
+										placeholder="Enter quantity for the selected work" cssClass="inputText" /></td>
 								<td><form:errors path="quantityInFig" cssClass="error" /></td>
 							</tr>
-							<tr>
-								<td>Quantity in Unit<span id="colon">:</span>
-								</td>
-								<td><form:select path="quantityInUnit"
-										items = "${itemUnits}"
-										cssClass="inputText" /></td>
-								<td><form:errors path="quantityInUnit" cssClass="error" /></td>
-							</tr>
+<!-- 							<tr> -->
+<!-- 								<td>Quantity in Unit<span id="colon">:</span> -->
+<!-- 								</td> -->
+<%-- 								<td><form:input id="quantityInUnit" path="quantityInUnit" --%>
+<%-- 										placeholder="Enter quantity for the selected work" cssClass="inputText" /> --%>
+<!-- 								</td> -->
+<%-- 								<td><form:errors path="quantityInUnit" cssClass="error" /></td> --%>
+<!-- 							</tr> -->
 							<tr>
 								<td>Description<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="description"
-										placeholder="Enter Description" cssClass="inputText" /></td>
+										placeholder="Enter description" cssClass="inputText" /></td>
 								<td><form:errors path="description" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Alias Description<span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasDescription"
-										placeholder="Enter Alias Description" cssClass="inputText" /></td>
+										placeholder="Enter alias description" cssClass="inputText" /></td>
 								<td><form:errors path="aliasDescription" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Rate in Figures<span id="colon">:</span>
+								<td>Cost per Quantity<span id="colon">:</span>
 								</td>
 								<td><form:input path="rateInFig"
-										placeholder="Enter Rate in Figures" cssClass="inputText" /></td>
+										placeholder="Enter rate in figures" cssClass="inputText" /></td>
 								<td><form:errors path="rateInFig" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Amount in Rupees<span id="colon">:</span>
+								<td>Total Cost<span id="colon">:</span>
 								</td>
 								<td><form:input path="projDescAmount"
 										placeholder="Enter Amount" cssClass="inputText" /></td>

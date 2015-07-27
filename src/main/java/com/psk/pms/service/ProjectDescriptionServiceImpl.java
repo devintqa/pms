@@ -59,9 +59,9 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
         if (StringUtils.isEmpty(projDescDetail.getQuantityInFig())) {
             projDescDetail.setQuantityInFig(null);
         }
-        if (StringUtils.isEmpty(projDescDetail.getQuantityInUnit())) {
-            projDescDetail.setQuantityInUnit(null);
-        }
+//        if (StringUtils.isEmpty(projDescDetail.getQuantityInUnit())) {
+//            projDescDetail.setQuantityInUnit(null);
+//        }
         if (StringUtils.isEmpty(projDescDetail.getProjDescAmount())) {
             projDescDetail.setProjDescAmount(null);
         }

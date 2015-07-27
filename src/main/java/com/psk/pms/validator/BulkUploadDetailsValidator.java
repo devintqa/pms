@@ -33,9 +33,9 @@ public class BulkUploadDetailsValidator {
             if (StringUtils.isNullOrEmpty(projDescDetail.getQuantityInFig())) {
                 throw new BulkUploadException(QUANTITYINFIGEMPTY);
             }
-            if (StringUtils.isNullOrEmpty(projDescDetail.getQuantityInUnit())) {
-                throw new BulkUploadException(QUANTITYINUNITEMPTY);
-            }
+//            if (StringUtils.isNullOrEmpty(projDescDetail.getQuantityInUnit())) {
+//                throw new BulkUploadException(QUANTITYINUNITEMPTY);
+//            }
             if (StringUtils.isNullOrEmpty(projDescDetail.getDescription())) {
                 throw new BulkUploadException(DESCEMPTY);
             }
