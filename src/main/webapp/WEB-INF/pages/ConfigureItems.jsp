@@ -211,7 +211,7 @@
 		<br>
 		<p><font size="3" color="red">* - Required field to be filled.</font></p>
 		<br>
-		<div id="result" style="text-align: left; font-family: arial; color: #007399; font-size: 16px; display:none;"></div>
+		<div id="result" style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
 		<br>
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />
