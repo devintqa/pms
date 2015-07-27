@@ -146,6 +146,32 @@ INSERT INTO `pricedetail` VALUES ('CEMENT','BAG','MATERIAL',450.00,1,0,'2015-07-
 /*!40000 ALTER TABLE `pricedetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
+DROP TABLE IF EXISTS `team`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `team` (
+  `teamName` varchar(100) NOT NULL,
+  `teamNumber` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`teamNumber`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `itemcodes`
+--
+
+LOCK TABLES `team` WRITE;
+/*!40000 ALTER TABLE `itemcodes` DISABLE KEYS */;
+INSERT INTO `team` VALUES
+('Admin',1),
+('Account',2),
+('Management',3),
+('Purchase',4),
+('Technical',5),
+('Store',6);
+/*!40000 ALTER TABLE `itemcodes` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `projdescitem`
 --
