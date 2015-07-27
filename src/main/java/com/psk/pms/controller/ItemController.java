@@ -116,6 +116,7 @@ public class ItemController {
 		
 		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
 		model.addAttribute("projectItemForm", projectConfiguration);
+        model.addAttribute("itemTypes", fetchItemTypes());
 		Gson gson = new Gson();
 		JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
 		if (! element.isJsonArray()) {
@@ -163,6 +164,7 @@ public class ItemController {
 		
 		ProjDescDetail projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
 		model.addAttribute("projDescForm", projDescDetail);
+        model.addAttribute("itemTypes",fetchItemTypes());
 		
 		return "DescItem";
 	}

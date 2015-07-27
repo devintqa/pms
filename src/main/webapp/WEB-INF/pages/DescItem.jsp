@@ -360,16 +360,10 @@
 	<form:form id="descItemForm" method="POST"  commandName="descItemForm" action="createProjDesc.do">
 	
 	<table>
-			<tr>
-				<td>Type<span id="colon">:</span>
-				</td>
-				<td><form:select path="itemType" cssClass="inputText" id="itemType" >
-						<option value="-- PLEASE SELECT --" selected="selected">-- PLEASE SELECT --</option>
-						<option value="MATERIAL" selected="selected">MATERIAL</option>
-						<option value="LABOUR">LABOUR</option>
-						<option value="OTHERS">OTHERS</option>
-					</form:select></td>
-			</tr>
+        <tr>
+		    <td>Type<span id="colon">:</span></td>
+			<td><form:select path="itemType" cssClass="inputText" id="itemType" items="${itemTypes}"/></td>
+		</tr>
 	</table>
 	<br>
 	<form:hidden path="projDescItemDetail" id="projDescItemDetail"/>

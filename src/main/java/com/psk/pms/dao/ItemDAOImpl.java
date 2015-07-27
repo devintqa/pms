@@ -81,11 +81,9 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	public boolean saveItem(Item item) {
-		String createSql = "INSERT INTO itemcodes (itemName, itemUnit) "
-				+ "VALUES (?, ?)";
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.update(createSql,
-				new Object[] { item.getItemName(), item.getItemUnit() });
+		jdbcTemplate.update(PmsMasterQuery.SAVEITEMS,
+				new Object[] { item.getItemName(), item.getItemUnit(), item.getItemType() });
 		return true;
 	}
 
