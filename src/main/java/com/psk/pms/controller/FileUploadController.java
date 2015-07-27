@@ -1,6 +1,7 @@
 package com.psk.pms.controller;
 
 import com.google.gson.Gson;
+import com.psk.exception.BulkUploadException;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ExcelDetail;
@@ -134,10 +135,7 @@ public class FileUploadController extends BaseController {
 			{
 				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
 			}
-			map.addAttribute("aliasProjectList", aliasProjectList);
-			subAliasProjectList.put("0", "--Please Select--");
-			map.addAttribute("subAliasProjectList",subAliasProjectList);
-			map.addAttribute("aliasProjectList", aliasProjectList);
+            populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 			return "UploadFile";
 		}
 		subAliasProjectList.put("0", "--Please Select--");
@@ -156,13 +154,17 @@ public class FileUploadController extends BaseController {
 		if(!result.hasErrors())
 		{	
 			fileService.uploadFiles(uploadForm);
-			ExcelDetail excelDetail = fileService.saveProjectDescription(uploadForm);
-			if(!excelDetail.isExcel()){
+            ExcelDetail excelDetail = null;
+            try {
+                excelDetail = fileService.saveProjectDescription(uploadForm);
+            } catch (BulkUploadException e) {
+                map.addAttribute("uploadProjectDescriptionFailed", String.format("%s%s", Constants.UPLOADFAILED, e.getMessage()));
+                populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
+                return "UploadExcel";
+            }
+            if(!excelDetail.isExcel()){
 				map.addAttribute("fileAdditionSuccessful", "Please Select Valid File Format");
-				map.addAttribute("aliasProjectList", aliasProjectList);
-				subAliasProjectList.put("0", "--Please Select--");
-				map.addAttribute("subAliasProjectList",subAliasProjectList);
-				map.addAttribute("aliasProjectList", aliasProjectList);
+                populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 				return "UploadExcel";
 			}
 		}else
@@ -171,10 +173,7 @@ public class FileUploadController extends BaseController {
 			{
 				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
 			}
-			map.addAttribute("aliasProjectList", aliasProjectList);
-			subAliasProjectList.put("0", "--Please Select--");
-			map.addAttribute("subAliasProjectList",subAliasProjectList);
-			map.addAttribute("aliasProjectList", aliasProjectList);
+            populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 			return "UploadExcel";
 		}
 		subAliasProjectList.put("0", "--Please Select--");
@@ -184,8 +183,15 @@ public class FileUploadController extends BaseController {
 		return "UploadExcel";
 	}
 
+    private void populateAliasProjectAndSubprojectAlias(Model map, Map<String, String> aliasProjectList, Map<String, String> subAliasProjectList) {
+        map.addAttribute("aliasProjectList", aliasProjectList);
+        subAliasProjectList.put("0", "--Please Select--");
+        map.addAttribute("subAliasProjectList",subAliasProjectList);
+        map.addAttribute("aliasProjectList", aliasProjectList);
+    }
 
-	@RequestMapping(value = "/emp/myview/downloadFile/{employeeId}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/emp/myview/downloadFile/{employeeId}", method = RequestMethod.GET)
 	public String pmsDownloadFile(@PathVariable String employeeId,
 			Model model) {
 		LOGGER.info("Into File Download");
@@ -211,10 +217,7 @@ public class FileUploadController extends BaseController {
 					throws IllegalStateException, IOException {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String,String> subAliasProjectList = populateSubAliasProjectList(downloadForm.getAliasProjectName());
-		map.addAttribute("aliasProjectList", aliasProjectList);
-		subAliasProjectList.put("0", "--Please Select--");
-		map.addAttribute("subAliasProjectList",subAliasProjectList);
-		map.addAttribute("aliasProjectList", aliasProjectList);
+        populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 		fileUploadValidator.validate(downloadForm, result);
 		if(!result.hasErrors())
 		{

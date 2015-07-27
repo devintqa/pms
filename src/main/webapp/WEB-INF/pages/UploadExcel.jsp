@@ -118,8 +118,8 @@
 	</header>
 	<div>
 		<div>
-			<h2
-				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${fileAdditionSuccessful}</h2>
+			<h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${fileAdditionSuccessful}</h2>
+			<h2 style="text-align: left; font-family: arial; color: #FF0000; font-size: 14px;">${uploadProjectDescriptionFailed}</h2>
 		</div>
 		<div>
  

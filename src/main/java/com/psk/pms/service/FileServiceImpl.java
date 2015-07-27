@@ -1,8 +1,10 @@
 package com.psk.pms.service;
 
+import com.psk.exception.BulkUploadException;
 import com.psk.pms.Constants;
 import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
 import com.psk.pms.model.*;
+import com.psk.pms.validator.BulkUploadDetailsValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +31,13 @@ public class FileServiceImpl implements FileService {
     @Autowired
     private ProjectDescriptionService projectDescriptionService;
 
+    @Autowired
+    private BulkUploadDetailsValidator bulkUploadDetailsValidator;
+
     private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
     
     @Override
-    public ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException{
+    public ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException, BulkUploadException {
         String saveDirectory;
         ExcelDetail excelDetail = new ExcelDetail();
         ProjectDetail projectDetail = null;
@@ -62,6 +67,7 @@ public class FileServiceImpl implements FileService {
                 }
 
                 List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);
+                bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
                 populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
 
                 if (isSubProjectFileUpload) {

@@ -11,4 +11,13 @@ public interface Constants {
 	String DUPLICATED_ITEM_NAMES = "Same Item Name Cannot Be Added More Than Once Per Project.";
     String EXISTS = "Exists";
     String DOESNOTEXISTS = "Does not Exists";
+    String SERIALNUMBEREMPTY = "Serial Number can't be Empty";
+    String WORKTYPEEMPTY = "WorkType can't be Empty";
+    String QUANTITYINFIGEMPTY = "Quantity in figures can't be Empty";
+    String QUANTITYINUNITEMPTY = "Quantity in Unit can't be Empty";
+    String DESCEMPTY = "Description can't be Empty";
+    String ALIASDESCEMPTY = "Alias description can't be Empty";
+    String SERIALNOTUNIQUE = "Serial numbers are not unique";
+    String ALIASNOTUNIQUE = "AliasDescriptions are not unique";
+    String UPLOADFAILED = "Upload Failed , ";
 }

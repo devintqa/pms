@@ -99,6 +99,8 @@
  	<bean id="mailClient" class="com.psk.pms.utils.MailClient"> 
  		<property name="mailSender" ref="mailSender" /> 
  	</bean>
+
+    <bean id="bulkUploadDetailsValidator" class="com.psk.pms.validator.BulkUploadDetailsValidator"></bean>
  
 </beans>
 

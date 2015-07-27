@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.exception.BulkUploadException;
 import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 
@@ -10,7 +11,7 @@ public interface FileService {
 
     void uploadFiles(FileUpload fileUpload) throws IOException;
     
-    ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException;
+    ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException, BulkUploadException;
 
     List<FileUpload> downloadFiles(FileUpload fileUpload);
 
