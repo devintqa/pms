@@ -44,8 +44,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 				"required.description", "Enter Description.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasDescription",
 				"required.aliasDescription", "Enter Alias Description.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInFig",
-				"required.quantityInFig", "Enter Quantity In Figures.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantity",
+				"required.quantity", "Enter Quantity In Figures.");
 		
 //		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInUnit",
 //				"required.quantityInUnit", "Enter Quantity In Unit.");
@@ -66,41 +66,41 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 			}
 		}
 		
-		if (!StringUtils.isNullOrEmpty(projectDescDetail.getQuantityInFig())) {  
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getQuantity())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(projectDescDetail.getQuantityInFig());  
+			   matcher = pattern.matcher(projectDescDetail.getQuantity());  
 			   if (!matcher.matches()) {  
-			    errors.rejectValue("quantityInFig", "quantityInFig.incorrect",  
+			    errors.rejectValue("quantity", "quantity.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(projectDescDetail.getQuantityInFig().length() > 15){
-		            errors.rejectValue("quantityInFig", "quantityInFig.incorrect", "Field must not exceed 15 characters.");
+			   }else if(projectDescDetail.getQuantity().length() > 15){
+		            errors.rejectValue("quantity", "quantity.incorrect", "Field must not exceed 15 characters.");
 		        }
 		}
 		
-		if (!StringUtils.isNullOrEmpty(projectDescDetail.getRateInFig())) {  
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getPricePerQuantity())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(projectDescDetail.getRateInFig());  
+			   matcher = pattern.matcher(projectDescDetail.getPricePerQuantity());  
 			   if (!matcher.matches()) {  
-				  errors.rejectValue("rateInFig", "rateInFig.incorrect",  
+				  errors.rejectValue("pricePerQuantity", "pricePerQuantity.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(projectDescDetail.getRateInFig().length() > 15){
-		            errors.rejectValue("rateInFig", "rateInFig.incorrect", "Field must not exceed 15 characters.");
+			   }else if(projectDescDetail.getPricePerQuantity().length() > 15){
+		            errors.rejectValue("pricePerQuantity", "pricePerQuantity.incorrect", "Field must not exceed 15 characters.");
 		        }
 		}else{
-			projectDescDetail.setRateInFig("0");
+			projectDescDetail.setPricePerQuantity("0");
 		}
 		
-		if (!StringUtils.isNullOrEmpty(projectDescDetail.getProjDescAmount())) {  
+		if (!StringUtils.isNullOrEmpty(projectDescDetail.getTotalCost())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(projectDescDetail.getProjDescAmount());  
+			   matcher = pattern.matcher(projectDescDetail.getTotalCost());  
 			   if (!matcher.matches()) {  
-			    errors.rejectValue("projDescAmount", "projDescAmount.incorrect",  
+			    errors.rejectValue("totalCost", "totalCost.incorrect",  
 			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(projectDescDetail.getProjDescAmount().length() > 15){
-		            errors.rejectValue("projDescAmount", "projDescAmount.incorrect", "Field must not exceed 15 characters.");
+			   }else if(projectDescDetail.getTotalCost().length() > 15){
+		            errors.rejectValue("totalCost", "totalCost.incorrect", "Field must not exceed 15 characters.");
 		        }
 		}else{
-			projectDescDetail.setProjDescAmount("0");
+			projectDescDetail.setTotalCost("0");
 		}
 
 		if(projectDescDetail.getAliasDescription().length() > 100){

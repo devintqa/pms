@@ -8,7 +8,6 @@
 
 <script>
 
-	
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
 		
@@ -98,7 +97,7 @@
 	        this.value = val.substring(0, val.length - 1);
 	    }
 	});
-	
+	2
 	
 	$(document).on("keyup","input[name = 'itemQty']",function(){
 		
@@ -197,8 +196,23 @@
 				data: JSON.stringify(itemDescForm),
 				success : function(response) {
 					if(response == true){
-						alert("Data saved successfully");
+						$("#dialog-confirm").html("<center><br>Saved successfully!</center>");
+					}else{
+						$("#dialog-confirm").html("<center><br>Error occured!</center>");
 					}
+					$("#dialog-confirm").dialog({
+					    resizable: false,
+					    modal: true,
+					    title: "Item Breakdown Structure!",
+					    height: 200,
+					    width: 400,
+					    buttons: {
+					        "Ok": function () {
+					            $(this).dialog('close');
+					            window.location.reload();
+					        }
+					    }
+					});
 				}
 			});
 		}
@@ -262,21 +276,23 @@
 
     </script>
     <style type="text/css">
-     
-	     .slide-out-div {
-	         padding: 20px;
-	         width: 1024px;
-	         background: #ccc;
-	         border: 1px solid #29216d;
-	     }      
-     
-     </style>
+		.handle {
+			width: 35px;
+			height: 100%;
+		}
+		
+		.slide-out-div {
+			padding: 20px;
+			width: 1024px;
+			background: #ccc;
+			border: 1px solid #29216d;
+		}
+	</style>
      
 </head>
 <body>
  <div class="slide-out-div">
-            <a class="handle" href="#">
-            
+            <a class="handle"  href="#">         
             <img id="slideClose"  style="display:none;" src="<c:url value="/resources/images/slide-close.png" />"/>
             <img id="slideOpen" style="display:block;"  src="<c:url value="/resources/images/slide-open.png" />"/>
             </a>
@@ -289,8 +305,7 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:input id="aliasProjectName" path="aliasProjectName"
-										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true"/>
+								<td><form:input id="aliasProjectName" path="aliasProjectName" cssClass="inputText"  readonly="true"/>
 									</td>
 							</tr>
 							
@@ -298,8 +313,7 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:input id="aliasSubProjectName" path="aliasSubProjectName"
-										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true" /></td>
+								<td><form:input id="aliasSubProjectName" path="aliasSubProjectName" cssClass="inputText"  readonly="true" /></td>
 							</tr>
 							
 							</c:if>
@@ -307,22 +321,12 @@
 							<tr>
 								<td>Serial Number<span id="colon">:</span>
 								</td>
-								<td><form:input id="serialNumber" path="serialNumber"
-										placeholder="Enter Serial Number" cssClass="inputText"  readonly="true"/></td>
+								<td><form:input id="serialNumber" path="serialNumber" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
-								<td>Quantity in Figures<span id="colon">:</span>
+								<td>Quantity<span id="colon">:</span>
 								</td>
-								<td><form:input id="quantityInFig" path="quantityInFig"
-										placeholder="Enter Quantity in Figures" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Quantity in unit<span id="colon">:</span>
-								</td>
-								<td><form:input path="quantityInUnit"
-										placeholder="Enter Quantity in Unit"
-										data-validation="length numeric" data-validation-length="min4"
-										cssClass="inputText"  readonly="true" /></td>
+								<td><form:input id="quantity" path="quantity" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
 								<td>Description<span id="colon">:</span>
@@ -337,16 +341,14 @@
 										placeholder="Enter Alias Description" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
-								<td>Rate in Figures<span id="colon">:</span>
+								<td>Price Per Quantity<span id="colon">:</span>
 								</td>
-								<td><form:input path="rateInFig"
-										placeholder="Enter Rate in Figures" cssClass="inputText"  readonly="true"/></td>
+								<td><form:input path="pricePerQuantity" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
-								<td>Amount in Rupees<span id="colon">:</span>
+								<td>Total Cost in Rupees<span id="colon">:</span>
 								</td>
-								<td><form:input path="projDescAmount"
-										placeholder="Enter Amount" cssClass="inputText"  readonly="true"/></td>
+								<td><form:input path="totalCost" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr></tr>
 						</table>
@@ -407,4 +409,5 @@
 		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input type="button" id="saveDesc" value="Save" onclick="saveItemDesc()" />
 	</form:form>
+	<div id="dialog-confirm"></div>
 </body>

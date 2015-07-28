@@ -56,7 +56,7 @@ public class ProjectDescriptionDetailBuilder {
                             }
                         	if (cell.getColumnIndex() == 2 && row.getCell(3) != null)
                             {	
-                        		if(cell.getColumnIndex() == 2)projDescDetail.setQuantityInFig(String.valueOf(cell.getNumericCellValue()));
+                        		if(cell.getColumnIndex() == 2)projDescDetail.setQuantity(String.valueOf(cell.getNumericCellValue()));
                             }
                         	break;
                         case Cell.CELL_TYPE_STRING:	
@@ -76,8 +76,7 @@ public class ProjectDescriptionDetailBuilder {
             for(ProjDescDetail descDetail : detailList){
             	LOGGER.info(descDetail.getSerialNumber());
             	LOGGER.info(descDetail.getWorkType());
-            	LOGGER.info(descDetail.getQuantityInFig());
-//            	LOGGER.info(descDetail.getQuantityInUnit());
+            	LOGGER.info(descDetail.getQuantity());
             	LOGGER.info(descDetail.getDescription());
             	LOGGER.info(descDetail.getAliasDescription());
             }

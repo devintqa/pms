@@ -120,20 +120,11 @@ $(document).ready(function () {
 								<td><form:errors path="workType" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Quantity in Figures<span id="colon">:</span>
+								<td>Quantity<span id="colon">:</span>
 								</td>
-								<td><form:input id="quantityInFig" path="quantityInFig"
+								<td><form:input id="quantity" path="quantity"
 										placeholder="Enter quantity for the selected work" cssClass="inputText" /></td>
-								<td><form:errors path="quantityInFig" cssClass="error" /></td>
-							</tr>
-<!-- 							<tr> -->
-<!-- 								<td>Quantity in Unit<span id="colon">:</span> -->
-<!-- 								</td> -->
-<%-- 								<td><form:input id="quantityInUnit" path="quantityInUnit" --%>
-<%-- 										placeholder="Enter quantity for the selected work" cssClass="inputText" /> --%>
-<!-- 								</td> -->
-<%-- 								<td><form:errors path="quantityInUnit" cssClass="error" /></td> --%>
-<!-- 							</tr> -->
+								<td><form:errors path="quantity" cssClass="error" /></td>
 							<tr>
 								<td>Description<span id="colon">:</span>
 								</td>
@@ -149,18 +140,16 @@ $(document).ready(function () {
 								<td><form:errors path="aliasDescription" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Cost per Quantity<span id="colon">:</span>
+								<td>Price per Quantity<span id="colon">:</span>
 								</td>
-								<td><form:input path="rateInFig"
-										placeholder="Enter rate in figures" cssClass="inputText" /></td>
-								<td><form:errors path="rateInFig" cssClass="error" /></td>
+								<td><form:input path="pricePerQuantity" cssClass="inputText" /></td>
+								<td><form:errors path="pricePerQuantity" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Total Cost<span id="colon">:</span>
 								</td>
-								<td><form:input path="projDescAmount"
-										placeholder="Enter Amount" cssClass="inputText" /></td>
-								<td><form:errors path="projDescAmount" cssClass="error" /></td>
+								<td><form:input path="totalCost" cssClass="inputText" /></td>
+								<td><form:errors path="totalCost" cssClass="error" /></td>
 							</tr>
 							<tr></tr>
 						</table>

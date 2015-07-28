@@ -109,8 +109,12 @@ public class ItemDAOImpl implements ItemDAO {
 
 		String deleteSql = "DELETE from projdescitem where ProjDescId = "+descItemDetail.getProjDescId()+" and ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"'";
 		jdbcTemplate.execute(deleteSql);
-
+		
+	
+	        	
+	        	
 		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+			
 			@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
 				DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
@@ -130,6 +134,27 @@ public class ItemDAOImpl implements ItemDAO {
 				return descItemDetail.getItemDetail().size();
 			}
 		});
+		
+		long sumItemCost = 0;
+		for (DescItemDetail.ItemDetail itemDetail: descItemDetail.getItemDetail()){
+			long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
+			sumItemCost = sumItemCost + itemCost;
+		}
+		
+		String projectDescEstimate = "SELECT Quantity from projectdesc WHERE ProjDescId = '"+descItemDetail.getProjDescId()+"'";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(projectDescEstimate);
+
+		long totalCost = 0;
+		for (Map<String, Object> row : rows) {
+			BigDecimal quantity = (BigDecimal) row.get("Quantity");
+			long qty = quantity.toBigInteger().longValue();
+			totalCost = sumItemCost * qty;
+		}
+	        
+		 String updateSql = "UPDATE projectdesc set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+         jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost, descItemDetail.getProjDescId()});
+	        
 		return true;
 	}
 

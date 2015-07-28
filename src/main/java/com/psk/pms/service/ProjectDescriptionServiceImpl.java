@@ -56,14 +56,11 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
         if (!projDescDetail.isSubProjectDesc()) {
             projDescDetail.setAliasSubProjectName(null);
         }
-        if (StringUtils.isEmpty(projDescDetail.getQuantityInFig())) {
-            projDescDetail.setQuantityInFig(null);
+        if (StringUtils.isEmpty(projDescDetail.getQuantity())) {
+            projDescDetail.setQuantity(null);
         }
-//        if (StringUtils.isEmpty(projDescDetail.getQuantityInUnit())) {
-//            projDescDetail.setQuantityInUnit(null);
-//        }
-        if (StringUtils.isEmpty(projDescDetail.getProjDescAmount())) {
-            projDescDetail.setProjDescAmount(null);
+        if (StringUtils.isEmpty(projDescDetail.getTotalCost())) {
+            projDescDetail.setTotalCost(null);
         }
     }
 

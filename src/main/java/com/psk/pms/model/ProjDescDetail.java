@@ -8,12 +8,11 @@ public class ProjDescDetail {
 	private String aliasSubProjectName;
 	private String serialNumber;
 	private String workType;
-	private String quantityInFig;
-//	private String quantityInUnit;
+	private String quantity;
 	private String description;	
 	private String aliasDescription;
-	private String rateInFig;
-	private String projDescAmount;
+	private String pricePerQuantity;
+	private String totalCost;
 	private String employeeId;
 	private Integer projId;
 	private Integer subProjId;
@@ -41,12 +40,7 @@ public class ProjDescDetail {
 	public void setWorkType(String workType) {
 		this.workType = workType;
 	}
-//	public String getQuantityInUnit() {
-//		return quantityInUnit;
-//	}
-//	public void setQuantityInUnit(String quantityInUnit) {
-//		this.quantityInUnit = quantityInUnit;
-//	}
+
 	public String getDescription() {
 		return description;
 	}
@@ -89,24 +83,6 @@ public class ProjDescDetail {
 	public void setIsUpdate(String isUpdate) {
 		this.isUpdate = isUpdate;
 	}
-	public String getQuantityInFig() {
-		return quantityInFig;
-	}
-	public void setQuantityInFig(String quantityInFig) {
-		this.quantityInFig = quantityInFig;
-	}
-	public String getRateInFig() {
-		return rateInFig;
-	}
-	public void setRateInFig(String rateInFig) {
-		this.rateInFig = rateInFig;
-	}
-	public String getProjDescAmount() {
-		return projDescAmount;
-	}
-	public void setProjDescAmount(String projDescAmount) {
-		this.projDescAmount = projDescAmount;
-	}
 
     public String getLastUpdatedBy() {
         return lastUpdatedBy;
@@ -136,6 +112,24 @@ public class ProjDescDetail {
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
+	}
+	public String getQuantity() {
+		return quantity;
+	}
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+	public String getPricePerQuantity() {
+		return pricePerQuantity;
+	}
+	public void setPricePerQuantity(String pricePerQuantity) {
+		this.pricePerQuantity = pricePerQuantity;
+	}
+	public String getTotalCost() {
+		return totalCost;
+	}
+	public void setTotalCost(String totalCost) {
+		this.totalCost = totalCost;
 	}
 }
 

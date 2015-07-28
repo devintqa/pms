@@ -6,7 +6,7 @@ var tblEmdDocument = $("#emdDocumentList").dataTable();
 
 <script>
 $(function() {
-    var table = $("#emdList").dataTable( {"pageLength": 10});
+    var table = $("#emdList").dataTable({"pageLength": 10});
 	
      $("#emdList_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
@@ -37,10 +37,10 @@ $(function() {
                         if (displayType != 'none') {
                             $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
                         }
-
                     }
                 })
-            }else{					
+            }
+            else{					
 				 $("table[id*=emdList] th").each(function(index, item) {						
                     if (columnName == item.innerHTML) {
                         var displayType = $('#emdList tr').find("td:eq(" + index + ")").css('display');							  
@@ -203,7 +203,6 @@ $(function() {
                         if (displayType == 'none') {
                             $('table[id*=projDescDocList] tr').find("td:eq(" + index + ")").toggle();
                         }
-
                     }
                 })
 			  }

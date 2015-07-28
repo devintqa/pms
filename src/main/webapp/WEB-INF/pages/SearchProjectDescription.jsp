@@ -135,9 +135,9 @@
 						<th>Serial Number</th>
 						<th>Alias</th>
 						<th>Work Type</th>
-						<th>Quantity</th>
-						<th>Rate</th>
-						<th>Project Description Amount</th>
+						<th>No of Quantity</th>
+						<th>Price Per Quantity</th>
+						<th>Total Cost</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -148,9 +148,9 @@
 								<td><a href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${employeeObj.employeeId}')" 	class="userAction">${projDesc.serialNumber}</a></td>
 								<td>${projDesc.aliasDescription}</td>
 								<td>${projDesc.workType}</td>
-								<td>${projDesc.quantityInFig}</td>
-								<td>${projDesc.rateInFig}</td>
-								<td>${projDesc.projDescAmount}</td>
+								<td>${projDesc.quantity}</td>
+								<td>${projDesc.pricePerQuantity}</td>
+								<td>${projDesc.totalCost}</td>
 								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
 										 class="userAction">Update</a>
 									<strong> / </strong>
