@@ -335,6 +335,13 @@
 										placeholder="Enter Description" cssClass="inputText"  readonly="true"/></td>
 							</tr>
 							<tr>
+								<td>Metric<span id="colon">:</span>
+								</td>
+								<td><form:input id="metric" path="metric"
+										placeholder="Enter quantity metric" cssClass="inputText" /></td>
+								<td><form:errors path="metric" cssClass="error" /></td>
+							</tr>
+							<tr>
 								<td>Alias Description<span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasDescription"
