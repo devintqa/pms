@@ -9,6 +9,7 @@ public class ProjDescDetail {
 	private String serialNumber;
 	private String workType;
 	private String quantity;
+	private String metric;
 	private String description;	
 	private String aliasDescription;
 	private String pricePerQuantity;
@@ -22,6 +23,12 @@ public class ProjDescDetail {
 	private String lastUpdatedBy ;
     private Date lastUpdatedAt;
 	
+	public String getMetric() {
+		return metric;
+	}
+	public void setMetric(String metric) {
+		this.metric = metric;
+	}
 	public String getAliasProjectName() {
 		return aliasProjectName;
 	}

@@ -47,8 +47,8 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantity",
 				"required.quantity", "Enter Quantity In Figures.");
 		
-//		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "quantityInUnit",
-//				"required.quantityInUnit", "Enter Quantity In Unit.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "metric",
+				"required.metric", "Enter Quantity Metric Unit.");
 
 		ProjDescDetail projectDescDetail = (ProjDescDetail)target;
 		

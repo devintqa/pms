@@ -44,10 +44,10 @@ public class PmsMasterQuery {
             "    from emddetail e left join project as p on e.ProjId = p.ProjId " +
             "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 
-    public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, "
+    public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric,"
             + "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
 
-    public static String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, "
+    public static String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
             + "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";
 
     public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
@@ -68,13 +68,13 @@ public class PmsMasterQuery {
 
     public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
 
-    public static String INSERTSUBPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
+    public static String INSERTSUBPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, Quantity, Metric, "
             + "Description, AliasDescription,LastUpdatedBy ,LastUpdatedAt) " +
             "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, QuantityInFig, QuantityInUnit, "
+    public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, Quantity, Metric, "
             + "Description, AliasDescription, LastUpdatedBy ,LastUpdatedAt) " +
-            "VALUES (?, ?, ? , ?, ?, ?, ?, ?,?)";
+            "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?)";
 
     public static String NOOFPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM projectdesc WHERE ProjId = ?";
 

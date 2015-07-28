@@ -125,6 +125,14 @@ $(document).ready(function () {
 								<td><form:input id="quantity" path="quantity"
 										placeholder="Enter quantity for the selected work" cssClass="inputText" /></td>
 								<td><form:errors path="quantity" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Metric<span id="colon">:</span>
+								</td>
+								<td><form:input id="metric" path="metric"
+										placeholder="Enter quantity metric" cssClass="inputText" /></td>
+								<td><form:errors path="metric" cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Description<span id="colon">:</span>
 								</td>
