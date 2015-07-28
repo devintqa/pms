@@ -58,7 +58,7 @@ $(document).ready(function () {
 								<td>Item Type<span id="colon">:</span>
 								</td>
 								<td><form:select path="itemType"
-								cssClass="itemType" items="${itemTypes}"/></td>
+								cssClass="inputText" items="${itemTypes}"/></td>
 								<td><form:errors path="itemType" cssClass="error" /></td>
 							</tr>
 							<tr></tr>

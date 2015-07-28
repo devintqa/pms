@@ -177,16 +177,10 @@
 		<h1 style="text-align: center; color: #007399; font-size: 24px;">Configure Item Breakdown Structure</h1>
 		
 		<table>
-			<tr>
-				<td>Type<span id="colon">:</span>
-				</td>
-				<td><form:select path="itemType" cssClass="inputText" id="itemType" >
-						<option value="-- PLEASE SELECT --" selected="selected">-- PLEASE SELECT --</option>
-						<option value="MATERIAL" selected="selected">MATERIAL</option>
-						<option value="LABOUR">LABOUR</option>
-						<option value="OTHERS">OTHERS</option>
-					</form:select></td>
-			</tr>
+        <tr>
+		    <td>Type<span id="colon">:</span></td>
+			<td><form:select path="itemType" cssClass="inputText" id="itemType" items="${itemTypes}"/></td>
+		</tr>
 		</table>
 		<br>
 		<table id="itemTable" border="1" class="gridView">
