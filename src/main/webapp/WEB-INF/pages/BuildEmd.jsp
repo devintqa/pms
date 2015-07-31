@@ -8,7 +8,7 @@
 
 <title>PMS :: EMD Details</title>
 
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 <script>
 $(document).ready(function () {
@@ -92,11 +92,11 @@ $(document).ready(function () {
 </script>
 </head>
 
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${emdUpdationMessage}</h2>
@@ -104,8 +104,7 @@ $(document).ready(function () {
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${emdCreationMessage}</h2>
 		</div>
 		<div>
-			<form:form method="POST" commandName="emdForm"
-				action="createEmd.do">
+			<form:form method="POST" commandName="emdForm" action="createEmd.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>EMD Details</legend>
@@ -114,20 +113,21 @@ $(document).ready(function () {
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasProjectName"
-										cssClass="inputText" id="projId" items="${aliasProjectList}" >
+										cssClass="inputText" id="projId" items="${aliasProjectList}">
 									</form:select></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSubProjectCheckBox">
 								<td>EMD For Sub Project? :</td>
-								<td><form:checkbox path="subProjectEMD" id="subProjectEMD"/></td>
+								<td><form:checkbox path="subProjectEMD" id="subProjectEMD" /></td>
 								<td><form:errors path="subProjectEMD" cssClass="error" /></td>
 							</tr>
 							<tr id="showSubProject">
 								<td>Sub Project Name <span id="colon">:</span>
 								</td>
 								<td><form:select path="aliasSubProjectName"
-										id="aliasSubProjectName" cssClass="inputText"  items="${subAliasProjectList}">
+										id="aliasSubProjectName" cssClass="inputText"
+										items="${subAliasProjectList}">
 										<c:if test="${projDescForm.subProjId gt '0'}">
 											<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
 										</c:if>
@@ -144,11 +144,12 @@ $(document).ready(function () {
 							</tr>
 							<tr>
 								<td>EMD For <span id="colon">:</span></td>
-								<td><form:radiobutton path="emdFor" id="psk" value="PSK" checked="true"/>PSK
-                                <form:radiobutton  path="emdFor" id="competitor"  value="competitor"/>Competitor</td>
-                                <td><form:errors path="emdFor" cssClass="error" /></td>
+								<td><form:radiobutton path="emdFor" id="psk" value="PSK"
+										checked="true" />PSK <form:radiobutton path="emdFor"
+										id="competitor" value="competitor" />Competitor</td>
+								<td><form:errors path="emdFor" cssClass="error" /></td>
 							</tr>
-						    <tr id="showCompetitorName">
+							<tr id="showCompetitorName">
 								<td>Competitor Name<span id="colon">:</span>
 								</td>
 								<td><form:input path="emdSubmitter"
@@ -188,8 +189,8 @@ $(document).ready(function () {
 							<tr>
 								<td>EMD Extension Date<span id="colon">:</span>
 								</td>
-								<td><form:input path="emdExtensionDate" placeholder="DD-MM-YYYY"
-										cssClass="inputText" /></td>
+								<td><form:input path="emdExtensionDate"
+										placeholder="DD-MM-YYYY" cssClass="inputText" /></td>
 								<td><form:errors path="emdExtensionDate" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -215,7 +216,7 @@ $(document).ready(function () {
 					<form:hidden path="subProjId" />
 					<form:hidden path="isUpdate" />
 					<form:hidden path="emdId" />
-					
+
 					<table>
 						<tr>
 							<td></td>
@@ -226,9 +227,7 @@ $(document).ready(function () {
 				</center>
 				<br>
 			</form:form>
-
 		</div>
-
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />

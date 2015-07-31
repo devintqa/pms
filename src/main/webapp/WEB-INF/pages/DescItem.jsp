@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <head>
@@ -275,119 +276,133 @@
     });
 
     </script>
-    <style type="text/css">
-		.handle {
-			width: 35px;
-			height: 100%;
-		}
-		
-		.slide-out-div {
-			padding: 20px;
-			width: 1024px;
-			background: #ccc;
-			border: 1px solid #29216d;
-		}
-	</style>
-     
+<style type="text/css">
+.handle {
+	width: 35px;
+	height: 100%;
+}
+
+.slide-out-div {
+	padding: 20px;
+	width: 1024px;
+	background: #ccc;
+	border: 1px solid #29216d;
+}
+</style>
+
 </head>
 <body>
- <div class="slide-out-div">
-            <a class="handle"  href="#">         
-            <img id="slideClose"  style="display:none;" src="<c:url value="/resources/images/slide-close.png" />"/>
-            <img id="slideOpen" style="display:block;"  src="<c:url value="/resources/images/slide-open.png" />"/>
-            </a>
-            
-            
-            <form:form id="projDescForm" method="POST" commandName="projDescForm">
-					<fieldset style="margin: 1em; text-align: left;">
-						<legend><h3>Project Description Details</h3></legend>
-						<table>
-							<tr>
-								<td>Alias Project Name <span id="colon">:</span>
-								</td>
-								<td><form:input id="aliasProjectName" path="aliasProjectName" cssClass="inputText"  readonly="true"/>
-									</td>
-							</tr>
-							
-							<c:if test="${projDescForm.subProjId gt '0'}">
-							<tr>
-								<td>Alias Project Name <span id="colon">:</span>
-								</td>
-								<td><form:input id="aliasSubProjectName" path="aliasSubProjectName" cssClass="inputText"  readonly="true" /></td>
-							</tr>
-							
-							</c:if>
-										
-							<tr>
-								<td>Serial Number<span id="colon">:</span>
-								</td>
-								<td><form:input id="serialNumber" path="serialNumber" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Quantity<span id="colon">:</span>
-								</td>
-								<td><form:input id="quantity" path="quantity" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Description<span id="colon">:</span>
-								</td>
-								<td><form:textarea path="description"
-										placeholder="Enter Description" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Metric<span id="colon">:</span>
-								</td>
-								<td><form:input id="metric" path="metric"
-										placeholder="Enter quantity metric" cssClass="inputText" /></td>
-								<td><form:errors path="metric" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Alias Description<span id="colon">:</span>
-								</td>
-								<td><form:input path="aliasDescription"
-										placeholder="Enter Alias Description" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Price Per Quantity<span id="colon">:</span>
-								</td>
-								<td><form:input path="pricePerQuantity" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr>
-								<td>Total Cost in Rupees<span id="colon">:</span>
-								</td>
-								<td><form:input path="totalCost" cssClass="inputText"  readonly="true"/></td>
-							</tr>
-							<tr></tr>
-						</table>
-					</fieldset>
-					</form:form>
-        </div>
-	<h1 style="text-align: center; color: #007399; font-size: 24px;">Item Breakdown Structure</h1>
-	
-	
-					
-	<form:form id="descItemForm" method="POST"  commandName="descItemForm" action="createProjDesc.do">
-	
-	<table>
-        <tr>
-		    <td>Type<span id="colon">:</span></td>
-			<td><form:select path="itemType" cssClass="inputText" id="itemType" items="${itemTypes}"/></td>
-		</tr>
-	</table>
-	<br>
-	<form:hidden path="projDescItemDetail" id="projDescItemDetail"/>
-	<form:hidden path="projId" id="projId"/>
-	<form:hidden path="subProjId" id="subProjId"/>
-	<form:hidden path="projDescId" id="projDescId"/>
-	<form:hidden path="projDescSerial" id="projDescSerial"/>
-	<form:hidden path="employeeId" id="employeeId"/>
-	
-	<table id="itemTable" border="1" class="gridView">
+	<div class="slide-out-div">
+		<a class="handle" href="#"> <img id="slideClose"
+			style="display: none;"
+			src="<c:url value="/resources/images/slide-close.png" />" /> <img
+			id="slideOpen" style="display: block;"
+			src="<c:url value="/resources/images/slide-open.png" />" />
+		</a>
+
+
+		<form:form id="projDescForm" method="POST" commandName="projDescForm">
+			<fieldset style="margin: 1em; text-align: left;">
+				<legend>
+					<h3>Project Description Details</h3>
+				</legend>
+				<table>
+					<tr>
+						<td>Alias Project Name <span id="colon">:</span>
+						</td>
+						<td><form:input id="aliasProjectName" path="aliasProjectName"
+								cssClass="inputText" readonly="true" /></td>
+					</tr>
+
+					<c:if test="${projDescForm.subProjId gt '0'}">
+						<tr>
+							<td>Alias Project Name <span id="colon">:</span>
+							</td>
+							<td><form:input id="aliasSubProjectName"
+									path="aliasSubProjectName" cssClass="inputText" readonly="true" /></td>
+						</tr>
+
+					</c:if>
+
+					<tr>
+						<td>Serial Number<span id="colon">:</span>
+						</td>
+						<td><form:input id="serialNumber" path="serialNumber"
+								cssClass="inputText" readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Quantity<span id="colon">:</span>
+						</td>
+						<td><form:input id="quantity" path="quantity"
+								cssClass="inputText" readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Description<span id="colon">:</span>
+						</td>
+						<td><form:textarea path="description"
+								placeholder="Enter Description" cssClass="inputText"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Metric<span id="colon">:</span>
+						</td>
+						<td><form:input id="metric" path="metric"
+								placeholder="Enter quantity metric" cssClass="inputText" /></td>
+						<td><form:errors path="metric" cssClass="error" /></td>
+					</tr>
+					<tr>
+						<td>Alias Description<span id="colon">:</span>
+						</td>
+						<td><form:input path="aliasDescription"
+								placeholder="Enter Alias Description" cssClass="inputText"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Price Per Quantity<span id="colon">:</span>
+						</td>
+						<td><form:input path="pricePerQuantity" cssClass="inputText"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Total Cost in Rupees<span id="colon">:</span>
+						</td>
+						<td><form:input path="totalCost" cssClass="inputText"
+								readonly="true" /></td>
+					</tr>
+					<tr></tr>
+				</table>
+			</fieldset>
+		</form:form>
+	</div>
+	<h1 style="text-align: center; color: #007399; font-size: 24px;">Item
+		Breakdown Structure</h1>
+
+
+
+	<form:form id="descItemForm" method="POST" commandName="descItemForm"
+		action="createProjDesc.do">
+
+		<table>
+			<tr>
+				<td>Type<span id="colon">:</span></td>
+				<td><form:select path="itemType" cssClass="inputText"
+						id="itemType" items="${itemTypes}" /></td>
+			</tr>
+		</table>
+		<br>
+		<form:hidden path="projDescItemDetail" id="projDescItemDetail" />
+		<form:hidden path="projId" id="projId" />
+		<form:hidden path="subProjId" id="subProjId" />
+		<form:hidden path="projDescId" id="projDescId" />
+		<form:hidden path="projDescSerial" id="projDescSerial" />
+		<form:hidden path="employeeId" id="employeeId" />
+
+		<table id="itemTable" border="1" class="gridView">
 			<tr>
 				<th>Item</th>
 				<th>Unit</th>
 				<th>Unit Price</th>
-				<th>Qty</th>				
+				<th>Qty</th>
 				<th>Cost</th>
 				<th>Action</th>
 			</tr>
@@ -395,20 +410,27 @@
 			<tr>
 				<td><input name="itemName" id="itemName" type="text" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
-				<td><input name="itemPrice" readonly="readonly" id="itemPrice" type="text" /></td>
-				<td><input name="itemQty" id="itemQty" type="text" pattern="([0-9]+\.)?[0-9]+"/></td>
-				<td><input name="itemCost" readonly="readonly" id="itemCost" type="text" /></td>
-				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img src="<c:url value="/resources/images/delete.png" />"/></a></td>
+				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
+					type="text" /></td>
+				<td><input name="itemQty" id="itemQty" type="text"
+					pattern="([0-9]+\.)?[0-9]+" /></td>
+				<td><input name="itemCost" readonly="readonly" id="itemCost"
+					type="text" /></td>
+				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img
+						src="<c:url value="/resources/images/delete.png" />" /></a></td>
 			</tr>
 
 		</table>
 		<br>
-		Amount : <input name="totalItemCost" readonly="readonly" id="totalItemCost" type="text" />
+		Amount : <input name="totalItemCost" readonly="readonly"
+			id="totalItemCost" type="text" />
 		<br>
-			
+
 		<br>
-		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
-		<input type="button" id="saveDesc" value="Save" onclick="saveItemDesc()" />
+		<input type="button" id="addItem" value="Add"
+			onclick="insertItemRow()" />
+		<input type="button" id="saveDesc" value="Save"
+			onclick="saveItemDesc()" />
 	</form:form>
 	<div id="dialog-confirm"></div>
 </body>

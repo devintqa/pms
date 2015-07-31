@@ -16,8 +16,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
-		
+	<div id="wrapper">
 		<c:if test="${subProjectDocumentSize gt 0}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Sub Project Details</h1>
 				<table id="subProjectDocumentList" class="gridView">
@@ -56,9 +55,6 @@
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
-
-
-
 </body>
 </html>
 

@@ -166,12 +166,11 @@
 	}
 </script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-
-		
+	<div id="wrapper">	
 	<form:form id="projectItemForm" method="POST" commandName="projectItemForm">
 		
 		<h1 style="text-align: center; color: #007399; font-size: 24px;">Configure Item Breakdown Structure</h1>
@@ -215,4 +214,5 @@
 		<form:hidden path="employeeId" id="employeeId"/>
 	
 	</form:form>
+	</div>
 </body>

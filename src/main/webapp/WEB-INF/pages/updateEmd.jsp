@@ -28,7 +28,7 @@
 	    <header>
 		    <jsp:include page="Header.jsp" />
 	    </header>
-	    <div>
+	    <div id="wrapper">
 	    	<c:if test="${emdDetailsSize gt 0}">
         		<h1 style="text-align: center; color: #007399; font-size: 24px;">EMD Details</h1>
 	        	<table id="emdList" class="gridView">

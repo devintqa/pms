@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
@@ -6,7 +7,7 @@
 <head>
 <title>PMS :: My Profile</title>
 
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 </head>
 
@@ -14,11 +15,12 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2 style="text-align: center; color: #007399; font-size: 20px;">${updateSuccessMessage}</h2>
 			<br>
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">Edit Profile</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Edit
+				Profile</h1>
 			<!-- <h3 style="text-align:center;font-size:18px;">Please update your details and click submit.</h3> -->
 			<br>
 			<form:form method="POST" commandName="employee"

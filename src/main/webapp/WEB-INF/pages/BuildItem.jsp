@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
@@ -6,27 +7,27 @@
 <head>
 
 <title>PMS :: Create Item</title>
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 <script>
-$(document).ready(function () {
-	$("#itemName").autocomplete({
-		source: function (request, response) {
-			$.getJSON("/pms/emp/myview/buildItem/searchItem.do", {
-            	                term: request.term
-            	            }, response);
-        }
+	$(document).ready(function() {
+		$("#itemName").autocomplete({
+			source : function(request, response) {
+				$.getJSON("/pms/emp/myview/buildItem/searchItem.do", {
+					term : request.term
+				}, response);
+			}
+		});
 	});
-});
 </script>
 
 </head>
 
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${itemUpdationMessage}</h2>
@@ -57,8 +58,8 @@ $(document).ready(function () {
 							<tr>
 								<td>Item Type<span id="colon">:</span>
 								</td>
-								<td><form:select path="itemType"
-								cssClass="inputText" items="${itemTypes}"/></td>
+								<td><form:select path="itemType" cssClass="inputText"
+										items="${itemTypes}" /></td>
 								<td><form:errors path="itemType" cssClass="error" /></td>
 							</tr>
 							<tr></tr>

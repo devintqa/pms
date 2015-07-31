@@ -79,11 +79,14 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
-	    <h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
-	</div>
- <div class="ui-widget">
-			<form:form id="searchProjDescForm" method="POST" commandName="searchProjDescForm"
+	<div id="wrapper">
+		<div>
+			<h2
+				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+		</div>
+		<div class="ui-widget">
+			<form:form id="searchProjDescForm" method="POST"
+				commandName="searchProjDescForm"
 				action="searchProjectDescDetails.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
@@ -92,32 +95,39 @@
 							<tr>
 								<td>Alias Project Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasProjectName" id="aliasProjectName"
-										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
+								<td><form:input path="aliasProjectName"
+										id="aliasProjectName" placeholder="Enter Alias Project Name"
+										cssClass="inputText" /></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchProjectDesc">
 								<td>Search Project Description? :</td>
-								<td><form:checkbox path="searchProjectDescription" id="searchProjectDescription"/></td>
-								<td><form:errors path="searchProjectDescription" cssClass="error" /></td>
+								<td><form:checkbox path="searchProjectDescription"
+										id="searchProjectDescription" /></td>
+								<td><form:errors path="searchProjectDescription"
+										cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchItemDesc">
 								<td>Search Aggregate Item Details? :</td>
-								<td><form:checkbox path="searchAggregateItemDetails" id="searchAggregateItemDetails"/></td>
-								<td><form:errors path="searchAggregateItemDetails" cssClass="error" /></td>
+								<td><form:checkbox path="searchAggregateItemDetails"
+										id="searchAggregateItemDetails" /></td>
+								<td><form:errors path="searchAggregateItemDetails"
+										cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Search under :</td>
-								<td><form:radiobutton path="searchUnder" value = "Project" id="searchUnderProject" checked="true"/>Project</td>
-								<td><form:radiobutton path="searchUnder" value = "subProject" id="searchUnderSubProject"/>Sub Project</td>
-							</tr>		
+								<td><form:radiobutton path="searchUnder" value="Project"
+										id="searchUnderProject" checked="true" />Project</td>
+								<td><form:radiobutton path="searchUnder" value="subProject"
+										id="searchUnderSubProject" />Sub Project</td>
+							</tr>
 							<tr></tr>
 						</table>
 					</fieldset>
 					<table>
 						<tr>
 							<td></td>
-							<td><input type="submit"/></td>
+							<td><input type="submit" /></td>
 							<td></td>
 						</tr>
 					</table>
@@ -126,78 +136,83 @@
 				<br>
 
 			</form:form>
-		
-		<c:if test="${projDescDocListSize gt 0}">
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
-			<table id="projDescDocList" class="gridView">
-				<thead>
-					<tr>
-						<th>Serial Number</th>
-						<th>Alias</th>
-						<th>Work Type</th>
-						<th>No of Quantity</th>
-						<th>Price Per Quantity</th>
-						<th>Total Cost</th>
-						<th>Action</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${not empty projDescDocList}">
-						<c:forEach var="projDesc" items="${projDescDocList}">
-							<tr>
-								<td><a href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${employeeObj.employeeId}')" 	class="userAction">${projDesc.serialNumber}</a></td>
-								<td>${projDesc.aliasDescription}</td>
-								<td>${projDesc.workType}</td>
-								<td>${projDesc.quantity}</td>
-								<td>${projDesc.pricePerQuantity}</td>
-								<td>${projDesc.totalCost}</td>
-								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
-										 class="userAction">Update</a>
-									<strong> / </strong>
-									<a id ="deleteRow" href ="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}');" style="color:red"> Delete</a>
-                                </td>
-							</tr>
-						</c:forEach>
-					</c:if>
-				</tbody>
-			</table>
-			<br>
-			<br>
-		</c:if>
-		
-		<c:if test="${aggregateItemDetailsSize gt 0}">
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Aggregate Material Details</h1>
-			<table id="itemDescList" class="gridView">
-				<thead>
-					<tr>
-						<th>Material</th>
-						<th>Price</th>
-						<th>Unit</th>
-						<th>Quantity</th>
-						<th>Total Cost</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${not empty aggregateItemDetails}">
-						<c:forEach var="item" items="${aggregateItemDetails}">
-							<tr>
-								<td>${item.itemName}</td>
-								<td>${item.itemPrice}</td>
-								<td>${item.itemUnit}</td>
-								<td>${item.itemQty}</td>				
-								<td>${item.itemCost}</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-				</tbody>
-			</table>
-			<br>
-			<br>
-		</c:if>
-		
+
+			<c:if test="${projDescDocListSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
+					Project Description Details</h1>
+				<table id="projDescDocList" class="gridView">
+					<thead>
+						<tr>
+							<th>Serial Number</th>
+							<th>Alias</th>
+							<th>Work Type</th>
+							<th>No of Quantity</th>
+							<th>Price Per Quantity</th>
+							<th>Total Cost</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty projDescDocList}">
+							<c:forEach var="projDesc" items="${projDescDocList}">
+								<tr>
+									<td><a
+										href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${employeeObj.employeeId}')"
+										class="userAction">${projDesc.serialNumber}</a></td>
+									<td>${projDesc.aliasDescription}</td>
+									<td>${projDesc.workType}</td>
+									<td>${projDesc.quantity}${projDesc.metric}</td>
+									<td>${projDesc.pricePerQuantity}/ ${projDesc.metric}</td>
+									<td>${projDesc.totalCost}</td>
+									<td><a
+										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+										class="userAction">Update</a> <strong> / </strong> <a
+										id="deleteRow"
+										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}');"
+										style="color: red"> Delete</a></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
+
+			<c:if test="${aggregateItemDetailsSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
+					Aggregate Material Details</h1>
+				<table id="itemDescList" class="gridView">
+					<thead>
+						<tr>
+							<th>Material</th>
+							<th>Price</th>
+							<th>Unit</th>
+							<th>Quantity</th>
+							<th>Total Cost</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty aggregateItemDetails}">
+							<c:forEach var="item" items="${aggregateItemDetails}">
+								<tr>
+									<td>${item.itemName}</td>
+									<td>${item.itemPrice}</td>
+									<td>${item.itemUnit}</td>
+									<td>${item.itemQty}</td>
+									<td>${item.itemCost}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
 		</div>
 		<div id="dialog-confirm"></div>
- 	<footer>
+	</div>
+	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
 </body>

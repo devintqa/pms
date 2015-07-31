@@ -1,11 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html>
 <head>
 <title>PMS :: Create Sub Project</title>
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 <script>
 $(document).ready(function () {
@@ -29,11 +30,11 @@ $(function(){
 </script>
 </head>
 
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${subProjectCreationMessage}</h2>
@@ -56,14 +57,16 @@ $(function(){
 								<td>Sub Project Name<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subProjectName"
-										placeholder="Enter Sub Project Name" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
+										placeholder="Enter Sub Project Name" cssClass="inputText"
+										maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subProjectName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Alias Sub Project Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasSubProjName" id="aliasSubProjName"
-										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
+								<td><form:input path="aliasSubProjName"
+										id="aliasSubProjName" placeholder="Enter Alias Project Name"
+										cssClass="inputText" /></td>
 								<td><form:errors path="aliasSubProjName" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -84,21 +87,25 @@ $(function(){
 								<td>Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subContractorName"
-										placeholder="Enter Name of Contractor" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
+										placeholder="Enter Name of Contractor" cssClass="inputText"
+										maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subContractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Alias Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:input path="subAliasContractorName"
-										placeholder="Enter Alias Name of Contractor" cssClass="inputText" /></td>
-								<td><form:errors path="subAliasContractorName" cssClass="error" /></td>
+										placeholder="Enter Alias Name of Contractor"
+										cssClass="inputText" /></td>
+								<td><form:errors path="subAliasContractorName"
+										cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Address of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="subContractorAddress"
-										placeholder="Enter Address of Contractor" cssClass="inputText" maxlength="2000" rows="5" cols="40" /></td>
+										placeholder="Enter Address of Contractor" cssClass="inputText"
+										maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="subContractorAddress"
 										cssClass="error" /></td>
 							</tr>
@@ -144,21 +151,24 @@ $(function(){
 										placeholder="Enter Less in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="subLessPercentage" cssClass="error" /></td>
 							</tr>
-                            <tr>
-                                <td>Additional Security Deposit<span id="colon">:</span>
-                                </td>
-                                <td><form:input path="subAddSecurityDeposit"
-                                                placeholder="Enter additional security deposit" cssClass="inputText" /></td>
-                                <td><form:errors path="subAddSecurityDeposit" cssClass="error" /></td>
-                            </tr>
 							<tr>
-                                <td>Performance Guarantee <span id="colon">:</span>
-                                </td>
-                                <td><form:input path="subPerformanceGuarantee"
-                                                placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
-                                <td><form:errors path="subPerformanceGuarantee" cssClass="error" /></td>
-                            </tr>
-                            <tr>
+								<td>Additional Security Deposit<span id="colon">:</span>
+								</td>
+								<td><form:input path="subAddSecurityDeposit"
+										placeholder="Enter additional security deposit"
+										cssClass="inputText" /></td>
+								<td><form:errors path="subAddSecurityDeposit"
+										cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Performance Guarantee <span id="colon">:</span>
+								</td>
+								<td><form:input path="subPerformanceGuarantee"
+										placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
+								<td><form:errors path="subPerformanceGuarantee"
+										cssClass="error" /></td>
+							</tr>
+							<tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>
 								<td><form:input path="subTenderDate"
@@ -176,8 +186,7 @@ $(function(){
 								<td>Agreement Number<span id="colon">:</span>
 								</td>
 								<td><form:input path="subAgreementNo"
-										placeholder="Enter Agreement Number"
-										cssClass="inputText" /></td>
+										placeholder="Enter Agreement Number" cssClass="inputText" /></td>
 								<td><form:errors path="subAgreementNo" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -225,7 +234,7 @@ $(function(){
 
 			</form:form>
 		</div>
-		</div>
+	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>

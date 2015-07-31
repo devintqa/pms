@@ -24,7 +24,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
 		</div>

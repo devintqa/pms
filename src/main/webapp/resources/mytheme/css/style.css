@@ -20,6 +20,11 @@ body {
 	max-width: 1280px;
 	min-width: 960px;
 }
+
+#wrapper{
+		min-height: 550px;
+}
+
 /*content styling*/
 header {
 	background: #007399;
@@ -50,14 +55,20 @@ h1 {
 }
 
 footer {
+	margin: 0 auto -155px;
 	background: #007399;
 	font: 0.8em sans-serif;
 	text-transform: uppercase;
 	letter-spacing: .2em;
 	text-align: center;
 	color: #fff;
+	clear: both;
+	padding: 25px 0 15px;
 }
 
+footer {
+	
+}
 
 .inputText {
 	-moz-border-radius: 5px;
@@ -224,11 +235,6 @@ section {
 section:last-of-type {
 	/* border-bottom: solid; */
 	
-}
-
-footer {
-	clear: both;
-	padding: 25px 0 15px;
 }
 
 #errmsg {

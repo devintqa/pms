@@ -302,7 +302,7 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',12.00,'MMC Main Work','MMW',12500.00,150000.00,'tkumar','2015-07-27 23:22:02',5),(1,'SER345',NULL,'Main Work',10.00,'Earth Excavation','MWWW',3000.00,30000.00,'tkumar','2015-07-28 09:16:01',6);
+/*INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',12.00,'MMC Main Work','MMW',12500.00,150000.00,'tkumar','2015-07-27 23:22:02',5),(1,'SER345',NULL,'Main Work',10.00,'Earth Excavation','MWWW',3000.00,30000.00,'tkumar','2015-07-28 09:16:01',6);*/
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 

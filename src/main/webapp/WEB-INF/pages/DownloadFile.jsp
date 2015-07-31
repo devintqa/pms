@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
@@ -6,7 +7,7 @@
 <head>
 <title>PMS :: Download File</title>
 
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 <script>
     $(document)
@@ -110,77 +111,78 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
+	<div id="wrapper">
+		<form:form method="post" action="getFiles.do"
+			modelAttribute="downloadForm" enctype="multipart/form-data">
+
+			<table id="fileTable">
+				<tr>
+					<td>Alias Project Name <span id="colon">:</span>
+					</td>
+					<td><form:select path="aliasProjectName" cssClass="inputText"
+							id="projId" items="${aliasProjectList}">
+						</form:select></td>
+					<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+				</tr>
+				<tr>
+					<td>Download For Sub Project? :</td>
+					<td><form:checkbox path="subProjectUpload"
+							id="subProjectUpload" /></td>
+					<td><form:errors path="subProjectUpload" cssClass="error" /></td>
+				</tr>
+				<tr id="showSubProject">
+					<td>Sub Project Name <span id="colon">:</span>
+					</td>
+					<td><form:select path="aliasSubProjectName"
+							id="aliasSubProjectName" cssClass="inputText"
+							items="${subAliasProjectList}">
+							<c:if test="${projDescForm.subProjId gt '0'}">
+								<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
+							</c:if>
+						</form:select></td>
+					<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
+				</tr>
+			</table>
+			<br />
+			<input type="submit" value="Show Files" />
+		</form:form>
+
+		<br />
+	</div>
+
 	<div>
- 
-        <form:form method="post" action="getFiles.do"
-            modelAttribute="downloadForm" enctype="multipart/form-data">
- 
-            <table id="fileTable">
-                            <tr>
-								<td>Alias Project Name <span id="colon">:</span>
-								</td>
-								<td><form:select path="aliasProjectName"
-										cssClass="inputText" id="projId" items="${aliasProjectList}" >
-									</form:select></td>
-								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Download For Sub Project? :</td>
-								<td><form:checkbox path="subProjectUpload" id="subProjectUpload"/></td>
-								<td><form:errors path="subProjectUpload" cssClass="error" /></td>
-							</tr>
-							<tr id="showSubProject">
-								<td>Sub Project Name <span id="colon">:</span>
-								</td>
-								<td><form:select path="aliasSubProjectName"
-										id="aliasSubProjectName" cssClass="inputText"  items="${subAliasProjectList}">
-										<c:if test="${projDescForm.subProjId gt '0'}">
-											<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
-										</c:if>
-									</form:select></td>
-								<td><form:errors path="aliasSubProjectName"
-										cssClass="error" /></td>
-							</tr>
-							</table>
-            <br />
-            <input type="submit" value="Show Files" />
-        </form:form>
- 
-        <br />
-    </div>
-    
-	<div>
-		
+
 		<c:if test="${projectFileSize gt 0}">
-				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectName} File Details</h1>
-				<table id="projectFileList" class="gridView">
-					<thead>
-						<tr>
-							<th>File Name</th>
-							<th>File Path</th>
-							<th> Action </th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:if test="${not empty projectFileList}">
-							<c:forEach var="fileDoc" items="${projectFileList}">
-								<tr>
-									<td>${fileDoc.fileName}</td>
-									<td>${fileDoc.filePath}</td>
-                                    <td>
-								        <a href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}"> Download File </a>
-								          <strong> / </strong>
-								          <a id ="deleteRow" href ="javascript:deleteFile('${fileDoc.fileName}',encodeURIComponent('${fileDoc.filePath}'));" style="color:red"> Delete</a>
-								    </td>
-								</tr>
-							</c:forEach>
-						</c:if>
-					</tbody>
-				</table>
-				<br>
-				<br>
-			</c:if>
-		
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectName}
+				File Details</h1>
+			<table id="projectFileList" class="gridView">
+				<thead>
+					<tr>
+						<th>File Name</th>
+						<th>File Path</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty projectFileList}">
+						<c:forEach var="fileDoc" items="${projectFileList}">
+							<tr>
+								<td>${fileDoc.fileName}</td>
+								<td>${fileDoc.filePath}</td>
+								<td><a
+									href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}">
+										Download File </a> <strong> / </strong> <a id="deleteRow"
+									href="javascript:deleteFile('${fileDoc.fileName}',encodeURIComponent('${fileDoc.filePath}'));"
+									style="color: red"> Delete</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+			<br>
+		</c:if>
+
 	</div>
 	<div id="dialog-confirm"></div>
 	<footer>

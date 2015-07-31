@@ -16,7 +16,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">New User SignUp</h1>
 			<br>

@@ -13,7 +13,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${sessionTimeOutMessage}</h2>
 		</div>

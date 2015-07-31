@@ -40,7 +40,7 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
 			<h2
@@ -95,9 +95,11 @@
 			<br>
 			<br>
 		</c:if>
-		
+
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #007399; font-size: 18px;">EMD end dates are nearing for following projects. Please take necessary action.</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">EMD
+				end dates are nearing for following projects. Please take necessary
+				action.</h1>
 			<table id="emdDocumentList" class="gridView">
 				<thead>
 					<tr>
@@ -128,12 +130,13 @@
 
 		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
 			
-				Click here to <a href="downloadTemplate.do" class="userAction">download template</a>
+				Click here to <a href="downloadTemplate.do" class="userAction">download
+				template</a>
 			<br>
 			<br>
 		</c:if>
 	</div>
-	<footer >
+	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
 </body>

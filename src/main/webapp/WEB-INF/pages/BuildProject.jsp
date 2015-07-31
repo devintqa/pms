@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
@@ -6,7 +7,7 @@
 <head>
 
 <title>PMS :: Create Project</title>
-<%@include file="Script.jsp" %>
+<%@include file="Script.jsp"%>
 
 <script>
 $(document).ready(function () {
@@ -25,11 +26,11 @@ $(function(){
 </script>
 </head>
 
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
+	<div id="wrapper">
 		<div>
 			<h2
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${projectUpdationMessage}</h2>
@@ -47,7 +48,8 @@ $(function(){
 								<td>Project Name<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="projectName"
-										placeholder="Enter Project Name" cssClass="inputText" maxlength="2000" rows="5" cols="40"/></td>
+										placeholder="Enter Project Name" cssClass="inputText"
+										maxlength="2000" rows="5" cols="40" /></td>
 								<td><form:errors path="projectName" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -75,21 +77,24 @@ $(function(){
 								<td>Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="contractorName"
-										placeholder="Enter Name of Contractor" cssClass="inputText" rows="5" cols="40" maxlength="2000" /></td>
+										placeholder="Enter Name of Contractor" cssClass="inputText"
+										rows="5" cols="40" maxlength="2000" /></td>
 								<td><form:errors path="contractorName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Alias Name of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasContractorName"
-										placeholder="Enter Alias Contractor Name" cssClass="inputText"/></td>
-								<td><form:errors path="aliasContractorName" cssClass="error" /></td>
+										placeholder="Enter Alias Contractor Name" cssClass="inputText" /></td>
+								<td><form:errors path="aliasContractorName"
+										cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Address of Contractor<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="contractorAddress"
-										placeholder="Enter Address of Contractor" cssClass="inputText" rows="5" cols="40" maxlength="2000"/></td>
+										placeholder="Enter Address of Contractor" cssClass="inputText"
+										rows="5" cols="40" maxlength="2000" /></td>
 								<td><form:errors path="contractorAddress" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -134,20 +139,22 @@ $(function(){
 										placeholder="Enter Less in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="lessPercentage" cssClass="error" /></td>
 							</tr>
-                            <tr>
-                                <td>Additional Security Deposit<span id="colon">:</span>
-                                </td>
-                                <td><form:input path="addSecurityDeposit"
-                                                placeholder="Enter security deposit amount" cssClass="inputText" /></td>
-                                <td><form:errors path="addSecurityDeposit" cssClass="error" /></td>
-                            </tr>
 							<tr>
-                                <td>Performance Guarantee <span id="colon">:</span>
-                                </td>
-                                <td><form:input path="performanceGuarantee"
-                                                placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
-                                <td><form:errors path="performanceGuarantee" cssClass="error" /></td>
-                            </tr>
+								<td>Additional Security Deposit<span id="colon">:</span>
+								</td>
+								<td><form:input path="addSecurityDeposit"
+										placeholder="Enter security deposit amount"
+										cssClass="inputText" /></td>
+								<td><form:errors path="addSecurityDeposit" cssClass="error" /></td>
+							</tr>
+							<tr>
+								<td>Performance Guarantee <span id="colon">:</span>
+								</td>
+								<td><form:input path="performanceGuarantee"
+										placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
+								<td><form:errors path="performanceGuarantee"
+										cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Date of Tender<span id="colon">:</span>
 								</td>
@@ -156,13 +163,12 @@ $(function(){
 								<td><form:errors path="tenderDate" cssClass="error" /></td>
 							</tr>
 							<tr>
-                            <td>Agreement Number<span id="colon">:</span>
-                            </td>
-                            <td><form:input path="agreementNo"
-                            placeholder="Enter Agreement Number"
-                            cssClass="inputText" /></td>
-                            <td><form:errors path="agreementNo" cssClass="error" /></td>
-                            </tr>
+								<td>Agreement Number<span id="colon">:</span>
+								</td>
+								<td><form:input path="agreementNo"
+										placeholder="Enter Agreement Number" cssClass="inputText" /></td>
+								<td><form:errors path="agreementNo" cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Date of Agreement<span id="colon">:</span>
 								</td>

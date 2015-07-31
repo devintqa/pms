@@ -15,10 +15,11 @@
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
-	<div>
-		
-				<c:if test="${projDescDocListSize gt 0}">
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">${subProjectAliasName} Project Description Details</h1>
+	<div id="wrapper">
+
+		<c:if test="${projDescDocListSize gt 0}">
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">${subProjectAliasName}
+				Project Description Details</h1>
 			<table id="projDescDocList" class="gridView">
 				<thead>
 					<tr>
@@ -35,8 +36,9 @@
 						<c:forEach var="projDesc" items="${projDescDocList}">
 							<tr>
 								<td>${projDesc.description}</td>
-								<td><a href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
-										 class="userAction">${projDesc.aliasDescription}</a></td>
+								<td><a
+									href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+									class="userAction">${projDesc.aliasDescription}</a></td>
 								<td>${projDesc.workType}</td>
 								<td>${projDesc.quantityInFig}</td>
 								<td>${projDesc.rateInFig}</td>
@@ -49,13 +51,11 @@
 			<br>
 			<br>
 		</c:if>
-		
+
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
-
-
 
 </body>
 </html>
