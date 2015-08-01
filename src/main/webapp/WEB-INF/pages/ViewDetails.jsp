@@ -58,6 +58,13 @@
 								<td><form:errors path="viewProjectItemPrice"
 										cssClass="error" /></td>
 							</tr>
+							<tr id="showSearchItemDesc">
+								<td>View Project Item Rate With Quantity :</td>
+								<td><form:checkbox path="searchAggregateItemDetails"
+										id="searchAggregateItemDetails" /></td>
+								<td><form:errors path="searchAggregateItemDetails"
+										cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Search under :</td>
 								<td><form:radiobutton path="searchUnder" value="Project"
@@ -109,6 +116,40 @@
 				<br>
 				<br>
 			</c:if>
+			
+			<c:if test="${aggregateItemDetailsSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
+					Aggregate Material Details</h1>
+				<table id="itemDescList" class="gridView">
+					<thead>
+						<tr>
+							<th>Item Type</th>
+							<th>Item Name</th>
+							<th>Item Unit</th>
+							<th>Item Price</th>
+							<th>Total Adequacy</th>
+							<th>Total Item Cost</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty aggregateItemDetails}">
+							<c:forEach var="item" items="${aggregateItemDetails}">
+								<tr>
+									<td>${item.itemType}</td>
+									<td>${item.itemName}</td>
+									<td>${item.itemUnit}</td>
+									<td>${item.itemPrice}</td>								
+									<td>${item.itemQty}</td>
+									<td>${item.itemCost}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
+			
 		</div>
 		<div id="dialog-confirm"></div>
 	</div>

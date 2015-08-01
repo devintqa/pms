@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ViewDetail;
@@ -65,9 +66,18 @@ public class ViewController extends BaseController {
 		LOGGER.info("method = viewProjectDetails()");
 		viewValidator.validate(viewDetail, result);
 		if(!result.hasErrors()){
-			ProjectConfiguration projectConfiguration = new ProjectConfiguration();
-			projectConfiguration.setProjId(viewDetail.getProjId());
-			if(viewDetail.isViewProjectItemPrice()){
+			if(viewDetail.isSearchAggregateItemDetails()){
+				List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(viewDetail.getProjId());
+				if(aggregateItemDetails.size() > 0){
+					model.addAttribute("aggregateItemDetails", aggregateItemDetails);
+					model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
+					model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Item Price Configuration Found For The Project.");
+				}
+			} else if(viewDetail.isViewProjectItemPrice()){
+				ProjectConfiguration projectConfiguration = new ProjectConfiguration();
+				projectConfiguration.setProjId(viewDetail.getProjId());
 				ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
 				List<ItemDetail> itemPriceDetails = itemConfiguration.getItemDetail();
 				if(itemPriceDetails.size() > 0){

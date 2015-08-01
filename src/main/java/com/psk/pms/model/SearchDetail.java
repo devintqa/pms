@@ -6,15 +6,8 @@ public class SearchDetail {
 	private Integer projId;
 	private boolean editSubProject;
 	private boolean searchProjectDescription;
-	private boolean searchAggregateItemDetails;
 	private String searchUnder;
 
-	public boolean isSearchAggregateItemDetails() {
-		return searchAggregateItemDetails;
-	}
-	public void setSearchAggregateItemDetails(boolean searchAggregateItemDetails) {
-		this.searchAggregateItemDetails = searchAggregateItemDetails;
-	}
 	public String getAliasProjectName() {
 		return aliasProjectName;
 	}

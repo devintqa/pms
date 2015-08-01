@@ -44,14 +44,14 @@ public class ViewValidator extends BaseValidator implements Validator{
         	}
         }
         
-        /*if(searchDetail.isSearchAggregateItemDetails()){
-        	String projId = fetchProjectId(searchDetail.getAliasProjectName());
+        if(viewDetail.isSearchAggregateItemDetails()){
+        	String projId = fetchProjectId(viewDetail.getAliasProjectName());
         	if(projId == null){
         		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
         	}else{
-        		searchDetail.setProjId(Integer.valueOf(projId));
+        		viewDetail.setProjId(Integer.valueOf(projId));
         	}
-        }*/
+        }
 
 		if (viewDetail.isViewProjectItemPrice() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;

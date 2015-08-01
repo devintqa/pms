@@ -48,16 +48,17 @@ public class ItemServiceImpl implements ItemService {
 		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projId);
 		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
 		if(itemDetailList.size() > 0){
-			Set<String> itemNames = itemDAO.fetchItemNames();
-			for(String itemName : itemNames){
+			Map<String,String> itemNames = itemDAO.fetchItemInfo();
+			for(Map.Entry<String, String> itemName : itemNames.entrySet()){
 				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
 				Double itemQty = 0.0;
 				Double itemCost = 0.0;
 				for(DescItemDetail.ItemDetail itemDetail : itemDetailList){
-					if(itemName.equalsIgnoreCase(itemDetail.getItemName())){
+					if(itemName.getKey().equalsIgnoreCase(itemDetail.getItemName())){
 						item.setItemName(itemDetail.getItemName());
 						item.setItemPrice(itemDetail.getItemPrice());
 						item.setItemUnit(itemDetail.getItemUnit());
+						item.setItemType(itemName.getValue());
 						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
 						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
 					}

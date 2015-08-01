@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -95,6 +96,18 @@ public class ItemDAOImpl implements ItemDAO {
 		Set<String> itemNames = new HashSet<String>();
 		for (Map<String, Object> row : rows) {
 			itemNames.add((String)row.get("itemName"));
+		}
+		return itemNames;
+	}
+	
+	@Override
+	public Map<String,String> fetchItemInfo() {
+		String sql = "select * from itemcodes";
+		jdbcTemplate = new JdbcTemplate(dataSource);
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		Map<String,String> itemNames = new HashMap<String,String>();
+		for (Map<String, Object> row : rows) {
+			itemNames.put((String)row.get("itemName"),(String)row.get("itemType"));
 		}
 		return itemNames;
 	}

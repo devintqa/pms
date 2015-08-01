@@ -7,7 +7,14 @@ public class ViewDetail {
 	private boolean editSubProject;
 	private boolean viewProjectItemPrice;
 	private String searchUnder;
+	private boolean searchAggregateItemDetails;
 
+	public boolean isSearchAggregateItemDetails() {
+		return searchAggregateItemDetails;
+	}
+	public void setSearchAggregateItemDetails(boolean searchAggregateItemDetails) {
+		this.searchAggregateItemDetails = searchAggregateItemDetails;
+	}
 	public boolean isViewProjectItemPrice() {
 		return viewProjectItemPrice;
 	}
