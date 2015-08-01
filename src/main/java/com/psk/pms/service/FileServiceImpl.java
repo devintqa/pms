@@ -43,6 +43,7 @@ public class FileServiceImpl implements FileService {
         ProjectDetail projectDetail = null;
         SubProjectDetail subProjDetail = null;
         List<MultipartFile> pmsFiles;
+        String sheetName = "";
         boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
 
         projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
@@ -54,7 +55,12 @@ public class FileServiceImpl implements FileService {
         } else {
             saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
         }
-
+        
+        if(fileUpload.isGovernmentEst()){
+        	sheetName = Constants.GOVERNMENT_PROJECT_DESCRIPTION;
+        }else{
+        	sheetName = Constants.PSK_PROJECT_DESCRIPTION;
+        }
         pmsFiles = fileUpload.getFiles();
         if (null != pmsFiles && pmsFiles.size() > 0) {
             for (MultipartFile multipartFile : pmsFiles) {
@@ -66,7 +72,7 @@ public class FileServiceImpl implements FileService {
                     return excelDetail;
                 }
 
-                List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);
+                List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile, sheetName);
                 bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
                 populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
 
@@ -75,8 +81,13 @@ public class FileServiceImpl implements FileService {
                     populateSubProjectId(extractedProjDescDetails, subProjDetail);
                     projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
                 } else {
-                    projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
-                    projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
+                	if(fileUpload.isGovernmentEst()){
+                		
+                		projectDescriptionService.saveProposalProjectDescriptionDetails(extractedProjDescDetails);
+                	}else{
+                		projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
+                		projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
+                	}
                 }
             }
         }

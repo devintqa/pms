@@ -244,6 +244,33 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
                 ps.setString(7, projDescDetail.getAliasDescription());
                 ps.setString(8, projDescDetail.getLastUpdatedBy());
                 ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                ps.setString(10, projDescDetail.getPricePerQuantity());
+                ps.setString(11, projDescDetail.getTotalCost());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return projDescDetails.size();
+            }
+        });
+    }
+    public void saveProposalProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.batchUpdate(INSERTGOVPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ProjDescDetail projDescDetail = projDescDetails.get(i);
+                ps.setInt(1, projDescDetail.getProjId());
+                ps.setString(2, projDescDetail.getSerialNumber());
+                ps.setString(3, projDescDetail.getWorkType());
+                ps.setString(4, projDescDetail.getQuantity());
+                ps.setString(5, projDescDetail.getMetric());
+                ps.setString(6, projDescDetail.getDescription());
+                ps.setString(7, projDescDetail.getAliasDescription());
+                ps.setString(8, projDescDetail.getLastUpdatedBy());
+                ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                ps.setString(10, projDescDetail.getPricePerQuantity());
+                ps.setString(11, projDescDetail.getTotalCost());
             }
 
             @Override

@@ -7,11 +7,13 @@ public class FileUpload {
  
     private List<MultipartFile> pmsFiles;
 	private boolean subProjectUpload;
+	private boolean governmentEst;
 	private String aliasProjectName;
 	private String aliasSubProjectName;
 	private String employeeId;
 	private String fileName;
 	private String filePath;
+	
 	
 	public String getFilePath() {
 		return filePath;
@@ -68,5 +70,14 @@ public class FileUpload {
 	public void setAliasSubProjectName(String aliasSubProjectName) {
 		this.aliasSubProjectName = aliasSubProjectName;
 	}
+
+	public boolean isGovernmentEst() {
+		return governmentEst;
+	}
+
+	public void setGovernmentEst(boolean governmentEst) {
+		this.governmentEst = governmentEst;
+	}
+
  
 }

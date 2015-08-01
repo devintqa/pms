@@ -28,7 +28,9 @@ public interface ProjectDescriptionDAO {
     boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
     void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
-
+    
+    void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+    
     void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
     boolean isProjectDescriptionDetailsExistsForProject(int projectId);

@@ -73,8 +73,7 @@ public class FileUploadController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/uploadExcel/{employeeId}", method = RequestMethod.GET)
-	public String pmsExcelUploadForm(@PathVariable String employeeId, 
-			Model model) {
+	public String pmsExcelUploadForm(@PathVariable String employeeId, Model model) {
 		LOGGER.info("Into Excel Upload");
 		FileUpload fileUpload = new FileUpload();
 		fileUpload.setEmployeeId(employeeId);
@@ -146,10 +145,11 @@ public class FileUploadController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/uploadExcel/saveProjectDescription.do", method = RequestMethod.POST)
-	public String saveProjectDescription(@ModelAttribute("uploadForm") FileUpload uploadForm,BindingResult result,Model map) 
+	public String saveProjectDescription(@ModelAttribute("uploadForm") FileUpload uploadForm, BindingResult result, Model map) 
 			throws IllegalStateException, IOException {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName());
+		System.out.println(uploadForm.isGovernmentEst());
 		fileUploadValidator.validate(uploadForm, result);
 		if(!result.hasErrors())
 		{	

@@ -72,10 +72,16 @@ public class PmsMasterQuery {
             + "Description, AliasDescription,LastUpdatedBy ,LastUpdatedAt) " +
             "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId,SerialNumber ,WorkType, Quantity, Metric, "
-            + "Description, AliasDescription, LastUpdatedBy ,LastUpdatedAt) " +
-            "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?)";
+    public static String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
+            + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) " +
+            "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
+    public static String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO proposal_projectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
+            + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) " +
+            "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    
+    
     public static String NOOFPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM projectdesc WHERE ProjId = ?";
 
     public static String NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT = "SELECT count(*) FROM projectdesc WHERE SubProjId = ?";

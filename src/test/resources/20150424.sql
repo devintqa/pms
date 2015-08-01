@@ -4,7 +4,7 @@ USE `pms`;
 --
 -- Host: 127.0.0.1    Database: pms
 -- ------------------------------------------------------
--- Server version	5.5.44-log
+-- Server version	5.6.26-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -211,7 +211,7 @@ CREATE TABLE `projdescitem` (
   `ItemCost` varchar(45) DEFAULT NULL,
   `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`DescItemId`)
-) ENGINE=InnoDB AUTO_INCREMENT=95 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +220,7 @@ CREATE TABLE `projdescitem` (
 
 LOCK TABLES `projdescitem` WRITE;
 /*!40000 ALTER TABLE `projdescitem` DISABLE KEYS */;
-INSERT INTO `projdescitem` VALUES (1,0,1,'SNO1','CEMENT','bag','200','500','100000',1),(1,0,1,'SNO1','RIVER SAND','cft','1000','100','100000',2),(1,0,1,'SNO1','SEWING SAND','cft','2000','200','400000',3),(1,0,2,'SER234','CEMENT','bag','122','301','36722',11),(1,0,4,'SER123','RIVER SAND','BAG','5','100.00','15',18),(1,0,4,'SER123','SEWER SAND','BAG','2','200.00','400',19),(1,0,4,'SER123','MASON','1','6','200.00','1200',20),(1,0,4,'SER123','CEMENT','BAG','5','450.00','2250',21),(1,0,6,'SER345','CEMENT','Bag','2','500.00','1000',46),(1,0,6,'SER345','RIVER SAND','Bag','8','250.00','2000',47),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',92),(1,0,5,'SER123','CEMENT','Bag','5','500.00','2500',93),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',94);
+INSERT INTO `projdescitem` VALUES (1,0,1,'SNO1','CEMENT','bag','200','500','100000',1),(1,0,1,'SNO1','RIVER SAND','cft','1000','100','100000',2),(1,0,1,'SNO1','SEWING SAND','cft','2000','200','400000',3),(1,0,2,'SER234','CEMENT','bag','122','301','36722',11),(1,0,4,'SER123','RIVER SAND','BAG','5','100.00','15',18),(1,0,4,'SER123','SEWER SAND','BAG','2','200.00','400',19),(1,0,4,'SER123','MASON','1','6','200.00','1200',20),(1,0,4,'SER123','CEMENT','BAG','5','450.00','2250',21),(1,0,6,'SER345','CEMENT','Bag','2','500.00','1000',46),(1,0,6,'SER345','RIVER SAND','Bag','8','250.00','2000',47),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',92),(1,0,5,'SER123','CEMENT','Bag','5','500.00','2500',93),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',94),(1,0,7,'SER123','CEMENT','Bag','10','500.00','5000',97),(1,0,7,'SER123','RIVER SAND','Bag','8','250.00','2000',98);
 /*!40000 ALTER TABLE `projdescitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -293,7 +293,7 @@ CREATE TABLE `projectdesc` (
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -302,8 +302,43 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-/*INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',12.00,'MMC Main Work','MMW',12500.00,150000.00,'tkumar','2015-07-27 23:22:02',5),(1,'SER345',NULL,'Main Work',10.00,'Earth Excavation','MWWW',3000.00,30000.00,'tkumar','2015-07-28 09:16:01',6);*/
+INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',5.00,'cft','Earth Excavation','MMCEE',7000.00,35000.00,'tkumar','2015-07-29 20:25:54',7);
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `proposal_projectdesc`
+--
+
+DROP TABLE IF EXISTS `proposal_projectdesc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `proposal_projectdesc` (
+  `ProjId` int(10) NOT NULL,
+  `SerialNumber` varchar(10) NOT NULL,
+  `SubProjId` int(10) DEFAULT NULL,
+  `WorkType` varchar(30) NOT NULL,
+  `Quantity` decimal(15,2) NOT NULL,
+  `Metric` varchar(30) NOT NULL,
+  `Description` text NOT NULL,
+  `AliasDescription` varchar(100) NOT NULL,
+  `PricePerQuantity` decimal(15,2) DEFAULT NULL,
+  `TotalCost` decimal(15,2) DEFAULT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ProjDescId`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `proposal_projectdesc`
+--
+
+LOCK TABLES `proposal_projectdesc` WRITE;
+/*!40000 ALTER TABLE `proposal_projectdesc` DISABLE KEYS */;
+INSERT INTO `proposal_projectdesc` VALUES (2,'2.0',NULL,'Electrical',20.00,'CFT','electrical connection','ec2',100.00,2000.00,'tkumar','2015-08-01 00:00:00',8);
+/*!40000 ALTER TABLE `proposal_projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -432,4 +467,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-07-28 20:39:03
+-- Dump completed on 2015-08-01 23:46:58

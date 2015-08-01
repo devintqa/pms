@@ -106,7 +106,13 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
     public void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
         projectDescriptionDAO.saveProjectDescriptionDetails(projDescDetails);
     }
+    
 
+    public void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
+        projectDescriptionDAO.saveProposalProjectDescriptionDetails(projDescDetails);
+    }
+
+    
     public void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails){
         projectDescriptionDAO.saveSubProjectDescriptionDetails(projDescDetails);
     }

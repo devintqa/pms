@@ -21,7 +21,6 @@ public class BulkUploadDetailsValidator {
         rejectIfAliasDescriptionIsDuplicated(projDescDetails);
     }
 
-
     public void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails) throws BulkUploadException {
         for (ProjDescDetail projDescDetail : projDescDetails) {
             if (StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {

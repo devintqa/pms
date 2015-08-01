@@ -20,4 +20,6 @@ public interface Constants {
     String SERIALNOTUNIQUE = "Serial numbers are not unique";
     String ALIASNOTUNIQUE = "AliasDescriptions are not unique";
     String UPLOADFAILED = "Upload Failed , ";
+    String PSK_PROJECT_DESCRIPTION = "PSK_DESC";
+    String GOVERNMENT_PROJECT_DESCRIPTION = "GOV_DESC";
 }

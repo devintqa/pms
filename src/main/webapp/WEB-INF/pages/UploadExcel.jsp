@@ -10,109 +10,105 @@
 <%@include file="Script.jsp" %>
 
 <script>
-    $(document)
-            .ready(
-                    function() {
-                      $("#showSubProject").hide();
-                  	  $('#subProjectUpload').change(function() {
-              	        if($(this).is(":checked")) {
-              			var aliasProjectName  = $('#projId').val();
-              			$.ajax({
-              				type : "GET",
-              				url : "getSubAliasProject.do",
-              				cache : false,
-              				data: "aliasProjectName="+aliasProjectName,
-              				success : function(response) {
-              					var options = '';
-              					if (response != null) {
-              						var obj = jQuery.parseJSON(response);
-              						var options = '';
-              						for ( var key in obj) {
-              							var attrName = key;
-              							var attrValue = obj[key];
-              							options = options + '<option value='+attrName+'>'
-              									+ attrValue + '</option>';
-              						}
-              						$('#aliasSubProjectName').html(options);
-              					}
-              				}
-              			});
-              				$("#showSubProject").show();
-              	        }else {
-              	        	$("#showSubProject").hide();
-              	        }
-              		});
+    $(document).ready(function() {
+              $("#showSubProject").hide();
+           	  $('#subProjectUpload').change(function() {
+       	        if($(this).is(":checked")) {
+       			var aliasProjectName  = $('#projId').val();
+       			$.ajax({
+       				type : "GET",
+       				url : "getSubAliasProject.do",
+       				cache : false,
+       				data: "aliasProjectName="+aliasProjectName,
+       				success : function(response) {
+       					var options = '';
+       					if (response != null) {
+       						var obj = jQuery.parseJSON(response);
+       						var options = '';
+       						for ( var key in obj) {
+       							var attrName = key;
+       							var attrValue = obj[key];
+       							options = options + '<option value='+attrName+'>'
+       									+ attrValue + '</option>';
+       						}
+       						$('#aliasSubProjectName').html(options);
+       					}
+       				}
+       			});
+       				$("#showSubProject").show();
+       	        }else {
+       	        	$("#showSubProject").hide();
+       	        }
+       		});
 
-              	  $('#projId').change(function() {
-              		  $("#showSubProject").hide();
-              		  $('#subProjectUpload').attr('checked', false);
-              	  });
+	       	  $('#projId').change(function() {
+	       		  $("#showSubProject").hide();
+	       		  $('#subProjectUpload').attr('checked', false);
+	       	  });
+	
+	       	  if($('#subProjectUpload').is(':checked')) {
+	       	  		$("#showSubProject").show();
+	       	  };
 
-              	  if($('#subProjectUpload').is(':checked')) {
-              	  		$("#showSubProject").show();
-              	  };
-
-              	  $('#projId').change(
-                         function() {
-                                if(!$('#subProjectUpload').is(':checked')) {
-                                      var projectId = this.value;
-                                              $.ajax({
-                                    				type : "GET",
-                                    				url : "checkProjectDesc.do",
-                                    				cache : false,
-                                    				data: "projectId="+projectId,
-                                    				success : function(data) {
-                                    				if(data == "Exists") {
-                                    				    $( "#dialog-alert" ).html("Project contains ProjectDescription data. Uploading file will over write the existing data.");
-                                    				    $( "#dialog-alert" ).dialog({
-                                    				         modal: true,
-                                    				         height: 200,
-                                                             width: 400,
-                                                                 buttons: {
-                                                                    Ok: function() {
-                                                                      $( this ).dialog( "close" );
-                                                                    }
-                                    				             }
-                                    				    });
-                                    		        }
-                                                 }
-                                    		  });
-                                }
-              	          }
+           	  $('#projId').change(function() {
+                          if(!$('#subProjectUpload').is(':checked')) {
+                                var projectId = this.value;
+                                 $.ajax({
+                       				type : "GET",
+                       				url : "checkProjectDesc.do",
+                       				cache : false,
+                       				data: "projectId="+projectId,
+                       				success : function(data) {
+                       				if(data == "Exists") {
+                       				    $( "#dialog-alert" ).html("Project contains ProjectDescription data. Uploading file will over write the existing data.");
+                       				    $( "#dialog-alert" ).dialog({
+                       				         modal: true,
+                       				         height: 200,
+                                                width: 400,
+                                                    buttons: {
+                                                       Ok: function() {
+                                                         $( this ).dialog( "close" );
+                                                       }
+                       				             }
+                       				    });
+                       		        }
+                                    }
+                       		  });
+                          }
+           	          }
                   )
 
-                  $('#aliasSubProjectName').change(
-                           function() {
-                                var subProjectId = this.value;
-                                     $.ajax({
-                                          type : "GET",
-                                          url : "checkSubProjectDesc.do",
-                                          cache : false,
-                                          data: "subProjectId="+subProjectId,
-                                          success : function(data) {
-                                          if(data == "Exists"){
-                                                $( "#dialog-alert" ).html("Sub Project already contains ProjectDescription data. Uploading file will over write the existing data.");
-                                                $( "#dialog-alert" ).dialog({
-                                                    modal: true,
-                                                    height: 200,
-                                                    width: 400,
-                                                        buttons: {
-                                                          Ok: function() {
-                                                            $( this ).dialog( "close" );
-                                                          }
-                                                        }
-                                                })
-                                          }
-                                     }
-                                });
-                           }
+                  $('#aliasSubProjectName').change(function() {
+                            var subProjectId = this.value;
+                            $.ajax({
+                                 type : "GET",
+                                 url : "checkSubProjectDesc.do",
+                                 cache : false,
+                                 data: "subProjectId="+subProjectId,
+                                 success : function(data) {
+                                 if(data == "Exists"){
+                                       $( "#dialog-alert" ).html("Sub Project already contains ProjectDescription data. Uploading file will over write the existing data.");
+                                       $( "#dialog-alert" ).dialog({
+                                           modal: true,
+                                           height: 200,
+                                           width: 400,
+                                               buttons: {
+                                                 Ok: function() {
+                                                   $( this ).dialog( "close" );
+                                                 }
+                                               }
+                                       })
+                                 }
+                            }
+                       });
+                    }
 
                   )
             });
 
 </script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
@@ -140,10 +136,15 @@
 						<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td>Upload For Sub Project? :</td>
-						<td><form:checkbox path="subProjectUpload"
-								id="subProjectUpload" /></td>
+						<td>Upload For Sub Project? <span id="colon">:</span></td>
+						<td><form:checkbox path="subProjectUpload" id="subProjectUpload" /></td>
 						<td><form:errors path="subProjectUpload" cssClass="error" /></td>
+					</tr>
+					
+					<tr>
+						<td>Is Government Estimation? <span id="colon">:</span></td>
+						<td><form:checkbox path="governmentEst" id="governmentEst" /></td>
+						<td></td>
 					</tr>
 					<tr id="showSubProject">
 						<td>Sub Project Name <span id="colon">:</span>
