@@ -58,6 +58,11 @@
 							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
 								EMD </a></li>
 					</ul></li>
+				<li><a href="#">View</a>
+					<ul>
+						<li><a id="viewDetails"
+							href="/pms/emp/myview/viewDetails/${employeeObj.employeeId}">Project Details</a></li>
+					</ul></li>
 				<li><a href="#">File</a>
 					<ul>
 						<li><a id="uploadFile"
