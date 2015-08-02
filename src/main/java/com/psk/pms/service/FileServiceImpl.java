@@ -57,6 +57,7 @@ public class FileServiceImpl implements FileService {
         }
         
         if(fileUpload.isGovernmentEst()){
+        	LOGGER.info("Is Government Copy" + fileUpload.isGovernmentEst());
         	sheetName = Constants.GOVERNMENT_PROJECT_DESCRIPTION;
         }else{
         	sheetName = Constants.PSK_PROJECT_DESCRIPTION;
@@ -71,8 +72,9 @@ public class FileServiceImpl implements FileService {
                     excelDetail.setExcel(false);
                     return excelDetail;
                 }
-
+                LOGGER.info("Processing Sheet Name" + sheetName);
                 List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile, sheetName);
+                LOGGER.info("extractedProjDescDetails size" + extractedProjDescDetails.size());
                 bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
                 populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
 
@@ -81,12 +83,11 @@ public class FileServiceImpl implements FileService {
                     populateSubProjectId(extractedProjDescDetails, subProjDetail);
                     projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
                 } else {
-                	if(fileUpload.isGovernmentEst()){
-                		
+                	if(fileUpload.isGovernmentEst()){              		
                 		projectDescriptionService.saveProposalProjectDescriptionDetails(extractedProjDescDetails);
                 	}else{
-                		projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
                 		projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
+                		projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
                 	}
                 }
             }
