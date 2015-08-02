@@ -291,8 +291,8 @@
 </style>
 
 </head>
-<body>
-	<div class="slide-out-div">
+<body >
+	<div class="slide-out-div" style="background: #ffffff;">
 		<a class="handle" href="#"> <img id="slideClose"
 			style="display: none;"
 			src="<c:url value="/resources/images/slide-close.png" />" /> <img
@@ -304,7 +304,7 @@
 		<form:form id="projDescForm" method="POST" commandName="projDescForm">
 			<fieldset style="margin: 1em; text-align: left;">
 				<legend>
-					<h3>Project Description Details</h3>
+					<h2>Project Description Details</h2>
 				</legend>
 				<table>
 					<tr>
