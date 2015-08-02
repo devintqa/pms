@@ -65,6 +65,13 @@
 								<td><form:errors path="searchAggregateItemDetails"
 										cssClass="error" /></td>
 							</tr>
+							<tr id="showComparativeAnalysis">
+								<td>View Project Comparative Analysis :</td>
+								<td><form:checkbox path="searchComparisonData"
+										id="searchComparisonData" /></td>
+								<td><form:errors path="searchComparisonData"
+										cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Search under :</td>
 								<td><form:radiobutton path="searchUnder" value="Project"
@@ -141,6 +148,43 @@
 									<td>${item.itemPrice}</td>								
 									<td>${item.itemQty}</td>
 									<td>${item.itemCost}</td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
+			
+			<c:if test="${projDescComparisonDetailsSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
+					Comparison Data</h1>
+				<table id="compareDescList" class="gridView">
+					<thead>
+						<tr>
+							<th>Serial Number</th>
+							<th>Alias Description</th>
+							<th>Quantity</th>
+							<th>Metric</th>
+							<th>Department Price Per Quantity</th>
+							<th>Department Total Amount</th>
+							<th>PSK Price Per Quantity</th>
+							<th>PSK Total Amount</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty projDescComparisonDetails}">
+							<c:forEach var="desc" items="${projDescComparisonDetails}">
+								<tr>
+									<td>${desc.serialNumber}</td>
+									<td>${desc.aliasDescription}</td>
+									<td>${desc.quantity}</td>
+									<td>${desc.metric}</td>								
+									<td>${desc.deptPricePerQuantity}</td>
+									<td>${desc.deptTotalCost}</td>
+									<td>${desc.pricePerQuantity}</td>
+									<td>${desc.totalCost}</td>
 								</tr>
 							</c:forEach>
 						</c:if>

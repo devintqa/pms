@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 
 import java.util.List;
@@ -16,6 +17,8 @@ public interface ProjectDescriptionService {
     List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
 
     List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject);
+    
+    List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
     boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 

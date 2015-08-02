@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public interface ProjectDescriptionDAO {
     List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 
     List<ProjDescDetail> getProjectDescDetailList(Integer projectId,boolean searchUnderProject);
+    
+    List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
     boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 

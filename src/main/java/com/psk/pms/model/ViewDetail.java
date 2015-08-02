@@ -8,7 +8,14 @@ public class ViewDetail {
 	private boolean viewProjectItemPrice;
 	private String searchUnder;
 	private boolean searchAggregateItemDetails;
+	private boolean searchComparisonData;
 
+	public boolean isSearchComparisonData() {
+		return searchComparisonData;
+	}
+	public void setSearchComparisonData(boolean searchComparisonData) {
+		this.searchComparisonData = searchComparisonData;
+	}
 	public boolean isSearchAggregateItemDetails() {
 		return searchAggregateItemDetails;
 	}

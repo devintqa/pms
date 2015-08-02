@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ViewDetail;
 import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.validator.ViewValidator;
 
 @Controller
@@ -34,6 +36,9 @@ public class ViewController extends BaseController {
 
 	@Autowired
 	ItemService itemService;
+	
+	@Autowired
+	ProjectDescriptionService projectDescriptionService;
 	
 	@RequestMapping(value = "/emp/myview/viewDetails/{employeeId}", method = RequestMethod.GET)
 	public String viewDetails(@PathVariable String employeeId, Model model) {		
@@ -86,6 +91,15 @@ public class ViewController extends BaseController {
 					model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
 				}else{
 					model.addAttribute("noDetailsFound", "No Item Price Configuration Found For The Project.");
+				}
+			} else if(viewDetail.isSearchComparisonData()){
+				List<ProjDescComparisonDetail> projDescComparisonDetails = projectDescriptionService.getProjectDescComparisonDetail(viewDetail.getProjId());
+				if(projDescComparisonDetails.size() > 0){
+					model.addAttribute("projDescComparisonDetails", projDescComparisonDetails);
+					model.addAttribute("projDescComparisonDetailsSize", projDescComparisonDetails.size());
+					model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
+				}else{
+					model.addAttribute("noDetailsFound", "No Project Comparison Data Found For The Project.");
 				}
 			}
 		}

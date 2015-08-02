@@ -46,6 +46,10 @@ public class PmsMasterQuery {
 
     public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric,"
             + "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
+    
+    public static String compareDataQuery = "SELECT distinct p.SerialNumber, p.Quantity, p.Metric, p.AliasDescription, p.PricePerQuantity, p.TotalCost, pp.PricePerQuantity as DeptPricePerQuantity, pp.TotalCost as DeptTotalCost " +
+    		"FROM projectdesc p INNER JOIN proposal_projectdesc pp on p.ProjId = pp.ProjId " + 
+    		"and p.ProjDescId = pp.ProjDescId";
 
     public static String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
             + "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";

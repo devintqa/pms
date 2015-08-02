@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,46 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
         return projDescDetail;
     }
+    
+    private ProjDescComparisonDetail buildProjDescComparisonDetail(Map<String, Object> row) {
+    	ProjDescComparisonDetail projDescComparisonDetail = new ProjDescComparisonDetail();
+
+    	projDescComparisonDetail.setSerialNumber((String) row.get("SerialNumber"));
+        BigDecimal quantity = (BigDecimal) row.get("Quantity");
+        projDescComparisonDetail.setMetric((String) row.get("Metric"));
+        if (null == quantity) {
+        	projDescComparisonDetail.setQuantity("");
+        } else {
+        	projDescComparisonDetail.setQuantity(quantity.toString());
+        }
+        projDescComparisonDetail.setAliasDescription((String) row.get("AliasDescription"));
+
+        BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
+        if (null == pricePerQuantity) {
+        	projDescComparisonDetail.setPricePerQuantity("");
+        } else {
+        	projDescComparisonDetail.setPricePerQuantity(pricePerQuantity.toString());
+        }
+        BigDecimal totalCost = (BigDecimal) row.get("TotalCost");
+        if (null == totalCost) {
+        	projDescComparisonDetail.setTotalCost("");
+        } else {
+        	projDescComparisonDetail.setTotalCost(totalCost.toString());
+        }
+        BigDecimal deptPricePerQuantity = (BigDecimal) row.get("DeptPricePerQuantity");
+        if (null == deptPricePerQuantity) {
+        	projDescComparisonDetail.setDeptPricePerQuantity("");
+        } else {
+        	projDescComparisonDetail.setDeptPricePerQuantity(deptPricePerQuantity.toString());
+        }
+        BigDecimal deptTotalCost = (BigDecimal) row.get("DeptTotalCost");
+        if (null == deptTotalCost) {
+        	projDescComparisonDetail.setDeptTotalCost("");
+        } else {
+        	projDescComparisonDetail.setDeptTotalCost(deptTotalCost.toString());
+        }
+        return projDescComparisonDetail;
+    }
 
     public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
         String sql = null;
@@ -150,6 +191,20 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
             projectDescDetailList.add(buildProjectDescDetail(row));
         }
         return projectDescDetailList;
+    }
+    
+    public List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId) {
+        String sql;
+        sql = compareDataQuery + "  and p.ProjId = " + projId;
+        jdbcTemplate = new JdbcTemplate(dataSource);
+
+        List<ProjDescComparisonDetail> projDescComparisonDetailList = new ArrayList<ProjDescComparisonDetail>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+        for (Map<String, Object> row : rows) {
+        	projDescComparisonDetailList.add(buildProjDescComparisonDetail(row));
+        }
+        return projDescComparisonDetailList;
     }
 
     public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {

@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import com.psk.pms.dao.ProjectDescriptionDAO;
+import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,12 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
     public List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject) {
         List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO.getProjectDescDetailList(projId, searchUnderProject);
         return projectDescDetailList;
+    }
+    
+    @Override
+    public List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId) {
+    	 List<ProjDescComparisonDetail> projDescComparisonDetail = projectDescriptionDAO.getProjectDescComparisonDetail(projId);
+         return projDescComparisonDetail;
     }
 
 
