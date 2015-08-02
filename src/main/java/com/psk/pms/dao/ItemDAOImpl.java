@@ -60,6 +60,7 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql;
 		List<Map<String, Object>> rows = null;
 		if ("" != itemCode) {
+			System.out.println("57");
 			sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"+itemType+"' and itemName LIKE '%"+itemCode+"%'";
 			rows = jdbcTemplate.queryForList(sql);
 		}
@@ -275,7 +276,7 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql;
 		List<Map<String, Object>> rows = null;
 		if ("" != request.get("itemName")) {
-			sql = "select itemName, itemUnit, itemPrice from pricedetail where itemType = '"+request.get("itemType")+"' and itemName LIKE '%"+request.get("itemName")+"%' and active = '1'";
+			sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '"+request.get("projectId")+"' and itemType = '"+request.get("itemType")+"' and itemName LIKE '%"+request.get("itemName")+"%' and active = '1'";
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map<String, Object> row : rows) {
