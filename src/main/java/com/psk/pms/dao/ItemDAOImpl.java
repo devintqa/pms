@@ -285,7 +285,6 @@ public class ItemDAOImpl implements ItemDAO {
 			itemDetail.setItemName((String)row.get("itemName"));
 			itemDetail.setItemUnit((String)row.get("itemUnit"));
 			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
-
 			itemsDetail.add(itemDetail);
 		}
 		return itemsDetail;

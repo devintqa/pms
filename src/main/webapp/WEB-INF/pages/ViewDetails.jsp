@@ -24,9 +24,14 @@
 	        }
 		});
 	});
+  $(function() {
+	  $('input[type="checkbox"]').on('change', function() {
+		   $('input[type="checkbox"]').not(this).prop('checked', false);
+		});
+  });
  </script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
@@ -46,34 +51,30 @@
 							<tr>
 								<td>Alias Project Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasProjectName"
-										id="aliasProjectName" placeholder="Enter Alias Project Name"
+								<td><form:input path="aliasProjectName" id="aliasProjectName" placeholder="Enter Alias Project Name"
 										cssClass="inputText" /></td>
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="viewProjectItemPrice">
-								<td>View Project Item Price? :</td>
-								<td><form:checkbox path="viewProjectItemPrice"
-										id="viewProjectItemPrice" /></td>
+								<td>View Project Item Price? <span id="colon">:</span></td>
+								<td><form:checkbox path="viewProjectItemPrice" id="viewProjectItemPrice" class="filterView"/></td>
 								<td><form:errors path="viewProjectItemPrice"
 										cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchItemDesc">
-								<td>View Project Item Rate With Quantity :</td>
-								<td><form:checkbox path="searchAggregateItemDetails"
-										id="searchAggregateItemDetails" /></td>
+								<td>View Project Item Rate With Quantity <span id="colon">:</span></td>
+								<td><form:checkbox path="searchAggregateItemDetails" id="searchAggregateItemDetails" class="filterView"/></td>
 								<td><form:errors path="searchAggregateItemDetails"
 										cssClass="error" /></td>
 							</tr>
 							<tr id="showComparativeAnalysis">
-								<td>View Project Comparative Analysis :</td>
-								<td><form:checkbox path="searchComparisonData"
-										id="searchComparisonData" /></td>
+								<td>View Project Comparative Analysis <span id="colon">:</span></td>
+								<td><form:checkbox path="searchComparisonData" id="searchComparisonData" class="filterView"/></td>
 								<td><form:errors path="searchComparisonData"
 										cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Search under :</td>
+								<td>Search under <span id="colon">:</span></td>
 								<td><form:radiobutton path="searchUnder" value="Project"
 										id="searchUnderProject" checked="true" />Project</td>
 								<td><form:radiobutton path="searchUnder" value="subProject"
@@ -127,7 +128,7 @@
 			<c:if test="${aggregateItemDetailsSize gt 0}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
 					Aggregate Material Details</h1>
-				<table id="itemDescList" class="gridView">
+				<table id="aggregateItemList" class="gridView">
 					<thead>
 						<tr>
 							<th>Item Type</th>
