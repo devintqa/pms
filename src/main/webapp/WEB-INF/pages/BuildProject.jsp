@@ -59,6 +59,13 @@ $(function(){
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasName" cssClass="error" /></td>
 							</tr>
+                            <tr>
+								<td>Project Type<span id="colon">:</span>
+								</td>
+								<td><form:select path="projectType" cssClass="inputText"
+										items="${projectTypeList}" /></td>
+								<td><form:errors path="projectType" cssClass="error" /></td>
+							</tr>
 							<tr>
 								<td>Estimate C.E.R. Number<span id="colon">:</span>
 								</td>
@@ -96,13 +103,6 @@ $(function(){
 										placeholder="Enter Address of Contractor" cssClass="inputText"
 										rows="5" cols="40" maxlength="2000" /></td>
 								<td><form:errors path="contractorAddress" cssClass="error" /></td>
-							</tr>
-							<tr>
-								<td>Contractors value<span id="colon">:</span>
-								</td>
-								<td><form:input path="contractValue"
-										placeholder="Enter Contractors Value" cssClass="inputText" /></td>
-								<td><form:errors path="contractValue" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Agreement Value<span id="colon">:</span>
@@ -154,6 +154,13 @@ $(function(){
 										placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
 								<td><form:errors path="performanceGuarantee"
 										cssClass="error" /></td>
+							</tr>
+                            <tr>
+								<td>Completion Date for Bonus<span id="colon">:</span>
+								</td>
+								<td><form:input path="completionDateForBonus" placeholder="DD-MM-YYYY"
+										cssClass="inputText" /></td>
+								<td><form:errors path="completionDateForBonus" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Date of Tender<span id="colon">:</span>

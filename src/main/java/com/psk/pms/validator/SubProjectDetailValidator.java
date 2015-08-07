@@ -50,8 +50,6 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subAliasContractorName", "Enter alias Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorAddress",
 				"required.subContractorAddress", "Enter Contractor Address.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractValue",
-				"required.subContractValue", "Enter Contract Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementValue",
 				"required.subAgreementValue", "Enter Agreement Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderValue",
@@ -120,16 +118,6 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			}
 		}
 
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubContractValue())) {
-			pattern = Pattern.compile(AMOUNT_PATTERN);
-			matcher = pattern.matcher(subProjectDetail.getSubContractValue());
-			if (!matcher.matches()) {
-				errors.rejectValue("subContractValue", "subContractValue.incorrect",
-						"Enter a numeric value and only a single dot is allowed");
-			} else if (subProjectDetail.getSubContractValue().length() > 15) {
-				errors.rejectValue("subContractValue", "subContractValue.incorrect", "Field must not exceed 15 characters.");
-			}
-		}
 
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExAmount())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);

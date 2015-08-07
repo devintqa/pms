@@ -52,6 +52,7 @@ public class SubProjectController {
 				model.addAttribute("noProjectCreated", "No Project Found To Be Created. Please Create a Project.");
 				return "Welcome";
 			} else{
+                model.addAttribute("projectTypeList",populateProjectTypes());
 				model.addAttribute("aliasProjectList", aliasProjectList);
 			}
 
@@ -75,6 +76,7 @@ public class SubProjectController {
 			model.addAttribute("projDescDocList", projDescDocList);
 			model.addAttribute("projDescDocListSize", projDescDocList.size());
 			model.addAttribute("subProjectAliasName", subProjectDetail.getAliasSubProjName());
+            model.addAttribute("projectTypeList",populateProjectTypes());
 			return "UpdateProjectDesc";
 		}else {
 			SubProjectDetail subProjectDetail = subProjectService.getSubProjectDocument(subProject);
@@ -84,6 +86,7 @@ public class SubProjectController {
 			aliasProjectList.put(subProjectDetail.getProjId().toString(), subProjectDetail.getAliasProjName());
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			model.addAttribute("subProjectForm", subProjectDetail);
+            model.addAttribute("projectTypeList",populateProjectTypes());
 		}
 		return "BuildSubProject";
 	}
@@ -96,12 +99,14 @@ public class SubProjectController {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
+        List<String> projectTypes = populateProjectTypes();
 
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = subProjectService.createEditSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("projectTypeList",projectTypes);
 			return "BuildSubProject";
 		} else {
 			status.setComplete();
@@ -110,6 +115,7 @@ public class SubProjectController {
 			model.addAttribute("employee", employee);
 			model.addAttribute("subProjectCreationMessage", "Sub Project Creation Successful.");
 			model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("projectTypeList",projectTypes);
 			return "BuildSubProject";
 		}
 	}
@@ -122,12 +128,14 @@ public class SubProjectController {
 		boolean isProjectSaveSuccessful = false;
 		subProjectDetailValidator.validate(subProjectDetail, result);
 		Map<String, String> aliasProjectList = populateAliasProjectList();
+        List<String> projectTypes = populateProjectTypes();
 
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = subProjectService.createEditSubProject(subProjectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
 			model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("projectTypeList",projectTypes);
 			return "BuildSubProject";
 		} else {
 			status.setComplete();
@@ -136,6 +144,7 @@ public class SubProjectController {
 			model.addAttribute("employee", employee);
 			model.addAttribute("subProjectCreationMessage", "Sub Project Updated Successfully.");
 			model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("projectTypeList",projectTypes);
 			return "BuildSubProject";
 		}
 	}
@@ -145,4 +154,10 @@ public class SubProjectController {
 		return aliasProjectName;
 	}
 
+    private List<String> populateProjectTypes() {
+        LOGGER.info("method = populateProjectTypes()");
+        List<String> projectTypeNames = projectService.getProjectTypes();
+        LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
+        return projectTypeNames;
+    }
 }

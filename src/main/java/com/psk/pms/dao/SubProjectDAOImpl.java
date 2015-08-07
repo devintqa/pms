@@ -55,9 +55,9 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         return true;
     }
 
-    private static String subProjQuery = "SELECT SubProjId, SubProjName, AliasSubProjName, AgreementNum, "
+    private static String subProjQuery = "SELECT SubProjId, SubProjName,subProjectType ,AliasSubProjName, AgreementNum, "
             + "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
-            + "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage ,"
+            + "TenderValue, ExcessInAmount, ExcessInPercentage,LessInPercentage ,subCompletionDateForBonus,"
             + "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
             + "AgreementPeriod, ProjId, SubAddSecurityDeposit,SubPerformanceGuarantee FROM subproject";
 
@@ -78,6 +78,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         SubProjectDetail subProjDoc = new SubProjectDetail();
         subProjDoc.setProjId((Integer) row.get("ProjId"));
         subProjDoc.setAliasProjName((String) row.get("AliasProjName"));
+        subProjDoc.setSubProjectType((String) row.get("SubProjectType"));
         subProjDoc.setSubProjId((Integer) row.get("SubProjId"));
         subProjDoc.setSubProjectName((String) row.get("SubProjName"));
         subProjDoc.setAliasSubProjName((String) row.get("AliasSubProjName"));
@@ -96,8 +97,6 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         BigDecimal tenderValue = (BigDecimal) row.get("TenderValue");
         subProjDoc.setSubTenderValue(tenderValue.toString());
 
-        BigDecimal contValue = (BigDecimal) row.get("ContractorValue");
-        subProjDoc.setSubContractValue(contValue.toString());
 
         BigDecimal exAmount = (BigDecimal) row.get("ExcessInAmount");
         subProjDoc.setSubExAmount(exAmount.toString());
@@ -115,7 +114,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         } else {
             subProjDoc.setSubLessPercentage(lessPercentage.toString());
         }
-
+        subProjDoc.setSubCompletionDateSqlForBonus((Date) row.get("subCompletionDateForBonus"));
         subProjDoc.setSubTenderSqlDate((Date) row.get("TenderDate"));
         subProjDoc.setSubAgreementSqlDate((Date) row.get("AgreementDate"));
         subProjDoc.setSubCommencementSqlDate((Date) row.get("CommencementDate"));
@@ -136,15 +135,15 @@ public class SubProjectDAOImpl implements SubProjectDAO {
     }
 
     public boolean saveSubProject(final SubProjectDetail subProjectDetail){
-        String insertSql = "INSERT INTO subproject (ProjId, SubProjName, AliasSubProjName, AgreementNum, CERNum, "
-                + "Amount, ContractorName,ContractorAliasName, ContractorAdd, ContractorValue, AgreementValue, TenderValue, ExcessInAmount, "
-                + "ExcessInPercentage,LessInPercentage, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod," +
+        String insertSql = "INSERT INTO subproject (ProjId, SubProjName,SubProjectType, AliasSubProjName, AgreementNum, CERNum, "
+                + "Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, TenderValue, ExcessInAmount, "
+                + "ExcessInPercentage,LessInPercentage,subCompletionDateForBonus, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod," +
                 "LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit,SubPerformanceGuarantee) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
 
-        String updateSql = "UPDATE subproject set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
-                "ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
-                "ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+
+        String updateSql = "UPDATE subproject set SubProjectType =? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
+                "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
+                "ExcessInPercentage = ?,LessInPercentage = ?,subCompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+
                 "AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? ,SubPerformanceGuarantee = ? WHERE SubProjId = ?";
 
         jdbcTemplate = new JdbcTemplate(dataSource);
@@ -152,6 +151,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
             jdbcTemplate.update(insertSql, new Object[] {
                     subProjectDetail.getProjId(),
                     subProjectDetail.getSubProjectName(),
+                    subProjectDetail.getSubProjectType(),
                     subProjectDetail.getAliasSubProjName(),
                     subProjectDetail.getSubAgreementNo(),
                     subProjectDetail.getSubCerNo(),
@@ -159,12 +159,12 @@ public class SubProjectDAOImpl implements SubProjectDAO {
                     subProjectDetail.getSubContractorName(),
                     subProjectDetail.getSubAliasContractorName(),
                     subProjectDetail.getSubContractorAddress(),
-                    subProjectDetail.getSubContractValue(),
                     subProjectDetail.getSubAgreementValue(),
                     subProjectDetail.getSubTenderValue(),
                     subProjectDetail.getSubExAmount(),
                     subProjectDetail.getSubExPercentage(),
                     subProjectDetail.getSubLessPercentage(),
+                    subProjectDetail.getSubCompletionDateSqlForBonus(),
                     subProjectDetail.getSubTenderSqlDate(),
                     subProjectDetail.getSubAgreementSqlDate(),
                     subProjectDetail.getSubCommencementSqlDate(),
@@ -177,18 +177,19 @@ public class SubProjectDAOImpl implements SubProjectDAO {
             });
         }else {
             jdbcTemplate.update(updateSql, new Object[] {
+                    subProjectDetail.getSubProjectType(),
                     subProjectDetail.getSubAgreementNo(),
                     subProjectDetail.getSubCerNo(),
                     subProjectDetail.getSubAmount(),
                     subProjectDetail.getSubContractorName(),
                     subProjectDetail.getSubAliasContractorName(),
                     subProjectDetail.getSubContractorAddress(),
-                    subProjectDetail.getSubContractValue(),
                     subProjectDetail.getSubAgreementValue(),
                     subProjectDetail.getSubTenderValue(),
                     subProjectDetail.getSubExAmount(),
                     subProjectDetail.getSubExPercentage(),
                     subProjectDetail.getSubLessPercentage(),
+                    subProjectDetail.getSubCompletionDateSqlForBonus(),
                     subProjectDetail.getSubTenderSqlDate(),
                     subProjectDetail.getSubAgreementSqlDate(),
                     subProjectDetail.getSubCommencementSqlDate(),
@@ -204,9 +205,9 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         return true;
     }
 
-    private static String subProj = "SELECT s.SubProjId, s.SubProjName, s.AliasSubProjName, s.AgreementNum, "
+    private static String subProj = "SELECT s.SubProjId, s.SubProjName ,s.SubProjectType , s.AliasSubProjName, s.AgreementNum, "
             + "s.CERNum, s.Amount, s.ContractorName,s.ContractorAliasName, s.ContractorAdd, s.AgreementValue, "
-            + "s.TenderValue, s.ContractorValue, s.ExcessInAmount, s.ExcessInPercentage,s.LessInPercentage, "
+            + "s.TenderValue, s.ExcessInAmount, s.ExcessInPercentage,s.LessInPercentage,s.subCompletionDateForBonus, "
             + "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
             + "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit , s.SubPerformanceGuarantee";
 

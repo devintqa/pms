@@ -40,4 +40,10 @@ $(function() {
 	$("#emdExtensionDate").datepicker(
     			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
     			);
+    $("#completionDateForBonus").datepicker(
+    			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+    			);
+    $("#subCompletionDateForBonus").datepicker(
+        			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+        			);
 });

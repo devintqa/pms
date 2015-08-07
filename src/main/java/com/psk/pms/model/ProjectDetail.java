@@ -6,6 +6,7 @@ public class ProjectDetail {
 	
 	private int projId;
 	private String projectName;
+    private String projectType;
 	private String aliasName;
 	private String agreementNo;
 	private String cerNo;
@@ -13,7 +14,6 @@ public class ProjectDetail {
 	private String contractorName;
 	private String aliasContractorName;
 	private String contractorAddress;
-	private String contractValue;
 	private String agreementValue;
 	private String tenderValue;
 	private String exAmount;
@@ -23,6 +23,8 @@ public class ProjectDetail {
 	private String agreementDate;
 	private String commencementDate;
 	private String completionDate;
+    private String completionDateForBonus;
+    private Date completionDateSqlForBonus;
 	private Date tenderSqlDate;
 	private Date agreementSqlDate;
 	private Date commencementSqlDate;
@@ -91,12 +93,7 @@ public class ProjectDetail {
 	public void setContractorAddress(String contractorAddress) {
 		this.contractorAddress = contractorAddress;
 	}
-	public String getContractValue() {
-		return contractValue;
-	}
-	public void setContractValue(String contractValue) {
-		this.contractValue = contractValue;
-	}
+
 	public String getAgreementValue() {
 		return agreementValue;
 	}
@@ -234,4 +231,28 @@ public class ProjectDetail {
 	public void setPerformanceGuarantee(String performanceGuarantee) {
 		this.performanceGuarantee = performanceGuarantee;
 	}
+
+    public String getCompletionDateForBonus() {
+        return completionDateForBonus;
+    }
+
+    public void setCompletionDateForBonus(String completionDateForBonus) {
+        this.completionDateForBonus = completionDateForBonus;
+    }
+
+    public Date getCompletionDateSqlForBonus() {
+        return completionDateSqlForBonus;
+    }
+
+    public void setCompletionDateSqlForBonus(Date completionDateSqlForBonus) {
+        this.completionDateSqlForBonus = completionDateSqlForBonus;
+    }
+
+    public String getProjectType() {
+        return projectType;
+    }
+
+    public void setProjectType(String projectType) {
+        this.projectType = projectType;
+    }
 }

@@ -5,9 +5,10 @@ import java.util.Date;
 public class SubProjectDetail {
 	
 	private String aliasSubProjName;
-	private String aliasProjName;	
+	private String aliasProjName;
 	private Integer projId;
 	private Integer subProjId;
+    private String subProjectType;
 	private String subProjectName;
 	private String subAgreementNo;
 	private String subCerNo;
@@ -15,12 +16,13 @@ public class SubProjectDetail {
 	private String subContractorName;
 	private String subAliasContractorName;
 	private String subContractorAddress;
-	private String subContractValue;
 	private String subAgreementValue;
 	private String subTenderValue;
 	private String subExAmount;
 	private String subExPercentage;
 	private String subLessPercentage;
+    private Date subCompletionDateSqlForBonus;
+    private String subCompletionDateForBonus;
 	private String subTenderDate;
 	private String subAgreementDate;
 	private String subCommencementDate;
@@ -72,12 +74,6 @@ public class SubProjectDetail {
 	}
 	public void setSubContractorAddress(String subContractorAddress) {
 		this.subContractorAddress = subContractorAddress;
-	}
-	public String getSubContractValue() {
-		return subContractValue;
-	}
-	public void setSubContractValue(String subContractValue) {
-		this.subContractValue = subContractValue;
 	}
 	public String getSubAgreementValue() {
 		return subAgreementValue;
@@ -241,5 +237,29 @@ public class SubProjectDetail {
 	public void setSubPerformanceGuarantee(String subPerformanceGuarantee) {
 		this.subPerformanceGuarantee = subPerformanceGuarantee;
 	}
+
+    public Date getSubCompletionDateSqlForBonus() {
+        return subCompletionDateSqlForBonus;
+    }
+
+    public void setSubCompletionDateSqlForBonus(Date subCompletionDateSqlForBonus) {
+        this.subCompletionDateSqlForBonus = subCompletionDateSqlForBonus;
+    }
+
+    public String getSubCompletionDateForBonus() {
+        return subCompletionDateForBonus;
+    }
+
+    public void setSubCompletionDateForBonus(String subCompletionDateForBonus) {
+        this.subCompletionDateForBonus = subCompletionDateForBonus;
+    }
+
+    public String getSubProjectType() {
+        return subProjectType;
+    }
+
+    public void setSubProjectType(String subProjectType) {
+        this.subProjectType = subProjectType;
+    }
 }
 

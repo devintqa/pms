@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.psk.pms.utils.PMSUtil.*;
+
 /**
  * Created by prakashbhanu57 on 7/6/2015.
  */
@@ -25,6 +27,7 @@ public class SubProjectServiceImpl implements SubProjectService {
 
     public boolean createEditSubProject(SubProjectDetail subProjectDetail) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        subProjectDetail.setSubCompletionDateSqlForBonus(getSQLDate(subProjectDetail.getSubCompletionDateForBonus(), formatter));
         subProjectDetail.setSubTenderSqlDate(getSQLDate(subProjectDetail.getSubTenderDate(), formatter));
         subProjectDetail.setSubAgreementSqlDate(getSQLDate(subProjectDetail.getSubAgreementDate(), formatter));
         subProjectDetail.setSubCommencementSqlDate(getSQLDate(subProjectDetail.getSubCommencementDate(), formatter));
@@ -81,10 +84,11 @@ public class SubProjectServiceImpl implements SubProjectService {
     public SubProjectDetail getSubProjectDocument(String subProjectId) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         SubProjectDetail subProjectDetail = subProjectDAO.getSubProjectDocument(subProjectId);
-        subProjectDetail.setSubTenderDate(PMSUtil.getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
-        subProjectDetail.setSubAgreementDate(PMSUtil.getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
-        subProjectDetail.setSubCommencementDate(PMSUtil.getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
-        subProjectDetail.setSubCompletionDate(PMSUtil.getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
+        subProjectDetail.setSubCompletionDateForBonus(getStringDate(subProjectDetail.getSubCompletionDateSqlForBonus(), formatter));
+        subProjectDetail.setSubTenderDate(getStringDate(subProjectDetail.getSubTenderSqlDate(), formatter));
+        subProjectDetail.setSubAgreementDate(getStringDate(subProjectDetail.getSubAgreementSqlDate(), formatter));
+        subProjectDetail.setSubCommencementDate(getStringDate(subProjectDetail.getSubCommencementSqlDate(), formatter));
+        subProjectDetail.setSubCompletionDate(getStringDate(subProjectDetail.getSubCompletionSqlDate(), formatter));
         return subProjectDetail;
     }
 

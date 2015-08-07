@@ -42,6 +42,7 @@ public class ProjectController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
+        model.addAttribute("projectTypeList", populateProjectTypes());
 		return "BuildProject";
 	}
 	
@@ -63,6 +64,7 @@ public class ProjectController {
 		projectDetail.setIsUpdate("Y");
 		projectDetail.setEmployeeId(employeeId);
 		model.addAttribute("projectForm", projectDetail);
+        model.addAttribute("projectTypeList", populateProjectTypes());
 		return "BuildProject";
 	}
 
@@ -72,16 +74,19 @@ public class ProjectController {
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
+        List<String> projectTypes = populateProjectTypes();
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
+            model.addAttribute("projectTypeList", projectTypes);
 			return "BuildProject";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
+            model.addAttribute("projectTypeList", projectTypes);
 			model.addAttribute("projectCreationMessage", "Project Creation Successful.");
 			return "BuildProject";			
 		}
@@ -93,10 +98,12 @@ public class ProjectController {
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
+        List<String> projectTypes = populateProjectTypes();
 		if(!result.hasErrors()){
 			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
 		}
 		if(result.hasErrors() || !isProjectSaveSuccessful) {
+            model.addAttribute("projectTypeList", projectTypes);
 			return "BuildProject";
 		} else {
 			status.setComplete();
@@ -104,6 +111,7 @@ public class ProjectController {
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);	
 			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
+            model.addAttribute("projectTypeList", projectTypes);
 			model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");			
 			return "BuildProject";		
 		}
@@ -114,4 +122,10 @@ public class ProjectController {
 		return subProjectDocumentList;
 	}
 
+    private List<String> populateProjectTypes() {
+        LOGGER.info("method = populateProjectTypes()");
+        List<String> projectTypeNames = projectService.getProjectTypes();
+        LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
+        return projectTypeNames;
+    }
 }

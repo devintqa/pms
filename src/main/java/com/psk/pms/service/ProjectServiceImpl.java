@@ -20,6 +20,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	public boolean createEditProject(ProjectDetail projectDetail){
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        projectDetail.setCompletionDateSqlForBonus(getSQLDate(projectDetail.getCompletionDateForBonus(), formatter));
 		projectDetail.setTenderSqlDate(getSQLDate(projectDetail.getTenderDate(), formatter));
 		projectDetail.setAgreementSqlDate(getSQLDate(projectDetail.getAgreementDate(), formatter));
 		projectDetail.setCommencementSqlDate(getSQLDate(projectDetail.getCommencementDate(), formatter));
@@ -93,6 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public ProjectDetail getProjectDocument(String projectId) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
+        projectDetail.setCompletionDateForBonus(PMSUtil.getStringDate(projectDetail.getCompletionDateSqlForBonus(), formatter));
 		projectDetail.setTenderDate(PMSUtil.getStringDate(projectDetail.getTenderSqlDate(), formatter));
 		projectDetail.setAgreementDate(PMSUtil.getStringDate(projectDetail.getAgreementSqlDate(), formatter));
 		projectDetail.setCommencementDate(PMSUtil.getStringDate(projectDetail.getCommencementSqlDate(), formatter));
@@ -105,5 +107,9 @@ public class ProjectServiceImpl implements ProjectService {
 		projectDAO.deleteProject(projectId);
 	}
 
+    @Override
+    public List<String> getProjectTypes() {
+        return projectDAO.getProjectTypes();
+    }
 
 }

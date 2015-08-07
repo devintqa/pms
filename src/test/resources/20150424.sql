@@ -234,19 +234,20 @@ DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
+  `ProjectType` varchar(30) NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NOT NULL,
+  `CERNum` varchar(30) DEFAULT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
-  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
+  `CompletionDateForBonus` datetime DEFAULT NULL,
   `TenderDate` datetime NOT NULL,
   `AddSecurityDeposit` decimal(15,2) NOT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
@@ -267,7 +268,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Madras Medical College','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,200000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00),(2,'Better Homes','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,200000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-21 19:48:49','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00);
+INSERT INTO `project` VALUES (1,'Madras Medical College','PWD','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00','2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00),(2,'Better Homes','CPWD','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00','2015-07-03 00:00:00',100000.00,'tkumar','2015-07-21 19:48:49','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -351,20 +352,21 @@ DROP TABLE IF EXISTS `subproject`;
 CREATE TABLE `subproject` (
   `SubProjId` int(10) NOT NULL AUTO_INCREMENT,
   `SubProjName` text NOT NULL,
+  `SubProjectType` varchar(30) NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NOT NULL,
+  `CERNum` varchar(30) DEFAULT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
-  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
   `SubAddSecurityDeposit` decimal(15,2) NOT NULL,
+  `SubCompletionDateForBonus` datetime DEFAULT NULL,
   `TenderDate` datetime NOT NULL,
   `AgreementDate` datetime DEFAULT NULL,
   `CommencementDate` datetime DEFAULT NULL,
@@ -458,6 +460,30 @@ LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+--
+-- Table structure for table `projecttype`
+--
+
+DROP TABLE IF EXISTS `projecttype`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projecttype` (
+  `projectTypeId` int(10) NOT NULL AUTO_INCREMENT,
+  `projectTypeName` varchar(20) NOT NULL,
+  PRIMARY KEY (`projectTypeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projecttype`
+--
+
+LOCK TABLES `projecttype` WRITE;
+/*!40000 ALTER TABLE `projecttype` DISABLE KEYS */;
+INSERT INTO `projecttype` VALUES (1,'PWD'),(2,'CPWD'),(3,'MRPL'),(4,'Private'),(5,'NPCC'),(6,'NBCC'),(7,'DAE'),(8,'NIT');
+/*!40000 ALTER TABLE `projecttype` ENABLE KEYS */;
+UNLOCK TABLES;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

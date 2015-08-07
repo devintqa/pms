@@ -31,7 +31,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 	public void validate(Object target, Errors errors) {
 		LOGGER.info("Project Validation Start");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "projectName",
-				"required.projectName", "Enter Project Name.");
+                "required.projectName", "Enter Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
 			"required.aliasName", "Enter Alias Project Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "amount",
@@ -42,8 +42,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 				"required.aliasContractorName", "Enter Alias Contractor Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractorAddress",
 				"required.contractorAddress", "Enter Contractor Address.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "contractValue",
-				"required.contractValue", "Enter Contract Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "agreementValue",
 				"required.agreementValue", "Enter Agreement Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderValue",
@@ -89,18 +87,7 @@ public class ProjectDetailValidator extends BaseValidator implements Validator{
 		            errors.rejectValue("tenderValue", "tenderValue.incorrect", "Field must not exceed 15 characters.");
 		        }
 		}
-		
-		if (!StringUtils.isNullOrEmpty(projectDetail.getContractValue())) {  
-			   pattern = Pattern.compile(AMOUNT_PATTERN);  
-			   matcher = pattern.matcher(projectDetail.getContractValue());  
-			   if (!matcher.matches()) {  
-			    errors.rejectValue("contractValue", "contractValue.incorrect",  
-			      "Enter a numeric value and only a single dot is allowed");
-			   }else if(projectDetail.getContractValue().length() > 15){
-		            errors.rejectValue("contractValue", "contractValue.incorrect", "Field must not exceed 15 characters.");
-		        }
-		}
-		
+
 		if (!StringUtils.isNullOrEmpty(projectDetail.getExAmount())) {  
 			   pattern = Pattern.compile(AMOUNT_PATTERN);  
 			   matcher = pattern.matcher(projectDetail.getExAmount());  

@@ -35,33 +35,34 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     public boolean saveProject(final ProjectDetail projectDetail) {
-        String createSql = "INSERT INTO project (ProjName, AliasProjName, AgreementNum, CERNum, Amount, "
-                + "ContractorName, ContractorAliasName , ContractorAdd, ContractorValue, AgreementValue, TenderValue, " +
-                "ExcessInAmount, ExcessInPercentage, LessInPercentage , TenderDate, "
+        String createSql = "INSERT INTO project (ProjName, AliasProjName,ProjectType,AgreementNum, CERNum, Amount, "
+                + "ContractorName, ContractorAliasName , ContractorAdd, AgreementValue, TenderValue, " +
+                "ExcessInAmount, ExcessInPercentage, LessInPercentage ,CompletionDateForBonus , TenderDate, "
                 + "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ,AddSecurityDeposit,PerformanceGuarantee) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
 
-        String updateSql = "UPDATE project set AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
-                "ContractorAdd = ?, ContractorValue = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
-                "ExcessInPercentage = ?,LessInPercentage = ?, TenderDate = ?, AgreementDate = ?," +
+        String updateSql = "UPDATE project set ProjectType = ? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
+                "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
+                "ExcessInPercentage = ?,LessInPercentage = ?,CompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?," +
                 "CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=?,PerformanceGuarantee=? WHERE ProjId = ?";
 
         jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
             jdbcTemplate.update(createSql, new Object[]{projectDetail.getProjectName(),
                     projectDetail.getAliasName(),
+                    projectDetail.getProjectType(),
                     projectDetail.getAgreementNo(),
                     projectDetail.getCerNo(),
                     projectDetail.getAmount(),
                     projectDetail.getContractorName(),
                     projectDetail.getAliasContractorName(),
                     projectDetail.getContractorAddress(),
-                    projectDetail.getContractValue(),
                     projectDetail.getAgreementValue(),
                     projectDetail.getTenderValue(),
                     projectDetail.getExAmount(),
                     projectDetail.getExPercentage(),
                     projectDetail.getLessPercentage(),
+                    projectDetail.getCompletionDateSqlForBonus(),
                     projectDetail.getTenderSqlDate(),
                     projectDetail.getAgreementSqlDate(),
                     projectDetail.getCommencementSqlDate(),
@@ -74,18 +75,19 @@ public class ProjectDAOImpl implements ProjectDAO {
             });
         } else {
             jdbcTemplate.update(updateSql, new Object[]{
+                    projectDetail.getProjectType(),
                     projectDetail.getAgreementNo(),
                     projectDetail.getCerNo(),
                     projectDetail.getAmount(),
                     projectDetail.getContractorName(),
                     projectDetail.getAliasContractorName(),
                     projectDetail.getContractorAddress(),
-                    projectDetail.getContractValue(),
                     projectDetail.getAgreementValue(),
                     projectDetail.getTenderValue(),
                     projectDetail.getExAmount(),
                     projectDetail.getExPercentage(),
                     projectDetail.getLessPercentage(),
+                    projectDetail.getCompletionDateSqlForBonus(),
                     projectDetail.getTenderSqlDate(),
                     projectDetail.getAgreementSqlDate(),
                     projectDetail.getCommencementSqlDate(),
@@ -143,6 +145,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         projDoc.setProjId((Integer) row.get("ProjId"));
         projDoc.setProjectName((String) row.get("ProjName"));
         projDoc.setAliasName((String) row.get("AliasProjName"));
+        projDoc.setProjectType((String) row.get("ProjectType"));
         projDoc.setAgreementNo((String) row.get("AgreementNum"));
         projDoc.setCerNo((String) row.get("CERNum"));
         projDoc.setContractorName((String) row.get("ContractorName"));
@@ -159,8 +162,6 @@ public class ProjectDAOImpl implements ProjectDAO {
         BigDecimal tenderValue = (BigDecimal) row.get("TenderValue");
         projDoc.setTenderValue(tenderValue.toString());
 
-        BigDecimal contValue = (BigDecimal) row.get("ContractorValue");
-        projDoc.setContractValue(contValue.toString());
 
         BigDecimal exAmount = (BigDecimal) row.get("ExcessInAmount");
         projDoc.setExAmount(exAmount.toString());
@@ -178,7 +179,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         } else {
             projDoc.setLessPercentage(lessPercentage.toString());
         }
-
+        projDoc.setCompletionDateSqlForBonus((Date) row.get("CompletionDateForBonus"));
         projDoc.setAgreementSqlDate((Date) row.get("AgreementDate"));
         projDoc.setCommencementSqlDate((Date) row.get("CommencementDate"));
         projDoc.setCompletionSqlDate((Date) row.get("CompletedDate"));
@@ -209,14 +210,11 @@ public class ProjectDAOImpl implements ProjectDAO {
         return true;
     }
 
-    private String projQuery = "SELECT  ProjId, ProjName, AliasProjName, AgreementNum, "
+    private String projQuery = "SELECT  ProjId, ProjName, ProjectType ,AliasProjName, AgreementNum, "
             + "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
-            + "TenderValue, ContractorValue, ExcessInAmount, ExcessInPercentage,LessInPercentage, "
-            + "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
+            + "TenderValue , ExcessInAmount, ExcessInPercentage,LessInPercentage, "
+            + "CompletionDateForBonus ,TenderDate, AgreementDate, CommencementDate, CompletedDate, "
             + "AgreementPeriod,AddSecurityDeposit,PerformanceGuarantee FROM project";
-
-
-
 
 
     @Override
@@ -230,4 +228,15 @@ public class ProjectDAOImpl implements ProjectDAO {
         LOGGER.info("method = deleteProject , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
 
+    @Override
+    public List<String> getProjectTypes() {
+        LOGGER.info("method = getProjectTypes");
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        List<String> projectTypes = new ArrayList<String>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(FETCHPROJECTTYPES);
+        for (Map<String, Object> row : rows) {
+            projectTypes.add(String.valueOf(row.get("projectTypeName")));
+        }
+        return projectTypes;
+    }
 }
