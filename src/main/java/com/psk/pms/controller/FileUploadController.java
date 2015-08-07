@@ -8,8 +8,6 @@ import com.psk.pms.model.ExcelDetail;
 import com.psk.pms.model.FileUpload;
 import com.psk.pms.service.FileService;
 import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.FileUploadValidator;
 
 import org.apache.log4j.Logger;
@@ -33,22 +31,16 @@ import java.util.Map;
 public class FileUploadController extends BaseController {
 
 	@Autowired
-	ProjectService projectService;
+	private ServletContext context;
 
 	@Autowired
-	ServletContext context;
+	private FileUploadValidator fileUploadValidator;
 
 	@Autowired
-	FileUploadValidator fileUploadValidator;
+	private FileService fileService;
 
 	@Autowired
-	FileService fileService;
-
-	@Autowired
-	SubProjectService subProjectService;
-
-	@Autowired
-	ProjectDescriptionService projectDescriptionService;
+	private ProjectDescriptionService projectDescriptionService;
 
 	private static final Logger LOGGER = Logger.getLogger(FileUploadController.class);
 
@@ -296,16 +288,6 @@ public class FileUploadController extends BaseController {
 	public void deleteFile(@RequestParam(value="path", required=true) String path, HttpServletRequest request, HttpServletResponse response) {
 		LOGGER.info("method = deleteFile() ,file Name :" + path);
 		fileService.deleteFile(path);
-	}
-
-	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
-		return aliasSubProjectName;
-	}
-
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
 	}
 
 	@RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)

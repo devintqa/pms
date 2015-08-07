@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.psk.pms.model.EmdDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmdService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.EmdValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,21 +19,15 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class EmdController {
-
-	@Autowired
-	ProjectService projectService;
-
-	@Autowired
-	EmdService emdService;
-
-	@Autowired
-	EmdValidator emdValidator;
-
-	@Autowired
-	SubProjectService subProjectService;
-
+public class EmdController extends BaseController {
+	
 	private static final Logger LOGGER = Logger.getLogger(EmdController.class);
+
+	@Autowired
+	private EmdService emdService;
+
+	@Autowired
+	private EmdValidator emdValidator;
 
 	@RequestMapping(value = "/emp/myview/buildEmd/{employeeId}", method = RequestMethod.GET)
 	public String buildEmd(@PathVariable String employeeId,@RequestParam(value="emdId", required=false) String emdId,
@@ -80,22 +72,6 @@ public class EmdController {
 		Gson gson = new Gson();
 		String subAliasProjectJson = gson.toJson(subAliasProjectList);
 		return subAliasProjectJson;
-	}
-
-	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
-		return aliasSubProjectName;
-	}
-
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
-	}
-
-	@ModelAttribute("emdTypeList")
-	public List<String> populateEmdTypeList() {
-		List<String> emdType =  emdService.fetchEmdTypes();
-		return emdType;
 	}
 
 
@@ -155,6 +131,12 @@ public class EmdController {
 		LOGGER.info("method = deleteEmd() , emd Id : " + emdId);
 		Integer numericEmdId = Integer.parseInt(emdId);
 		emdService.deleteEmd(numericEmdId);
+	}
+	
+	@ModelAttribute("emdTypeList")
+	public List<String> populateEmdTypeList() {
+		List<String> emdType =  emdService.fetchEmdTypes();
+		return emdType;
 	}
 }
 

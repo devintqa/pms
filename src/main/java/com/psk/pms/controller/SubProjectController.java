@@ -4,7 +4,6 @@ import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.SubProjectDetailValidator;
 import org.apache.log4j.Logger;
@@ -20,19 +19,16 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class SubProjectController {
+public class SubProjectController extends BaseController {
 
 	@Autowired
-	SubProjectDetailValidator subProjectDetailValidator;
+	private SubProjectDetailValidator subProjectDetailValidator;
 
 	@Autowired
-	SubProjectService subProjectService;
+	private SubProjectService subProjectService;
 
 	@Autowired
-	ProjectDescriptionService projectDescriptionService;
-
-	@Autowired
-	ProjectService projectService;
+	private ProjectDescriptionService projectDescriptionService;
 
 	private static final Logger LOGGER = Logger.getLogger(SubProjectController.class);
 
@@ -147,11 +143,6 @@ public class SubProjectController {
             model.addAttribute("projectTypeList",projectTypes);
 			return "BuildSubProject";
 		}
-	}
-
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
 	}
 
     private List<String> populateProjectTypes() {

@@ -35,10 +35,10 @@ public class ViewController extends BaseController {
 	private ViewValidator viewValidator;
 
 	@Autowired
-	ItemService itemService;
+	private ItemService itemService;
 	
 	@Autowired
-	ProjectDescriptionService projectDescriptionService;
+	private ProjectDescriptionService projectDescriptionService;
 	
 	@RequestMapping(value = "/emp/myview/viewDetails/{employeeId}", method = RequestMethod.GET)
 	public String viewDetails(@PathVariable String employeeId, Model model) {		

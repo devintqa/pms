@@ -13,10 +13,10 @@ import com.psk.pms.service.SubProjectService;
 public class BaseController {
 	
 	@Autowired
-	ProjectService projectService;
+	protected ProjectService projectService;
 
 	@Autowired
-	SubProjectService subProjectService;
+	protected SubProjectService subProjectService;
 
 	@Autowired
 	ItemService itemService;

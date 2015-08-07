@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.SubProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,26 +28,19 @@ import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
-import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ProjDescDetailValidator;
 
 @Controller
-public class ProjectDescriptionController {
+public class ProjectDescriptionController extends BaseController {
 
 	@Autowired
-	ProjDescDetailValidator projDescDetailValidator;
+	private ProjDescDetailValidator projDescDetailValidator;
 
 	@Autowired
-	ProjectService projectService;
-
-	@Autowired
-	ProjectDescriptionService projectDescriptionService;
-
-	@Autowired
-	SubProjectService subProjectService;
+	private ProjectDescriptionService projectDescriptionService;
 
     @Autowired
-    ItemService itemService;
+    private ItemService itemService;
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
 
@@ -151,11 +143,6 @@ public class ProjectDescriptionController {
 		projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId);
 	}
 
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService.getAliasProjectNames();
-		return aliasProjectName;
-	}
-
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
 	@ResponseBody 
 	public String getSubAliasProject(HttpServletRequest request, HttpServletResponse response) {
@@ -165,11 +152,6 @@ public class ProjectDescriptionController {
 		Gson gson = new Gson(); 
 		String subAliasProjectJson = gson.toJson(subAliasProjectList); 
 		return subAliasProjectJson;
-	}
-
-	public Map<String, String> populateSubAliasProjectList(String project) {
-		Map<String, String> aliasSubProjectName = subProjectService.getSubAliasProjectNames(project);
-		return aliasSubProjectName;
 	}
 
 	@ModelAttribute("workTypeList")
