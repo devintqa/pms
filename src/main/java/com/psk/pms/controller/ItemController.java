@@ -108,11 +108,12 @@ public class ItemController {
 		}
 	}
 	
-	@RequestMapping(value = "/emp/myview/configureItems/{employeeId}", params = {"project"}, method = RequestMethod.GET)
-	public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId, Model model) {		
+	@RequestMapping(value = "/emp/myview/configureItems/{employeeId}", method = RequestMethod.GET)
+	public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId,@RequestParam(value = "subProject") int subProjectId, Model model) {
 		ProjectConfiguration projectConfiguration = new ProjectConfiguration();
 		projectConfiguration.setEmployeeId(employeeId);
 		projectConfiguration.setProjId(projectId);
+        projectConfiguration.setSubProjId(subProjectId);
 		
 		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
 		model.addAttribute("projectItemForm", projectConfiguration);

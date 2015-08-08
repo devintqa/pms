@@ -294,7 +294,7 @@ public class ItemDAOImpl implements ItemDAO {
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration.getItemDetail().get(i);
                 ps.setInt(1, projectItemConfiguration.getProjId());
-                ps.setInt(2, projectItemConfiguration.getSubProjId() == null ? projectItemConfiguration.getSubProjId() : 0);
+                ps.setInt(2, projectItemConfiguration.getSubProjId());
                 ps.setString(3, itemDetail.getItemName());
                 ps.setString(4, itemDetail.getItemUnit());
                 ps.setString(5, itemDetail.getItemPrice());
@@ -312,10 +312,10 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration) {
-        String sql = "Select * from pricedetail where active = 1 and projectId = '" + projectConfiguration.getProjId() + "'";
+        String sql = "Select * from pricedetail where active = 1 and projectId = ? and subProjectId = ?";
 
         List<ProjectConfiguration.ItemDetail> itemList = new ArrayList<ProjectConfiguration.ItemDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,projectConfiguration.getProjId(),projectConfiguration.getSubProjId());
 
         for (Map<String, Object> row : rows) {
             itemList.add(buildPricedItem(row));
