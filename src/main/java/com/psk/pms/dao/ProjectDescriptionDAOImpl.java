@@ -5,9 +5,9 @@ import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -26,8 +26,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
 
-    private DriverManagerDataSource dataSource;
-
+    @Qualifier("jdbcTemplate")
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -35,21 +35,21 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
     @Override
     public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYSUBPROJECTID, new Object[]{subProjectId});
         LOGGER.info("method = deleteProjectDescriptionBySubProjectId , Number of rows deleted : " + noOfRows + " subProjectId :" + subProjectId);
     }
 
     @Override
     public void deleteProjectDescriptionByProjectId(Integer projectId) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYPROJECTID, new Object[]{projectId});
         LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
 
     public void deleteProjectDescription(String projectDescriptionId) {
         itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId);
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery, new Object[]{projectDescriptionId});
         LOGGER.info("Number of rows deleted : " + noOfRows);
     }
@@ -69,7 +69,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
                     + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
         }
 
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         ProjDescDetail projDescDetail = null;
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -112,43 +112,43 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
         return projDescDetail;
     }
-    
-    private ProjDescComparisonDetail buildProjDescComparisonDetail(Map<String, Object> row) {
-    	ProjDescComparisonDetail projDescComparisonDetail = new ProjDescComparisonDetail();
 
-    	projDescComparisonDetail.setSerialNumber((String) row.get("SerialNumber"));
+    private ProjDescComparisonDetail buildProjDescComparisonDetail(Map<String, Object> row) {
+        ProjDescComparisonDetail projDescComparisonDetail = new ProjDescComparisonDetail();
+
+        projDescComparisonDetail.setSerialNumber((String) row.get("SerialNumber"));
         BigDecimal quantity = (BigDecimal) row.get("Quantity");
         projDescComparisonDetail.setMetric((String) row.get("Metric"));
         if (null == quantity) {
-        	projDescComparisonDetail.setQuantity("");
+            projDescComparisonDetail.setQuantity("");
         } else {
-        	projDescComparisonDetail.setQuantity(quantity.toString());
+            projDescComparisonDetail.setQuantity(quantity.toString());
         }
         projDescComparisonDetail.setAliasDescription((String) row.get("AliasDescription"));
 
         BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
         if (null == pricePerQuantity) {
-        	projDescComparisonDetail.setPricePerQuantity("");
+            projDescComparisonDetail.setPricePerQuantity("");
         } else {
-        	projDescComparisonDetail.setPricePerQuantity(pricePerQuantity.toString());
+            projDescComparisonDetail.setPricePerQuantity(pricePerQuantity.toString());
         }
         BigDecimal totalCost = (BigDecimal) row.get("TotalCost");
         if (null == totalCost) {
-        	projDescComparisonDetail.setTotalCost("");
+            projDescComparisonDetail.setTotalCost("");
         } else {
-        	projDescComparisonDetail.setTotalCost(totalCost.toString());
+            projDescComparisonDetail.setTotalCost(totalCost.toString());
         }
         BigDecimal deptPricePerQuantity = (BigDecimal) row.get("DeptPricePerQuantity");
         if (null == deptPricePerQuantity) {
-        	projDescComparisonDetail.setDeptPricePerQuantity("");
+            projDescComparisonDetail.setDeptPricePerQuantity("");
         } else {
-        	projDescComparisonDetail.setDeptPricePerQuantity(deptPricePerQuantity.toString());
+            projDescComparisonDetail.setDeptPricePerQuantity(deptPricePerQuantity.toString());
         }
         BigDecimal deptTotalCost = (BigDecimal) row.get("DeptTotalCost");
         if (null == deptTotalCost) {
-        	projDescComparisonDetail.setDeptTotalCost("");
+            projDescComparisonDetail.setDeptTotalCost("");
         } else {
-        	projDescComparisonDetail.setDeptTotalCost(deptTotalCost.toString());
+            projDescComparisonDetail.setDeptTotalCost(deptTotalCost.toString());
         }
         return projDescComparisonDetail;
     }
@@ -156,7 +156,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
         String sql = null;
         int total = 0;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         if (!projectDescDetail.isSubProjectDesc()) {
             LOGGER.info("There is no sub project selected");
             sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and AliasDescription = ?";
@@ -182,7 +182,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         } else {
             sql = projDescDetailQuery + " where SubProjId = " + projectId;
         }
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
 
         List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -192,24 +192,24 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         }
         return projectDescDetailList;
     }
-    
+
     public List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId) {
         String sql;
         sql = compareDataQuery + "  and p.ProjId = " + projId;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
 
         List<ProjDescComparisonDetail> projDescComparisonDetailList = new ArrayList<ProjDescComparisonDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {
-        	projDescComparisonDetailList.add(buildProjDescComparisonDetail(row));
+            projDescComparisonDetailList.add(buildProjDescComparisonDetail(row));
         }
         return projDescComparisonDetailList;
     }
 
     public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
         String sql = projDescDetailQuery + " where SubProjId = " + subProjectId;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
 
         List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -225,7 +225,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         String updateSql = "UPDATE projectDesc set WorkType  = ?, Quantity = ?, Metric = ?, Description = ?," +
                 "AliasDescription = ?, PricePerQuantity = ?, TotalCost=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
         String insertSql = null;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
             if (projDescDetail.isSubProjectDesc()) {
                 insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, "
@@ -257,7 +257,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
                     projDescDetail.getTotalCost(), projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(), projDescDetail.getProjDescId()
             });
         }
-        
+
         return true;
     }
 
@@ -265,7 +265,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     public boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail) {
         String sql = null;
         int total = 0;
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         if (!projectDescDetail.isSubProjectDesc()) {
             LOGGER.info("method {} , There is no sub project selected" + "isSerialNumberAlreadyExisting");
             sql = "SELECT COUNT(*) FROM projectdesc where ProjId = ? and SerialNumber = ?";
@@ -285,7 +285,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     }
 
     public void saveProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         jdbcTemplate.batchUpdate(INSERTPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -309,8 +309,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
             }
         });
     }
+
     public void saveProposalProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         jdbcTemplate.batchUpdate(INSERTGOVPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -336,7 +337,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     }
 
     public void saveSubProjectDescriptionDetails(final List<ProjDescDetail> projDescDetails) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+
         jdbcTemplate.batchUpdate(INSERTSUBPROJECTDESCRIPTION, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -363,10 +364,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     @Override
     public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
         int noOfrows = 0;
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOPROJECT, Integer.class, new Object[]{(Integer)projectId} );
-        LOGGER.info("method = isProjectDescriptionDetailsExistsForProject , isDataPresent :" + (noOfrows!=0) );
-        if(noOfrows != 0){
+
+        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOPROJECT, Integer.class, new Object[]{(Integer) projectId});
+        LOGGER.info("method = isProjectDescriptionDetailsExistsForProject , isDataPresent :" + (noOfrows != 0));
+        if (noOfrows != 0) {
             return true;
         }
         return false;
@@ -375,20 +376,13 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     @Override
     public boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId) {
         int noOfrows = 0;
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT, Integer.class, new Object[]{(Integer) subProjectId} );
-        LOGGER.info("method = isProjectDescriptionDetailsExistsForSubProject , isDataPresent :" + (noOfrows!=0) );
-        if(noOfrows != 0){
+
+        noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT, Integer.class, new Object[]{(Integer) subProjectId});
+        LOGGER.info("method = isProjectDescriptionDetailsExistsForSubProject , isDataPresent :" + (noOfrows != 0));
+        if (noOfrows != 0) {
             return true;
         }
         return false;
     }
 
-    public DriverManagerDataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DriverManagerDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 }

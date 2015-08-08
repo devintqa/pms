@@ -1,107 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
         http://www.springframework.org/schema/beans     
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.0.xsd">
-  
-  	<bean id="employeeDAO" class="com.psk.pms.dao.EmployeeDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<bean id="employeeService" class="com.psk.pms.service.EmployeeServiceImpl">
-		<property name="employeeDAO" ref="employeeDAO" />
-		<property name="mailClient" ref="mailClient" />
-	</bean>
 
-	<bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
-	</bean>
-	
-	<bean id="projectDescriptionDetailBuilder" class="com.psk.pms.builder.ProjectDescriptionDetailBuilder">
-	</bean>
-	
-	<bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
-	
-	<bean id="projectService" class="com.psk.pms.service.ProjectServiceImpl">
-		<property name="projectDAO" ref="projectDAO" />
-	</bean>
-	
-	<bean id="searchService" class="com.psk.pms.service.SearchServiceImpl">
-	</bean>
+    <bean id="employeeDAO" class="com.psk.pms.dao.EmployeeDAOImpl">
+    </bean>
 
-	<bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
-		<property name="emdDAO" ref="emdDAO"/>
-	</bean>
+    <bean id="employeeService" class="com.psk.pms.service.EmployeeServiceImpl">
+        <property name="employeeDAO" ref="employeeDAO"/>
+        <property name="mailClient" ref="mailClient"/>
+    </bean>
 
-	<bean id="emdDAO" class="com.psk.pms.dao.EmdDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
+    </bean>
 
-	<bean id="subProjectDAO" class="com.psk.pms.dao.SubProjectDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="projectDescriptionDetailBuilder" class="com.psk.pms.builder.ProjectDescriptionDetailBuilder">
+    </bean>
 
-	<bean id="projectDescriptionDAO" class="com.psk.pms.dao.ProjectDescriptionDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
+    </bean>
 
-	<bean id="itemDAO" class="com.psk.pms.dao.ItemDAOImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="projectService" class="com.psk.pms.service.ProjectServiceImpl">
+        <property name="projectDAO" ref="projectDAO"/>
+    </bean>
 
-	<bean id="itemService" class="com.psk.pms.service.ItemServiceImpl"></bean>
+    <bean id="searchService" class="com.psk.pms.service.SearchServiceImpl">
+    </bean>
 
-	<bean id="subProjectService" class="com.psk.pms.service.SubProjectServiceImpl"></bean>
+    <bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
+        <property name="emdDAO" ref="emdDAO"/>
+    </bean>
 
-	<bean id="projectDescriptionService" class="com.psk.pms.service.ProjectDescriptionServiceImpl"></bean>
+    <bean id="emdDAO" class="com.psk.pms.dao.EmdDAOImpl">
+    </bean>
 
-	<bean class="com.psk.pms.validator.EmployeeValidator" />
-	<bean class="com.psk.pms.validator.ProjectDetailValidator" />
-	<bean class="com.psk.pms.validator.SearchValidator" />
-	<bean class="com.psk.pms.validator.ViewValidator" />
-	<bean class="com.psk.pms.validator.SignUpValidator" />
-	<bean class="com.psk.pms.validator.ForgotpasswordValidator" />
-	<bean class="com.psk.pms.validator.ResetPasswordValidator" />
-	<bean class="com.psk.pms.validator.EditDetailValidator" />
-	<bean class="com.psk.pms.validator.SubProjectDetailValidator" />
-	<bean class="com.psk.pms.validator.ProjDescDetailValidator" />
-	<bean class="com.psk.pms.validator.EmdValidator"/>
-	<bean class="com.psk.pms.validator.FileUploadValidator"/>
-	<bean class="com.psk.pms.validator.ItemValidator"/>
+    <bean id="subProjectDAO" class="com.psk.pms.dao.SubProjectDAOImpl">
+    </bean>
 
-	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/pms" />
-		<property name="username" value="root" />
-		<property name="password" value="mysql" />
-	</bean>
-	
- 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"> 
- 		<property name="host" value="smtp.gmail.com" /> 
- 		<property name="port" value="465" /> 
- 		<property name="username" value="pskconstructionsgroup@gmail.com" /> 
- 		<property name="password" value="Psk@2015" /> 
-	 
- 		<property name="javaMailProperties"> 
- 		   <props> 
- 	       	     <prop key="mail.smtp.auth">true</prop> 
- 	       	     <prop key="mail.smtp.ssl.enable">true</prop>
-                 <prop key="mail.smtp.starttls.enable">true</prop> 
-                 <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop> 
- 	       	   </props> 
- 		</property> 
- 	</bean> 
- 
- 	<bean id="mailClient" class="com.psk.pms.utils.MailClient"> 
- 		<property name="mailSender" ref="mailSender" /> 
- 	</bean>
+    <bean id="projectDescriptionDAO" class="com.psk.pms.dao.ProjectDescriptionDAOImpl">
+    </bean>
+
+    <bean id="itemDAO" class="com.psk.pms.dao.ItemDAOImpl">
+    </bean>
+
+    <bean id="itemService" class="com.psk.pms.service.ItemServiceImpl"></bean>
+
+    <bean id="subProjectService" class="com.psk.pms.service.SubProjectServiceImpl"></bean>
+
+    <bean id="projectDescriptionService" class="com.psk.pms.service.ProjectDescriptionServiceImpl"></bean>
+
+    <bean class="com.psk.pms.validator.EmployeeValidator"/>
+    <bean class="com.psk.pms.validator.ProjectDetailValidator"/>
+    <bean class="com.psk.pms.validator.SearchValidator"/>
+    <bean class="com.psk.pms.validator.ViewValidator"/>
+    <bean class="com.psk.pms.validator.SignUpValidator"/>
+    <bean class="com.psk.pms.validator.ForgotpasswordValidator"/>
+    <bean class="com.psk.pms.validator.ResetPasswordValidator"/>
+    <bean class="com.psk.pms.validator.EditDetailValidator"/>
+    <bean class="com.psk.pms.validator.SubProjectDetailValidator"/>
+    <bean class="com.psk.pms.validator.ProjDescDetailValidator"/>
+    <bean class="com.psk.pms.validator.EmdValidator"/>
+    <bean class="com.psk.pms.validator.FileUploadValidator"/>
+    <bean class="com.psk.pms.validator.ItemValidator"/>
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/pms"/>
+        <property name="username" value="root"/>
+        <property name="password" value="12345"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg>
+            <ref bean="dataSource"/>
+        </constructor-arg>
+        <property name="fetchSize" value="400"/>
+    </bean>
+
+
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="465"/>
+        <property name="username" value="pskconstructionsgroup@gmail.com"/>
+        <property name="password" value="Psk@2015"/>
+
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.ssl.enable">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="mailClient" class="com.psk.pms.utils.MailClient">
+        <property name="mailSender" ref="mailSender"/>
+    </bean>
 
     <bean id="bulkUploadDetailsValidator" class="com.psk.pms.validator.BulkUploadDetailsValidator"></bean>
- 
+
 </beans>
 

@@ -3,6 +3,7 @@ package com.psk.pms.dao;
 import com.psk.pms.model.ProjectDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -25,14 +26,12 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Autowired
     private ItemDAO itemDAO;
 
-    private DriverManagerDataSource dataSource;
+
+    @Qualifier("jdbcTemplate")
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
-
-    public void setDataSource(DriverManagerDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     public boolean saveProject(final ProjectDetail projectDetail) {
         String createSql = "INSERT INTO project (ProjName, AliasProjName,ProjectType,AgreementNum, CERNum, Amount, "
@@ -46,7 +45,6 @@ public class ProjectDAOImpl implements ProjectDAO {
                 "ExcessInPercentage = ?,LessInPercentage = ?,CompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?," +
                 "CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ?,AddSecurityDeposit=?,PerformanceGuarantee=? WHERE ProjId = ?";
 
-        jdbcTemplate = new JdbcTemplate(dataSource);
         if (!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
             jdbcTemplate.update(createSql, new Object[]{projectDetail.getProjectName(),
                     projectDetail.getAliasName(),
@@ -105,7 +103,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     public Map<String, String> getAliasProjectNames() {
         String sql = "select ProjId, AliasProjName from project";
-        jdbcTemplate = new JdbcTemplate(dataSource);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
         aliasProjects.put("0", "--Please Select--");
@@ -117,8 +114,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
 
     public List<ProjectDetail> getProjectDocumentList() {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-
         List<ProjectDetail> projDocList = new ArrayList<ProjectDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(projQuery);
 
@@ -130,7 +125,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     public ProjectDetail getProjectDocument(String projectId) {
         String sql = projQuery + " where ProjId =" + projectId;
-        jdbcTemplate = new JdbcTemplate(dataSource);
         ProjectDetail projDoc = null;
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -201,7 +195,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     public boolean isAliasProjectAlreadyExisting(String aliasName) {
         String sql = "SELECT COUNT(*) FROM project where AliasProjName = ?";
-        jdbcTemplate = new JdbcTemplate(dataSource);
         int total = jdbcTemplate.queryForObject(sql, Integer.class,
                 new Object[]{aliasName});
         if (total == 0) {
@@ -223,7 +216,6 @@ public class ProjectDAOImpl implements ProjectDAO {
         emdDAO.deleteEmddetailByProjectId(projectId);
         projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
         subProjectDAO.deleteSubProjectByProjectId(projectId);
-        jdbcTemplate = new JdbcTemplate(dataSource);
         int noOfRows = jdbcTemplate.update(DELETEPROJECTBYPROJECTID, new Object[]{projectId});
         LOGGER.info("method = deleteProject , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
@@ -231,7 +223,6 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Override
     public List<String> getProjectTypes() {
         LOGGER.info("method = getProjectTypes");
-        jdbcTemplate = new JdbcTemplate(dataSource);
         List<String> projectTypes = new ArrayList<String>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(FETCHPROJECTTYPES);
         for (Map<String, Object> row : rows) {

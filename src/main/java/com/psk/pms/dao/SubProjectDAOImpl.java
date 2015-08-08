@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -24,8 +25,8 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     private static final Logger LOGGER = Logger.getLogger(SubProjectDAOImpl.class);
 
-    private DriverManagerDataSource dataSource;
-
+    @Qualifier("jdbcTemplate")
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -39,14 +40,12 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     @Override
     public void deleteSubProjectByProjectId(Integer projectId) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYPROJECTID, new Object []{projectId});
-        LOGGER.info("method = deleteSubProjectByProjectId , Number of rows deleted : "+ noOfRows +" projectId :" + projectId );
+        int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYPROJECTID, new Object[]{projectId});
+        LOGGER.info("method = deleteSubProjectByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
 
     public boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId) {
         String sql = "SELECT COUNT(*) FROM subproject where AliasSubProjName = ? and ProjId = ?";
-        jdbcTemplate = new JdbcTemplate(dataSource);
         int total = jdbcTemplate.queryForObject(sql, Integer.class,
                 new Object[]{subAliasName, projectId});
         if (total == 0) {
@@ -62,9 +61,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
             + "AgreementPeriod, ProjId, SubAddSecurityDeposit,SubPerformanceGuarantee FROM subproject";
 
     public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-        String sql = subProjQuery + " where ProjId = "+projectId;
-        jdbcTemplate = new JdbcTemplate(dataSource);
-
+        String sql = subProjQuery + " where ProjId = " + projectId;
         List<SubProjectDetail> subProjDocList = new ArrayList<SubProjectDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -134,7 +131,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         return subProjDoc;
     }
 
-    public boolean saveSubProject(final SubProjectDetail subProjectDetail){
+    public boolean saveSubProject(final SubProjectDetail subProjectDetail) {
         String insertSql = "INSERT INTO subproject (ProjId, SubProjName,SubProjectType, AliasSubProjName, AgreementNum, CERNum, "
                 + "Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, TenderValue, ExcessInAmount, "
                 + "ExcessInPercentage,LessInPercentage,subCompletionDateForBonus, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod," +
@@ -143,12 +140,11 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
         String updateSql = "UPDATE subproject set SubProjectType =? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
                 "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
-                "ExcessInPercentage = ?,LessInPercentage = ?,subCompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"+
+                "ExcessInPercentage = ?,LessInPercentage = ?,subCompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?," +
                 "AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? ,SubPerformanceGuarantee = ? WHERE SubProjId = ?";
 
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        if(!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())){
-            jdbcTemplate.update(insertSql, new Object[] {
+        if (!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
+            jdbcTemplate.update(insertSql, new Object[]{
                     subProjectDetail.getProjId(),
                     subProjectDetail.getSubProjectName(),
                     subProjectDetail.getSubProjectType(),
@@ -175,8 +171,8 @@ public class SubProjectDAOImpl implements SubProjectDAO {
                     subProjectDetail.getSubAddSecurityDeposit(),
                     subProjectDetail.getSubPerformanceGuarantee()
             });
-        }else {
-            jdbcTemplate.update(updateSql, new Object[] {
+        } else {
+            jdbcTemplate.update(updateSql, new Object[]{
                     subProjectDetail.getSubProjectType(),
                     subProjectDetail.getSubAgreementNo(),
                     subProjectDetail.getSubCerNo(),
@@ -213,9 +209,8 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     public SubProjectDetail getSubProjectDocument(String subProjectId) {
         String sql = subProj + ", p.AliasProjName from subproject s, project as p "
-                + "WHERE p.ProjId = s.ProjId and s.SubProjId ="+subProjectId;
+                + "WHERE p.ProjId = s.ProjId and s.SubProjId =" + subProjectId;
 
-        jdbcTemplate = new JdbcTemplate(dataSource);
         SubProjectDetail subProjDoc = null;
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -227,7 +222,6 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     public Map<String, String> getSubAliasProjectNames(String projectId) {
         Map<String, String> aliasSubProjects = new LinkedHashMap<String, String>();
-        jdbcTemplate = new JdbcTemplate(dataSource);
         String sql;
         List<Map<String, Object>> rows;
         if ("" != projectId) {
@@ -249,16 +243,8 @@ public class SubProjectDAOImpl implements SubProjectDAO {
         itemDAO.deleteItemBySubProjectId(subProjectId);
         emdDAO.deleteEmddetailBySubProjectId(subProjectId);
         projectDescriptionDAO.deleteProjectDescriptionBySubProjectId(subProjectId);
-        jdbcTemplate = new JdbcTemplate(dataSource);
         int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYSUBPROJECTID, new Object[]{subProjectId});
         LOGGER.info("method = deleteSubProjectBySubProjectId , Number of rows deleted : " + noOfRows + " subProjectId :" + subProjectId);
     }
 
-    public DriverManagerDataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DriverManagerDataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 }
