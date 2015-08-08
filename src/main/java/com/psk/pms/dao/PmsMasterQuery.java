@@ -92,4 +92,9 @@ public class PmsMasterQuery {
 
     public static String FETCHPROJECTTYPES = "SELECT projectTypeName FROM projecttype";
 
+    public static String DEACTIVATEEXISTINGPRICES = "UPDATE pricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
+
+    public static String INSERTPRICEFORITEMS = "INSERT INTO pricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
 }

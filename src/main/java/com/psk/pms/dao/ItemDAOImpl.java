@@ -1,28 +1,21 @@
 package com.psk.pms.dao;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjectConfiguration;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjectConfiguration;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -82,7 +75,7 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     public boolean saveItem(Item item) {
-        jdbcTemplate.update(PmsMasterQuery.SAVEITEMS,
+        jdbcTemplate.update(SAVEITEMS,
                 new Object[]{item.getItemName(), item.getItemUnit(), item.getItemType()});
         return true;
     }
@@ -210,14 +203,14 @@ public class ItemDAOImpl implements ItemDAO {
 
     public void deleteItemByProjectId(Integer projectId) {
         LOGGER.info("method = deleteItemByProjectId()");
-        int noOfrowsDeleted = jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCITEMBYPROJECTID, new Object[]{projectId});
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYPROJECTID, new Object[]{projectId});
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
 
     public void deleteItemBySubProjectId(Integer subProjectId) {
         LOGGER.info("method = deleteItemBySubProjectId()");
-        int noOfrowsDeleted = jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCITEMBYSUBPROJECTID, new Object[]{subProjectId});
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYSUBPROJECTID, new Object[]{subProjectId});
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
@@ -225,14 +218,14 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public void deleteItemByProjectDescriptionId(String projectDescId) {
         LOGGER.info("method = deleteItemByProjectDescriptionId()");
-        int noOfrowsDeleted = jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCID, new Object[]{projectDescId});
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCID, new Object[]{projectDescId});
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
     @Override
     public void deleteItemByProjectDescItemId(Integer projectDescItemId) {
         LOGGER.info("method = deleteItemByProjectDescriptionItemId()");
-        int noOfrowsDeleted = jdbcTemplate.update(PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCITEMID, new Object[]{projectDescItemId});
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCITEMID, new Object[]{projectDescItemId});
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
@@ -250,7 +243,7 @@ public class ItemDAOImpl implements ItemDAO {
         String sql;
         List<Map<String, Object>> rows = null;
         if ("" != request.get("itemName")) {
-            sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '" + request.get("projectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+            sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId")+ "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
             rows = jdbcTemplate.queryForList(sql);
         }
         for (Map<String, Object> row : rows) {
@@ -267,7 +260,7 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<String> fetchItemTypes() {
         LOGGER.info("method = fetchItemTypes");
-        List<String> itemTypes = jdbcTemplate.queryForList(PmsMasterQuery.FETCHITEMTYPES, String.class);
+        List<String> itemTypes = jdbcTemplate.queryForList(FETCHITEMTYPES, String.class);
         LOGGER.info("No of rows fetched :" + itemTypes.size());
         return itemTypes;
     }
@@ -275,21 +268,15 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<String> fetchUniqueItemUnits() {
         LOGGER.info("method = fetchUniqueItemUnit");
-        List<String> uniqueItemUnits = jdbcTemplate.queryForList(PmsMasterQuery.FETCHUNIQUEITEMUNIT, String.class);
+        List<String> uniqueItemUnits = jdbcTemplate.queryForList(FETCHUNIQUEITEMUNIT, String.class);
         LOGGER.info("No of rows fetched :" + uniqueItemUnits.size());
         return uniqueItemUnits;
     }
 
     @Override
     public boolean configureItemPrice(final ProjectConfiguration projectItemConfiguration) {
-        String sql = "INSERT INTO pricedetail" +
-                "(projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-        String updateSql = "update pricedetail set active ='0' where projectId = " + projectItemConfiguration.getProjId();
-        jdbcTemplate.execute(updateSql);
-
-        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+        deactivateExistingPrices(projectItemConfiguration);
+        jdbcTemplate.batchUpdate(INSERTPRICEFORITEMS, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration.getItemDetail().get(i);
@@ -308,6 +295,10 @@ public class ItemDAOImpl implements ItemDAO {
             }
         });
         return true;
+    }
+
+    private void deactivateExistingPrices(ProjectConfiguration projectItemConfiguration) {
+        jdbcTemplate.update(DEACTIVATEEXISTINGPRICES,projectItemConfiguration.getProjId(),projectItemConfiguration.getSubProjId());
     }
 
     @Override
