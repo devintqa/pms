@@ -18,6 +18,37 @@ USE `pms`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `basedesc`
+--
+
+DROP TABLE IF EXISTS `basedesc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `basedesc` (
+  `BaseDescId` int(10) NOT NULL AUTO_INCREMENT,
+  `WorkType` varchar(30) NOT NULL,
+  `Metric` varchar(30) NOT NULL,
+  `Quantity` decimal(15,2) NOT NULL,
+  `QuantityCost` decimal(15,2) DEFAULT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `Description` text,
+  `BaseDescription` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`BaseDescId`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `basedesc`
+--
+
+LOCK TABLES `basedesc` WRITE;
+/*!40000 ALTER TABLE `basedesc` DISABLE KEYS */;
+INSERT INTO `basedesc` VALUES (21,'Main Work','sqft',1.00,0.00,'tkumar','2015-08-09 20:10:11','main hall for public meetings','main hall');
+/*!40000 ALTER TABLE `basedesc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `emddetail`
 --
 
@@ -112,6 +143,34 @@ INSERT INTO `employee` VALUES ('akumar','$2a$10$5ypDVRuwAlFVuIcWOrkM1OrYgLuxjsFJ
 UNLOCK TABLES;
 
 --
+-- Table structure for table `govestpricedetail`
+--
+
+DROP TABLE IF EXISTS `govestpricedetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `govestpricedetail` (
+  `itemName` varchar(100) NOT NULL,
+  `itemUnit` varchar(20) NOT NULL,
+  `itemType` varchar(45) NOT NULL,
+  `itemPrice` decimal(15,2) DEFAULT '0.00',
+  `priceFeed` datetime NOT NULL,
+  `entryId` int(11) NOT NULL AUTO_INCREMENT,
+  `active` int(1) DEFAULT '1',
+  PRIMARY KEY (`entryId`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `govestpricedetail`
+--
+
+LOCK TABLES `govestpricedetail` WRITE;
+/*!40000 ALTER TABLE `govestpricedetail` DISABLE KEYS */;
+/*!40000 ALTER TABLE `govestpricedetail` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `itemcodes`
 --
 
@@ -179,7 +238,7 @@ CREATE TABLE `pricedetail` (
   `entryId` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(1) DEFAULT '1',
   PRIMARY KEY (`entryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -188,7 +247,7 @@ CREATE TABLE `pricedetail` (
 
 LOCK TABLES `pricedetail` WRITE;
 /*!40000 ALTER TABLE `pricedetail` DISABLE KEYS */;
-INSERT INTO `pricedetail` VALUES ('CEMENT','Bag','MATERIAL',500.00,1,0,'2015-07-27 00:00:00',6,1),('RIVER SAND','Bag','MATERIAL',250.00,1,0,'2015-07-27 00:00:00',7,1);
+INSERT INTO `pricedetail` VALUES ('CEMENT','Bag','MATERIAL',500.00,1,0,'2015-07-27 00:00:00',6,1),('RIVER SAND','Bag','MATERIAL',250.00,1,0,'2015-07-27 00:00:00',7,1),('CEMENT','Bag','Material',600.00,2,0,'2015-08-02 00:00:00',8,1),('STEEL','Bag','Material',700.00,2,0,'2015-08-02 00:00:00',9,1);
 /*!40000 ALTER TABLE `pricedetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +270,7 @@ CREATE TABLE `projdescitem` (
   `ItemCost` varchar(45) DEFAULT NULL,
   `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`DescItemId`)
-) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +279,7 @@ CREATE TABLE `projdescitem` (
 
 LOCK TABLES `projdescitem` WRITE;
 /*!40000 ALTER TABLE `projdescitem` DISABLE KEYS */;
-INSERT INTO `projdescitem` VALUES (1,0,1,'SNO1','CEMENT','bag','200','500','100000',1),(1,0,1,'SNO1','RIVER SAND','cft','1000','100','100000',2),(1,0,1,'SNO1','SEWING SAND','cft','2000','200','400000',3),(1,0,2,'SER234','CEMENT','bag','122','301','36722',11),(1,0,4,'SER123','RIVER SAND','BAG','5','100.00','15',18),(1,0,4,'SER123','SEWER SAND','BAG','2','200.00','400',19),(1,0,4,'SER123','MASON','1','6','200.00','1200',20),(1,0,4,'SER123','CEMENT','BAG','5','450.00','2250',21),(1,0,6,'SER345','CEMENT','Bag','2','500.00','1000',46),(1,0,6,'SER345','RIVER SAND','Bag','8','250.00','2000',47),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',92),(1,0,5,'SER123','CEMENT','Bag','5','500.00','2500',93),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',94),(1,0,7,'SER123','CEMENT','Bag','10','500.00','5000',97),(1,0,7,'SER123','RIVER SAND','Bag','8','250.00','2000',98);
+INSERT INTO `projdescitem` VALUES (1,0,1,'SNO1','CEMENT','bag','200','500','100000',1),(1,0,1,'SNO1','RIVER SAND','cft','1000','100','100000',2),(1,0,1,'SNO1','SEWING SAND','cft','2000','200','400000',3),(1,0,2,'SER234','CEMENT','bag','122','301','36722',11),(1,0,4,'SER123','RIVER SAND','BAG','5','100.00','15',18),(1,0,4,'SER123','SEWER SAND','BAG','2','200.00','400',19),(1,0,4,'SER123','MASON','1','6','200.00','1200',20),(1,0,4,'SER123','CEMENT','BAG','5','450.00','2250',21),(1,0,6,'SER345','CEMENT','Bag','2','500.00','1000',46),(1,0,6,'SER345','RIVER SAND','Bag','8','250.00','2000',47),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',92),(1,0,5,'SER123','CEMENT','Bag','5','500.00','2500',93),(1,0,5,'SER123','RIVER SAND','Bag','20','250.00','5000',94),(1,0,7,'SER123','CEMENT','Bag','10','500.00','5000',97),(1,0,7,'SER123','RIVER SAND','Bag','8','250.00','2000',98),(2,0,20,'1','CEMENT','Bag','2','600.00','1200',99);
 /*!40000 ALTER TABLE `projdescitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -234,20 +293,19 @@ DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
-  `ProjectType` varchar(30) NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) DEFAULT NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
+  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
-  `CompletionDateForBonus` datetime DEFAULT NULL,
   `TenderDate` datetime NOT NULL,
   `AddSecurityDeposit` decimal(15,2) NOT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
@@ -257,6 +315,8 @@ CREATE TABLE `project` (
   `CompletedDate` datetime DEFAULT NULL,
   `AgreementPeriod` int(10) DEFAULT NULL,
   `PerformanceGuarantee` decimal(15,2) DEFAULT NULL,
+  `ProjectType` varchar(30) NOT NULL,
+  `CompletionDateForBonus` datetime DEFAULT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -268,7 +328,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Madras Medical College','PWD','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00','2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00),(2,'Better Homes','CPWD','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00','2015-07-03 00:00:00',100000.00,'tkumar','2015-07-21 19:48:49','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00);
+INSERT INTO `project` VALUES (1,'Madras Medical College','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,200000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'',NULL),(2,'Better Homes','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,200000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-21 19:48:49','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'',NULL);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,7 +354,7 @@ CREATE TABLE `projectdesc` (
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -303,18 +363,42 @@ CREATE TABLE `projectdesc` (
 
 LOCK TABLES `projectdesc` WRITE;
 /*!40000 ALTER TABLE `projectdesc` DISABLE KEYS */;
-INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',5.00,'cft','Earth Excavation','MMCEE',7000.00,35000.00,'tkumar','2015-07-29 20:25:54',7);
+INSERT INTO `projectdesc` VALUES (1,'SER123',NULL,'Main Work',5.00,'cft','Earth Excavation','MMCEE',7000.00,35000.00,'tkumar','2015-07-29 20:25:54',7),(2,'1',NULL,'Main Work',20.00,'cft','ec2','ec2',1200.00,24000.00,'tkumar','2015-08-02 09:39:58',20);
 /*!40000 ALTER TABLE `projectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `proposal_projectdesc`
+-- Table structure for table `projecttype`
 --
 
-DROP TABLE IF EXISTS `proposal_projectdesc`;
+DROP TABLE IF EXISTS `projecttype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `proposal_projectdesc` (
+CREATE TABLE `projecttype` (
+  `projectTypeId` int(10) NOT NULL AUTO_INCREMENT,
+  `projectTypeName` varchar(20) NOT NULL,
+  PRIMARY KEY (`projectTypeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `projecttype`
+--
+
+LOCK TABLES `projecttype` WRITE;
+/*!40000 ALTER TABLE `projecttype` DISABLE KEYS */;
+INSERT INTO `projecttype` VALUES (1,'PWD'),(2,'CPWD'),(3,'MRPL'),(4,'Private'),(5,'NPCC'),(6,'NBCC'),(7,'DAE'),(8,'NIT');
+/*!40000 ALTER TABLE `projecttype` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `quotedprojectdesc`
+--
+
+DROP TABLE IF EXISTS `quotedprojectdesc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quotedprojectdesc` (
   `ProjId` int(10) NOT NULL,
   `SerialNumber` varchar(10) NOT NULL,
   `SubProjId` int(10) DEFAULT NULL,
@@ -333,13 +417,13 @@ CREATE TABLE `proposal_projectdesc` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `proposal_projectdesc`
+-- Dumping data for table `quotedprojectdesc`
 --
 
-LOCK TABLES `proposal_projectdesc` WRITE;
-/*!40000 ALTER TABLE `proposal_projectdesc` DISABLE KEYS */;
-INSERT INTO `proposal_projectdesc` VALUES (2,'2.0',NULL,'Electrical',20.00,'CFT','electrical connection','ec2',100.00,2000.00,'tkumar','2015-08-01 00:00:00',8);
-/*!40000 ALTER TABLE `proposal_projectdesc` ENABLE KEYS */;
+LOCK TABLES `quotedprojectdesc` WRITE;
+/*!40000 ALTER TABLE `quotedprojectdesc` DISABLE KEYS */;
+INSERT INTO `quotedprojectdesc` VALUES (2,'2.0',NULL,'Electrical',20.00,'CFT','electrical connection','ec2',100.00,2000.00,'tkumar','2015-08-01 00:00:00',8);
+/*!40000 ALTER TABLE `quotedprojectdesc` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -352,21 +436,20 @@ DROP TABLE IF EXISTS `subproject`;
 CREATE TABLE `subproject` (
   `SubProjId` int(10) NOT NULL AUTO_INCREMENT,
   `SubProjName` text NOT NULL,
-  `SubProjectType` varchar(30) NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) DEFAULT NULL,
+  `CERNum` varchar(30) NOT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
+  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
   `SubAddSecurityDeposit` decimal(15,2) NOT NULL,
-  `SubCompletionDateForBonus` datetime DEFAULT NULL,
   `TenderDate` datetime NOT NULL,
   `AgreementDate` datetime DEFAULT NULL,
   `CommencementDate` datetime DEFAULT NULL,
@@ -376,6 +459,8 @@ CREATE TABLE `subproject` (
   `LastUpdatedAt` datetime NOT NULL,
   `SubPerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   `ProjId` int(10) NOT NULL,
+  `SubProjectType` varchar(45) NOT NULL,
+  `SubCompletionDateForBonus` datetime DEFAULT NULL,
   PRIMARY KEY (`SubProjId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -461,43 +546,6 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
---
--- Table structure for table `projecttype`
---
-
-DROP TABLE IF EXISTS `projecttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projecttype` (
-  `projectTypeId` int(10) NOT NULL AUTO_INCREMENT,
-  `projectTypeName` varchar(20) NOT NULL,
-  PRIMARY KEY (`projectTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `projecttype`
---
-
-LOCK TABLES `projecttype` WRITE;
-/*!40000 ALTER TABLE `projecttype` DISABLE KEYS */;
-INSERT INTO `projecttype` VALUES (1,'PWD'),(2,'CPWD'),(3,'MRPL'),(4,'Private'),(5,'NPCC'),(6,'NBCC'),(7,'DAE'),(8,'NIT');
-/*!40000 ALTER TABLE `projecttype` ENABLE KEYS */;
-UNLOCK TABLES;
-
-CREATE TABLE `basedesc` (
-  `BaseDescId` int(10) NOT NULL AUTO_INCREMENT,
-  `WorkType` varchar(30) NOT NULL,
-  `Metric` varchar(30) NOT NULL,
-  `Quantity` decimal(15,2) NOT NULL,
-  `QuantityCost` decimal(15,2) DEFAULT NULL,
-  `LastUpdatedBy` varchar(30) NOT NULL,
-  `LastUpdatedAt` datetime NOT NULL,
-  `Description` text,
-  `BaseDescription` varchar(200) DEFAULT NULL,
-  PRIMARY KEY (`BaseDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
-
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
@@ -506,4 +554,4 @@ CREATE TABLE `basedesc` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-01 23:46:58
+-- Dump completed on 2015-08-09 20:11:52
