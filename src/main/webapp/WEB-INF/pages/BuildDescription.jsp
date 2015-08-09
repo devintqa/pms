@@ -54,6 +54,8 @@ $(document).ready(function () {
 
 	  if($('#isUpdate').val()=='Y') {
       	  	$("#serialNumber").attr("readonly", "readonly");
+      	  	$("#totalCost").attr("readonly", "readonly");
+      	  	$("#pricePerQuantity").attr("readonly", "readonly");
       }
 
 });
@@ -149,13 +151,13 @@ $(document).ready(function () {
 							<tr>
 								<td>Price per Quantity<span id="colon">:</span>
 								</td>
-								<td><form:input path="pricePerQuantity" cssClass="inputText" /></td>
+								<td><form:input id="pricePerQuantity" path="pricePerQuantity" cssClass="inputText" /></td>
 								<td><form:errors path="pricePerQuantity" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Total Cost<span id="colon">:</span>
 								</td>
-								<td><form:input path="totalCost" cssClass="inputText" /></td>
+								<td><form:input id="totalCost" path="totalCost" cssClass="inputText" /></td>
 								<td><form:errors path="totalCost" cssClass="error" /></td>
 							</tr>
 							<tr></tr>

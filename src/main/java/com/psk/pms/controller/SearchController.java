@@ -30,7 +30,6 @@ import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.EmdService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.SearchService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.SearchValidator;
 
@@ -41,9 +40,6 @@ public class SearchController extends BaseController {
 	
 	@Autowired
 	private SearchValidator searchValidator;
-	
-	@Autowired
-	SearchService searchService;
 
 	@Autowired
 	EmdService emdService;
