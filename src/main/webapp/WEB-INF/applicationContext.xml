@@ -29,9 +29,6 @@
         <property name="projectDAO" ref="projectDAO"/>
     </bean>
 
-    <bean id="searchService" class="com.psk.pms.service.SearchServiceImpl">
-    </bean>
-
     <bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
         <property name="emdDAO" ref="emdDAO"/>
     </bean>
