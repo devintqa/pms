@@ -485,6 +485,19 @@ INSERT INTO `projecttype` VALUES (1,'PWD'),(2,'CPWD'),(3,'MRPL'),(4,'Private'),(
 /*!40000 ALTER TABLE `projecttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
+CREATE TABLE `basedesc` (
+  `BaseDescId` int(10) NOT NULL AUTO_INCREMENT,
+  `WorkType` varchar(30) NOT NULL,
+  `Metric` varchar(30) NOT NULL,
+  `Quantity` decimal(15,2) NOT NULL,
+  `QuantityCost` decimal(15,2) DEFAULT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  PRIMARY KEY (`BaseDescId`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
+
+
+
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;

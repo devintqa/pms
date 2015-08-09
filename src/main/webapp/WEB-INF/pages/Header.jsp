@@ -41,6 +41,8 @@
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
+							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">PWD Description</a></li>
+						<li><a id="uploadExcel"
 							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Upload</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>

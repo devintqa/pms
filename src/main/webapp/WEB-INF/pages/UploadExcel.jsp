@@ -128,8 +128,12 @@
 
 				<table id="fileTable">
 					<tr>
-						<td>Alias Project Name <span id="colon">:</span>
-						</td>
+						<td>Is Government Estimation? <span id="colon">:</span></td>
+						<td><form:checkbox path="governmentEst" id="governmentEst" /></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td>Alias Project Name <span id="colon">:</span></td>
 						<td><form:select path="aliasProjectName" cssClass="inputText"
 								id="projId" items="${aliasProjectList}">
 							</form:select></td>
@@ -141,11 +145,6 @@
 						<td><form:errors path="subProjectUpload" cssClass="error" /></td>
 					</tr>
 					
-					<tr>
-						<td>Is Government Estimation? <span id="colon">:</span></td>
-						<td><form:checkbox path="governmentEst" id="governmentEst" /></td>
-						<td></td>
-					</tr>
 					<tr id="showSubProject">
 						<td>Sub Project Name <span id="colon">:</span>
 						</td>
