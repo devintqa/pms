@@ -12,18 +12,6 @@ import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
-    @Autowired
-    private SubProjectDAO subProjectDAO;
-
-    @Autowired
-    private ProjectDescriptionDAO projectDescriptionDAO;
-
-    @Autowired
-    private EmdDAO emdDAO;
-
-    @Autowired
-    private ItemDAO itemDAO;
-
 
     @Qualifier("jdbcTemplate")
     @Autowired
@@ -210,10 +198,6 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public void deleteProject(Integer projectId) {
-        itemDAO.deleteItemByProjectId(projectId);
-        emdDAO.deleteEmddetailByProjectId(projectId);
-        projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
-        subProjectDAO.deleteSubProjectByProjectId(projectId);
         int noOfRows = jdbcTemplate.update(DELETEPROJECTBYPROJECTID, new Object[]{projectId});
         LOGGER.info("method = deleteProject , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
