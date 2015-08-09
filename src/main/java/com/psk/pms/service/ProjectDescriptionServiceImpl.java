@@ -165,4 +165,10 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
         LOGGER.info("method = deleteBaseProjectDescription()");
         projectDescriptionDAO.deleteBaseProjectDescription(projectDescId);
     }
+
+    @Override
+    public boolean isGlobalDescriptionAlreadyExisting(String baseDescription){
+        LOGGER.info("method = isGlobalDescriptionAlreadyExisting()");
+        return projectDescriptionDAO.isGlobalDescriptionAlreadyExisting(baseDescription);
+    }
 }

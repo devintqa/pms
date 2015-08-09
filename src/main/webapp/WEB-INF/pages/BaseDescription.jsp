@@ -7,7 +7,9 @@
 <title>PMS :: Create PWD Description</title>
 <%@include file="Script.jsp" %>
 <script type="text/javascript">
-$("#quantity").attr("readonly", "readonly");
+$(document).ready(function () {
+    $("#quantity").attr("readonly", "readonly");
+  });
 </script>
 </head>
 <body>

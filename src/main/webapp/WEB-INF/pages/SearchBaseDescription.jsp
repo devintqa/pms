@@ -10,9 +10,9 @@
 <%@include file="Script.jsp"%>
 <%@include file="Utility.jsp"%>
 <script>
-	function deleteProject(projectAlias, projectId) {
+	function deleteProject(aliasDescription,baseDescriptionId ) {
 		$("#dialog-confirm").html(
-				projectAlias
+				aliasDescription
 						+ " : Deletion Operation!, Please confirm to proceed");
 		$("#dialog-confirm").dialog({
 			resizable : false,
@@ -24,14 +24,14 @@
 				"Yes" : function() {
 					$.ajax({
 						type : 'POST',
-						url : 'deleteProject.do',
-						data : "projectId=" + projectId,
+						url : 'deleteGlobalProjectDescription.do',
+						data : "baseDescriptionId=" + baseDescriptionId,
 						success : function(response) {
 							location.reload();
 							console.log("Successfully deleted row ");
 						},
 						error : function(err) {
-							console.log("Error deleting pwd description ");
+							console.log("Error deleting Base description ");
 						}
 					});
 					$(this).dialog('close');
@@ -60,7 +60,7 @@
 			<c:if test="${not empty baseDescriptionList}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
 					Documents</h1>
-				<table id="pwdDescriptionList" class="gridView">
+				<table id="baseDescriptionList" class="gridView">
 					<thead>
 						<tr>
 							<th>BaseDescription</th>
@@ -72,18 +72,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="pwdDoc" items="${baseDescriptionList}">
+						<c:forEach var="globalDescription" items="${baseDescriptionList}">
 							<tr>
-								<td>${pwdDoc.aliasDescription}</td>
-								<td>${pwdDoc.workType}</td>
-								<td>${pwdDoc.metric}</td>
-								<td>${pwdDoc.quantity}</td>
-								<td>${pwdDoc.totalCost}</td>
+								<td>${globalDescription.aliasDescription}</td>
+								<td>${globalDescription.workType}</td>
+								<td>${globalDescription.metric}</td>
+								<td>${globalDescription.quantity}</td>
+								<td>${globalDescription.totalCost}</td>
 								<td><a
-									href="/pms/emp/myview/updatePwdDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${pwdDoc.projId}"
+									href="/pms/emp/myview/buildBaseDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.projDescId}"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
-									href="javascript:deleteProject('${pwdDoc.serialNumber}');"
+									href="javascript:deleteProject('${globalDescription.aliasDescription}','${globalDescription.projDescId}');"
 									style="color: red"> Delete</a></td>
 							</tr>
 						</c:forEach>

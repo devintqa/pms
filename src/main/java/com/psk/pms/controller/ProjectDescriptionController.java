@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.validator.GlobalDescriptionValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,9 @@ public class ProjectDescriptionController extends BaseController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private GlobalDescriptionValidator globalDescriptionValidator;
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
 
@@ -181,9 +185,15 @@ public class ProjectDescriptionController extends BaseController {
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
     public String buildBaseProjDesc(@PathVariable String employeeId,
-                                    @RequestParam(value = "team", required = true) String team,
+                                    @RequestParam(value = "team", required = true) String team,@RequestParam(value = "action", required = false) String action,
+                                    @RequestParam(value = "aliasDescription", required = false) String aliasDescription,
                                     Model model) {
         ProjDescDetail projDescDetail = new ProjDescDetail();
+        if(null!=action && "edit"==action){
+            model.addAttribute("baseDescForm", projDescDetail);
+            return "BaseDescription";
+        }
+
         projDescDetail.setEmployeeId(employeeId);
         projDescDetail.setQuantity("1");
         model.addAttribute("baseDescForm", projDescDetail);
@@ -193,9 +203,21 @@ public class ProjectDescriptionController extends BaseController {
     @RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
     public String saveBaseProjDesc(@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
                                    BindingResult result, Model model, SessionStatus status) {
+        globalDescriptionValidator.validate(projDescDetail,result);
+        LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
+        if (result.hasErrors()) {
+            return "BaseDescription";
+        }
         model.addAttribute("baseDescForm", projDescDetail);
-        model.addAttribute("projDescCreationMessage", "PWD Project Description creation successfully");
+        model.addAttribute("projDescCreationMessage", "Global Project Description creation successfully");
         projectDescriptionService.saveBaseProjectDescription(projDescDetail);
         return "BaseDescription";
+    }
+
+    @RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
+    public void deleteGlobalProjectDescriptionDetail(HttpServletRequest request, HttpServletResponse response) {
+        String projectDescriptionId = request.getParameter("baseDescriptionId");
+        LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+        projectDescriptionService.deleteBaseProjectDescription(projectDescriptionId);
     }
 }

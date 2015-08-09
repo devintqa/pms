@@ -365,7 +365,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     @Override
     public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
         int noOfrows = 0;
-
         noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOPROJECT, Integer.class, new Object[]{(Integer) projectId});
         LOGGER.info("method = isProjectDescriptionDetailsExistsForProject , isDataPresent :" + (noOfrows != 0));
         if (noOfrows != 0) {
@@ -429,4 +428,14 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         LOGGER.info("No of base descriptions deleted =" + noOfRows);
     }
 
+    @Override
+    public boolean isGlobalDescriptionAlreadyExisting(String baseDescription){
+        int noOfrows = 0;
+        noOfrows = jdbcTemplate.queryForObject(ISBASEDESCEXISTS, Integer.class, new Object[]{baseDescription});
+        LOGGER.info("method = isGlobalDescriptionAlreadyExisting , isDataPresent :" + (noOfrows != 0));
+        if (noOfrows != 0) {
+            return true;
+        }
+        return false;
+    }
 }

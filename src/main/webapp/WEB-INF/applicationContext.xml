@@ -64,6 +64,7 @@
     <bean class="com.psk.pms.validator.EmdValidator"/>
     <bean class="com.psk.pms.validator.FileUploadValidator"/>
     <bean class="com.psk.pms.validator.ItemValidator"/>
+    <bean class="com.psk.pms.validator.GlobalDescriptionValidator"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>

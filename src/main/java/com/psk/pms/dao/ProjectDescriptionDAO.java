@@ -45,4 +45,6 @@ public interface ProjectDescriptionDAO {
     public List<ProjDescDetail> fetchBaseProjectDescriptions();
 
     void deleteBaseProjectDescription(String serialNumber);
+
+    boolean isGlobalDescriptionAlreadyExisting(String baseDescription);
 }

@@ -126,7 +126,5 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator{
 		}
 		
 	}
-	
-	
 }
 
