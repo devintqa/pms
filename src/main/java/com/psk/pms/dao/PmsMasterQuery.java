@@ -97,9 +97,4 @@ public class PmsMasterQuery {
     public static String INSERTPRICEFORITEMS = "INSERT INTO pricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    public static String INSERTBASEDESCRIPTION ="INSERT INTO basedesc(WorkType, Metric, Quantity, QuantityCost , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?)";
-
-    public static String FETCHBASEDESCRIPTIONS = "SELECT * FROM basedesc";
-
-    public static String DELETEBASEDESCRIPTION = "DELETE FROM basedesc WHERE basedesc = ?";
 }

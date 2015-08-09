@@ -252,11 +252,4 @@ public class SearchController extends BaseController {
 		return result;
 	}
 
-    @RequestMapping(value = "/emp/myview/searchBaseDescription/{employeeId}", method = RequestMethod.GET)
-    public String searchBaseDescription(@PathVariable String employeeId,Model model) {
-        LOGGER.info("Search Controller : SearchPwdDescription()");
-        List<ProjDescDetail> projDescDetails = projectDescriptionService.getBaseProjectDescriptions();
-        model.addAttribute("baseDescriptionList", projDescDetails);
-        return "SearchBaseDescription";
-    }
 }
