@@ -493,10 +493,10 @@ CREATE TABLE `basedesc` (
   `QuantityCost` decimal(15,2) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
+  `Description` text,
+  `BaseDescription` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`BaseDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
-
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
