@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -383,6 +384,49 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public  void saveBaseDescription(ProjDescDetail projDescDetail){
+        LOGGER.info("method = saveBaseDescription , baseDescription :" +projDescDetail.getAliasDescription());
+        jdbcTemplate.update(INSERTBASEDESCRIPTION, new Object[]{projDescDetail.getWorkType(),projDescDetail.getMetric(),
+                projDescDetail.getQuantity(),projDescDetail.getTotalCost(),
+                projDescDetail.getLastUpdatedBy(),projDescDetail.getLastUpdatedAt(),
+                projDescDetail.getDescription(),projDescDetail.getAliasDescription()});
+    }
+
+    @Override
+    public List<ProjDescDetail> fetchBaseProjectDescriptions() {
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS);
+        List<ProjDescDetail> projDescDetails = new ArrayList<>();
+        for (Map<String, Object> row : rows) {
+            projDescDetails.add(buildBaseProjectDescDetail(row));
+        }
+        return projDescDetails;
+    }
+
+    private ProjDescDetail buildBaseProjectDescDetail(Map<String, Object> row) {
+        ProjDescDetail projDescDetail = new ProjDescDetail();
+        projDescDetail.setProjDescId((Integer) row.get("BaseDescId"));
+        projDescDetail.setWorkType((String) row.get("WorkType"));
+        BigDecimal quantity = (BigDecimal) row.get("Quantity");
+        projDescDetail.setMetric((String) row.get("Metric"));
+        projDescDetail.setQuantity(quantity.toString());
+        projDescDetail.setDescription((String) row.get("Description"));
+        projDescDetail.setAliasDescription((String) row.get("BaseDescription"));
+        BigDecimal totalCost = (BigDecimal) row.get("QuantityCost");
+        if (null == totalCost) {
+            projDescDetail.setTotalCost("");
+        } else {
+            projDescDetail.setTotalCost(totalCost.toString());
+        }
+        return projDescDetail;
+    }
+
+    @Override
+    public void deleteBaseProjectDescription(String projectDescId) {
+        int noOfRows = jdbcTemplate.update(DELETEBASEDESCRIPTION, new Object[]{Integer.parseInt(projectDescId)});
+        LOGGER.info("No of base descriptions deleted =" + noOfRows);
     }
 
 }

@@ -39,4 +39,10 @@ public interface ProjectDescriptionService {
     void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
 
     void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+
+    void saveBaseProjectDescription(ProjDescDetail projDescDetail);
+
+    List<ProjDescDetail> getBaseProjectDescriptions();
+
+    void deleteBaseProjectDescription(String serialNumber);
 }

@@ -33,17 +33,14 @@
 							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a></li>
 						<li><a id="createSubProject"
 							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
-						<li><a id="createDescription"
-							href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project
-								Description</a></li>
+						<li><a id="pwdProjectDescription"
+							href="/pms/emp/myview/buildBaseProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">PWD Description</a></li>
 						<li><a id="createEmd"
 							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
-							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">PWD Description</a></li>
-						<li><a id="uploadExcel"
-							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Upload</a></li>
+							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Project Description</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>
@@ -59,6 +56,9 @@
 						<li><a id="searchEmd"
 							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
 								EMD </a></li>
+                        <li><a id="searchPwdProjectDescription"
+							href="/pms/emp/myview/searchPwdDescription/${employeeObj.employeeId}">
+								PWD Description </a></li>
 					</ul></li>
 				<li><a href="#">View</a>
 					<ul>

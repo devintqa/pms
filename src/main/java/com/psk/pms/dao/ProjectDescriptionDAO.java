@@ -40,4 +40,9 @@ public interface ProjectDescriptionDAO {
 
     boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
 
+    void saveBaseDescription(ProjDescDetail projDescDetail);
+
+    public List<ProjDescDetail> fetchBaseProjectDescriptions();
+
+    void deleteBaseProjectDescription(String serialNumber);
 }

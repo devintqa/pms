@@ -145,4 +145,24 @@ public class ProjectDescriptionServiceImpl implements  ProjectDescriptionService
         LOGGER.info("Deleting all the project description items for Sub project Id: " +subProjectId);
         projectDescriptionDAO.deleteProjectDescriptionBySubProjectId(subProjectId);
     }
+
+    @Override
+    public void saveBaseProjectDescription(ProjDescDetail projDescDetail) {
+        LOGGER.info("Saving base description : baseDescription " + projDescDetail.getAliasProjectName());
+        projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
+        projDescDetail.setLastUpdatedAt(getCurrentDateTime());
+        projectDescriptionDAO.saveBaseDescription(projDescDetail);
+    }
+
+    @Override
+    public List<ProjDescDetail> getBaseProjectDescriptions(){
+        LOGGER.info("method = getBaseProjectDescriptions()");
+        return  projectDescriptionDAO.fetchBaseProjectDescriptions();
+    }
+
+    @Override
+    public void deleteBaseProjectDescription(String projectDescId){
+        LOGGER.info("method = deleteBaseProjectDescription()");
+        projectDescriptionDAO.deleteBaseProjectDescription(projectDescId);
+    }
 }
