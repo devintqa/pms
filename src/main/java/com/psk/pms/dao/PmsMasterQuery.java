@@ -48,7 +48,7 @@ public class PmsMasterQuery {
             + "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
     
     public static String compareDataQuery = "SELECT distinct p.SerialNumber, p.Quantity, p.Metric, p.AliasDescription, p.PricePerQuantity, p.TotalCost, pp.PricePerQuantity as DeptPricePerQuantity, pp.TotalCost as DeptTotalCost " +
-    		"FROM projectdesc p INNER JOIN proposal_projectdesc pp on p.ProjId = pp.ProjId " + 
+    		"FROM projectdesc p INNER JOIN quotedprojectdesc pp on p.ProjId = pp.ProjId " + 
     		"and p.AliasDescription = pp.AliasDescription";
 
     public static String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
@@ -80,7 +80,7 @@ public class PmsMasterQuery {
             + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) " +
             "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    public static String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO proposal_projectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
+    public static String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO quotedprojectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
             + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) " +
             "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
     

@@ -41,7 +41,7 @@
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
-							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">PWD Description</a></li>
+							href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">PWD Description</a></li>
 						<li><a id="uploadExcel"
 							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Upload</a></li>
 					</ul></li>
@@ -59,7 +59,8 @@
 						<li><a id="searchEmd"
 							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
 								EMD </a></li>
-					</ul></li>
+					</ul>
+				</li>
 				<li><a href="#">View</a>
 					<ul>
 						<li><a id="viewDetails"
@@ -71,7 +72,8 @@
 							href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">Upload</a></li>
 						<li><a id="downloadFile"
 							href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">Download</a></li>
-					</ul></li>
+					</ul>
+				</li>
 				<li><a href="#">User</a>
 					<ul>
 						<li><a id="profile"
