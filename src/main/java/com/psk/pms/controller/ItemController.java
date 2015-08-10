@@ -115,7 +115,7 @@ public class ItemController {
 		projectConfiguration.setProjId(projectId);
         projectConfiguration.setSubProjId(subProjectId);
 		
-		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
+		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration,false);
 		model.addAttribute("projectItemForm", projectConfiguration);
         model.addAttribute("itemTypes", fetchItemTypes());
 		Gson gson = new Gson();

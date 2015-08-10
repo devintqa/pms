@@ -1,5 +1,7 @@
 package com.psk.pms.controller;
 
+import static java.lang.Integer.parseInt;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +21,9 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectConfiguration.ItemDetail;
+import com.psk.pms.model.ProjectItemDescription;
 import com.psk.pms.model.ViewDetail;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
@@ -145,6 +148,24 @@ public class ViewController extends BaseController {
 			}
 		}
 		return result;
+	}
+
+	@SuppressWarnings("unused")
+	private int getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
+		int totalQuantity = 0;
+		for (int i = 0; i < projectItemDescriptions.size(); i++) {
+			totalQuantity = totalQuantity
+					+ parseInt(projectItemDescriptions.get(i).getItemQuantity());
+		}
+		return totalQuantity;
+	}
+
+	@SuppressWarnings("unused")
+	private void setModelAttribute(Model model) {
+		List<String> itemTypes = itemService.getItemTypes();
+		List<String> itemNames = itemService.getItemNames();
+		model.addAttribute("itemTypes", itemTypes);
+		model.addAttribute("itemNames", itemNames);
 	}
 
 }

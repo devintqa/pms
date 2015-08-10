@@ -4,6 +4,7 @@ import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectItemDescription;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,17 @@ public interface ItemService {
 	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
 
 	ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+
+	List<String> getItemTypes();
+
+	List<String> getItemNames();
+
+	ProjectConfiguration getProjectItemConfiguration(
 			ProjectConfiguration projectConfiguration);
 
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+
+	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
+			String itemName);
 }

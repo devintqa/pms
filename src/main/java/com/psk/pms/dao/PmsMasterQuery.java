@@ -101,4 +101,6 @@ public class PmsMasterQuery {
 	public static String FETCHBASEDESCRIPTIONS = "SELECT * FROM basedesc";
 
 	public static String DELETEBASEDESCRIPTION = "DELETE FROM basedesc WHERE basedesc = ?";
+
+    public static String ISBASEDESCEXISTS = "SELECT count(*) FROM basedesc WHERE BaseDescription = ?";
 }

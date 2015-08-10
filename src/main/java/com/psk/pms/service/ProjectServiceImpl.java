@@ -1,9 +1,14 @@
 package com.psk.pms.service;
 
+import com.psk.pms.dao.EmdDAO;
+import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.dao.ProjectDescriptionDAO;
+import com.psk.pms.dao.SubProjectDAO;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.utils.DateFormatter;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +20,18 @@ import java.util.Map;
 public class ProjectServiceImpl implements ProjectService {
 
 	private ProjectDAO projectDAO;
+	
+    @Autowired
+    private SubProjectDAO subProjectDAO;
+
+    @Autowired
+    private ProjectDescriptionDAO projectDescriptionDAO;
+
+    @Autowired
+    private EmdDAO emdDAO;
+
+    @Autowired
+    private ItemDAO itemDAO;
 
 	private static final Logger LOGGER = Logger
 			.getLogger(ProjectServiceImpl.class);
@@ -117,6 +134,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void deleteProject(Integer projectId) {
+        itemDAO.deleteItemByProjectId(projectId);
+        emdDAO.deleteEmddetailByProjectId(projectId);
+        projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
+        subProjectDAO.deleteSubProjectByProjectId(projectId);
 		projectDAO.deleteProject(projectId);
 	}
 

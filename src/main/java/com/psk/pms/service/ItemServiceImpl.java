@@ -6,6 +6,7 @@ import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
 
+import com.psk.pms.model.ProjectItemDescription;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -129,14 +130,38 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration) {
-		return itemDAO.getProjectItemConfiguration(projectConfiguration);
+			ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+		return itemDAO.getProjectItemConfiguration(projectConfiguration,
+				isEditSubProject);
+	}
+
+	@Override
+	public List<String> getItemTypes() {
+		return itemDAO.getItemTypes();
 	}
 
 	@Override
 	public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
 		List<ItemDetail> itemsDetail = itemDAO.getBaseItemNames(request);
 		return itemsDetail;
+	}
+
+	@Override
+	public List<String> getItemNames() {
+		return itemDAO.getItemNames();
+	}
+
+	@Override
+	public List<ProjectItemDescription> getProjectItemDescription(
+			Integer projId, String itemName) {
+		return itemDAO.getProjectItemDescription(projId, itemName);
+	}
+
+	@Override
+	public ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

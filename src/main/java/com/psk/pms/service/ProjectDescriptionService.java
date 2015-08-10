@@ -46,5 +46,7 @@ public interface ProjectDescriptionService {
 
 	List<ProjDescDetail> getBaseProjectDescriptions();
 
-	void deleteBaseProjectDescription(String serialNumber);
+    void deleteBaseProjectDescription(String projectDescId);
+
+    boolean isGlobalDescriptionAlreadyExisting(String  projectDescDetail);
 }

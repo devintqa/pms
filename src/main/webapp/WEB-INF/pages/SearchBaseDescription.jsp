@@ -10,15 +10,16 @@
 <%@include file="Script.jsp"%>
 <%@include file="Utility.jsp"%>
 <script>
+<<<<<<< HEAD
 
 function openBaseDescLoader(baseDescId, employeeId){
 	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }
 
 
-	function deleteProject(projectAlias, projectId) {
+	function deleteBaseDescription((aliasDescription,baseDescriptionId ) {
 		$("#dialog-confirm").html(
-				projectAlias
+				aliasDescription
 						+ " : Deletion Operation!, Please confirm to proceed");
 		$("#dialog-confirm").dialog({
 			resizable : false,
@@ -30,8 +31,8 @@ function openBaseDescLoader(baseDescId, employeeId){
 				"Yes" : function() {
 					$.ajax({
 						type : 'POST',
-						url : 'deleteProject.do',
-						data : "projectId=" + projectId,
+						url : 'deleteGlobalProjectDescription.do',
+						data : "baseDescriptionId=" + baseDescriptionId,
 						success : function(response) {
 							location.reload();
 							console.log("Successfully deleted row ");
@@ -64,7 +65,12 @@ function openBaseDescLoader(baseDescId, employeeId){
 		</div>
 		<div class="ui-widget">
 			<c:if test="${not empty baseDescriptionList}">
+<<<<<<< HEAD
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">Base Description Documents</h1>
+=======
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
+					Documents</h1>
+>>>>>>> 95ed81bfc91e0c0e38a06dd11389da0057c60d81
 				<table id="baseDescriptionList" class="gridView">
 					<thead>
 						<tr>
@@ -77,21 +83,20 @@ function openBaseDescLoader(baseDescId, employeeId){
 						</tr>
 					</thead>
 					<tbody>
-						<c:forEach var="baseDesc" items="${baseDescriptionList}">
+						<c:forEach var="globalDescription" items="${baseDescriptionList}">
 							<tr>
-								<td>
-								<a	href="javascript:openBaseDescLoader('${baseDesc.projDescId}','${employeeObj.employeeId}')"
+								<td><a	href="javascript:openBaseDescLoader('${baseDesc.projDescId}','${employeeObj.employeeId}')"
 										class="userAction">${baseDesc.aliasDescription}</a>
 										</td>
-								<td>${baseDesc.workType}</td>
-								<td>${baseDesc.metric}</td>
-								<td>${baseDesc.quantity}</td>
-								<td>${baseDesc.totalCost}</td>
+								<td>${globalDescription.workType}</td>
+								<td>${globalDescription.metric}</td>
+								<td>${globalDescription.quantity}</td>
+								<td>${globalDescription.totalCost}</td>
 								<td><a
-									href="/pms/emp/myview/updatePwdDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${baseDesc.projId}"
+									href="/pms/emp/myview/buildBaseDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.projDescId}"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
-									href="javascript:deleteProject('${baseDesc.serialNumber}');"
+									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.projDescId}');"
 									style="color: red"> Delete</a></td>
 							</tr>
 						</c:forEach>

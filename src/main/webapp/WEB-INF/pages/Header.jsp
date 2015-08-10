@@ -33,14 +33,14 @@
 							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a></li>
 						<li><a id="createSubProject"
 							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
+						<li><a id="BaseProjectDescription"
+							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base Description</a></li>
 						<li><a id="createEmd"
 							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
-							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base Description</a></li>
-						<li><a id="uploadExcel"
-							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Project Description</a></li>
+							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Description</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>

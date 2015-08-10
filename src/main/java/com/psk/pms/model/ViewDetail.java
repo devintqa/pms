@@ -1,5 +1,6 @@
 package com.psk.pms.model;
 
+
 public class ViewDetail {
 
 	private String aliasProjectName;
@@ -9,6 +10,11 @@ public class ViewDetail {
 	private String searchUnder;
 	private boolean searchAggregateItemDetails;
 	private boolean searchComparisonData;
+
+	private Integer subProjId;
+	private boolean projectItemDescription;
+	private String itemType;
+	private String itemName;
 
 	public boolean isSearchComparisonData() {
 		return searchComparisonData;
@@ -65,4 +71,37 @@ public class ViewDetail {
 	public void setSearchUnder(String searchUnder) {
 		this.searchUnder = searchUnder;
 	}
+
+	public Integer getSubProjId() {
+		return subProjId;
+	}
+
+	public void setSubProjId(Integer subProjId) {
+		this.subProjId = subProjId;
+	}
+
+	public boolean isProjectItemDescription() {
+		return projectItemDescription;
+	}
+
+	public void setProjectItemDescription(boolean projectItemDescription) {
+		this.projectItemDescription = projectItemDescription;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
 }

@@ -8,6 +8,7 @@ import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectItemDescription;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -19,6 +20,7 @@ public interface ItemDAO {
 	Set<String> fetchItemNames();
 
 	public Map<String, String> fetchItemInfo();
+
 
 	Set<String> fetchItemNames(String itemCategory);
 
@@ -49,7 +51,17 @@ public interface ItemDAO {
 	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
 
 	ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+
+	List<String> getItemTypes();
+
+	List<String> getItemNames();
+
+	ProjectConfiguration getProjectItemConfiguration(
 			ProjectConfiguration projectConfiguration);
 
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+
+	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
+			String itemName);
 }

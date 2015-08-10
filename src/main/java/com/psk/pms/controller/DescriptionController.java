@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -230,5 +231,15 @@ public class DescriptionController extends BaseController {
 				"PWD Project Description creation successfully");
 		projectDescriptionService.saveBaseProjectDescription(projDescDetail);
 		return "BaseDescription";
+	}
+
+	@RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
+	public void deleteGlobalProjectDescriptionDetail(
+			HttpServletRequest request, HttpServletResponse response) {
+		String projectDescriptionId = request.getParameter("baseDescriptionId");
+		LOGGER.info("Deleting project description ,projectDescriptionId : "
+				+ projectDescriptionId);
+		projectDescriptionService
+				.deleteBaseProjectDescription(projectDescriptionId);
 	}
 }

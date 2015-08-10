@@ -303,8 +303,7 @@ public class SearchController extends BaseController {
 	public String searchBaseDescription(@PathVariable String employeeId,
 			Model model) {
 		LOGGER.info("Search Controller : SearchPwdDescription()");
-		List<ProjDescDetail> projDescDetails = projectDescriptionService
-				.getBaseProjectDescriptions();
+		List<ProjDescDetail> projDescDetails = projectDescriptionService.getBaseProjectDescriptions();
 		model.addAttribute("baseDescriptionList", projDescDetails);
 		return "SearchBaseDescription";
 	}
