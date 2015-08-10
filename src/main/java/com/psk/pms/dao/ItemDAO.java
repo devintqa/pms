@@ -48,5 +48,5 @@ public interface ItemDAO {
 
 	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
+	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 }

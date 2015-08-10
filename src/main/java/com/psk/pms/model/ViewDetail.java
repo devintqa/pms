@@ -9,7 +9,14 @@ public class ViewDetail {
 	private String searchUnder;
 	private boolean searchAggregateItemDetails;
 	private boolean searchComparisonData;
+	private Integer subProjId;
 
+	public Integer getSubProjId() {
+		return subProjId;
+	}
+	public void setSubProjId(Integer subProjId) {
+		this.subProjId = subProjId;
+	}
 	public boolean isSearchComparisonData() {
 		return searchComparisonData;
 	}

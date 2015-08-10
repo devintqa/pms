@@ -38,5 +38,5 @@ public interface ItemService {
 
 	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
+	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 }

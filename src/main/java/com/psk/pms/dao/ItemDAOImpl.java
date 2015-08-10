@@ -302,11 +302,16 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration) {
-        String sql = "Select * from pricedetail where active = 1 and projectId = ? and subProjectId = ?";
-
+    public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+        String sql;
+        if(isEditSubProject){
+        	LOGGER.info("Into Edit Sub Project " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+        	sql = "Select * from pricedetail where active = 1 and subProjectId = " + projectConfiguration.getSubProjId();
+        }else{
+        	sql = "Select * from pricedetail where active = 1 and projectId = " + projectConfiguration.getProjId() + " and subProjectId = " + projectConfiguration.getSubProjId();
+        }
         List<ProjectConfiguration.ItemDetail> itemList = new ArrayList<ProjectConfiguration.ItemDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql,projectConfiguration.getProjId(),projectConfiguration.getSubProjId());
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {
             itemList.add(buildPricedItem(row));

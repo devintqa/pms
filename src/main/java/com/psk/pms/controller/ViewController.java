@@ -83,7 +83,8 @@ public class ViewController extends BaseController {
 			} else if(viewDetail.isViewProjectItemPrice()){
 				ProjectConfiguration projectConfiguration = new ProjectConfiguration();
 				projectConfiguration.setProjId(viewDetail.getProjId());
-				ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration);
+				projectConfiguration.setSubProjId(viewDetail.getSubProjId());
+				ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration,viewDetail.isEditSubProject());
 				List<ItemDetail> itemPriceDetails = itemConfiguration.getItemDetail();
 				if(itemPriceDetails.size() > 0){
 					model.addAttribute("itemPriceDetails", itemPriceDetails);

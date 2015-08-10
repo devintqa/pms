@@ -126,8 +126,8 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration) {
-		return itemDAO.getProjectItemConfiguration(projectConfiguration);
+			ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+		return itemDAO.getProjectItemConfiguration(projectConfiguration,isEditSubProject);
 	}
 
 }
