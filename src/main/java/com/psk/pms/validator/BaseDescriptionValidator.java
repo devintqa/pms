@@ -15,12 +15,12 @@ import java.util.regex.Pattern;
 /**
  * Created by prakashbhanu57 on 8/9/2015.
  */
-public class GlobalDescriptionValidator extends BaseValidator implements Validator {
+public class BaseDescriptionValidator extends BaseValidator implements Validator {
 
     private Pattern pattern;
     private Matcher matcher;
 
-    private static final Logger LOGGER = Logger.getLogger(GlobalDescriptionValidator.class);
+    private static final Logger LOGGER = Logger.getLogger(BaseDescriptionValidator.class);
 
     @Autowired
     ProjectDescriptionService projectDescriptionService;

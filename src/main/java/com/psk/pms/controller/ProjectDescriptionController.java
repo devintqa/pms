@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.validator.GlobalDescriptionValidator;
+import com.psk.pms.validator.BaseDescriptionValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -44,7 +44,7 @@ public class ProjectDescriptionController extends BaseController {
     private ItemService itemService;
 
     @Autowired
-    private GlobalDescriptionValidator globalDescriptionValidator;
+    private BaseDescriptionValidator baseDescriptionValidator;
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionController.class);
 
@@ -203,7 +203,7 @@ public class ProjectDescriptionController extends BaseController {
     @RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
     public String saveBaseProjDesc(@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
                                    BindingResult result, Model model, SessionStatus status) {
-        globalDescriptionValidator.validate(projDescDetail,result);
+    	baseDescriptionValidator.validate(projDescDetail,result);
         LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
         if (result.hasErrors()) {
             return "BaseDescription";
