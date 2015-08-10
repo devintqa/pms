@@ -201,5 +201,32 @@ public class ItemController {
 		return "";
 	}
 	
+	@RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
+	public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
+		DescItemDetail descItemDetail = new  DescItemDetail();
+		
+		descItemDetail = itemService.getDataDescription(descItemDetail);
+		
+		Gson gson = new Gson();
+		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
+		if (! element.isJsonArray()) {
+			
+		}
+		JsonArray jsonArray = element.getAsJsonArray();
+		descItemDetail.setProjDescItemDetail(jsonArray.toString());
+		descItemDetail.setEmployeeId(employeeId);
+		model.addAttribute("descItemForm", descItemDetail);
+		
+//		ProjDescDetail projDescDetail = projectDescService.getProjectDescDetail(baseDescId, null);
+//		if(null==projDescDetail){
+//			projDescDetail = new ProjDescDetail();
+//		}
+		ProjDescDetail projDescDetail = new ProjDescDetail();
+		model.addAttribute("projDescForm", projDescDetail);
+        model.addAttribute("itemTypes",fetchItemTypes());
+		
+		return "BaseItem";
+	}
 
+	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface ProjectService {
-	
+
 	boolean createEditProject(ProjectDetail projectDetail);
 
 	Map<String, String> getAliasProjectNames();
@@ -16,9 +16,9 @@ public interface ProjectService {
 	ProjectDetail getProjectDocument(String projectId);
 
 	boolean isAliasProjectAlreadyExisting(String aliasName);
-	
+
 	void deleteProject(Integer projectId);
 
-    List<String> getProjectTypes();
+	List<String> getProjectTypes();
 
 }

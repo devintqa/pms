@@ -2,10 +2,10 @@ package com.psk.pms.model;
 
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
- 
+
 public class FileUpload {
- 
-    private List<MultipartFile> pmsFiles;
+
+	private List<MultipartFile> pmsFiles;
 	private boolean subProjectUpload;
 	private boolean governmentEst;
 	private String aliasProjectName;
@@ -13,8 +13,7 @@ public class FileUpload {
 	private String employeeId;
 	private String fileName;
 	private String filePath;
-	
-	
+
 	public String getFilePath() {
 		return filePath;
 	}
@@ -40,14 +39,14 @@ public class FileUpload {
 	}
 
 	public List<MultipartFile> getFiles() {
-        return pmsFiles;
-    }
- 
-    public void setFiles(List<MultipartFile> files) {
-        this.pmsFiles = files;
-    }
-    
-    public boolean isSubProjectUpload() {
+		return pmsFiles;
+	}
+
+	public void setFiles(List<MultipartFile> files) {
+		this.pmsFiles = files;
+	}
+
+	public boolean isSubProjectUpload() {
 		return subProjectUpload;
 	}
 
@@ -79,5 +78,4 @@ public class FileUpload {
 		this.governmentEst = governmentEst;
 	}
 
- 
 }

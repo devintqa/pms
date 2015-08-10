@@ -19,7 +19,16 @@ public class MailClient {
 
 	public void sendMail(String to, String userName) {
 		MimeMessage message = mailSender.createMimeMessage();
-        String msg= "Dear User," +"<br><br>"+ "Seasons greetings and a warm welcome to the PSK family !" +"<br><br>"+ "Your User Name is  " +"<b>"+ userName + "</b>" +". You will be able to login to application once our admin approves your request.You will be receiving a notification mail on same." +"<br><br>"+ "Regards,"+"<br>"+ "PSK Team.";
+		String msg = "Dear User,"
+				+ "<br><br>"
+				+ "Seasons greetings and a warm welcome to the PSK family !"
+				+ "<br><br>"
+				+ "Your User Name is  "
+				+ "<b>"
+				+ userName
+				+ "</b>"
+				+ ". You will be able to login to application once our admin approves your request.You will be receiving a notification mail on same."
+				+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
 		try {
 			message.setSubject("PSK - Your Account Details");
 			MimeMessageHelper helper;
@@ -33,14 +42,26 @@ public class MailClient {
 			LOGGER.error("Error :" + e.getMessage());
 		}
 	}
-	
+
 	public void sendAccessMail(String to, String userName, String action) {
 		MimeMessage message = mailSender.createMimeMessage();
 		String msg = "";
-		if(action.equalsIgnoreCase("1")){
-        msg= "Dear User," +"<br><br>"+ "Your account has been " +"<b>"+ "ENABLED" + "</b>" + " by the Admin." +"<br>"+ "Now you can start using PMS Application to log into the system." +"<br><br>"+ "Regards,"+"<br>"+ "PSK Team.";}
-        else if(action.equalsIgnoreCase("2")){
-        msg= "Dear User," +"<br><br>"+ "Sorry !! Your account has been " +"<b>"+ "DENIED" + "</b>" + " by the Admin." +"<br><br>"+ "Regards,"+"<br>"+ "PSK Team.";}
+		if (action.equalsIgnoreCase("1")) {
+			msg = "Dear User,"
+					+ "<br><br>"
+					+ "Your account has been "
+					+ "<b>"
+					+ "ENABLED"
+					+ "</b>"
+					+ " by the Admin."
+					+ "<br>"
+					+ "Now you can start using PMS Application to log into the system."
+					+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
+		} else if (action.equalsIgnoreCase("2")) {
+			msg = "Dear User," + "<br><br>" + "Sorry !! Your account has been "
+					+ "<b>" + "DENIED" + "</b>" + " by the Admin." + "<br><br>"
+					+ "Regards," + "<br>" + "PSK Team.";
+		}
 		try {
 			message.setSubject("PSK - Your Access Details");
 			MimeMessageHelper helper;
@@ -51,7 +72,7 @@ public class MailClient {
 			mailSender.send(message);
 		} catch (MessagingException e) {
 			LOGGER.error("Error in sending mail to the user :" + userName);
-			LOGGER.error("error :"+ e.getMessage());
+			LOGGER.error("error :" + e.getMessage());
 		}
 	}
 

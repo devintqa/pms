@@ -54,12 +54,12 @@ $(function() {
     });		  
 });
 </script>
+
 <script>
-/*
 $(function() {
-    var table = $("#itemDescList").dataTable( {"pageLength": 10});
+    var table = $("#baseDescriptionList").dataTable({"pageLength": 10});
 	
-     $("#itemDescList_columnUl").on('change', 'input:checkbox', function(e) {
+     $("#baseDescriptionList_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
         
 		  var isColumnStatusChecked = $( this ).is( ":checked" ) 
@@ -68,45 +68,43 @@ $(function() {
 		  } else{
 				$(this).attr('value', '');
 		  }
-        $("table[id*=itemDescList] th").each(function(index, item) {			  
+        $("table[id*=baseDescriptionList] th").each(function(index, item) {			  
             if (columnName == item.innerHTML) {
-                $('table[id*=itemDescList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+                $('table[id*=baseDescriptionList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
             }
         })
     });
 
 
-    $("#itemDescList_paginate").on('click', function(e) {
-        $("#itemDescList_columnUl").find('input:checkbox').each(function(index, item) {
+    $("#baseDescriptionList_paginate").on('click', function(e) {
+        $("#baseDescriptionList_columnUl").find('input:checkbox').each(function(index, item) {
             var columnStatus = $(this).attr('value');
             var columnName = $(this).attr('name');				  
 			  
             if (columnStatus == 'hidden') {						
-                $("table[id*=itemDescList] th").each(function(index, item) {						
+                $("table[id*=baseDescriptionList] th").each(function(index, item) {						
                     if (columnName == item.innerHTML) {
-                        var displayType = $('#itemDescList tr').find("td:eq(" + index + ")").css('display');
+                        var displayType = $('#baseDescriptionList tr').find("td:eq(" + index + ")").css('display');
                         if (displayType != 'none') {
-                            $('table[id*=itemDescList] tr').find("td:eq(" + index + ")").toggle();
+                            $('table[id*=baseDescriptionList] tr').find("td:eq(" + index + ")").toggle();
                         }
-
                     }
                 })
-            }else{					
-				 $("table[id*=itemDescList] th").each(function(index, item) {						
+            }
+            else{					
+				 $("table[id*=baseDescriptionList] th").each(function(index, item) {						
                     if (columnName == item.innerHTML) {
-                        var displayType = $('#itemDescList tr').find("td:eq(" + index + ")").css('display');							  
+                        var displayType = $('#baseDescriptionList tr').find("td:eq(" + index + ")").css('display');							  
                         if (displayType == 'none') {
-                            $('table[id*=itemDescList] tr').find("td:eq(" + index + ")").toggle();
+                            $('table[id*=baseDescriptionList] tr').find("td:eq(" + index + ")").toggle();
                         }
-
                     }
                 })
 			  }
         });
     });		  
-}); */
+});
 </script>
-
 
 <script>
 $(function() {

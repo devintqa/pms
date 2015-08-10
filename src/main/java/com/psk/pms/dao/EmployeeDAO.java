@@ -19,21 +19,21 @@ public interface EmployeeDAO {
 
 	public String getUserRole(String empId);
 
-	public boolean isEmployeeMotherMaidenExisting(String userName,	String motherMaiden);
+	public boolean isEmployeeMotherMaidenExisting(String userName,
+			String motherMaiden);
 
 	public boolean resetpassword(String userName, String password);
-	
+
 	public int getUserNamePatternCount(String userName);
 
 	public List<Employee> getNewRegistrationRequest(String fromDate);
-	
-	public int manageUserAccess(Employee employee);
-	
-	public boolean isEmployeeMailExisting(String mail);
-	
-	public boolean isEmployeeMobNumExisting(String mobile);
-	
-	public Map<String, String> fetchTeamNames();
 
+	public int manageUserAccess(Employee employee);
+
+	public boolean isEmployeeMailExisting(String mail);
+
+	public boolean isEmployeeMobNumExisting(String mobile);
+
+	public Map<String, String> fetchTeamNames();
 
 }

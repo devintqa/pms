@@ -17,40 +17,42 @@ import com.psk.pms.validator.EditDetailValidator;
 
 @Controller
 public class EditDetailsController {
-	
+
 	@Autowired
 	EditDetailValidator editDetailValidator;
 	@Autowired
 	EmployeeService employeeService;
-	
-	private static final Logger LOGGER = Logger.getLogger(EditDetailsController.class);
-	
+
+	private static final Logger LOGGER = Logger
+			.getLogger(EditDetailsController.class);
+
 	@RequestMapping(value = "/emp/myview/details/edit/{empId}", method = RequestMethod.GET)
-	public String editEmployeeDetails(@PathVariable String empId, Model model){
+	public String editEmployeeDetails(@PathVariable String empId, Model model) {
 		Employee employee = employeeService.getEmployeeDetails(empId);
 		model.addAttribute("employee", employee);
 		return "EditDetails";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/details/edit/editDetails.do", method = RequestMethod.POST)
-    public String saveUpdateAction(
-            @ModelAttribute("employee") Employee employee,
-            BindingResult result, Model model, SessionStatus status) {
+	public String saveUpdateAction(
+			@ModelAttribute("employee") Employee employee,
+			BindingResult result, Model model, SessionStatus status) {
 		boolean isUpdateSuccessful = false;
 		editDetailValidator.validate(employee, result);
-		if(!result.hasErrors()){
+		if (!result.hasErrors()) {
 			isUpdateSuccessful = employeeService.updateEmployee(employee);
 		}
-		if(result.hasErrors() || !isUpdateSuccessful) {
+		if (result.hasErrors() || !isUpdateSuccessful) {
 			return "EditDetails";
 		}
 		LOGGER.info("isUpdateSuccessful : " + isUpdateSuccessful);
 		status.setComplete();
-		if(isUpdateSuccessful){
-		model.addAttribute("employee", employee);
-		model.addAttribute("updateSuccessMessage", "Employee Details updated successfully!");
+		if (isUpdateSuccessful) {
+			model.addAttribute("employee", employee);
+			model.addAttribute("updateSuccessMessage",
+					"Employee Details updated successfully!");
 		}
 		return "EditDetails";
-    }
+	}
 
 }

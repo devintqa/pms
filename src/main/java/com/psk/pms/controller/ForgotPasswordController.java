@@ -47,7 +47,9 @@ public class ForgotPasswordController {
 				return "ForgotPassword";
 			} else {
 				isMotherMaidenValid = employeeService
-						.isEmployeeMotherMaidenExisting(employee.getEmployeeId(), employee.getEmployeeMotherMaidenName());
+						.isEmployeeMotherMaidenExisting(
+								employee.getEmployeeId(),
+								employee.getEmployeeMotherMaidenName());
 				if (!isMotherMaidenValid) {
 					forgotPasswordValidator.validateForgotPwdMotherMaiden(
 							employee, result, true);

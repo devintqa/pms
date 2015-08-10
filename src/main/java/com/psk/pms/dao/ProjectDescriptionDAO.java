@@ -10,39 +10,41 @@ import java.util.List;
  */
 public interface ProjectDescriptionDAO {
 
-    boolean saveProjDesc(ProjDescDetail projDescDetail);
+	boolean saveProjDesc(ProjDescDetail projDescDetail);
 
-    void deleteProjectDescriptionByProjectId(Integer projectId);
+	void deleteProjectDescriptionByProjectId(Integer projectId);
 
-    void deleteProjectDescriptionBySubProjectId(Integer subProjectId) ;
+	void deleteProjectDescriptionBySubProjectId(Integer subProjectId);
 
-    void deleteProjectDescription(String projectDescriptionId);
+	void deleteProjectDescription(String projectDescriptionId);
 
-    ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
+	ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 
-    List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
+	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 
-    List<ProjDescDetail> getProjectDescDetailList(Integer projectId,boolean searchUnderProject);
-    
-    List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
+	List<ProjDescDetail> getProjectDescDetailList(Integer projectId,
+			boolean searchUnderProject);
 
-    boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
+	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
-    boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
+	boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
-    void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
-    
-    void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
-    
-    void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
-    boolean isProjectDescriptionDetailsExistsForProject(int projectId);
+	void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-    boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+	void saveProposalProjectDescriptionDetails(
+			List<ProjDescDetail> projDescDetails);
 
-    void saveBaseDescription(ProjDescDetail projDescDetail);
+	void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-    public List<ProjDescDetail> fetchBaseProjectDescriptions();
+	boolean isProjectDescriptionDetailsExistsForProject(int projectId);
 
-    void deleteBaseProjectDescription(String serialNumber);
+	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+
+	void saveBaseDescription(ProjDescDetail projDescDetail);
+
+	public List<ProjDescDetail> fetchBaseProjectDescriptions();
+
+	void deleteBaseProjectDescription(String serialNumber);
 }

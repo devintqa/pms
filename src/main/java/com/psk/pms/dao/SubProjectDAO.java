@@ -10,17 +10,18 @@ import java.util.Map;
  */
 public interface SubProjectDAO {
 
-    void deleteSubProjectBySubProjectId(Integer subProjectId);
+	void deleteSubProjectBySubProjectId(Integer subProjectId);
 
-    void deleteSubProjectByProjectId(Integer projectId);
+	void deleteSubProjectByProjectId(Integer projectId);
 
-    List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
+	List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
 
-    SubProjectDetail getSubProjectDocument(String subProjectId);
+	SubProjectDetail getSubProjectDocument(String subProjectId);
 
-    boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId);
+	boolean isAliasSubProjectAlreadyExisting(String subAliasName,
+			Integer projectId);
 
-    Map<String, String> getSubAliasProjectNames(String projectId);
+	Map<String, String> getSubAliasProjectNames(String projectId);
 
-    boolean saveSubProject(SubProjectDetail subProjectDetail);
+	boolean saveSubProject(SubProjectDetail subProjectDetail);
 }

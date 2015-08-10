@@ -26,7 +26,7 @@ $("#quantity").attr("readonly", "readonly");
 				-->
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
-						<legend>PWD Project Description</legend>
+						<legend>Base Description</legend>
 						<table>
 							<tr>
 								<td>Work Type <span id="colon">:</span>

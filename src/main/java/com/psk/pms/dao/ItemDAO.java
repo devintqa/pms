@@ -14,39 +14,42 @@ import com.psk.pms.model.ProjectConfiguration;
  */
 public interface ItemDAO {
 
-    boolean saveItem(Item item);
+	boolean saveItem(Item item);
 
-    Set<String> fetchItemNames();
-    
-    public Map<String,String> fetchItemInfo();
-    
-    Set<String> fetchItemNames(String itemCategory);
+	Set<String> fetchItemNames();
 
-    boolean isItemAlreadyExisting(String itemName);
-    
-    List<ItemDetail> getDescItemNames(Map<String, Object> request);
+	public Map<String, String> fetchItemInfo();
 
-    List<ItemDetail> searchItemName(String itemCode, String itemType);
+	Set<String> fetchItemNames(String itemCategory);
 
-    boolean insertDataDescription(DescItemDetail descItemDetail);
+	boolean isItemAlreadyExisting(String itemName);
 
-    DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	List<ItemDetail> getDescItemNames(Map<String, Object> request);
 
-    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+	List<ItemDetail> searchItemName(String itemCode, String itemType);
 
-    void deleteItemByProjectId(Integer projectId);
+	boolean insertDataDescription(DescItemDetail descItemDetail);
 
-    void deleteItemBySubProjectId(Integer subProjectId);
+	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
-    void deleteItemByProjectDescriptionId(String projectDescId);
+	List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
 
-    void deleteItemByProjectDescItemId(Integer itemId);
+	void deleteItemByProjectId(Integer projectId);
 
-    List<String> fetchItemTypes();
+	void deleteItemBySubProjectId(Integer subProjectId);
 
-    List<String> fetchUniqueItemUnits();
+	void deleteItemByProjectDescriptionId(String projectDescId);
+
+	void deleteItemByProjectDescItemId(Integer itemId);
+
+	List<String> fetchItemTypes();
+
+	List<String> fetchUniqueItemUnits();
 
 	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
+	ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration);
+
+	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 }

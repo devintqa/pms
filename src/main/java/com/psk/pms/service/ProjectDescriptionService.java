@@ -10,39 +10,41 @@ import java.util.List;
  */
 public interface ProjectDescriptionService {
 
-    boolean createEditProjDesc(ProjDescDetail projDescDetail);
+	boolean createEditProjDesc(ProjDescDetail projDescDetail);
 
-    ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
+	ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
 
-    List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
+	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
 
-    List<ProjDescDetail> getProjectDescDetailList(Integer projId,boolean searchUnderProject);
-    
-    List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
+	List<ProjDescDetail> getProjectDescDetailList(Integer projId,
+			boolean searchUnderProject);
 
-    boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
+	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
-    boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
+	boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail);
 
-    void deleteProjectDescriptionDetail(String projectDescriptionId);
+	boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
-    void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	void deleteProjectDescriptionDetail(String projectDescriptionId);
 
-    void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-    boolean isProjectDescriptionDetailsExistsForProject(int projectId);
+	void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-    boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+	boolean isProjectDescriptionDetailsExistsForProject(int projectId);
 
-    void deleteAllTheDescriptionDetailsOfProject(int projectId);
+	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
 
-    void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
+	void deleteAllTheDescriptionDetailsOfProject(int projectId);
 
-    void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
 
-    void saveBaseProjectDescription(ProjDescDetail projDescDetail);
+	void saveProposalProjectDescriptionDetails(
+			List<ProjDescDetail> projDescDetails);
 
-    List<ProjDescDetail> getBaseProjectDescriptions();
+	void saveBaseProjectDescription(ProjDescDetail projDescDetail);
 
-    void deleteBaseProjectDescription(String serialNumber);
+	List<ProjDescDetail> getBaseProjectDescriptions();
+
+	void deleteBaseProjectDescription(String serialNumber);
 }

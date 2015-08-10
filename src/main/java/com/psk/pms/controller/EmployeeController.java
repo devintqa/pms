@@ -51,62 +51,70 @@ public class EmployeeController {
 	@Autowired
 	EmdService emdService;
 
-	private static final Logger LOGGER = Logger.getLogger(EmployeeController.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(EmployeeController.class);
 
-	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody int enableAccess(@RequestBody String json){
-		LOGGER.info("method = enableAccess() : request" +json);
-		HashMap<String, String> details = (HashMap<String, String>) JsonHelper.jsonToMap(json);
+	@RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes = "application/json")
+	public @ResponseBody int enableAccess(@RequestBody String json) {
+		LOGGER.info("method = enableAccess() : request" + json);
+		HashMap<String, String> details = (HashMap<String, String>) JsonHelper
+				.jsonToMap(json);
 		Employee employee = new Employee();
 		String action = "";
-		if(details.get("action").equalsIgnoreCase("enable")){
+		if (details.get("action").equalsIgnoreCase("enable")) {
 			action = Constants.ENABLE_EMPLOYEE_ACCESS;
-		}else if(details.get("action").equalsIgnoreCase("deny")){
+		} else if (details.get("action").equalsIgnoreCase("deny")) {
 			action = Constants.DENY_EMPLOYEE_ACCESS;
-		}else{
+		} else {
 			action = Constants.DISABLE_EMPLOYEE_ACCESS;
 		}
 		employee.setEnabled(action);
 		employee.setEmployeeId(details.get("user"));
-		//employee.setEmployeeMail(details.get("mail"));
-		LOGGER.info("Employee Id :"+employee.getEmployeeId()+" Employee Enabled : "+employee.getEnabled()+" Employee mail Id: "+employee.getEmployeeMail());
+		// employee.setEmployeeMail(details.get("mail"));
+		LOGGER.info("Employee Id :" + employee.getEmployeeId()
+				+ " Employee Enabled : " + employee.getEnabled()
+				+ " Employee mail Id: " + employee.getEmployeeMail());
 		int status = employeeService.manageUserAccess(employee);
 		return status;
 	}
 
 	@RequestMapping(value = "/emp/myview/{empId}", method = RequestMethod.GET)
-	public String getHomePage(@PathVariable String empId, @RequestParam(value="action", required=false) String action, Model model, Principal principal) {
-		Employee employee = employeeService.getEmployeeDetails(principal.getName());
+	public String getHomePage(@PathVariable String empId,
+			@RequestParam(value = "action", required = false) String action,
+			Model model, Principal principal) {
+		Employee employee = employeeService.getEmployeeDetails(principal
+				.getName());
 		model.addAttribute("employeeObj", employee);
-		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
-			List<Employee> newSignupRequestList = employeeService.getNewRegistrationRequest(null);
-			if(!newSignupRequestList.isEmpty()){
+		if ("admin".equalsIgnoreCase(employee.getEmployeeTeam())) {
+			List<Employee> newSignupRequestList = employeeService
+					.getNewRegistrationRequest(null);
+			if (!newSignupRequestList.isEmpty()) {
 				model.addAttribute("newSignupRequestList", newSignupRequestList);
 			}
 		}
-		if("technical".equalsIgnoreCase(employee.getEmployeeTeam())){
-			List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
-			if(!projectDocumentList.isEmpty()){
+		if ("technical".equalsIgnoreCase(employee.getEmployeeTeam())) {
+			List<ProjectDetail> projectDocumentList = projectService
+					.getProjectDocumentList();
+			if (!projectDocumentList.isEmpty()) {
 				model.addAttribute("projectDocumentList", projectDocumentList);
 				model.addAttribute("action", action);
 			}
 		}
-		if("admin".equalsIgnoreCase(employee.getEmployeeTeam())){
+		if ("admin".equalsIgnoreCase(employee.getEmployeeTeam())) {
 			List<EmdDetail> emdEndAlertList = emdService.getEmdEndAlertList();
-			if(emdEndAlertList.size() > 0){
+			if (emdEndAlertList.size() > 0) {
 				model.addAttribute("emdDocumentList", emdEndAlertList);
 			}
 		}
 		return "Welcome";
 	}
-	
 
 	@RequestMapping(value = "/emp/login", method = RequestMethod.GET)
 	public String initForm(ModelMap model, HttpServletRequest request) {
 		HttpSession session = request.getSession(false);
-		if(session == null){
+		if (session == null) {
 			LOGGER.info("No session available");
-		}else{
+		} else {
 			LOGGER.info("This is old session");
 			Employee employee = new Employee();
 			model.addAttribute("employeeObj", employee);
@@ -120,7 +128,8 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "/emp/logout", method = RequestMethod.GET)
-	public String logoutForm(@ModelAttribute("employeeObj") Employee employee, Model model) {
+	public String logoutForm(@ModelAttribute("employeeObj") Employee employee,
+			Model model) {
 		employee.setEmployeeTeam("");
 		model.addAttribute("employeeObj", employee);
 		Employee newEmployee = new Employee();
@@ -133,7 +142,8 @@ public class EmployeeController {
 		session.invalidate();
 		Employee employee = new Employee();
 		model.addAttribute("employeeForm", employee);
-		model.addAttribute("sessionTimeOutMessage", "Session has got timed out. Please re-login.");
+		model.addAttribute("sessionTimeOutMessage",
+				"Session has got timed out. Please re-login.");
 		return "SignIn";
 	}
 

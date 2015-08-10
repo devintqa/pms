@@ -27,13 +27,14 @@ public class ProjectController {
 
 	@Autowired
 	SubProjectService subProjectService;
-	
-	private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
+
+	private static final Logger LOGGER = Logger
+			.getLogger(ProjectController.class);
 
 	@RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
-	public String buildProject(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team, 
-			Model model) {		
+	public String buildProject(@PathVariable String employeeId,
+			@RequestParam(value = "team", required = true) String team,
+			Model model) {
 		LOGGER.info("method = buildProject()");
 		ProjectDetail projDetail = new ProjectDetail();
 		projDetail.setEmployeeId(employeeId);
@@ -42,17 +43,17 @@ public class ProjectController {
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		model.addAttribute("employee", employee);
-        model.addAttribute("projectTypeList", populateProjectTypes());
+		model.addAttribute("projectTypeList", populateProjectTypes());
 		return "BuildProject";
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/updateProject/{employeeId}", method = RequestMethod.GET)
-	public String updateProject(@PathVariable String employeeId, 
-			@RequestParam(value="team", required=true) String team,  
-			@RequestParam(value="action", required=false) String action, 
-			@RequestParam(value="project", required=false) String project, 
-			Model model) {		
-		
+	public String updateProject(@PathVariable String employeeId,
+			@RequestParam(value = "team", required = true) String team,
+			@RequestParam(value = "action", required = false) String action,
+			@RequestParam(value = "project", required = false) String project,
+			Model model) {
+
 		LOGGER.info("method = updateProject() ,Action : " + action);
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
@@ -64,7 +65,7 @@ public class ProjectController {
 		projectDetail.setIsUpdate("Y");
 		projectDetail.setEmployeeId(employeeId);
 		model.addAttribute("projectForm", projectDetail);
-        model.addAttribute("projectTypeList", populateProjectTypes());
+		model.addAttribute("projectTypeList", populateProjectTypes());
 		return "BuildProject";
 	}
 
@@ -74,58 +75,64 @@ public class ProjectController {
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
-        List<String> projectTypes = populateProjectTypes();
-		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
+		List<String> projectTypes = populateProjectTypes();
+		if (!result.hasErrors()) {
+			isProjectSaveSuccessful = projectService
+					.createEditProject(projectDetail);
 		}
-		if(result.hasErrors() || !isProjectSaveSuccessful) {
-            model.addAttribute("projectTypeList", projectTypes);
+		if (result.hasErrors() || !isProjectSaveSuccessful) {
+			model.addAttribute("projectTypeList", projectTypes);
 			return "BuildProject";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(projectDetail.getEmployeeId());
 			model.addAttribute("employee", employee);
-            model.addAttribute("projectTypeList", projectTypes);
-			model.addAttribute("projectCreationMessage", "Project Creation Successful.");
-			return "BuildProject";			
+			model.addAttribute("projectTypeList", projectTypes);
+			model.addAttribute("projectCreationMessage",
+					"Project Creation Successful.");
+			return "BuildProject";
 		}
 	}
-	
+
 	@RequestMapping(value = "/emp/myview/updateProject/createProject.do", method = RequestMethod.POST)
 	public String updateProjectAction(
 			@ModelAttribute("projectForm") ProjectDetail projectDetail,
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isProjectSaveSuccessful = false;
 		projectDetailValidator.validate(projectDetail, result);
-        List<String> projectTypes = populateProjectTypes();
-		if(!result.hasErrors()){
-			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
+		List<String> projectTypes = populateProjectTypes();
+		if (!result.hasErrors()) {
+			isProjectSaveSuccessful = projectService
+					.createEditProject(projectDetail);
 		}
-		if(result.hasErrors() || !isProjectSaveSuccessful) {
-            model.addAttribute("projectTypeList", projectTypes);
+		if (result.hasErrors() || !isProjectSaveSuccessful) {
+			model.addAttribute("projectTypeList", projectTypes);
 			return "BuildProject";
 		} else {
 			status.setComplete();
 			Employee employee = new Employee();
 			employee.setEmployeeId(projectDetail.getEmployeeId());
-			model.addAttribute("employee", employee);	
-			isProjectSaveSuccessful = projectService.createEditProject(projectDetail);
-            model.addAttribute("projectTypeList", projectTypes);
-			model.addAttribute("projectUpdationMessage", "Project Updated Successfully.");			
-			return "BuildProject";		
+			model.addAttribute("employee", employee);
+			isProjectSaveSuccessful = projectService
+					.createEditProject(projectDetail);
+			model.addAttribute("projectTypeList", projectTypes);
+			model.addAttribute("projectUpdationMessage",
+					"Project Updated Successfully.");
+			return "BuildProject";
 		}
 	}
-	
+
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
+		List<SubProjectDetail> subProjectDocumentList = subProjectService
+				.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
 	}
 
-    private List<String> populateProjectTypes() {
-        LOGGER.info("method = populateProjectTypes()");
-        List<String> projectTypeNames = projectService.getProjectTypes();
-        LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
-        return projectTypeNames;
-    }
+	private List<String> populateProjectTypes() {
+		LOGGER.info("method = populateProjectTypes()");
+		List<String> projectTypeNames = projectService.getProjectTypes();
+		LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
+		return projectTypeNames;
+	}
 }

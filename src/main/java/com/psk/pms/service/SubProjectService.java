@@ -10,15 +10,16 @@ import java.util.Map;
  */
 public interface SubProjectService {
 
-    List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
+	List<SubProjectDetail> getSubProjectDocumentList(Integer projectId);
 
-    boolean isAliasSubProjectAlreadyExisting(String subAliasName, Integer projectId);
+	boolean isAliasSubProjectAlreadyExisting(String subAliasName,
+			Integer projectId);
 
-    void deleteSubProject(Integer subProjectId);
+	void deleteSubProject(Integer subProjectId);
 
-    SubProjectDetail getSubProjectDocument(String subProject);
+	SubProjectDetail getSubProjectDocument(String subProject);
 
-    Map<String, String> getSubAliasProjectNames(String projectId);
+	Map<String, String> getSubAliasProjectNames(String projectId);
 
-    boolean createEditSubProject(SubProjectDetail subProjectDetail);
+	boolean createEditSubProject(SubProjectDetail subProjectDetail);
 }

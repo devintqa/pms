@@ -16,8 +16,9 @@ public class EditDetailValidator extends BaseValidator implements Validator {
 	private Matcher matcher;
 
 	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger.getLogger(EditDetailValidator.class);
-	
+	private static final Logger LOGGER = Logger
+			.getLogger(EditDetailValidator.class);
+
 	@Override
 	public boolean supports(@SuppressWarnings("rawtypes") Class clazz) {
 		return Employee.class.isAssignableFrom(clazz);
@@ -44,21 +45,22 @@ public class EditDetailValidator extends BaseValidator implements Validator {
 						"Enter a correct phone number");
 			}
 		}
-		if (!(employee.getEmployeeMail() != null && employee
-				.getEmployeeMail().isEmpty())) {
+		if (!(employee.getEmployeeMail() != null && employee.getEmployeeMail()
+				.isEmpty())) {
 			pattern = Pattern.compile(EMAIL_PATTERN);
 			matcher = pattern.matcher(employee.getEmployeeMail());
 			if (!matcher.matches()) {
-				errors.rejectValue("employeeMail",
-						"employeeMail.incorrect",
+				errors.rejectValue("employeeMail", "employeeMail.incorrect",
 						"Enter a correct mail id");
-			} else if(employee.getEmployeeMail().length() > 30){
-	            errors.rejectValue("employeeMail","employeeMail.incorrect", "Mail Length must not exceed 30 characters.");
+			} else if (employee.getEmployeeMail().length() > 30) {
+				errors.rejectValue("employeeMail", "employeeMail.incorrect",
+						"Mail Length must not exceed 30 characters.");
 			}
 		}
-		if(employee.getEmployeeAddress().length() > 80){
-            errors.rejectValue("employeeAddress","employeeAddress.incorrect", "Address Length must not exceed 80 characters.");
-        }
+		if (employee.getEmployeeAddress().length() > 80) {
+			errors.rejectValue("employeeAddress", "employeeAddress.incorrect",
+					"Address Length must not exceed 80 characters.");
+		}
 	}
 
 }

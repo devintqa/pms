@@ -1,11 +1,15 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.EmdDetail;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import static com.psk.pms.dao.PmsMasterQuery.CREATEEMDDETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEEMDDETAILBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEEMDDETAILBYSUBPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.DELTEPEMDDETAILBYEMDID;
+import static com.psk.pms.dao.PmsMasterQuery.FETCHEMDDETAILBYEMDID;
+import static com.psk.pms.dao.PmsMasterQuery.FETCHEMDDETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GETEMDDETAILSBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.GETEMDDETAILSBYSUBPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATEEMDDETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.emdDatesQuery;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,7 +19,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.psk.pms.model.EmdDetail;
 
 public class EmdDAOImpl implements EmdDAO {
 

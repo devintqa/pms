@@ -11,65 +11,72 @@ import java.util.List;
 import java.util.Map;
 
 public class EmployeeServiceImpl implements EmployeeService {
-		
+
 	private EmployeeDAO employeeDAO;
 	private MailClient mailClient;
 
 	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger.getLogger(EmployeeServiceImpl.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(EmployeeServiceImpl.class);
 
-	public boolean isValidLogin(String userName, String password){	
+	public boolean isValidLogin(String userName, String password) {
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
-		if(total == 0){
+		if (total == 0) {
 			return false;
 		}
 		return true;
 	}
-	
-	public Map<String, String> fetchTeamNames(){
+
+	public Map<String, String> fetchTeamNames() {
 		Map<String, String> teamList = employeeDAO.fetchTeamNames();
 		return teamList;
 	}
-	
-	public List<Employee> getNewRegistrationRequest(String fromDate){
-		
-		List<Employee> newRequests= employeeDAO.getNewRegistrationRequest(fromDate);
+
+	public List<Employee> getNewRegistrationRequest(String fromDate) {
+
+		List<Employee> newRequests = employeeDAO
+				.getNewRegistrationRequest(fromDate);
 		return newRequests;
-		
+
 	}
-	public String getUserRole(String empId){
+
+	public String getUserRole(String empId) {
 		return employeeDAO.getUserRole(empId);
 	}
-	
-	public Employee getEmployeeDetails(String empId){
+
+	public Employee getEmployeeDetails(String empId) {
 		return employeeDAO.getEmployeeDetails(empId);
 	}
-	
-	public boolean isEmployeeExisting(String userName){	
+
+	public boolean isEmployeeExisting(String userName) {
 		int total = employeeDAO.isEmployeeExisting(userName);
-		if(total == 0){
+		if (total == 0) {
 			return false;
 		}
 		return true;
 	}
-	
-	public boolean signupEmployee(Employee employee){
+
+	public boolean signupEmployee(Employee employee) {
 		boolean isInsertSuccessful = false;
-		employee.setEmployeePwd(Encryption.doPasswordEncode(employee.getEmployeePwd()));
-		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),employee.getEmployeeLName()));
+		employee.setEmployeePwd(Encryption.doPasswordEncode(employee
+				.getEmployeePwd()));
+		employee.setEmployeeId(getUserName(employee.getEmployeeFName(),
+				employee.getEmployeeLName()));
 		isInsertSuccessful = employeeDAO.signupEmployee(employee);
-		if(isInsertSuccessful){
-			mailClient.sendMail(employee.getEmployeeMail(), employee.getEmployeeId());
+		if (isInsertSuccessful) {
+			mailClient.sendMail(employee.getEmployeeMail(),
+					employee.getEmployeeId());
 		}
 		return isInsertSuccessful;
 	}
-	
-	public boolean isEmployeeMotherMaidenExisting(String userName,String motherMaiden){
+
+	public boolean isEmployeeMotherMaidenExisting(String userName,
+			String motherMaiden) {
 		boolean isAvailable = false;
-		isAvailable = employeeDAO.isEmployeeMotherMaidenExisting(userName, motherMaiden);
+		isAvailable = employeeDAO.isEmployeeMotherMaidenExisting(userName,
+				motherMaiden);
 		return isAvailable;
 	}
-	
 
 	public boolean isEmployeeMailExisting(String mail) {
 		boolean isAvailable = false;
@@ -82,37 +89,37 @@ public class EmployeeServiceImpl implements EmployeeService {
 		isAvailable = employeeDAO.isEmployeeMobNumExisting(mobile);
 		return isAvailable;
 	}
-	
-	public boolean resetPassword(String userName, String password)
-	{
+
+	public boolean resetPassword(String userName, String password) {
 		boolean isAvailable = false;
 		String hashedPassword = Encryption.doPasswordEncode(password);
 		isAvailable = employeeDAO.resetpassword(userName, hashedPassword);
 		return isAvailable;
 	}
-	public boolean updateEmployee(Employee employee){
+
+	public boolean updateEmployee(Employee employee) {
 		boolean isInsertSuccessful = false;
 		isInsertSuccessful = employeeDAO.updateEmployee(employee);
 		return isInsertSuccessful;
 	}
-	
+
 	private String getUserName(String employeeFName, String employeeLName) {
 		String firstChar = employeeFName.substring(0, 1).toLowerCase();
 		String userLastName = employeeLName.toLowerCase();
 		String userName = firstChar.concat(userLastName);
 		int count = employeeDAO.getUserNamePatternCount(userName);
-		if(count == 0){
+		if (count == 0) {
 			return userName;
-		}else{
+		} else {
 			userName = userName.concat(String.valueOf(count));
 		}
 		return userName;
 	}
-	
+
 	public void setEmployeeDAO(EmployeeDAO employeeDAO) {
 		this.employeeDAO = employeeDAO;
 	}
-	
+
 	public void setMailClient(MailClient mailClient) {
 		this.mailClient = mailClient;
 	}
@@ -120,7 +127,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public int manageUserAccess(Employee employee) {
 		int status = employeeDAO.manageUserAccess(employee);
-		//mailClient.sendAccessMail(employee.getEmployeeMail(), employee.getEmployeeId(), employee.getEnabled());
+		// mailClient.sendAccessMail(employee.getEmployeeMail(),
+		// employee.getEmployeeId(), employee.getEnabled());
 		return status;
 	}
 

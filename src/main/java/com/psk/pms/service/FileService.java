@@ -9,11 +9,12 @@ import java.util.List;
 
 public interface FileService {
 
-    void uploadFiles(FileUpload fileUpload) throws IOException;
-    
-    ExcelDetail saveProjectDescription(FileUpload fileUpload) throws IOException, BulkUploadException;
+	void uploadFiles(FileUpload fileUpload) throws IOException;
 
-    List<FileUpload> downloadFiles(FileUpload fileUpload);
+	ExcelDetail saveProjectDescription(FileUpload fileUpload)
+			throws IOException, BulkUploadException;
 
-    void deleteFile(String filePath);
+	List<FileUpload> downloadFiles(FileUpload fileUpload);
+
+	void deleteFile(String filePath);
 }

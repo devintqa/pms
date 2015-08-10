@@ -12,20 +12,19 @@
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
 		
-		
 		$(document).on('keydown.autocomplete', selector, function() {
 			$(this).autocomplete({
 				source: function (request, response) {
-					$.getJSON("/pms/emp/myview/searchProjectDescription/searchDescItems.do", {
+					$.getJSON("/pms/emp/myview/searchBaseDescription/searchBaseItems.do", {
 								itemName: request.term,
 								itemType: $('#itemType').val(),
-								projectId: $('#projId').val(),
-								subProjectId: $('#subProjId').val(),
-		            	            }, response);
+		            	        }, response);
 				},
 				select: function(event, ui) { 
 			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
 			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
+			         $(this).focus();
+			         calculateTotalItemPrice()
 			    }
 			});
 		});
@@ -33,6 +32,7 @@
 		fillItemDesc();
 		
 		 
+	
       $('#slideOpen').click(function(){
     	  	$(this).toggle();
     	  	$('#slideClose').toggle();
@@ -55,10 +55,8 @@
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
-			document.getElementById('itemTable').rows[1].cells[3].getElementsByTagName('input')[0].value = '';
-			document.getElementById('itemTable').rows[1].cells[4].getElementsByTagName('input')[0].value = '';
 		}
-		calculateTotalItemCost();
+		calculateTotalItemPrice();
 	}
 
 	function insertItemRow() {
@@ -78,14 +76,6 @@
 		itemPrice.id += len;
 		itemPrice.value = '';
 		
-		var itemQty = new_row.cells[3].getElementsByTagName('input')[0];
-		itemQty.id += len;
-		itemQty.value = '';
-		
-		var itemCost = new_row.cells[4].getElementsByTagName('input')[0];
-		itemCost.id += len;
-		itemCost.value = '';
-
 		itemTable.appendChild(new_row);
 
 	}
@@ -99,63 +89,35 @@
 	        this.value = val.substring(0, val.length - 1);
 	    }
 	});
-	2
-	
-	$(document).on("keyup","input[name = 'itemQty']",function(){
-		
-		 var valid = /^\d{0,9}?$/.test(this.value),
-	        val = this.value;
-	    
-	    if(valid){
-	        var qty = $(this).val()
-			var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
-			var cost = qty*price;
-			$(this).parents('tr:first').find('td:nth-child(5) input').val(cost);
-	    }
-	    else{
-	    	 console.log("Invalid input!");
-		     this.value = val.substring(0, val.length - 1);
-	    }
-		
-	});
 	
 
-	$(document).on("keyup","input[name = 'itemPrice']",function(){
-		var price = $(this).val()
-		var qty = $(this).parents('tr:first').find('td:nth-child(4) input').val();
-		var cost = qty*price;
-		$(this).parents('tr:first').find('td:nth-child(5) input').val(cost);
-	});
-	
-	function calculateTotalItemCost(){
+	function calculateTotalItemPrice(){
 		var itemTable = document.getElementById('itemTable');
 		var itemObjArray = [];
 		var len = itemTable.rows.length;
-		var totalItemCost = 0;
-		for (i = 1; i <= len - 1; i++) {
-			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
-			if(itemCost){
-				totalItemCost = parseInt(totalItemCost) + parseInt(itemCost);
+		var totalItemPrice = 0;
+		for (i = 1; i < len; i++) {
+			var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
+			if(itemPrice){
+				totalItemPrice = parseInt(totalItemPrice) + parseInt(itemPrice);
 			}
 			
 		}
-		document.getElementById('totalItemCost').value = parseInt(totalItemCost);
+		document.getElementById('totalItemPrice').value = parseInt(totalItemPrice);
 	}
 	
 	$(document).on("focusout","input",function(){
-		calculateTotalItemCost();
+		calculateTotalItemPrice();
 	});
 	
 	$(document).on("keyup","input",function(){
-		calculateTotalItemCost();
+		calculateTotalItemPrice();
 	});
 	
-	function ItemDetail(itemName, itemUnit, itemPrice, itemQty, itemCost) {
+	function ItemDetail(itemName, itemUnit, itemPrice) {
 		this.itemName = itemName;
 		this.itemUnit = itemUnit;
 		this.itemPrice = itemPrice;
-		this.itemQty = itemQty;
-		this.itemCost = itemCost;
 		} 
 	
 	function saveItemDesc() {
@@ -168,11 +130,9 @@
 			var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
 			var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
 			var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-			var itemQty = itemTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
-			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
 			
-			var obj = new ItemDetail(itemName, itemUnit, itemPrice, itemQty, itemCost);
-			if(itemName && itemUnit && itemPrice && itemQty && itemCost){
+			var obj = new ItemDetail(itemName, itemUnit, itemPrice);
+			if(itemName && itemUnit && itemPrice){
 				itemObjArray.push(obj); 
 			}else{
 				err = true;
@@ -229,7 +189,7 @@
 		if(obj!= ''){
 			document.getElementById('itemTable').rows[1].remove();
 		}
-		calculateTotalItemCost();
+		calculateTotalItemPrice();
 	}
 	
 	function fillItemRow(item) {
@@ -248,14 +208,6 @@
 		itemPrice.id += len;
 		itemPrice.value = item.itemPrice;
 		
-		var itemQty = row.cells[3].getElementsByTagName('input')[0];
-		itemQty.id += len;
-		itemQty.value = item.itemQty;
-		
-		var itemCost = row.cells[4].getElementsByTagName('input')[0];
-		itemCost.id += len;
-		itemCost.value = item.itemCost;
-
 		document.getElementById('itemTable').appendChild(row);
 
 	}
@@ -326,12 +278,6 @@
 					</c:if>
 
 					<tr>
-						<td>Serial Number<span id="colon">:</span>
-						</td>
-						<td><form:input id="serialNumber" path="serialNumber"
-								cssClass="inputText" readonly="true" /></td>
-					</tr>
-					<tr>
 						<td>Quantity<span id="colon">:</span>
 						</td>
 						<td><form:input id="quantity" path="quantity"
@@ -375,8 +321,7 @@
 			</fieldset>
 		</form:form>
 	</div>
-	<h1 style="text-align: center; color: #007399; font-size: 24px;">Item
-		Breakdown Structure</h1>
+	<h1 style="text-align: center; color: #007399; font-size: 24px;">Item Breakdown Structure</h1>
 
 
 
@@ -392,30 +337,21 @@
 		</table>
 		<br>
 		<form:hidden path="projDescItemDetail" id="projDescItemDetail" />
-		<form:hidden path="projId" id="projId" />
-		<form:hidden path="subProjId" id="subProjId" />
-		<form:hidden path="projDescId" id="projDescId" />
-		<form:hidden path="projDescSerial" id="projDescSerial" />
+		<form:hidden path="baseDescId" id="projDescId" />
 		<form:hidden path="employeeId" id="employeeId" />
 
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
 				<th>Item</th>
 				<th>Unit</th>
-				<th>Unit Price</th>
-				<th>Qty</th>
-				<th>Cost</th>
+				<th>Price</th>
 				<th>Action</th>
 			</tr>
 
 			<tr>
-				<td><input name="itemName" id="itemName" type="text" /></td>
+				<td><input name="itemName" id="itemName" type="text" size="100%" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
-					type="text" /></td>
-				<td><input name="itemQty" id="itemQty" type="text"
-					pattern="([0-9]+\.)?[0-9]+" /></td>
-				<td><input name="itemCost" readonly="readonly" id="itemCost"
 					type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img
 						src="<c:url value="/resources/images/delete.png" />" /></a></td>
@@ -423,8 +359,7 @@
 
 		</table>
 		<br>
-		Amount : <input name="totalItemCost" readonly="readonly"
-			id="totalItemCost" type="text" />
+		Amount : <input name="totalItemPrice" readonly="readonly" id="totalItemPrice" type="text" />
 		<br>
 
 		<br>

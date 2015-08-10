@@ -256,6 +256,29 @@ public class ItemDAOImpl implements ItemDAO {
         }
         return itemsDetail;
     }
+    
+    @Override
+    public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
+        List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
+        System.out.println(request);
+        String sql = null;
+        List<Map<String, Object>> rows = null;
+        if ("" != request.get("itemName")) {
+            sql = "select itemType, itemName, itemUnit, itemPrice from govestpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+            System.out.println(sql);
+            rows = jdbcTemplate.queryForList(sql);
+        }
+        for (Map<String, Object> row : rows) {
+            ItemDetail itemDetail = new ItemDetail();
+            itemDetail.setLabel((String) row.get("itemName"));
+            itemDetail.setItemName((String) row.get("itemName"));
+            itemDetail.setItemUnit((String) row.get("itemUnit"));
+            itemDetail.setItemType((String) row.get("itemType"));
+            itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
+            itemsDetail.add(itemDetail);
+        }
+        return itemsDetail;
+    }
 
     @Override
     public List<String> fetchItemTypes() {

@@ -17,8 +17,8 @@ import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.service.ProjectService;
 
-public class ItemValidator extends BaseValidator implements Validator{
-	
+public class ItemValidator extends BaseValidator implements Validator {
+
 	@Autowired
 	ProjectService projectService;
 
@@ -38,24 +38,28 @@ public class ItemValidator extends BaseValidator implements Validator{
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "itemName",
 				"required.itemName", "Enter Item Name.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "itemUnit",
-			"required.itemUnit", "Enter Item Unit.");
-		
-		Item item = (Item)target;
-		
-		if(item.getItemUnit().length() > 20){
-			errors.rejectValue("itemUnit", "itemUnit.incorrect","Field must not exceed 20 characters.");
+				"required.itemUnit", "Enter Item Unit.");
+
+		Item item = (Item) target;
+
+		if (item.getItemUnit().length() > 20) {
+			errors.rejectValue("itemUnit", "itemUnit.incorrect",
+					"Field must not exceed 20 characters.");
 		}
 
-        if(item.getItemName().length() > 100){
-            errors.rejectValue("itemName", "itemName.incorrect","Field must not exceed 50 characters.");
-        } else {
-        	boolean isItemAlreadyExisting = itemService.isItemAlreadyExisting(item.getItemName());
-			if(isItemAlreadyExisting){
-				errors.rejectValue("itemName", "itemName.incorrect","Item Name Already Found To Be Existing.");
+		if (item.getItemName().length() > 100) {
+			errors.rejectValue("itemName", "itemName.incorrect",
+					"Field must not exceed 50 characters.");
+		} else {
+			boolean isItemAlreadyExisting = itemService
+					.isItemAlreadyExisting(item.getItemName());
+			if (isItemAlreadyExisting) {
+				errors.rejectValue("itemName", "itemName.incorrect",
+						"Item Name Already Found To Be Existing.");
 			}
-        }
+		}
 	}
-	
+
 	public String validateItem(String result,
 			ProjectConfiguration projectItemConfiguration) {
 		List<String> itemNames = new ArrayList<String>();
@@ -73,4 +77,3 @@ public class ItemValidator extends BaseValidator implements Validator{
 		return result;
 	}
 }
-

@@ -2,8 +2,6 @@ package com.psk.pms.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
- 
-
 
 import org.springframework.jdbc.core.RowMapper;
 

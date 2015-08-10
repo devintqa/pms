@@ -14,29 +14,32 @@ import java.util.Set;
  */
 public interface ItemService {
 
-    boolean createEditItem(Item item);
+	boolean createEditItem(Item item);
 
-    boolean isItemAlreadyExisting(String itemName);
+	boolean isItemAlreadyExisting(String itemName);
 
-    List<ItemDetail> getDescItemNames(Map<String, Object> request);
-    
-    List<ItemDetail> searchItemName(String itemName, String itemType);
+	List<ItemDetail> getDescItemNames(Map<String, Object> request);
 
-    Set<String> fetchItemNames();
+	List<ItemDetail> searchItemName(String itemName, String itemType);
 
-    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+	Set<String> fetchItemNames();
 
-    boolean insertDataDescription(DescItemDetail descItemDetail);
+	List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
 
-    DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	boolean insertDataDescription(DescItemDetail descItemDetail);
 
-    void deleteItemByDescriptionItemId(Integer subProjectid);
+	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
-    List<String> fetchItemTypes();
+	void deleteItemByDescriptionItemId(Integer subProjectid);
 
-    List<String> fetchUniqueItemUnits();
+	List<String> fetchItemTypes();
+
+	List<String> fetchUniqueItemUnits();
 
 	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration);
+	ProjectConfiguration getProjectItemConfiguration(
+			ProjectConfiguration projectConfiguration);
+
+	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 }

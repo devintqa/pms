@@ -1,17 +1,17 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.Employee;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.psk.pms.Constants;
+import com.psk.pms.model.Employee;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 

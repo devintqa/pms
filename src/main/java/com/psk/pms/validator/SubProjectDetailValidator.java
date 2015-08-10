@@ -14,11 +14,12 @@ import org.springframework.validation.Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SubProjectDetailValidator extends BaseValidator implements Validator{
-	
-	private Pattern pattern;  
+public class SubProjectDetailValidator extends BaseValidator implements
+		Validator {
+
+	private Pattern pattern;
 	private Matcher matcher;
-	
+
 	@Autowired
 	ProjectService projectService;
 
@@ -26,13 +27,14 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 	SubProjectService subProjectService;
 
 	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger.getLogger(SubProjectDetailValidator.class);
-	
+	private static final Logger LOGGER = Logger
+			.getLogger(SubProjectDetailValidator.class);
+
 	@Override
 	public boolean supports(Class<?> clazz) {
 		return SubProjectDetail.class.isAssignableFrom(clazz);
 	}
- 
+
 	@Override
 	public void validate(Object target, Errors errors) {
 
@@ -46,10 +48,12 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subAmount", "Enter Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorName",
 				"required.subContractorName", "Enter Contractor Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAliasContractorName",
-				"required.subAliasContractorName", "Enter alias Contractor Name.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subContractorAddress",
-				"required.subContractorAddress", "Enter Contractor Address.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+				"subAliasContractorName", "required.subAliasContractorName",
+				"Enter alias Contractor Name.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+				"subContractorAddress", "required.subContractorAddress",
+				"Enter Contractor Address.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAgreementValue",
 				"required.subAgreementValue", "Enter Agreement Value.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderValue",
@@ -58,31 +62,44 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				"required.subExAmount", "Enter Expected Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderDate",
 				"required.subTenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subAddSecurityDeposit",
-				"required.subAddSecurityDeposit", "Enter additional security amount.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+				"subAddSecurityDeposit", "required.subAddSecurityDeposit",
+				"Enter additional security amount.");
 		SubProjectDetail subProjectDetail = (SubProjectDetail) target;
 
 		if (subProjectDetail.getProjId() == 0) {
-			errors.rejectValue("projId", "projId.incorrect", "Please select a valid project");
+			errors.rejectValue("projId", "projId.incorrect",
+					"Please select a valid project");
 		}
 
 		if (subProjectDetail.getAliasSubProjName().length() > 50) {
-			errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Field must not exceed 50 characters.");
+			errors.rejectValue("aliasSubProjName",
+					"aliasSubProjName.incorrect",
+					"Field must not exceed 50 characters.");
 		} else if (!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
-			boolean isAliasSubProjectAlreadyExisting = subProjectService.isAliasSubProjectAlreadyExisting(subProjectDetail.getAliasSubProjName(), subProjectDetail.getProjId());
+			boolean isAliasSubProjectAlreadyExisting = subProjectService
+					.isAliasSubProjectAlreadyExisting(
+							subProjectDetail.getAliasSubProjName(),
+							subProjectDetail.getProjId());
 			if (isAliasSubProjectAlreadyExisting) {
-				errors.rejectValue("aliasSubProjName", "aliasSubProjName.incorrect", "Alias Sub Project Name Already Found To Be Existing.");
+				errors.rejectValue("aliasSubProjName",
+						"aliasSubProjName.incorrect",
+						"Alias Sub Project Name Already Found To Be Existing.");
 			}
 		}
 
 		if (subProjectDetail.getSubAgreementNo().length() > 50) {
-			errors.rejectValue("subAgreementNo", "subAgreementNo.incorrect", "Field must not exceed 50 characters.");
+			errors.rejectValue("subAgreementNo", "subAgreementNo.incorrect",
+					"Field must not exceed 50 characters.");
 		}
 		if (subProjectDetail.getSubCerNo().length() > 30) {
-			errors.rejectValue("subCerNo", "subCerNo.incorrect", "Field must not exceed 30 characters");
+			errors.rejectValue("subCerNo", "subCerNo.incorrect",
+					"Field must not exceed 30 characters");
 		}
 		if (subProjectDetail.getSubContractorName().length() > 50) {
-			errors.rejectValue("subContractorName", "subContractorName.incorrect", "Field must not exceed 50 characters.");
+			errors.rejectValue("subContractorName",
+					"subContractorName.incorrect",
+					"Field must not exceed 50 characters.");
 		}
 
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAmount())) {
@@ -92,7 +109,8 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				errors.rejectValue("subAmount", "subAmount.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubAmount().length() > 15) {
-				errors.rejectValue("subAmount", "subAmount.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subAmount", "subAmount.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
@@ -100,10 +118,13 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			pattern = Pattern.compile(AMOUNT_PATTERN);
 			matcher = pattern.matcher(subProjectDetail.getSubAgreementValue());
 			if (!matcher.matches()) {
-				errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect",
+				errors.rejectValue("subAgreementValue",
+						"subAgreementValue.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubAgreementValue().length() > 15) {
-				errors.rejectValue("subAgreementValue", "subAgreementValue.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subAgreementValue",
+						"subAgreementValue.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
@@ -111,13 +132,15 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			pattern = Pattern.compile(AMOUNT_PATTERN);
 			matcher = pattern.matcher(subProjectDetail.getSubTenderValue());
 			if (!matcher.matches()) {
-				errors.rejectValue("subTenderValue", "subTenderValue.incorrect",
+				errors.rejectValue("subTenderValue",
+						"subTenderValue.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubTenderValue().length() > 15) {
-				errors.rejectValue("subTenderValue", "subTenderValue.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subTenderValue",
+						"subTenderValue.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
-
 
 		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubExAmount())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);
@@ -126,7 +149,8 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 				errors.rejectValue("subExAmount", "subExAmount.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubExAmount().length() > 15) {
-				errors.rejectValue("subExAmount", "subExAmount.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subExAmount", "subExAmount.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
@@ -134,10 +158,13 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			pattern = Pattern.compile(AMOUNT_PATTERN);
 			matcher = pattern.matcher(subProjectDetail.getSubExPercentage());
 			if (!matcher.matches()) {
-				errors.rejectValue("subExPercentage", "subExPercentage.incorrect",
+				errors.rejectValue("subExPercentage",
+						"subExPercentage.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubExPercentage().length() > 15) {
-				errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subExPercentage",
+						"subExPercentage.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
@@ -145,43 +172,59 @@ public class SubProjectDetailValidator extends BaseValidator implements Validato
 			pattern = Pattern.compile(AMOUNT_PATTERN);
 			matcher = pattern.matcher(subProjectDetail.getSubLessPercentage());
 			if (!matcher.matches()) {
-				errors.rejectValue("subLessPercentage", "subLessPercentage.incorrect",
+				errors.rejectValue("subLessPercentage",
+						"subLessPercentage.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubLessPercentage().length() > 15) {
-				errors.rejectValue("subLessPercentage", "subLessPercentage.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subLessPercentage",
+						"subLessPercentage.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubAddSecurityDeposit())) {
+		if (!StringUtils.isNullOrEmpty(subProjectDetail
+				.getSubAddSecurityDeposit())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);
-			matcher = pattern.matcher(subProjectDetail.getSubAddSecurityDeposit());
+			matcher = pattern.matcher(subProjectDetail
+					.getSubAddSecurityDeposit());
 			if (!matcher.matches()) {
-				errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect",
+				errors.rejectValue("subAddSecurityDeposit",
+						"subAddSecurityDeposit.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubAddSecurityDeposit().length() > 15) {
-				errors.rejectValue("subAddSecurityDeposit", "subAddSecurityDeposit.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subAddSecurityDeposit",
+						"subAddSecurityDeposit.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 
 		if (StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
-			ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subExPercentage",
-					"required.subExPercentage", "Enter one among Expected or Less in Percentage.");
+			ValidationUtils.rejectIfEmptyOrWhitespace(errors,
+					"subExPercentage", "required.subExPercentage",
+					"Enter one among Expected or Less in Percentage.");
 		}
 
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage()) && !StringUtils.isNullOrEmpty(subProjectDetail.getSubExPercentage())) {
-			errors.rejectValue("subExPercentage", "subExPercentage.incorrect", "Only one among Excess or Less in Percentage can be entered.");
+		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())
+				&& !StringUtils.isNullOrEmpty(subProjectDetail
+						.getSubExPercentage())) {
+			errors.rejectValue("subExPercentage", "subExPercentage.incorrect",
+					"Only one among Excess or Less in Percentage can be entered.");
 		}
 
-		if (!StringUtils.isNullOrEmpty(subProjectDetail.getSubPerformanceGuarantee())) {
+		if (!StringUtils.isNullOrEmpty(subProjectDetail
+				.getSubPerformanceGuarantee())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);
-			matcher = pattern.matcher(subProjectDetail.getSubPerformanceGuarantee());
+			matcher = pattern.matcher(subProjectDetail
+					.getSubPerformanceGuarantee());
 			if (!matcher.matches()) {
-				errors.rejectValue("subPerformanceGuarantee", "subPerformanceGuarantee.incorrect",
+				errors.rejectValue("subPerformanceGuarantee",
+						"subPerformanceGuarantee.incorrect",
 						"Enter a numeric value and only a single dot is allowed");
 			} else if (subProjectDetail.getSubPerformanceGuarantee().length() > 15) {
-				errors.rejectValue("subPerformanceGuarantee", "subPerformanceGuarantee.incorrect", "Field must not exceed 15 characters.");
+				errors.rejectValue("subPerformanceGuarantee",
+						"subPerformanceGuarantee.incorrect",
+						"Field must not exceed 15 characters.");
 			}
 		}
 	}
 }
-

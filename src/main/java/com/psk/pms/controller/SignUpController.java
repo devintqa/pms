@@ -25,10 +25,11 @@ public class SignUpController {
 	@Autowired
 	EmployeeService employeeService;
 
-	private static final Logger LOGGER = Logger.getLogger(SignUpController.class);
+	private static final Logger LOGGER = Logger
+			.getLogger(SignUpController.class);
 
 	@RequestMapping(value = "/emp/signup", method = RequestMethod.GET)
-	public String initForm(ModelMap model){ 
+	public String initForm(ModelMap model) {
 		Employee employee = new Employee();
 		model.addAttribute("signupForm", employee);
 		return "SignUp";
@@ -40,24 +41,26 @@ public class SignUpController {
 			BindingResult result, Model model, SessionStatus status) {
 		boolean isSignUpSuccessful = false;
 		signupValidator.validate(employee, result);
-		
-		if(!result.hasErrors()){
+
+		if (!result.hasErrors()) {
 			employee.setEnabled(Constants.REQUEST_EMPLOYEE_ACCESS);
-			if("M".equalsIgnoreCase(employee.getEmployeeGender())){
+			if ("M".equalsIgnoreCase(employee.getEmployeeGender())) {
 				employee.setEmployeeGender("Male");
 			} else {
 				employee.setEmployeeGender("Female");
 			}
 			isSignUpSuccessful = employeeService.signupEmployee(employee);
 		}
-		
-		if(result.hasErrors() || !isSignUpSuccessful) {
+
+		if (result.hasErrors() || !isSignUpSuccessful) {
 			return "SignUp";
 		} else {
 			status.setComplete();
 			Employee emp = new Employee();
 			model.addAttribute("employeeForm", emp);
-			model.addAttribute("loginMessage", "Signup successful. Awaiting Admin Approval. You will be able to login to application on approval.");
+			model.addAttribute(
+					"loginMessage",
+					"Signup successful. Awaiting Admin Approval. You will be able to login to application on approval.");
 			return "SignIn";
 		}
 	}

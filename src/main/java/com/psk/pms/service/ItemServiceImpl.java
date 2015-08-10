@@ -25,45 +25,49 @@ public class ItemServiceImpl implements ItemService {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
-	public boolean createEditItem(Item item){
+	public boolean createEditItem(Item item) {
 		boolean isInsertSuccessful = itemDAO.saveItem(item);
 		return isInsertSuccessful;
 	}
 
-	public boolean isItemAlreadyExisting(String itemName){
+	public boolean isItemAlreadyExisting(String itemName) {
 		boolean isAvailable = false;
 		isAvailable = itemDAO.isItemAlreadyExisting(itemName);
 		return isAvailable;
 	}
 
-
 	@Override
 	public List<ItemDetail> searchItemName(String itemName, String itemType) {
-		List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName, itemType);
+		List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName,
+				itemType);
 		return itemsDetail;
 	}
 
 	@Override
-	public List<DescItemDetail.ItemDetail> getProjectData(Integer projId){
-		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projId);
+	public List<DescItemDetail.ItemDetail> getProjectData(Integer projId) {
+		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO
+				.getProjectData(projId);
 		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
-		if(itemDetailList.size() > 0){
-			Map<String,String> itemNames = itemDAO.fetchItemInfo();
-			for(Map.Entry<String, String> itemName : itemNames.entrySet()){
+		if (itemDetailList.size() > 0) {
+			Map<String, String> itemNames = itemDAO.fetchItemInfo();
+			for (Map.Entry<String, String> itemName : itemNames.entrySet()) {
 				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
 				Double itemQty = 0.0;
 				Double itemCost = 0.0;
-				for(DescItemDetail.ItemDetail itemDetail : itemDetailList){
-					if(itemName.getKey().equalsIgnoreCase(itemDetail.getItemName())){
+				for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
+					if (itemName.getKey().equalsIgnoreCase(
+							itemDetail.getItemName())) {
 						item.setItemName(itemDetail.getItemName());
 						item.setItemPrice(itemDetail.getItemPrice());
 						item.setItemUnit(itemDetail.getItemUnit());
 						item.setItemType(itemName.getValue());
-						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
+						itemQty = itemQty
+								+ Double.valueOf(itemDetail.getItemQty());
+						itemCost = itemCost
+								+ Double.valueOf(itemDetail.getItemCost());
 					}
 				}
-				if(item.getItemName() != null){
+				if (item.getItemName() != null) {
 					item.setItemQty(String.valueOf(itemQty));
 					item.setItemCost(String.valueOf(itemCost));
 					finalItemDetailList.add(item);
@@ -79,8 +83,7 @@ public class ItemServiceImpl implements ItemService {
 		return itemNames;
 	}
 
-
-	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail){
+	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
 		return itemDAO.getDataDescription(descItemDetail);
 	}
 
@@ -89,11 +92,9 @@ public class ItemServiceImpl implements ItemService {
 		itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
 	}
 
-
-
-	public boolean insertDataDescription(DescItemDetail descItemDetail){
+	public boolean insertDataDescription(DescItemDetail descItemDetail) {
 		boolean isInsertSuccessful = false;
-		if(descItemDetail.getItemDetail() != null){
+		if (descItemDetail.getItemDetail() != null) {
 			isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
 		}
 		return isInsertSuccessful;
@@ -105,21 +106,23 @@ public class ItemServiceImpl implements ItemService {
 		return itemsDetail;
 	}
 
-    public List<String> fetchItemTypes() {
-        List<String> itemTypes = itemDAO.fetchItemTypes();
-        return itemTypes;
-    }
+	public List<String> fetchItemTypes() {
+		List<String> itemTypes = itemDAO.fetchItemTypes();
+		return itemTypes;
+	}
 
-    public List<String> fetchUniqueItemUnits() {
-        List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
-        return itemUnits;
-    }
+	public List<String> fetchUniqueItemUnits() {
+		List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
+		return itemUnits;
+	}
 
 	@Override
-	public boolean configureItemPrice(ProjectConfiguration projectItemConfiguration) {
+	public boolean configureItemPrice(
+			ProjectConfiguration projectItemConfiguration) {
 		boolean isInsertSuccessful = false;
-		if(projectItemConfiguration.getItemDetail() != null){
-			isInsertSuccessful = itemDAO.configureItemPrice(projectItemConfiguration);
+		if (projectItemConfiguration.getItemDetail() != null) {
+			isInsertSuccessful = itemDAO
+					.configureItemPrice(projectItemConfiguration);
 		}
 		return isInsertSuccessful;
 	}
@@ -128,6 +131,12 @@ public class ItemServiceImpl implements ItemService {
 	public ProjectConfiguration getProjectItemConfiguration(
 			ProjectConfiguration projectConfiguration) {
 		return itemDAO.getProjectItemConfiguration(projectConfiguration);
+	}
+
+	@Override
+	public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
+		List<ItemDetail> itemsDetail = itemDAO.getBaseItemNames(request);
+		return itemsDetail;
 	}
 
 }

@@ -1,16 +1,21 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.ProjectDetail;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.FETCHPROJECTTYPES;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import com.psk.pms.model.ProjectDetail;
 
 public class ProjectDAOImpl implements ProjectDAO {
 

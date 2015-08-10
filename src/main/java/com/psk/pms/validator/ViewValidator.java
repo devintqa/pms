@@ -5,7 +5,7 @@ import com.psk.pms.model.ViewDetail;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public class ViewValidator extends BaseValidator implements Validator{
+public class ViewValidator extends BaseValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -14,32 +14,42 @@ public class ViewValidator extends BaseValidator implements Validator{
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		
-		ViewDetail viewDetail = (ViewDetail)target;
 
-        if((viewDetail.isViewProjectItemPrice() || viewDetail.isEditSubProject()) && StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
-            errors.rejectValue("aliasProjectName", "required.aliasProjectName","Please select Alias Project Name.");
-        }
-        	
-        if((viewDetail.isEditSubProject()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
-        	String projId = fetchProjectId(viewDetail.getAliasProjectName());
-        	if(projId == null){
-        		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
-        	}else{
-        		viewDetail.setProjId(Integer.valueOf(projId));
-        	}
-        }
-        
-        if(viewDetail.isSearchAggregateItemDetails() || viewDetail.isSearchComparisonData()){
-        	String projId = fetchProjectId(viewDetail.getAliasProjectName());
-        	if(projId == null){
-        		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
-        	}else{
-        		viewDetail.setProjId(Integer.valueOf(projId));
-        	}
-        }
+		ViewDetail viewDetail = (ViewDetail) target;
 
-		if (viewDetail.isViewProjectItemPrice() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+		if ((viewDetail.isViewProjectItemPrice() || viewDetail
+				.isEditSubProject())
+				&& StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+			errors.rejectValue("aliasProjectName", "required.aliasProjectName",
+					"Please select Alias Project Name.");
+		}
+
+		if ((viewDetail.isEditSubProject())
+				&& !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+			String projId = fetchProjectId(viewDetail.getAliasProjectName());
+			if (projId == null) {
+				errors.rejectValue("aliasProjectName",
+						"invalid.aliasProjectName",
+						"Please select valid Alias Project Name.");
+			} else {
+				viewDetail.setProjId(Integer.valueOf(projId));
+			}
+		}
+
+		if (viewDetail.isSearchAggregateItemDetails()
+				|| viewDetail.isSearchComparisonData()) {
+			String projId = fetchProjectId(viewDetail.getAliasProjectName());
+			if (projId == null) {
+				errors.rejectValue("aliasProjectName",
+						"invalid.aliasProjectName",
+						"Please select valid Alias Project Name.");
+			} else {
+				viewDetail.setProjId(Integer.valueOf(projId));
+			}
+		}
+
+		if (viewDetail.isViewProjectItemPrice()
+				&& !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
 				projId = fetchProjectId(viewDetail.getAliasProjectName());
@@ -48,7 +58,9 @@ public class ViewValidator extends BaseValidator implements Validator{
 			}
 
 			if (projId == null) {
-				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
+				errors.rejectValue("aliasProjectName",
+						"invalid.aliasProjectName",
+						"Please select valid Alias Project/ Sub Project Name.");
 			} else {
 				viewDetail.setProjId(Integer.valueOf(projId));
 			}
@@ -56,4 +68,3 @@ public class ViewValidator extends BaseValidator implements Validator{
 	}
 
 }
-

@@ -6,18 +6,18 @@ import java.util.Map;
 
 public interface ProjectDAO {
 
-    boolean saveProject(ProjectDetail projectDetail);
+	boolean saveProject(ProjectDetail projectDetail);
 
-    Map<String, String> getAliasProjectNames();
+	Map<String, String> getAliasProjectNames();
 
-    ProjectDetail getProjectDocument(String projectId);
+	ProjectDetail getProjectDocument(String projectId);
 
-    List<ProjectDetail> getProjectDocumentList();
+	List<ProjectDetail> getProjectDocumentList();
 
-    boolean isAliasProjectAlreadyExisting(String aliasName);
+	boolean isAliasProjectAlreadyExisting(String aliasName);
 
-    void deleteProject(Integer projectId);
+	void deleteProject(Integer projectId);
 
-    List<String> getProjectTypes();
+	List<String> getProjectTypes();
 
 }
