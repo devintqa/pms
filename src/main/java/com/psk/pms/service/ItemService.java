@@ -4,6 +4,7 @@ import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectItemDescription;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public interface ItemService {
     boolean isItemAlreadyExisting(String itemName);
 
     List<ItemDetail> getDescItemNames(Map<String, Object> request);
-    
+
     List<ItemDetail> searchItemName(String itemName, String itemType);
 
     Set<String> fetchItemNames();
@@ -36,7 +37,13 @@ public interface ItemService {
 
     List<String> fetchUniqueItemUnits();
 
-	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
+    boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+    ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+
+    List<String> getItemTypes();
+
+    List<String> getItemNames();
+
+    List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName);
 }

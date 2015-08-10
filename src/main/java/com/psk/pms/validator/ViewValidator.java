@@ -30,7 +30,7 @@ public class ViewValidator extends BaseValidator implements Validator{
         	}
         }
         
-        if(viewDetail.isSearchAggregateItemDetails() || viewDetail.isSearchComparisonData()){
+        if(viewDetail.isSearchAggregateItemDetails() || viewDetail.isSearchComparisonData() || viewDetail.isProjectItemDescription()){
         	String projId = fetchProjectId(viewDetail.getAliasProjectName());
         	if(projId == null){
         		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");

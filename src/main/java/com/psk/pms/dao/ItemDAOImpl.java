@@ -4,6 +4,7 @@ import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectItemDescription;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -320,4 +321,38 @@ public class ItemDAOImpl implements ItemDAO {
         return projectConfiguration;
     }
 
+    @Override
+    public List<String> getItemTypes() {
+        String PROJECT_ITEM_TYPES = "select distinct(itemTypeName) from itemtype";
+        List<String> types = jdbcTemplate.queryForList(PROJECT_ITEM_TYPES, String.class);
+        return types;
+    }
+
+    @Override
+    public List<String> getItemNames() {
+        String PROJECT_ITEM_NAMES = "select distinct(itemName) from itemCodes;";
+        List<String> types = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES, String.class);
+        return types;
+    }
+
+
+    @Override
+    public List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName) {
+        String sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
+                "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+                "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"+projId+"' and pdi.itemName = '"+itemName+"'";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        List<ProjectItemDescription> projectItemDescriptions = new ArrayList<>();
+        for (Map<String, Object> row : rows) {
+            ProjectItemDescription projectItemDescription = new ProjectItemDescription();
+            projectItemDescription.setProjectDescId((Integer) row.get("ProjDescId"));
+            projectItemDescription.setProjectDescSerialNumber((String) row.get("ProjDescSerial"));
+            projectItemDescription.setItemName((String) row.get("itemName"));
+            projectItemDescription.setItemQuantity((String) row.get("ItemQty"));
+            projectItemDescription.setItemUnit((String) row.get("itemUnit"));
+            projectItemDescription.setAliasDescription((String) row.get("AliasDescription"));
+            projectItemDescriptions.add(projectItemDescription);
+        }
+        return projectItemDescriptions;
+    }
 }
