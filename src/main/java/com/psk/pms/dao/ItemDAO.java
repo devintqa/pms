@@ -15,49 +15,51 @@ import com.psk.pms.model.ProjectItemDescription;
  */
 public interface ItemDAO {
 
-	boolean saveItem(Item item);
+    boolean saveItem(Item item);
 
-	Set<String> fetchItemNames();
+    Set<String> fetchItemNames();
 
-	public Map<String, String> fetchItemInfo();
+    public Map<String, String> fetchItemInfo();
 
-	Set<String> fetchItemNames(String itemCategory);
 
-	boolean isItemAlreadyExisting(String itemName);
+    Set<String> fetchItemNames(String itemCategory);
 
-	List<ItemDetail> getDescItemNames(Map<String, Object> request);
+    boolean isItemAlreadyExisting(String itemName);
 
-	List<ItemDetail> searchItemName(String itemCode, String itemType);
+    List<ItemDetail> getDescItemNames(Map<String, Object> request);
 
-	boolean insertDataDescription(DescItemDetail descItemDetail);
+    List<ItemDetail> searchItemName(String itemCode, String itemType);
 
-	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+    boolean insertDataDescription(DescItemDetail descItemDetail);
 
-	List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+    DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
-	void deleteItemByProjectId(Integer projectId);
+    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
 
-	void deleteItemBySubProjectId(Integer subProjectId);
+    void deleteItemByProjectId(Integer projectId);
 
-	void deleteItemByProjectDescriptionId(String projectDescId);
+    void deleteItemBySubProjectId(Integer subProjectId);
 
-	void deleteItemByProjectDescItemId(Integer itemId);
+    void deleteItemByProjectDescriptionId(String projectDescId);
 
-	List<String> fetchItemTypes();
+    void deleteItemByProjectDescItemId(Integer itemId);
 
-	List<String> fetchUniqueItemUnits();
+    List<String> fetchItemTypes();
 
-	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
+    List<String> fetchUniqueItemUnits();
 
-	ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+    boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
 
-	List<String> getItemTypes();
+    ProjectConfiguration getProjectItemConfiguration(
+            ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
-	List<String> getItemNames();
+    List<String> getItemNames();
 
-	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+    ProjectConfiguration getProjectItemConfiguration(
+            ProjectConfiguration projectConfiguration);
 
-	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
-			String itemName);
+    List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+
+    List<ProjectItemDescription> getProjectItemDescription(Integer projId,
+                                                           String itemName);
 }
