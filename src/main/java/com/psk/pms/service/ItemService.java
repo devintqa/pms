@@ -46,9 +46,6 @@ public interface ItemService {
 
 	List<String> getItemNames();
 
-	ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration);
-
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 
 	List<ProjectItemDescription> getProjectItemDescription(Integer projId,

@@ -21,7 +21,6 @@ public interface ItemDAO {
 
 	public Map<String, String> fetchItemInfo();
 
-
 	Set<String> fetchItemNames(String itemCategory);
 
 	boolean isItemAlreadyExisting(String itemName);
@@ -56,9 +55,6 @@ public interface ItemDAO {
 	List<String> getItemTypes();
 
 	List<String> getItemNames();
-
-	ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration);
 
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 

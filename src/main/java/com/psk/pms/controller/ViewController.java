@@ -66,62 +66,60 @@ public class ViewController extends BaseController {
 		return fetchSubProjectsInfo(name);
 	}
 
-	@RequestMapping(value = "/emp/myview/viewDetails/viewDetails.do", method = RequestMethod.POST)
-	public String viewProjectDetails(
-			@ModelAttribute("viewDetailsForm") ViewDetail viewDetail,
-			BindingResult result, Model model, SessionStatus status) {
-		LOGGER.info("method = viewProjectDetails()");
-		viewValidator.validate(viewDetail, result);
-		if (!result.hasErrors()) {
-			if (viewDetail.isSearchAggregateItemDetails()) {
-				List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService
-						.getProjectData(viewDetail.getProjId());
-				if (aggregateItemDetails.size() > 0) {
-					model.addAttribute("aggregateItemDetails",
-							aggregateItemDetails);
-					model.addAttribute("aggregateItemDetailsSize",
-							aggregateItemDetails.size());
-					model.addAttribute("projectAliasName",
-							viewDetail.getAliasProjectName());
-				} else {
-					model.addAttribute("noDetailsFound",
-							"No Item Price Configuration Found For The Project.");
-				}
-			} else if (viewDetail.isViewProjectItemPrice()) {
-				ProjectConfiguration projectConfiguration = new ProjectConfiguration();
-				projectConfiguration.setProjId(viewDetail.getProjId());
-				ProjectConfiguration itemConfiguration = itemService
-						.getProjectItemConfiguration(projectConfiguration);
-				List<ItemDetail> itemPriceDetails = itemConfiguration
-						.getItemDetail();
-				if (itemPriceDetails.size() > 0) {
-					model.addAttribute("itemPriceDetails", itemPriceDetails);
-					model.addAttribute("itemPriceDetailsSize",
-							itemPriceDetails.size());
-					model.addAttribute("projectAliasName",
-							viewDetail.getAliasProjectName());
-				} else {
-					model.addAttribute("noDetailsFound",
-							"No Item Price Configuration Found For The Project.");
-				}
-			} else if (viewDetail.isSearchComparisonData()) {
-				List<ProjDescComparisonDetail> projDescComparisonDetails = projectDescriptionService
-						.getProjectDescComparisonDetail(viewDetail.getProjId());
-				if (projDescComparisonDetails.size() > 0) {
-					model.addAttribute("projDescComparisonDetails",
-							projDescComparisonDetails);
-					model.addAttribute("projDescComparisonDetailsSize",
-							projDescComparisonDetails.size());
-					model.addAttribute("projectAliasName",
-							viewDetail.getAliasProjectName());
-				} else {
-					model.addAttribute("noDetailsFound",
-							"No Project Comparison Data Found For The Project.");
-				}
-			}
-		}
-		return "ViewDetails";
-	}
+	 @RequestMapping(value = "/emp/myview/viewDetails/viewDetails.do", method = RequestMethod.POST)
+	    public String viewProjectDetails(
+	            @ModelAttribute("viewDetailsForm") ViewDetail viewDetail,
+	            BindingResult result, Model model, SessionStatus status) {
+	        LOGGER.info("method = viewProjectDetails()");
+	        viewValidator.validate(viewDetail, result);
+	        setModelAttribute(model);
+	        if (!result.hasErrors()) {
+	            if (viewDetail.isSearchAggregateItemDetails()) {
+	                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(viewDetail.getProjId());
+	                if (aggregateItemDetails.size() > 0) {
+	                    model.addAttribute("aggregateItemDetails", aggregateItemDetails);
+	                    model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
+	                    model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
+	                } else {
+	                    model.addAttribute("noDetailsFound", "No Item Price Configuration Found For The Project.");
+	                }
+	            } else if (viewDetail.isViewProjectItemPrice()) {
+	                ProjectConfiguration projectConfiguration = new ProjectConfiguration();
+	                projectConfiguration.setProjId(viewDetail.getProjId());
+	                projectConfiguration.setSubProjId(viewDetail.getSubProjId());
+	                ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration, viewDetail.isEditSubProject());
+	                List<ItemDetail> itemPriceDetails = itemConfiguration.getItemDetail();
+	                if (itemPriceDetails.size() > 0) {
+	                    model.addAttribute("itemPriceDetails", itemPriceDetails);
+	                    model.addAttribute("itemPriceDetailsSize", itemPriceDetails.size());
+	                    model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
+	                } else {
+	                    model.addAttribute("noDetailsFound", "No Item Price Configuration Found For The Project.");
+	                }
+	            } else if (viewDetail.isSearchComparisonData()) {
+	                List<ProjDescComparisonDetail> projDescComparisonDetails = projectDescriptionService.getProjectDescComparisonDetail(viewDetail.getProjId());
+	                if (projDescComparisonDetails.size() > 0) {
+	                    model.addAttribute("projDescComparisonDetails", projDescComparisonDetails);
+	                    model.addAttribute("projDescComparisonDetailsSize", projDescComparisonDetails.size());
+	                    model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
+	                } else {
+	                    model.addAttribute("noDetailsFound", "No Project Comparison Data Found For The Project.");
+	                }
+	            } else if (viewDetail.isProjectItemDescription()) {
+	                List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(viewDetail.getProjId(), viewDetail.getItemName());
+	                if (projectItemDescription.size() > 0) {
+	                    int sumOfQuantity = getSumOfQuantity(projectItemDescription);
+	                    model.addAttribute("projectItemDescriptions", projectItemDescription);
+	                    model.addAttribute("projectItemDescriptionSize", projectItemDescription.size());
+	                    model.addAttribute("sumOfQuantity", sumOfQuantity);
+
+	                } else {
+	                    model.addAttribute("noDetailsFound", "No Project Description Data Found For The Project.");
+	                }
+	            }
+	        }
+	        return "ViewDetails";
+	    }
 
 	private List<String> fetchProjectsInfo(String aliasProjectName) {
 		LOGGER.info("method = fetchProjectsInfo()");
@@ -150,7 +148,6 @@ public class ViewController extends BaseController {
 		return result;
 	}
 
-	@SuppressWarnings("unused")
 	private int getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
 		int totalQuantity = 0;
 		for (int i = 0; i < projectItemDescriptions.size(); i++) {
@@ -160,7 +157,6 @@ public class ViewController extends BaseController {
 		return totalQuantity;
 	}
 
-	@SuppressWarnings("unused")
 	private void setModelAttribute(Model model) {
 		List<String> itemTypes = itemService.getItemTypes();
 		List<String> itemNames = itemService.getItemNames();

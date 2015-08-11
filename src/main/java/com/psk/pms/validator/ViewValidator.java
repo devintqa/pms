@@ -16,7 +16,6 @@ public class ViewValidator extends BaseValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 
 		ViewDetail viewDetail = (ViewDetail) target;
-
 		
 
         if((viewDetail.isViewProjectItemPrice() || viewDetail.isEditSubProject()) && StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
@@ -53,12 +52,12 @@ public class ViewValidator extends BaseValidator implements Validator {
 				viewDetail.setSubProjId(Integer.valueOf(projId));
 			}
 			if (projId == null) {
-				errors.rejectValue("aliasProjectName",
-						"invalid.aliasProjectName",
-						"Please select valid Alias Project/ Sub Project Name.");
-			} else {
-				viewDetail.setProjId(Integer.valueOf(projId));
-				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
+//				errors.rejectValue("aliasProjectName",
+//						"invalid.aliasProjectName",
+//						"Please select valid Alias Project/ Sub Project Name.");
+//			} else {
+//				viewDetail.setProjId(Integer.valueOf(projId));
+				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project");
 			}
 		}
 	}

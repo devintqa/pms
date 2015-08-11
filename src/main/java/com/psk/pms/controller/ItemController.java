@@ -196,10 +196,10 @@ public class ItemController {
         return result;
 	}
 	
-	@RequestMapping(value = "/emp/myview/testRes/down.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody String saveConfiguredItems(){
-		return "";
-	}
+//	@RequestMapping(value = "/emp/myview/testRes/down.do", method = RequestMethod.POST, consumes="application/json")
+//	public @ResponseBody String saveConfiguredItems(){
+//		return "";
+//	}
 	
 	@RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
 	public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
@@ -217,10 +217,6 @@ public class ItemController {
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
 		
-//		ProjDescDetail projDescDetail = projectDescService.getProjectDescDetail(baseDescId, null);
-//		if(null==projDescDetail){
-//			projDescDetail = new ProjDescDetail();
-//		}
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		model.addAttribute("projDescForm", projDescDetail);
         model.addAttribute("itemTypes",fetchItemTypes());

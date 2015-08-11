@@ -157,11 +157,4 @@ public class ItemServiceImpl implements ItemService {
 		return itemDAO.getProjectItemDescription(projId, itemName);
 	}
 
-	@Override
-	public ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
