@@ -87,7 +87,7 @@ function openBaseDescLoader(baseDescId, employeeId){
 								<td>${globalDescription.quantity}</td>
 								<td>${globalDescription.totalCost}</td>
 								<td><a
-									href="/pms/emp/myview/buildBaseDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.projDescId}"
+									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit""
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
 									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.projDescId}');"

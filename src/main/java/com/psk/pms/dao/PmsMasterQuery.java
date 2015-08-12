@@ -89,6 +89,8 @@ public class PmsMasterQuery {
 
 	public static String SAVEITEMS = "INSERT INTO itemcodes (itemName, itemUnit ,itemType) VALUES (?, ?, ?)";
 
+    public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
+
 	public static String FETCHPROJECTTYPES = "SELECT projectTypeName FROM projecttype";
 
 	public static String DEACTIVATEEXISTINGPRICES = "UPDATE pricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
@@ -103,4 +105,6 @@ public class PmsMasterQuery {
 	public static String DELETEBASEDESCRIPTION = "DELETE FROM basedesc WHERE basedesc = ?";
 
     public static String ISBASEDESCEXISTS = "SELECT count(*) FROM basedesc WHERE BaseDescription = ?";
+
+    public static String GETBASEDESCRIPTION = "SELECT * FROM basedesc WHERE BaseDescription = ?";
 }

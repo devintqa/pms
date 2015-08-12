@@ -192,4 +192,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 				.isGlobalDescriptionAlreadyExisting(baseDescription);
 	}
 
+    @Override
+    public ProjDescDetail getBaseProjectDescription(String aliasDescription){
+        LOGGER.info("method = getBaseProjectDescription()");
+        return projectDescriptionDAO.getBaseProjectDescription(aliasDescription);
+    }
 }
