@@ -15,43 +15,41 @@ import java.util.Set;
  */
 public interface ItemService {
 
-	boolean createEditItem(Item item);
+    boolean createEditItem(Item item);
 
-	boolean isItemAlreadyExisting(String itemName);
+    boolean isItemAlreadyExisting(String itemName);
 
-	List<ItemDetail> getDescItemNames(Map<String, Object> request);
+    List<ItemDetail> getDescItemNames(Map<String, Object> request);
 
-	List<ItemDetail> searchItemName(String itemName, String itemType);
+    List<ItemDetail> searchItemName(String itemName, String itemType);
 
-	Set<String> fetchItemNames();
+    Set<String> fetchItemNames();
 
-	List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
 
 	boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
 	
 	boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
 
-	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+	boolean insertDataDescription(DescItemDetail descItemDetail);
 
-	void deleteItemByDescriptionItemId(Integer subProjectid);
+    DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
-	List<String> fetchItemTypes();
+    void deleteItemByDescriptionItemId(Integer subProjectid);
 
-	List<String> fetchUniqueItemUnits();
+    List<String> fetchItemTypes();
 
-	boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
+    List<String> fetchUniqueItemUnits();
 
-	ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+    boolean configureItemPrice(ProjectConfiguration projectItemConfiguration);
 
-	List<String> getItemTypes();
+    ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
-	List<String> getItemNames();
+    List<String> getItemNames();
 
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 
-	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
-			String itemName);
-
 	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
+
+	List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName);
 }

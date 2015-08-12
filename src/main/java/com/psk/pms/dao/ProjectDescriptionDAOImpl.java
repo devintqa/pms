@@ -451,22 +451,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public void saveBaseDescription(ProjDescDetail projDescDetail) {
-		LOGGER.info("method = saveBaseDescription , baseDescription :"
-				+ projDescDetail.getAliasDescription());
-		jdbcTemplate.update(
-				INSERTBASEDESCRIPTION,
-				new Object[] { projDescDetail.getWorkType(),
-						projDescDetail.getMetric(),
-						projDescDetail.getQuantity(),
-						projDescDetail.getTotalCost(),
-						projDescDetail.getLastUpdatedBy(),
-						projDescDetail.getLastUpdatedAt(),
-						projDescDetail.getDescription(),
-						projDescDetail.getAliasDescription() });
-	}
-
-	@Override
 	public List<ProjDescDetail> fetchBaseProjectDescriptions() {
 		List<Map<String, Object>> rows = jdbcTemplate
 				.queryForList(FETCHBASEDESCRIPTIONS);
@@ -502,6 +486,30 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("No of base descriptions deleted =" + noOfRows);
 	}
 
+    @Override
+    public void saveBaseDescription(ProjDescDetail projDescDetail) {
+        LOGGER.info("method = saveBaseDescription , baseDescription :" + projDescDetail.getAliasDescription());
+        if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+            jdbcTemplate.update(UPDATEBASEDESCRIPTION, new Object[]{projDescDetail.getWorkType(), projDescDetail.getMetric(),
+                    projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(),
+                    projDescDetail.getDescription(), projDescDetail.getAliasDescription()});
+        } else {
+            jdbcTemplate.update(INSERTBASEDESCRIPTION, new Object[]{projDescDetail.getWorkType(), projDescDetail.getMetric(),
+                    projDescDetail.getQuantity(), projDescDetail.getTotalCost(),
+                    projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(),
+                    projDescDetail.getDescription(), projDescDetail.getAliasDescription()});
+        }
+    }
+
+    @Override
+    public ProjDescDetail getBaseProjectDescription(String aliasDescription){
+        ProjDescDetail projDescDetail = new ProjDescDetail();
+        List<Map<String, Object>> maps = jdbcTemplate.queryForList(GETBASEDESCRIPTION, new Object[]{aliasDescription});
+        for(Map<String,Object> map : maps){
+            projDescDetail = buildBaseDescDetail(map);
+        }
+        return projDescDetail;
+    }
 	@Override
 	public boolean isGlobalDescriptionAlreadyExisting(String baseDescription) {
 		int noOfrows = 0;

@@ -9,6 +9,12 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $("#quantity").attr("readonly", "readonly");
+
+    if($("#isUpdate").val()=='Y'){
+        $("#aliasDescription").attr("readonly", "readonly");
+        $("#totalCost").attr("readonly", "readonly");
+    }
+
   });
 </script>
 </head>
@@ -47,7 +53,7 @@ $(document).ready(function () {
 							<tr>
 								<td>Base Description<span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasDescription"
+								<td><form:input id ="aliasDescription" path="aliasDescription"
 										placeholder="Enter Base description" cssClass="inputText" /></td>
 								<td><form:errors path="aliasDescription" cssClass="error" /></td>
 							</tr>
@@ -68,14 +74,14 @@ $(document).ready(function () {
 							<tr>
 								<td>Total Cost<span id="colon">:</span>
 								</td>
-								<td><form:input path="totalCost" cssClass="inputText" /></td>
+								<td><form:input id="totalCost" path="totalCost" cssClass="inputText" /></td>
 								<td><form:errors path="totalCost" cssClass="error" /></td>
 							</tr>
 							<tr></tr>
 						</table>
 					</fieldset>
 					<form:hidden path="employeeId" />
-					<form:hidden path="isUpdate" />
+					<form:hidden id="isUpdate" path="isUpdate" />
 					<form:hidden path="projDescId" />
 					<table>
 						<tr>

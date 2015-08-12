@@ -84,17 +84,8 @@ public class ItemServiceImpl implements ItemService {
 		return itemNames;
 	}
 
-	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
-		return itemDAO.getDataDescription(descItemDetail);
-	}
-	
 	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
 		return itemDAO.getBaseDescription(descItemDetail);
-	}
-
-	@Override
-	public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
-		itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
 	}
 
 	public boolean insertProjectDescriptionItems(DescItemDetail descItemDetail) {
@@ -113,60 +104,72 @@ public class ItemServiceImpl implements ItemService {
 		return isInsertSuccessful;
 	}
 
-	@Override
-	public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
-		List<ItemDetail> itemsDetail = itemDAO.getDescItemNames(request);
-		return itemsDetail;
-	}
+    public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
+        return itemDAO.getDataDescription(descItemDetail);
+    }
 
-	public List<String> fetchItemTypes() {
-		List<String> itemTypes = itemDAO.fetchItemTypes();
-		return itemTypes;
-	}
+    @Override
+    public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
+        itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
+    }
 
-	public List<String> fetchUniqueItemUnits() {
-		List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
-		return itemUnits;
-	}
+    public boolean insertDataDescription(DescItemDetail descItemDetail) {
+        boolean isInsertSuccessful = false;
+        if (descItemDetail.getItemDetail() != null) {
+            isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
+        }
+        return isInsertSuccessful;
+    }
 
-	@Override
-	public boolean configureItemPrice(
-			ProjectConfiguration projectItemConfiguration) {
-		boolean isInsertSuccessful = false;
-		if (projectItemConfiguration.getItemDetail() != null) {
-			isInsertSuccessful = itemDAO
-					.configureItemPrice(projectItemConfiguration);
-		}
-		return isInsertSuccessful;
-	}
+    @Override
+    public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
+        List<ItemDetail> itemsDetail = itemDAO.getDescItemNames(request);
+        return itemsDetail;
+    }
 
-	@Override
-	public ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
-		return itemDAO.getProjectItemConfiguration(projectConfiguration,
-				isEditSubProject);
-	}
+    public List<String> fetchItemTypes() {
+        List<String> itemTypes = itemDAO.fetchItemTypes();
+        return itemTypes;
+    }
 
-	@Override
-	public List<String> getItemTypes() {
-		return itemDAO.getItemTypes();
-	}
+    public List<String> fetchUniqueItemUnits() {
+        List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
+        return itemUnits;
+    }
 
-	@Override
-	public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
-		List<ItemDetail> itemsDetail = itemDAO.getBaseItemNames(request);
-		return itemsDetail;
-	}
+    @Override
+    public boolean configureItemPrice(
+            ProjectConfiguration projectItemConfiguration) {
+        boolean isInsertSuccessful = false;
+        if (projectItemConfiguration.getItemDetail() != null) {
+            isInsertSuccessful = itemDAO
+                    .configureItemPrice(projectItemConfiguration);
+        }
+        return isInsertSuccessful;
+    }
 
-	@Override
-	public List<String> getItemNames() {
-		return itemDAO.getItemNames();
-	}
+    @Override
+    public ProjectConfiguration getProjectItemConfiguration(
+            ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+        return itemDAO.getProjectItemConfiguration(projectConfiguration,
+                isEditSubProject);
+    }
 
-	@Override
-	public List<ProjectItemDescription> getProjectItemDescription(
-			Integer projId, String itemName) {
-		return itemDAO.getProjectItemDescription(projId, itemName);
-	}
+    @Override
+    public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
+        List<ItemDetail> itemsDetail = itemDAO.getBaseItemNames(request);
+        return itemsDetail;
+    }
+
+    @Override
+    public List<String> getItemNames() {
+        return itemDAO.getItemNames();
+    }
+
+    @Override
+    public List<ProjectItemDescription> getProjectItemDescription(
+            Integer projId, String itemName) {
+        return itemDAO.getProjectItemDescription(projId, itemName);
+    }
 
 }

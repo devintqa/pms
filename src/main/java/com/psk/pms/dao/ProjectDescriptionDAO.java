@@ -49,4 +49,6 @@ public interface ProjectDescriptionDAO {
     boolean isGlobalDescriptionAlreadyExisting(String baseDescription);
 
 	ProjDescDetail getBaseDescDetail(String baseDescId);
+	
+    ProjDescDetail getBaseProjectDescription(String aliasDescription);
 }

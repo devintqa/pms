@@ -49,5 +49,7 @@ public interface ProjectDescriptionService {
 
 	void deleteBaseProjectDescription(String projectDescId);
 
-	boolean isGlobalDescriptionAlreadyExisting(String projectDescDetail);
+    boolean isGlobalDescriptionAlreadyExisting(String  projectDescDetail);
+
+    ProjDescDetail getBaseProjectDescription(String aliasDescription);
 }

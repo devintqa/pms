@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
-
+import com.psk.pms.validator.BaseDescriptionValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,6 +42,9 @@ public class DescriptionController extends BaseController {
 
 	@Autowired
 	private ItemService itemService;
+
+    @Autowired
+    private BaseDescriptionValidator baseDescriptionValidator;
 
 	private static final Logger LOGGER = Logger
 			.getLogger(DescriptionController.class);
@@ -135,8 +138,8 @@ public class DescriptionController extends BaseController {
 						.createEditProjDesc(projDescDetail);
 				projDescDetail = projectDescriptionService
 						.getProjectDescDetail(
-								String.valueOf(projDescDetail.getProjDescId()),
-								projDescDetail.getAliasSubProjectName());
+                                String.valueOf(projDescDetail.getProjDescId()),
+                                projDescDetail.getAliasSubProjectName());
 				projDescDetail.setIsUpdate("Y");
 				aliasProjectList = new HashMap<String, String>();
 				aliasProjectList.put(projDescDetail.getProjId().toString(),
@@ -211,25 +214,38 @@ public class DescriptionController extends BaseController {
 		return subAliasProjectList;
 	}
 
-	@RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildBaseProjDesc(@PathVariable String employeeId,
-			@RequestParam(value = "team", required = true) String team,
-			Model model) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		projDescDetail.setEmployeeId(employeeId);
-		projDescDetail.setQuantity("1");
-		model.addAttribute("baseDescForm", projDescDetail);
-		return "BaseDescription";
-	}
+    @RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
+    public String buildBaseProjDesc(@PathVariable String employeeId,
+                                    @RequestParam(value = "team", required = true) String team,@RequestParam(value = "action", required = false) String action,
+                                    @RequestParam(value = "project", required = false) String aliasDescription,
+                                    Model model) {
+        ProjDescDetail projDescDetail = new ProjDescDetail();
+        if(null!=action && "edit".equalsIgnoreCase(action)) {
+            projDescDetail = projectDescriptionService.getBaseProjectDescription(aliasDescription);
+            projDescDetail.setIsUpdate("Y");
+            model.addAttribute("baseDescForm", projDescDetail);
+            return "BaseDescription";
+        }
+
+        projDescDetail.setEmployeeId(employeeId);
+        projDescDetail.setQuantity("1");
+        model.addAttribute("baseDescForm", projDescDetail);
+        return "BaseDescription";
+    }
 
 	@RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
 	public String saveBaseProjDesc(
 			@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
 			BindingResult result, Model model, SessionStatus status) {
 		model.addAttribute("baseDescForm", projDescDetail);
-		model.addAttribute("projDescCreationMessage",
-				"PWD Project Description creation successfully");
-		projectDescriptionService.saveBaseProjectDescription(projDescDetail);
+        if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+            model.addAttribute("projDescCreationMessage",
+                    "Base Description update successfully");
+        }else{
+            model.addAttribute("projDescCreationMessage",
+                    "Base Description creation successfully");
+        }
+        projectDescriptionService.saveBaseProjectDescription(projDescDetail);
 		return "BaseDescription";
 	}
 

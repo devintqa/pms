@@ -195,4 +195,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		return projDescDetail;
 	}
 
+    @Override
+    public ProjDescDetail getBaseProjectDescription(String aliasDescription){
+        LOGGER.info("method = getBaseProjectDescription()");
+        return projectDescriptionDAO.getBaseProjectDescription(aliasDescription);
+    }
 }
