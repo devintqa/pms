@@ -87,16 +87,28 @@ public class ItemServiceImpl implements ItemService {
 	public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
 		return itemDAO.getDataDescription(descItemDetail);
 	}
+	
+	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
+		return itemDAO.getBaseDescription(descItemDetail);
+	}
 
 	@Override
 	public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
 		itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
 	}
 
-	public boolean insertDataDescription(DescItemDetail descItemDetail) {
+	public boolean insertProjectDescriptionItems(DescItemDetail descItemDetail) {
 		boolean isInsertSuccessful = false;
 		if (descItemDetail.getItemDetail() != null) {
-			isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
+			isInsertSuccessful = itemDAO.insertProjectDescriptionItems(descItemDetail);
+		}
+		return isInsertSuccessful;
+	}
+	
+	public boolean insertBaseDescriptionItems(DescItemDetail descItemDetail) {
+		boolean isInsertSuccessful = false;
+		if (descItemDetail.getItemDetail() != null) {
+			isInsertSuccessful = itemDAO.insertBaseDescriptionItems(descItemDetail);
 		}
 		return isInsertSuccessful;
 	}

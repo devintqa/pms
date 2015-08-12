@@ -3,6 +3,7 @@ package com.psk.pms.dao;
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
-import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -37,9 +37,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	@Override
 	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
 
-		int noOfRows = jdbcTemplate.update(
-				DELETEPROJECTDESCRIPTIONBYSUBPROJECTID,
-				new Object[] { subProjectId });
+		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYSUBPROJECTID,	new Object[] { subProjectId });
 		LOGGER.info("method = deleteProjectDescriptionBySubProjectId , Number of rows deleted : "
 				+ noOfRows + " subProjectId :" + subProjectId);
 	}
@@ -62,8 +60,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId,
-			String subProject) {
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
 		String sql = null;
 		LOGGER.info("subProject value" + subProject);
 		if (!StringUtils.isNullOrEmpty(subProject)) {
@@ -96,8 +93,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		projDescDetail.setAliasProjectName((String) row.get("AliasProjName"));
 		projDescDetail.setSerialNumber((String) row.get("SerialNumber"));
 		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
-		projDescDetail.setAliasSubProjectName((String) row
-				.get("AliasSubProjName"));
+		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
 		projDescDetail.setWorkType((String) row.get("WorkType"));
 		BigDecimal quantity = (BigDecimal) row.get("Quantity");
 		projDescDetail.setMetric((String) row.get("Metric"));
@@ -107,8 +103,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			projDescDetail.setQuantity(quantity.toString());
 		}
 		projDescDetail.setDescription((String) row.get("Description"));
-		projDescDetail
-				.setAliasDescription((String) row.get("AliasDescription"));
+		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
 
 		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
 		if (null == pricePerQuantity) {
@@ -125,7 +120,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
 		return projDescDetail;
 	}
-
+	
+	
 	private ProjDescComparisonDetail buildProjDescComparisonDetail(
 			Map<String, Object> row) {
 		ProjDescComparisonDetail projDescComparisonDetail = new ProjDescComparisonDetail();
@@ -476,12 +472,12 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				.queryForList(FETCHBASEDESCRIPTIONS);
 		List<ProjDescDetail> projDescDetails = new ArrayList<>();
 		for (Map<String, Object> row : rows) {
-			projDescDetails.add(buildBaseProjectDescDetail(row));
+			projDescDetails.add(buildBaseDescDetail(row));
 		}
 		return projDescDetails;
 	}
 
-	private ProjDescDetail buildBaseProjectDescDetail(Map<String, Object> row) {
+	private ProjDescDetail buildBaseDescDetail(Map<String, Object> row) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		projDescDetail.setProjDescId((Integer) row.get("BaseDescId"));
 		projDescDetail.setWorkType((String) row.get("WorkType"));
@@ -490,11 +486,11 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		projDescDetail.setQuantity(quantity.toString());
 		projDescDetail.setDescription((String) row.get("Description"));
 		projDescDetail.setAliasDescription((String) row.get("BaseDescription"));
-		BigDecimal totalCost = (BigDecimal) row.get("QuantityCost");
-		if (null == totalCost) {
-			projDescDetail.setTotalCost("");
+		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
+		if (null == pricePerQuantity) {
+			projDescDetail.setPricePerQuantity("");
 		} else {
-			projDescDetail.setTotalCost(totalCost.toString());
+			projDescDetail.setPricePerQuantity(pricePerQuantity.toString());
 		}
 		return projDescDetail;
 	}
@@ -517,5 +513,22 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public ProjDescDetail getBaseDescDetail(String baseDescId) {
+		String sql = null;
+		LOGGER.info("base description value" + baseDescId);
+		if (!StringUtils.isNullOrEmpty(baseDescId)) {
+			sql = baseDescDetail + " WHERE BaseDescId = "+baseDescId;
+		} 
+
+		ProjDescDetail projDescDetail = null;
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			projDescDetail = buildBaseDescDetail(row);
+		}
+		return projDescDetail;
 	}
 }

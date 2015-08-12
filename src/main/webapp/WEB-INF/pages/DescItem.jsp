@@ -183,7 +183,7 @@
 		itemDescForm["subProjId"] = document.getElementById('subProjId').value;
 		itemDescForm["projDescId"] = document.getElementById('projDescId').value;
 		itemDescForm["projDescSerial"] = document.getElementById('projDescSerial').value;
-		itemDescForm["projDescItemDetail"] = JSON.stringify(itemObjArray);
+		itemDescForm["descItemDetail"] = JSON.stringify(itemObjArray);
 		
 		
 		console.log("data = " + JSON.stringify(itemDescForm));
@@ -222,7 +222,7 @@
 	
 	function fillItemDesc() {
 		var len = document.getElementById('itemTable').rows.length;
-		var obj = JSON.parse(document.getElementById('projDescItemDetail').value);
+		var obj = JSON.parse(document.getElementById('descItemDetail').value);
 		for (i = 0; i <= obj.length - 1; i++) {
 			fillItemRow(obj[i]);
 		}
@@ -391,7 +391,7 @@
 			</tr>
 		</table>
 		<br>
-		<form:hidden path="projDescItemDetail" id="projDescItemDetail" />
+		<form:hidden path="descItemDetail" id="descItemDetail" />
 		<form:hidden path="projId" id="projId" />
 		<form:hidden path="subProjId" id="subProjId" />
 		<form:hidden path="projDescId" id="projDescId" />

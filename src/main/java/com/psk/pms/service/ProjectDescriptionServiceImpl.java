@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -43,19 +44,16 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		return getSQLDate(formattedDate, simpleDateFormat);
 	}
 
-	public boolean isAliasDescriptionAlreadyExisting(
-			ProjDescDetail projectDescDetail) {
+	public boolean isAliasDescriptionAlreadyExisting(ProjDescDetail projectDescDetail) {
 		boolean isAvailable = false;
-		isAvailable = projectDescriptionDAO
-				.isAliasDescriptionAlreadyExisting(projectDescDetail);
+		isAvailable = projectDescriptionDAO.isAliasDescriptionAlreadyExisting(projectDescDetail);
 		return isAvailable;
 	}
 
 	public boolean isSerialNumberAlreadyExisting(
 			ProjDescDetail projectDescDetail) {
 		boolean isAvailable = false;
-		isAvailable = projectDescriptionDAO
-				.isSerialNumberAlreadyExisting(projectDescDetail);
+		isAvailable = projectDescriptionDAO.isSerialNumberAlreadyExisting(projectDescDetail);
 		return isAvailable;
 	}
 
@@ -74,8 +72,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	@Override
 	public ProjDescDetail getProjectDescDetail(String projDescId,
 			String subProject) {
-		ProjDescDetail projDescDetail = projectDescriptionDAO
-				.getProjectDescDetail(projDescId, subProject);
+		ProjDescDetail projDescDetail = projectDescriptionDAO.getProjectDescDetail(projDescId, subProject);
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
@@ -190,6 +187,12 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		LOGGER.info("method = isGlobalDescriptionAlreadyExisting()");
 		return projectDescriptionDAO
 				.isGlobalDescriptionAlreadyExisting(baseDescription);
+	}
+
+	@Override
+	public ProjDescDetail getBaseDescDetail(String baseDescId) {
+		ProjDescDetail projDescDetail = projectDescriptionDAO.getBaseDescDetail(baseDescId);
+		return projDescDetail;
 	}
 
 }

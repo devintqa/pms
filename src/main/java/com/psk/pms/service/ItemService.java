@@ -27,7 +27,9 @@ public interface ItemService {
 
 	List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
 
-	boolean insertDataDescription(DescItemDetail descItemDetail);
+	boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
+	
+	boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
 
 	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
@@ -50,4 +52,6 @@ public interface ItemService {
 
 	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
 			String itemName);
+
+	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 }

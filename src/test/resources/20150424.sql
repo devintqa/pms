@@ -29,7 +29,7 @@ CREATE TABLE `basedesc` (
   `WorkType` varchar(30) NOT NULL,
   `Metric` varchar(30) NOT NULL,
   `Quantity` decimal(15,2) NOT NULL,
-  `QuantityCost` decimal(15,2) DEFAULT NULL,
+  `PricePerQuantity` decimal(15,2) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `Description` text,
@@ -44,8 +44,37 @@ CREATE TABLE `basedesc` (
 
 LOCK TABLES `basedesc` WRITE;
 /*!40000 ALTER TABLE `basedesc` DISABLE KEYS */;
-INSERT INTO `basedesc` VALUES (21,'Main Work','sqft',1.00,0.00,'tkumar','2015-08-09 20:10:11','main hall for public meetings','main hall');
+INSERT INTO `basedesc` VALUES (21,'Main Work','sqft',1.00,289.00,'tkumar','2015-08-09 20:10:11','main hall for public meetings','main hall');
 /*!40000 ALTER TABLE `basedesc` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `basedescitem`
+--
+
+DROP TABLE IF EXISTS `basedescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `basedescitem` (
+  `BaseDescId` int(11) DEFAULT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemType` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT '1',
+  `ItemPrice` varchar(45) DEFAULT NULL,
+  `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DescItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `basedescitem`
+--
+
+LOCK TABLES `basedescitem` WRITE;
+/*!40000 ALTER TABLE `basedescitem` DISABLE KEYS */;
+INSERT INTO `basedescitem` VALUES (21,'WHITE CEMENT','KG','undefined',NULL,'23.00',2),(21,'CAULKER','DAY','Labour',NULL,'266.00',3);
+/*!40000 ALTER TABLE `basedescitem` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -239,7 +268,7 @@ CREATE TABLE `pricedetail` (
   `entryId` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(1) DEFAULT '1',
   PRIMARY KEY (`entryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +277,7 @@ CREATE TABLE `pricedetail` (
 
 LOCK TABLES `pricedetail` WRITE;
 /*!40000 ALTER TABLE `pricedetail` DISABLE KEYS */;
-INSERT INTO `pricedetail` VALUES ('CEMENT','Bag','MATERIAL',500.00,1,0,'2015-07-27 00:00:00',6,1),('RIVER SAND','Bag','MATERIAL',250.00,1,0,'2015-07-27 00:00:00',7,1),('CEMENT','Bag','Material',600.00,2,0,'2015-08-02 00:00:00',8,1),('STEEL','Bag','Material',700.00,2,0,'2015-08-02 00:00:00',9,1);
+INSERT INTO `pricedetail` VALUES ('CEMENT','Bag','MATERIAL',500.00,1,0,'2015-07-27 00:00:00',6,1),('RIVER SAND','Bag','MATERIAL',250.00,1,0,'2015-07-27 00:00:00',7,1),('CEMENT','Bag','Material',600.00,2,0,'2015-08-02 00:00:00',8,0),('STEEL','Bag','Material',700.00,2,0,'2015-08-02 00:00:00',9,0),('CEMENT','Bag','Material',600.00,2,0,'2015-08-11 00:00:00',10,1),('STEEL','Bag','Material',700.00,2,0,'2015-08-11 00:00:00',11,1);
 /*!40000 ALTER TABLE `pricedetail` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -555,4 +584,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-08-11  1:14:55
+-- Dump completed on 2015-08-13  2:04:10

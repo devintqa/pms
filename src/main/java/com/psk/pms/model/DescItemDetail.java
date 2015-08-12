@@ -10,7 +10,7 @@ public class DescItemDetail {
 	private Integer projId;
 	private Integer subProjId;
 	private String employeeId;
-	private String projDescItemDetail;
+	private String descItemDetail;
 	private String itemType;
 
 	private List<ItemDetail> itemDetail;
@@ -29,14 +29,6 @@ public class DescItemDetail {
 
 	public void setProjId(Integer projId) {
 		this.projId = projId;
-	}
-
-	public String getProjDescItemDetail() {
-		return projDescItemDetail;
-	}
-
-	public void setProjDescItemDetail(String projDescItemDetail) {
-		this.projDescItemDetail = projDescItemDetail;
 	}
 
 	public String getProjDescSerial() {
@@ -85,6 +77,14 @@ public class DescItemDetail {
 
 	public void setBaseDescId(Integer baseDescId) {
 		this.baseDescId = baseDescId;
+	}
+
+	public String getDescItemDetail() {
+		return descItemDetail;
+	}
+
+	public void setDescItemDetail(String descItemDetail) {
+		this.descItemDetail = descItemDetail;
 	}
 
 	public static class ItemDetail {

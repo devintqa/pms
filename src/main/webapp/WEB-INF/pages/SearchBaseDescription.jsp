@@ -11,46 +11,45 @@
 <%@include file="Utility.jsp"%>
 <script>
 
-function openBaseDescLoader(baseDescId, employeeId){
+function openBaseDescLoader (baseDescId, employeeId){
 	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }
 
+function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
+	$("#dialog-confirm").html(
+			aliasDescription
+					+ " : Deletion Operation!, Please confirm to proceed");
+	$("#dialog-confirm").dialog({
+		resizable : false,
+		modal : true,
+		title : "Warning!",
+		height : 200,
+		width : 400,
+		buttons : {
+			"Yes" : function() {
+				$.ajax({
+					type : 'POST',
+					url : 'deleteGlobalProjectDescription.do',
+					data : "baseDescriptionId=" + baseDescriptionId,
+					success : function(response) {
+						location.reload();
+						console.log("Successfully deleted row ");
+					},
+					error : function(err) {
+						console.log("Error deleting base description ");
+					}
+				});
+				$(this).dialog('close');
+				window.location.reload();
 
-	function deleteBaseDescription((aliasDescription,baseDescriptionId ) {
-		$("#dialog-confirm").html(
-				aliasDescription
-						+ " : Deletion Operation!, Please confirm to proceed");
-		$("#dialog-confirm").dialog({
-			resizable : false,
-			modal : true,
-			title : "Warning!",
-			height : 200,
-			width : 400,
-			buttons : {
-				"Yes" : function() {
-					$.ajax({
-						type : 'POST',
-						url : 'deleteGlobalProjectDescription.do',
-						data : "baseDescriptionId=" + baseDescriptionId,
-						success : function(response) {
-							location.reload();
-							console.log("Successfully deleted row ");
-						},
-						error : function(err) {
-							console.log("Error deleting base description ");
-						}
-					});
-					$(this).dialog('close');
-					window.location.reload();
+			},
+			"No" : function() {
+				$(this).dialog('close');
 
-				},
-				"No" : function() {
-					$(this).dialog('close');
-
-				}
 			}
-		});
-	}
+		}
+	});
+}
 </script>
 </head>
 <body>

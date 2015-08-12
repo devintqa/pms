@@ -29,7 +29,9 @@ public interface ItemDAO {
 
 	List<ItemDetail> searchItemName(String itemCode, String itemType);
 
-	boolean insertDataDescription(DescItemDetail descItemDetail);
+	boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
+	
+	boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
 
 	DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
@@ -49,8 +51,7 @@ public interface ItemDAO {
 
 	boolean configureItemPrice(ProjectConfiguration projItemConfiguration);
 
-	ProjectConfiguration getProjectItemConfiguration(
-			ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+	ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
 	List<String> getItemTypes();
 
@@ -58,6 +59,8 @@ public interface ItemDAO {
 
 	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 
-	List<ProjectItemDescription> getProjectItemDescription(Integer projId,
-			String itemName);
+	List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName);
+
+	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
+
 }

@@ -22,8 +22,7 @@ public interface ProjectDescriptionDAO {
 
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 
-	List<ProjDescDetail> getProjectDescDetailList(Integer projectId,
-			boolean searchUnderProject);
+	List<ProjDescDetail> getProjectDescDetailList(Integer projectId, boolean searchUnderProject);
 
 	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
@@ -33,8 +32,7 @@ public interface ProjectDescriptionDAO {
 
 	void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-	void saveProposalProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails);
+	void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
 	void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
@@ -49,4 +47,6 @@ public interface ProjectDescriptionDAO {
 	void deleteBaseProjectDescription(String serialNumber);
 
     boolean isGlobalDescriptionAlreadyExisting(String baseDescription);
+
+	ProjDescDetail getBaseDescDetail(String baseDescId);
 }

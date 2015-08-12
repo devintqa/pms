@@ -53,6 +53,8 @@ public class PmsMasterQuery {
 	public static String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
 			+ "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";
 
+	public static String baseDescDetail = "SELECT BaseDescId, WorkType, Metric, Quantity, PricePerQuantity, LastUpdatedBy, LastUpdatedAt, Description, BaseDescription FROM basedesc";
+	
 	public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
 
 	public static String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
@@ -96,7 +98,7 @@ public class PmsMasterQuery {
 	public static String INSERTPRICEFORITEMS = "INSERT INTO pricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-	public static String INSERTBASEDESCRIPTION = "INSERT INTO basedesc(WorkType, Metric, Quantity, QuantityCost , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?)";
+	public static String INSERTBASEDESCRIPTION = "INSERT INTO basedesc(WorkType, Metric, Quantity, PricePerQuantity , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static String FETCHBASEDESCRIPTIONS = "SELECT * FROM basedesc";
 

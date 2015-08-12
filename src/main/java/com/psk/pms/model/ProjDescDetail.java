@@ -18,6 +18,7 @@ public class ProjDescDetail {
 	private Integer projId;
 	private Integer subProjId;
 	private Integer projDescId;
+	private Integer baseDescId;
 	private String isUpdate;
 	private boolean subProjectDesc;
 	private String lastUpdatedBy;
@@ -165,5 +166,13 @@ public class ProjDescDetail {
 
 	public void setTotalCost(String totalCost) {
 		this.totalCost = totalCost;
+	}
+
+	public Integer getBaseDescId() {
+		return baseDescId;
+	}
+
+	public void setBaseDescId(Integer baseDescId) {
+		this.baseDescId = baseDescId;
 	}
 }

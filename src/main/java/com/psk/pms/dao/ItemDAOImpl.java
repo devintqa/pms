@@ -109,7 +109,7 @@ public class ItemDAOImpl implements ItemDAO {
 		return itemNames;
 	}
 
-	public boolean insertDataDescription(final DescItemDetail descItemDetail) {
+	public boolean insertProjectDescriptionItems(final DescItemDetail descItemDetail) {
 		String sql = "INSERT INTO projdescitem"
 				+ "(ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -184,6 +184,19 @@ public class ItemDAOImpl implements ItemDAO {
 		descItemDetail.setItemDetail(itemDetailList);
 		return descItemDetail;
 	}
+	
+	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
+		String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+
+		List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map<String, Object> row : rows) {
+			itemDetailList.add(buildBaseItemDetail(row));
+		}
+		descItemDetail.setItemDetail(itemDetailList);
+		return descItemDetail;
+	}
 
 	public List<DescItemDetail.ItemDetail> getProjectData(final Integer projId) {
 		LOGGER.info("getProjectData projId:" + projId);
@@ -207,9 +220,17 @@ public class ItemDAOImpl implements ItemDAO {
 		itemDetail.setItemCost((String) row.get("ItemCost"));
 		return itemDetail;
 	}
+	
+	private DescItemDetail.ItemDetail buildBaseItemDetail(Map<String, Object> row) {
+		DescItemDetail.ItemDetail itemDetail = new DescItemDetail.ItemDetail();
+		itemDetail.setItemName((String) row.get("ItemName"));
+		itemDetail.setItemUnit((String) row.get("ItemUnit"));
+		itemDetail.setItemQty((String) row.get("ItemQty"));
+		itemDetail.setItemPrice((String) row.get("ItemPrice"));
+		return itemDetail;
+	}
 
-	private ProjectConfiguration.ItemDetail buildPricedItem(
-			Map<String, Object> row) {
+	private ProjectConfiguration.ItemDetail buildPricedItem(Map<String, Object> row) {
 		ProjectConfiguration.ItemDetail itemDetail = new ProjectConfiguration.ItemDetail();
 		itemDetail.setItemName((String) row.get("ItemName"));
 		itemDetail.setItemType((String) row.get("ItemType"));
@@ -340,16 +361,14 @@ public class ItemDAOImpl implements ItemDAO {
 					@Override
 					public void setValues(PreparedStatement ps, int i)
 							throws SQLException {
-						ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration
-								.getItemDetail().get(i);
+						ProjectConfiguration.ItemDetail itemDetail = projectItemConfiguration.getItemDetail().get(i);
 						ps.setInt(1, projectItemConfiguration.getProjId());
 						ps.setInt(2, projectItemConfiguration.getSubProjId());
 						ps.setString(3, itemDetail.getItemName());
 						ps.setString(4, itemDetail.getItemUnit());
 						ps.setString(5, itemDetail.getItemPrice());
 						ps.setString(6, itemDetail.getItemType());
-						ps.setDate(7, new java.sql.Date(Calendar.getInstance()
-								.getTimeInMillis()));
+						ps.setDate(7, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
 					}
 
 					@Override
@@ -361,8 +380,7 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	private void deactivateExistingPrices(
-			ProjectConfiguration projectItemConfiguration) {
-		jdbcTemplate.update(DEACTIVATEEXISTINGPRICES,
+			ProjectConfiguration projectItemConfiguration) {jdbcTemplate.update(DEACTIVATEEXISTINGPRICES,
 				projectItemConfiguration.getProjId(),
 				projectItemConfiguration.getSubProjId());
 	}
@@ -408,8 +426,7 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	@Override
-	public List<ProjectItemDescription> getProjectItemDescription(
-			Integer projId, String itemName) {
+	public List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName) {
 		String sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n"
 				+ "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n"
 				+ "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"
@@ -419,18 +436,56 @@ public class ItemDAOImpl implements ItemDAO {
 		List<ProjectItemDescription> projectItemDescriptions = new ArrayList<>();
 		for (Map<String, Object> row : rows) {
 			ProjectItemDescription projectItemDescription = new ProjectItemDescription();
-			projectItemDescription.setProjectDescId((Integer) row
-					.get("ProjDescId"));
-			projectItemDescription.setProjectDescSerialNumber((String) row
-					.get("ProjDescSerial"));
+			projectItemDescription.setProjectDescId((Integer) row.get("ProjDescId"));
+			projectItemDescription.setProjectDescSerialNumber((String) row.get("ProjDescSerial"));
 			projectItemDescription.setItemName((String) row.get("itemName"));
 			projectItemDescription.setItemQuantity((String) row.get("ItemQty"));
 			projectItemDescription.setItemUnit((String) row.get("itemUnit"));
-			projectItemDescription.setAliasDescription((String) row
-					.get("AliasDescription"));
+			projectItemDescription.setAliasDescription((String) row.get("AliasDescription"));
 			projectItemDescriptions.add(projectItemDescription);
 		}
 		return projectItemDescriptions;
+	}
+
+	@Override
+	public boolean insertBaseDescriptionItems(final DescItemDetail descItemDetail) {
+		String sql = "INSERT INTO basedescitem"
+				+ "(BaseDescId, ItemName, ItemUnit, ItemType, ItemQty, ItemPrice) "
+				+ "VALUES (?, ?, ?, ?, ?, ?)";
+
+		String deleteSql = "DELETE from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+		jdbcTemplate.execute(deleteSql);
+
+		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
+				ps.setInt(1, descItemDetail.getBaseDescId());
+				ps.setString(2, itemDetail.getItemName());
+				ps.setString(3, itemDetail.getItemUnit());
+				ps.setString(4, itemDetail.getItemType());
+				ps.setString(5, itemDetail.getItemQty());
+				System.out.println("############"+itemDetail.getItemPrice());
+				ps.setString(6, itemDetail.getItemPrice());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return descItemDetail.getItemDetail().size();
+			}
+		});
+
+		long sumItemPrice = 0;
+		for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
+			long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
+			sumItemPrice = sumItemPrice + itemPrice;
+		}
+
+		String updateSql = "UPDATE basedesc set PricePerQuantity = ? where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+		jdbcTemplate.update(updateSql, new Object[] { sumItemPrice});
+
+		return true;
 	}
 
 }

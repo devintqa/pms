@@ -13,11 +13,12 @@ public interface ProjectDescriptionService {
 	boolean createEditProjDesc(ProjDescDetail projDescDetail);
 
 	ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
+	
+	ProjDescDetail getBaseDescDetail(String baseDescId);
 
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
 
-	List<ProjDescDetail> getProjectDescDetailList(Integer projId,
-			boolean searchUnderProject);
+	List<ProjDescDetail> getProjectDescDetailList(Integer projId, boolean searchUnderProject);
 
 	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 

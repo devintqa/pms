@@ -159,7 +159,7 @@ public class ItemController {
 			
 		}
 		JsonArray jsonArray = element.getAsJsonArray();
-		descItemDetail.setProjDescItemDetail(jsonArray.toString());
+		descItemDetail.setDescItemDetail(jsonArray.toString());
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
 		
@@ -173,11 +173,22 @@ public class ItemController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
 		ObjectMapper mapper = new ObjectMapper();
-		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getProjDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
 		descItemDetail.setItemDetail(itemList);
-		boolean status = itemService.insertDataDescription(descItemDetail);
+		boolean status = itemService.insertProjectDescriptionItems(descItemDetail);
 		return status;
 	}
+	
+	@RequestMapping(value = "/emp/myview/buildBaseDesc/saveBaseDescItems.do", method = RequestMethod.POST, consumes="application/json")
+	public @ResponseBody boolean saveBaseDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+		descItemDetail.setItemDetail(itemList);
+		boolean status = itemService.insertBaseDescriptionItems(descItemDetail);
+		return status;
+	}
+	
+	
 	
 	@RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{
@@ -196,16 +207,12 @@ public class ItemController {
         return result;
 	}
 	
-//	@RequestMapping(value = "/emp/myview/testRes/down.do", method = RequestMethod.POST, consumes="application/json")
-//	public @ResponseBody String saveConfiguredItems(){
-//		return "";
-//	}
-	
 	@RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
 	public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
-		DescItemDetail descItemDetail = new  DescItemDetail();
 		
-		descItemDetail = itemService.getDataDescription(descItemDetail);
+		DescItemDetail descItemDetail = new  DescItemDetail();
+		descItemDetail.setBaseDescId(new Integer(baseDescId));
+		descItemDetail = itemService.getBaseDescription(descItemDetail);
 		
 		Gson gson = new Gson();
 		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
@@ -213,14 +220,18 @@ public class ItemController {
 			
 		}
 		JsonArray jsonArray = element.getAsJsonArray();
-		descItemDetail.setProjDescItemDetail(jsonArray.toString());
+		descItemDetail.setDescItemDetail(jsonArray.toString());
+		descItemDetail.setBaseDescId(new Integer(baseDescId));
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
 		
 		ProjDescDetail projDescDetail = new ProjDescDetail();
-		model.addAttribute("projDescForm", projDescDetail);
+		model.addAttribute("baseDescForm", projDescDetail);
         model.addAttribute("itemTypes",fetchItemTypes());
-		
+    	
+		ProjDescDetail baseDescDetail = projectDescService.getBaseDescDetail(baseDescId);
+		model.addAttribute("baseDescForm", baseDescDetail);
+        model.addAttribute("itemTypes",fetchItemTypes());
 		return "BaseItem";
 	}
 

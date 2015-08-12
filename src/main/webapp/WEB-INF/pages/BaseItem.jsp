@@ -21,6 +21,7 @@
 		            	        }, response);
 				},
 				select: function(event, ui) { 
+			         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
 			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
 			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
 			         $(this).focus();
@@ -30,8 +31,6 @@
 		});
 		
 		fillItemDesc();
-		
-		 
 	
       $('#slideOpen').click(function(){
     	  	$(this).toggle();
@@ -53,6 +52,7 @@
 			document.getElementById('itemTable').deleteRow(i);
 		} else{
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[1].value = '';
 			document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
 		}
@@ -67,6 +67,10 @@
 		var itemName = new_row.cells[0].getElementsByTagName('input')[0];
 		itemName.id += len;
 		itemName.value = '';
+		
+		var itemType = new_row.cells[0].getElementsByTagName('input')[1];
+		itemType.id += len;
+		itemType.value = '';
 
 		var itemUnit = new_row.cells[1].getElementsByTagName('input')[0];
 		itemUnit.id += len;
@@ -114,8 +118,9 @@
 		calculateTotalItemPrice();
 	});
 	
-	function ItemDetail(itemName, itemUnit, itemPrice) {
+	function ItemDetail(itemName, itemType, itemUnit, itemPrice) {
 		this.itemName = itemName;
+		this.itemType = itemType;
 		this.itemUnit = itemUnit;
 		this.itemPrice = itemPrice;
 		} 
@@ -128,10 +133,11 @@
 		var len = itemTable.rows.length;
 		for (i = 1; i <= len - 1; i++) {
 			var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+			var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
 			var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
 			var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
 			
-			var obj = new ItemDetail(itemName, itemUnit, itemPrice);
+			var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice);
 			if(itemName && itemUnit && itemPrice){
 				itemObjArray.push(obj); 
 			}else{
@@ -139,11 +145,8 @@
 			}
 		}
 		itemDescForm["employeeId"] = document.getElementById('employeeId').value;
-		itemDescForm["projId"] = document.getElementById('projId').value;
-		itemDescForm["subProjId"] = document.getElementById('subProjId').value;
-		itemDescForm["projDescId"] = document.getElementById('projDescId').value;
-		itemDescForm["projDescSerial"] = document.getElementById('projDescSerial').value;
-		itemDescForm["projDescItemDetail"] = JSON.stringify(itemObjArray);
+		itemDescForm["baseDescId"] = document.getElementById('baseDescId').value;
+		itemDescForm["descItemDetail"] = JSON.stringify(itemObjArray);
 		
 		
 		console.log("data = " + JSON.stringify(itemDescForm));
@@ -152,7 +155,7 @@
 		}else{
 			$.ajax({
 				type : "POST",
-				url : "saveProjDescItems.do",
+				url : "saveBaseDescItems.do",
 				contentType: "application/json",
 				cache : false,
 				data: JSON.stringify(itemDescForm),
@@ -182,7 +185,7 @@
 	
 	function fillItemDesc() {
 		var len = document.getElementById('itemTable').rows.length;
-		var obj = JSON.parse(document.getElementById('projDescItemDetail').value);
+		var obj = JSON.parse(document.getElementById('descItemDetail').value);
 		for (i = 0; i <= obj.length - 1; i++) {
 			fillItemRow(obj[i]);
 		}
@@ -200,6 +203,10 @@
 		itemName.id += len;
 		itemName.value = item.itemName;
 
+		var itemType = row.cells[0].getElementsByTagName('input')[1];
+		itemType.id += len;
+		itemType.value = item.itemType;
+		
 		var itemUnit = row.cells[1].getElementsByTagName('input')[0];
 		itemUnit.id += len;
 		itemUnit.value = item.itemUnit;
@@ -254,41 +261,31 @@
 		</a>
 
 
-		<form:form id="projDescForm" method="POST" commandName="projDescForm">
+		<form:form id="baseDescForm" method="POST" commandName="baseDescForm">
 			<fieldset style="margin: 1em; text-align: left;">
 				<legend>
-					<h2>Project Description Details</h2>
+					<h2>Base Description Details</h2>
 				</legend>
 				<table>
-					<tr>
-						<td>Alias Project Name <span id="colon">:</span>
-						</td>
-						<td><form:input id="aliasProjectName" path="aliasProjectName"
-								cssClass="inputText" readonly="true" /></td>
-					</tr>
-
-					<c:if test="${projDescForm.subProjId gt '0'}">
-						<tr>
-							<td>Alias Project Name <span id="colon">:</span>
-							</td>
-							<td><form:input id="aliasSubProjectName"
-									path="aliasSubProjectName" cssClass="inputText" readonly="true" /></td>
-						</tr>
-
-					</c:if>
-
-					<tr>
-						<td>Quantity<span id="colon">:</span>
-						</td>
-						<td><form:input id="quantity" path="quantity"
-								cssClass="inputText" readonly="true" /></td>
-					</tr>
 					<tr>
 						<td>Description<span id="colon">:</span>
 						</td>
 						<td><form:textarea path="description"
 								placeholder="Enter Description" cssClass="inputText"
 								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Base Description<span id="colon">:</span>
+						</td>
+						<td><form:input path="aliasDescription"
+								placeholder="Enter Alias Description" cssClass="inputText"
+								readonly="true" /></td>
+					</tr>
+					<tr>
+						<td>Quantity<span id="colon">:</span>
+						</td>
+						<td><form:input id="quantity" path="quantity"
+								cssClass="inputText" readonly="true" /></td>
 					</tr>
 					<tr>
 						<td>Metric<span id="colon">:</span>
@@ -298,22 +295,9 @@
 						<td><form:errors path="metric" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td>Alias Description<span id="colon">:</span>
-						</td>
-						<td><form:input path="aliasDescription"
-								placeholder="Enter Alias Description" cssClass="inputText"
-								readonly="true" /></td>
-					</tr>
-					<tr>
-						<td>Price Per Quantity<span id="colon">:</span>
-						</td>
-						<td><form:input path="pricePerQuantity" cssClass="inputText"
-								readonly="true" /></td>
-					</tr>
-					<tr>
 						<td>Total Cost in Rupees<span id="colon">:</span>
 						</td>
-						<td><form:input path="totalCost" cssClass="inputText"
+						<td><form:input path="pricePerQuantity" cssClass="inputText"
 								readonly="true" /></td>
 					</tr>
 					<tr></tr>
@@ -336,8 +320,8 @@
 			</tr>
 		</table>
 		<br>
-		<form:hidden path="projDescItemDetail" id="projDescItemDetail" />
-		<form:hidden path="baseDescId" id="projDescId" />
+		<form:hidden path="descItemDetail" id="descItemDetail" />
+		<form:hidden path="baseDescId" id="baseDescId" />
 		<form:hidden path="employeeId" id="employeeId" />
 
 		<table id="itemTable" border="1" class="gridView">
@@ -349,7 +333,8 @@
 			</tr>
 
 			<tr>
-				<td><input name="itemName" id="itemName" type="text" size="100%" /></td>
+				<td><input name="itemName" id="itemName" type="text" size="100%" />
+				<input name="itemType" id="itemType" type="hidden" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
 					type="text" /></td>
