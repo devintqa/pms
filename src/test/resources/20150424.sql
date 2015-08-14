@@ -325,14 +325,13 @@ CREATE TABLE `project` (
   `ProjName` text NOT NULL,
   `AliasProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NOT NULL,
+  `CERNum` varchar(30) DEFAULT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
-  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
@@ -358,7 +357,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES (1,'Madras Medical College','MMC','AGRN1234','CER1234',100000.00,'PSK','PSK','10 central street',150000.00,125000.00,200000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'',NULL),(2,'Better Homes','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,200000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00',100000.00,'tkumar','2015-08-11 01:10:21','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'PWD',NULL);
+INSERT INTO `project` VALUES (1,'Madras Medical College','MMC','AGRN1234',null,100000.00,'PSK','PSK','10 central street',150000.00,125000.00,25000.00,NULL,10.00,'2015-07-03 00:00:00',100000.00,'tkumar','2015-07-03 23:03:53','2015-07-28 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'',NULL),(2,'Better Homes','BHG','AGRN1234','CER1234',100000.00,'AJ COMPANY','AJ','velachery',150000.00,125000.00,200000.00,25000.00,25.00,NULL,'2015-07-03 00:00:00',100000.00,'tkumar','2015-08-11 01:10:21','2015-07-21 00:00:00','2015-07-29 00:00:00','2015-07-30 00:00:00',12,25000.00,'PWD',NULL);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -468,14 +467,13 @@ CREATE TABLE `subproject` (
   `SubProjName` text NOT NULL,
   `AliasSubProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
-  `CERNum` varchar(30) NOT NULL,
+  `CERNum` varchar(30) DEFAULT NULL,
   `Amount` decimal(15,2) NOT NULL,
   `ContractorName` varchar(50) NOT NULL,
   `ContractorAliasName` varchar(50) NOT NULL,
   `ContractorAdd` tinytext NOT NULL,
   `AgreementValue` decimal(15,2) NOT NULL,
   `TenderValue` decimal(15,2) NOT NULL,
-  `ContractorValue` decimal(15,2) NOT NULL,
   `ExcessInAmount` decimal(15,2) NOT NULL,
   `ExcessInPercentage` decimal(15,2) DEFAULT NULL,
   `LessInPercentage` decimal(15,2) DEFAULT NULL,
