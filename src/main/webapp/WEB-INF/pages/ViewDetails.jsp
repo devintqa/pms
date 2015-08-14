@@ -10,9 +10,14 @@
     <%@include file="Utility.jsp" %>
     <script>
         $(document).ready(function () {
-            //$('#hiddenFields').hide();
 
-
+        $(function () {
+            if(document.getElementById('projectItemDescription').checked == true){
+                $('#itemFields').show();
+            }else{
+                $('#itemFields').hide();
+            }
+        });
             $("#aliasProjectName").autocomplete({
                 source: function (request, response) {
                     if ($("#viewUnderSubProject").is(':checked')) {
@@ -30,19 +35,18 @@
         $(function () {
             $('input[type="checkbox"]').on('change', function () {
                 $('input[type="checkbox"]').not(this).prop('checked', false);
-            });
-        });
-    /*    $(function () {
-            $('input[type="checkbox"]').click(function () {
-                var checked = $(this).prop('checked');
-                var id = $(this).prop('id');
-                if (id == 'projectItemDescription') {
-                    $('#hiddenFields').show();
-                } else {
-                    $('#hiddenFields').hide();
+
+                if(this.id=="projectItemDescription"){
+                    if(this.checked==true){
+                        $('#itemFields').show();
+                    }else{
+                        $('#itemFields').hide();
+                    }
+                }else{
+                    $('#itemFields').hide();
                 }
             });
-        });*/
+        });
     </script>
 </head>
 <body>
@@ -91,22 +95,20 @@
                     <td><form:errors path="searchComparisonData"
                                      cssClass="error"/></td>
                 </tr>
-
-
-                <tr id="projectItemDescription">
+                <tr id="projectItemDescriptionRow">
                     <td>View Project Item Description <span id="colon">:</span></td>
                     <td><form:checkbox path="projectItemDescription" id="projectItemDescription"
                                        class="filterView"/></td>
                     <td><form:errors path="projectItemDescription"
                                      cssClass="error"/></td>
                 </tr>
-                <tr id="hiddenFields">
-                    <td>Type<span id="colon">:</span></td>
+                <tr id="itemFields">
+                    <td>Item Type<span id="colon">:</span></td>
                     <td><form:select path="itemType" cssClass="inputText"
                                      id="itemType" items="${itemTypes}"/></td>
 
 
-                    <td>Name<span id="colon">:</span></td>
+                    <td>Item Name<span id="colon">:</span></td>
                     <td><form:select path="itemName" cssClass="inputText"
                                      id="itemName" items="${itemNames}"/></td>
                 </tr>
@@ -239,11 +241,19 @@
 <c:if test="${projectItemDescriptionSize gt 0}">
     <h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
         Project Item Desc Details</h1>
+
+         <br>
+         <div style="float: left;font-size: larger" >
+         Total Quantity : <input name="totalItemCost" readonly="readonly"
+                         id="totalItemCost" value=${sumOfQuantity} type="text" />
+         </div>
+         <br>
+         </br>
+
     <table id="compareDescList" class="gridView">
         <thead>
         <tr>
             <th>Serial Number</th>
-            <th>Project Description Serial</th>
             <th>Project Alias Description</th>
             <th>Item</th>
             <th>Unit</th>
@@ -254,7 +264,6 @@
         <c:if test="${not empty projectItemDescriptions}">
             <c:forEach var="desc" items="${projectItemDescriptions}">
                 <tr>
-                    <td>${desc.projectDescId}</td>
                     <td>${desc.projectDescSerialNumber}</td>
                     <td>${desc.aliasDescription}</td>
                     <td>${desc.itemName}</td>
@@ -265,12 +274,6 @@
         </c:if>
         </tbody>
     </table>
-    <br>
-    <div style="float: right;font-size: larger" >
-    Total Quantity : <input name="totalItemCost" readonly="readonly"
-                    id="totalItemCost" value=${sumOfQuantity} type="text" />
-    </div>
-    <br>
     <br>
     <br>
 </c:if>
