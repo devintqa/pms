@@ -57,7 +57,7 @@ public interface ItemDAO {
 
     List<String> getItemNames();
 
-	List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName);
+	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
 
 	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 

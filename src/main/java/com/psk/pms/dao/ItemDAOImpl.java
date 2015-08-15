@@ -444,10 +444,18 @@ public class ItemDAOImpl implements ItemDAO {
 
 
     @Override
-    public List<ProjectItemDescription> getProjectItemDescription(Integer projId, String itemName) {
-        String sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
-                "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
-                "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"+projId+"' and pdi.itemName = '"+itemName+"'";
+    public List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
+    	String sql;
+        if(isEditSubProject){
+        	LOGGER.info("getProjectItemDescription() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+        	sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
+            "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+            "pdi.ProjDescId = pd.ProjDescId and pdi.SubProjId = '"+projectConfiguration.getSubProjId()+"' and pdi.itemName = '"+itemName+"'";
+        }else{
+        	sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
+            "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+            "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"+projectConfiguration.getProjId()+"' and pdi.SubProjId = '"+projectConfiguration.getSubProjId()+"' and pdi.itemName = '"+itemName+"'";
+        }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         List<ProjectItemDescription> projectItemDescriptions = new ArrayList<ProjectItemDescription>();
         for (Map<String, Object> row : rows) {

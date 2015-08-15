@@ -125,13 +125,12 @@ public class ViewController extends BaseController {
                             "No Project Comparison Data Found For The Project.");
                 }
             } else if (viewDetail.isProjectItemDescription()) {
-                List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(viewDetail.getProjId(), viewDetail.getItemName());
+                List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(projectConfiguration, viewDetail.isEditSubProject(), viewDetail.getItemName());
                 if (projectItemDescription.size() > 0) {
                     int sumOfQuantity = getSumOfQuantity(projectItemDescription);
                     model.addAttribute("projectItemDescriptions", projectItemDescription);
                     model.addAttribute("projectItemDescriptionSize", projectItemDescription.size());
                     model.addAttribute("sumOfQuantity", sumOfQuantity);
-
                 } else {
                     model.addAttribute("noDetailsFound", "No Project Description Data Found For The Project.");
                 }

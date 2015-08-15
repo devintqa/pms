@@ -168,8 +168,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ProjectItemDescription> getProjectItemDescription(
-            Integer projId, String itemName) {
-        return itemDAO.getProjectItemDescription(projId, itemName);
+    		ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
+        return itemDAO.getProjectItemDescription(projectConfiguration, isEditSubProject, itemName);
     }
 
 }
