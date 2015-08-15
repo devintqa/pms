@@ -333,7 +333,7 @@
 			</tr>
 
 			<tr>
-				<td><input name="itemName" id="itemName" type="text" size="100%" />
+				<td><input name="itemName" id="itemName" type="text" size="80%" />
 				<input name="itemType" id="itemType" type="hidden" /></td>
 				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" readonly="readonly" id="itemPrice"

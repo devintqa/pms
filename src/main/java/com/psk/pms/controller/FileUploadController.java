@@ -153,7 +153,6 @@ public class FileUploadController extends BaseController {
 		Map<String, String> aliasProjectList = populateAliasProjectList();
 		Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm
 				.getAliasProjectName());
-		System.out.println(uploadForm.isGovernmentEst());
 		fileUploadValidator.validate(uploadForm, result);
 		if (!result.hasErrors()) {
 			fileService.uploadFiles(uploadForm);

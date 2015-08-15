@@ -11,6 +11,8 @@
 
 <script>
 	$(document).ready(function() {
+		$('.baseItem').hide();
+		
 		$("#itemName").autocomplete({
 			source : function(request, response) {
 				$.getJSON("/pms/emp/myview/buildItem/searchItem.do", {
@@ -18,6 +20,19 @@
 				}, response);
 			}
 		});
+		
+		$(function () {
+            $('input[type="checkbox"]').on('change', function () {
+                if(this.checked==true){
+                	$('.baseItem').show();
+                	$('.item').hide();
+                }else{
+                	$('.baseItem').hide();
+                	$('.item').show();
+                }
+            });
+        });
+		
 	});
 </script>
 
@@ -35,27 +50,42 @@
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${itemCreationMessage}</h2>
 		</div>
 		<div>
-			<form:form method="POST" commandName="itemForm"
+			<form:form method="POST" commandName="itemForm" 
 				action="createItem.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Item Details</legend>
 						<table>
+
 							<tr>
+								<td>Is Base Item? <span id="colon">:</span></td>
+								<td><form:checkbox path="baseItem" id="baseItem" /></td>
+								<td></td>
+							</tr>
+
+							<tr class="baseItem">
+								<td>Upload<span id="colon">:</span>
+								</td>
+								<td><form:input name="files[0]" type="file" path="files"
+										id="files" /></td>
+								<td><form:errors path="files" cssClass="error" /></td>
+							</tr>
+
+							<tr class="item">
 								<td>Item Name<span id="colon">:</span>
 								</td>
 								<td><form:input path="itemName"
 										placeholder="Enter Item Name" cssClass="inputText" /></td>
 								<td><form:errors path="itemName" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr class="item">
 								<td>Item Unit<span id="colon">:</span>
 								</td>
 								<td><form:input path="itemUnit"
 										placeholder="Enter Item Unit" cssClass="inputText" /></td>
 								<td><form:errors path="itemUnit" cssClass="error" /></td>
 							</tr>
-							<tr>
+							<tr class="item">
 								<td>Item Type<span id="colon">:</span>
 								</td>
 								<td><form:select path="itemType" cssClass="inputText"

@@ -22,9 +22,9 @@
                                                     .children().length - 1;
                                             $('#fileTable')
                                                     .append(
-                                                            '<tr><td>'
-                                                                    + '   <input type="file" name="files['+ fileIndex +']" />'
-                                                                    + '</td></tr>');
+                                                             '<tr><td>Upload<span id="colon">:</span></td>'
+                                                             + '<td>  <input type="file" name="files['+ fileIndex +']" />'
+                                                             + '</td></tr>');
                                         });
                   	  $('#subProjectUpload').change(function() {
               	        if($(this).is(":checked")) {
@@ -112,6 +112,8 @@
 						<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
 					</tr>
 					<tr>
+						<td>Upload<span id="colon">:</span>
+						</td>
 						<td><form:input name="files[0]" type="file" path="files"
 								id="files" /></td>
 						<td><form:errors path="files" cssClass="error" /></td>
