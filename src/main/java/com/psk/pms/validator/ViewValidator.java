@@ -21,6 +21,11 @@ public class ViewValidator extends BaseValidator implements Validator {
             errors.rejectValue("aliasProjectName", "required.aliasProjectName","Please select Alias Project Name.");
         }
 
+        if(!(viewDetail.isProjectItemDescription() || viewDetail.isSearchAggregateItemDetails()
+                ||viewDetail.isSearchComparisonData() || viewDetail.isViewProjectItemPrice())){
+            errors.rejectValue("viewProjectItemPrice", "required.viewProjectItemPrice","Please select a valid view option");
+        }
+
 		if (viewDetail.isViewProjectItemPrice() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {

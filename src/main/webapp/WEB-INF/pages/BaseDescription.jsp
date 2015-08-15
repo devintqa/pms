@@ -47,7 +47,8 @@ $(document).ready(function () {
 								<td>Description<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="description"
-										placeholder="Enter description" cssClass="inputText" /></td>
+										placeholder="Enter description" cssClass="inputText"
+										rows="5" cols="40" maxlength="2000" /></td>
 								<td><form:errors path="description" cssClass="error" /></td>
 							</tr>
 							<tr>
