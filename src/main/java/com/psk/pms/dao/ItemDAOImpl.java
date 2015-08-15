@@ -444,7 +444,7 @@ public class ItemDAOImpl implements ItemDAO {
                 "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
                 "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"+projId+"' and pdi.itemName = '"+itemName+"'";
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-        List<ProjectItemDescription> projectItemDescriptions = new ArrayList<>();
+        List<ProjectItemDescription> projectItemDescriptions = new ArrayList<ProjectItemDescription>();
         for (Map<String, Object> row : rows) {
             ProjectItemDescription projectItemDescription = new ProjectItemDescription();
             projectItemDescription.setProjectDescId((Integer) row.get("ProjDescId"));
