@@ -25,7 +25,7 @@ public interface ItemService {
 
     Set<String> fetchItemNames();
 
-    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
 	boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
 	

@@ -45,9 +45,9 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<DescItemDetail.ItemDetail> getProjectData(Integer projId) {
+	public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
 		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO
-				.getProjectData(projId);
+				.getProjectData(projectConfiguration,isEditSubProject);
 		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
 		if (itemDetailList.size() > 0) {
 			Map<String, String> itemNames = itemDAO.fetchItemInfo();

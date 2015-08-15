@@ -262,9 +262,14 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
 
-    public List<DescItemDetail.ItemDetail> getProjectData(final Integer projId) {
-        LOGGER.info("getProjectData projId:" + projId);
-        String sql = "Select * from projdescitem where ProjId = " + projId;
+    public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+        String sql;
+        if(isEditSubProject){
+        	LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+        	sql = "Select * from projdescitem where SubProjId = " + projectConfiguration.getSubProjId();
+        }else{
+        	sql = "Select * from projdescitem where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
+        }
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         LOGGER.info("getProjectData rows:" + rows.size());

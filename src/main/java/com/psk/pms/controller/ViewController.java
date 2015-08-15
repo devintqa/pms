@@ -79,9 +79,12 @@ public class ViewController extends BaseController {
         viewValidator.validate(viewDetail, result);
         setModelAttribute(model);
         if (!result.hasErrors()) {
+            ProjectConfiguration projectConfiguration = new ProjectConfiguration();
+            projectConfiguration.setProjId(viewDetail.getProjId());
+            projectConfiguration.setSubProjId(viewDetail.getSubProjId());
             if (viewDetail.isSearchAggregateItemDetails()) {
                 List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService
-                        .getProjectData(viewDetail.getProjId());
+                        .getProjectData(projectConfiguration, viewDetail.isEditSubProject());
                 if (aggregateItemDetails.size() > 0) {
                     model.addAttribute("aggregateItemDetails",
                             aggregateItemDetails);
@@ -94,9 +97,6 @@ public class ViewController extends BaseController {
                             "No Item Price Configuration Found For The Project.");
                 }
             } else if (viewDetail.isViewProjectItemPrice()) {
-                ProjectConfiguration projectConfiguration = new ProjectConfiguration();
-                projectConfiguration.setProjId(viewDetail.getProjId());
-                projectConfiguration.setSubProjId(viewDetail.getSubProjId());
                 ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration, viewDetail.isEditSubProject());
                 List<ItemDetail> itemPriceDetails = itemConfiguration
                         .getItemDetail();

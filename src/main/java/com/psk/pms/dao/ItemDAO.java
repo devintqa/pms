@@ -37,7 +37,7 @@ public interface ItemDAO {
 
     DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
 
-    List<DescItemDetail.ItemDetail> getProjectData(Integer projId);
+    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
     void deleteItemByProjectId(Integer projectId);
 
