@@ -454,7 +454,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	public List<ProjDescDetail> fetchBaseProjectDescriptions() {
 		List<Map<String, Object>> rows = jdbcTemplate
 				.queryForList(FETCHBASEDESCRIPTIONS);
-		List<ProjDescDetail> projDescDetails = new ArrayList<>();
+		List<ProjDescDetail> projDescDetails = new ArrayList<ProjDescDetail>();
 		for (Map<String, Object> row : rows) {
 			projDescDetails.add(buildBaseDescDetail(row));
 		}
