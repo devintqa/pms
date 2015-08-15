@@ -237,6 +237,11 @@ public class DescriptionController extends BaseController {
 	public String saveBaseProjDesc(
 			@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
 			BindingResult result, Model model, SessionStatus status) {
+        baseDescriptionValidator.validate(projDescDetail,result);
+        LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
+        if (result.hasErrors()) {
+            return "BaseDescription";
+        }
 		model.addAttribute("baseDescForm", projDescDetail);
         if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
             model.addAttribute("projDescCreationMessage",

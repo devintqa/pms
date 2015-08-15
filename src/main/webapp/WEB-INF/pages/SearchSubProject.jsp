@@ -13,6 +13,7 @@
 	$(document)
 			.ready(
 					function() {
+					$("#showEditSubProject").hide();
 						$("#aliasProjectName")
 								.autocomplete(
 										{

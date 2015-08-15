@@ -11,6 +11,7 @@
 <script>
   var windowObjectReference = null;
   $(document).ready(function () {
+        $("#showSearchProjectDesc").hide();
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
 			if($("#searchUnderSubProject").is(':checked'))	{

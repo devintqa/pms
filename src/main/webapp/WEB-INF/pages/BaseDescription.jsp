@@ -9,10 +9,10 @@
 <script type="text/javascript">
 $(document).ready(function () {
     $("#quantity").attr("readonly", "readonly");
+    $("#totalCost").attr("readonly", "readonly");
 
     if($("#isUpdate").val()=='Y'){
         $("#aliasDescription").attr("readonly", "readonly");
-        $("#totalCost").attr("readonly", "readonly");
     }
 
   });
