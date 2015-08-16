@@ -26,23 +26,28 @@ public class ViewValidator extends BaseValidator implements Validator {
             errors.rejectValue("viewProjectItemPrice", "required.viewProjectItemPrice","Please select a valid view option");
         }
 
-		if (viewDetail.isViewProjectItemPrice() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+		if ((viewDetail.isViewProjectItemPrice() || viewDetail.isSearchAggregateItemDetails()
+				 || viewDetail.isProjectItemDescription()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
 				projId = fetchProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setProjId(Integer.valueOf(projId));
-				viewDetail.setSubProjId(0);
-			} else {
-				viewDetail.setEditSubProject(true);
-				projId = fetchSubProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setSubProjId(Integer.valueOf(projId));
+				if(projId != null){
+					viewDetail.setProjId(Integer.valueOf(projId));
+					viewDetail.setSubProjId(0);
+				}
+			} else {			
+				projId = fetchSubProjectId(viewDetail.getAliasProjectName());			
+				if(projId != null){
+					viewDetail.setEditSubProject(true);
+					viewDetail.setSubProjId(Integer.valueOf(projId));
+				}
 			}
 			if (projId == null) {
 				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
 			}
 		}
 		
-		if (viewDetail.isSearchAggregateItemDetails() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+/*		if (viewDetail.isSearchAggregateItemDetails() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
 				projId = fetchProjectId(viewDetail.getAliasProjectName());
@@ -72,7 +77,7 @@ public class ViewValidator extends BaseValidator implements Validator {
 			if (projId == null) {
 				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
 			}
-		}
+		}*/
 		
 		
         /*if((viewDetail.isViewProjectItemPrice() || viewDetail.isEditSubProject()) && StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
