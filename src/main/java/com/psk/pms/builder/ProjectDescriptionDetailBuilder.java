@@ -45,23 +45,23 @@ public class ProjectDescriptionDetailBuilder {
 						switch (cell.getCellType()) {
 						case Cell.CELL_TYPE_NUMERIC:
 							if (cell.getColumnIndex() == 0
-									&& row.getCell(1) != null) {
+							&& row.getCell(1) != null) {
 								if (cell.getColumnIndex() == 0)
 									projDescDetail
-											.setSerialNumber(String.valueOf(cell
-													.getNumericCellValue()));
+									.setSerialNumber(String.valueOf(cell
+											.getNumericCellValue()));
 							}
 							if (cell.getColumnIndex() == 2
 									&& row.getCell(3) != null) {
 								if (cell.getColumnIndex() == 2)
 									projDescDetail
-											.setQuantity(String.valueOf(cell
-													.getNumericCellValue()));
+									.setQuantity(String.valueOf(cell
+											.getNumericCellValue()));
 							}
 							break;
 						case Cell.CELL_TYPE_STRING:
 							if (cell.getColumnIndex() == 0
-									&& row.getCell(1) != null)
+							&& row.getCell(1) != null)
 								projDescDetail.setSerialNumber(cell
 										.getStringCellValue());
 							if (cell.getColumnIndex() == 1)
@@ -85,41 +85,34 @@ public class ProjectDescriptionDetailBuilder {
 						switch (cell.getCellType()) {
 						case Cell.CELL_TYPE_NUMERIC:
 							if (cell.getColumnIndex() == 0
-									&& row.getCell(1) != null) {
+							&& row.getCell(1) != null) {
 								if (cell.getColumnIndex() == 0)
 									projDescDetail
-											.setSerialNumber(String.valueOf(cell
-													.getNumericCellValue()));
+									.setSerialNumber(String.valueOf(cell
+											.getNumericCellValue()));
 							}
 							if (cell.getColumnIndex() == 2
 									&& row.getCell(3) != null) {
 								if (cell.getColumnIndex() == 2)
 									projDescDetail
-											.setQuantity(String.valueOf(cell
-													.getNumericCellValue()));
+									.setQuantity(String.valueOf(cell
+											.getNumericCellValue()));
 							}
 							if (cell.getColumnIndex() == 4
 									&& row.getCell(5) != null) {
 								if (cell.getColumnIndex() == 4)
-									projDescDetail
-											.setPricePerQuantity(String.valueOf(cell
-													.getNumericCellValue()));
-								projDescDetail
-										.setTotalCost(String.valueOf(Double
-												.valueOf(
-														projDescDetail
-																.getQuantity())
-												.doubleValue()
-												* Double.valueOf(
-														projDescDetail
-																.getPricePerQuantity())
-														.doubleValue()));
+									projDescDetail.setPricePerQuantity(String.valueOf(cell
+											.getNumericCellValue()));
+								projDescDetail.setTotalCost(String.valueOf(Double
+										.valueOf(projDescDetail.getQuantity())
+										.doubleValue()
+										* Double.valueOf(projDescDetail.getPricePerQuantity()).doubleValue()));
 							}
 
 							break;
 						case Cell.CELL_TYPE_STRING:
 							if (cell.getColumnIndex() == 0
-									&& row.getCell(1) != null)
+							&& row.getCell(1) != null)
 								projDescDetail.setSerialNumber(cell
 										.getStringCellValue());
 							if (cell.getColumnIndex() == 1)
@@ -134,13 +127,15 @@ public class ProjectDescriptionDetailBuilder {
 							if (cell.getColumnIndex() == 6)
 								projDescDetail.setAliasDescription(cell
 										.getStringCellValue());
+							if (cell.getColumnIndex() == 7)
+								projDescDetail.setBaseDescName(cell
+										.getStringCellValue());
 							break;
 
 						}
 					}
 				}
-				if (!StringUtils
-						.isNullOrEmpty(projDescDetail.getSerialNumber())) {
+				if (!StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {
 					detailList.add(projDescDetail);
 				}
 			}
@@ -153,6 +148,7 @@ public class ProjectDescriptionDetailBuilder {
 				LOGGER.info(descDetail.getTotalCost());
 				LOGGER.info(descDetail.getDescription());
 				LOGGER.info(descDetail.getAliasDescription());
+				LOGGER.info(descDetail.getBaseDescName());
 			}
 			fileInputStream.close();
 		} catch (Exception e) {

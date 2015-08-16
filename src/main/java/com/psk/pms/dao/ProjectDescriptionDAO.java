@@ -2,6 +2,7 @@ package com.psk.pms.dao;
 
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ public interface ProjectDescriptionDAO {
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 
 	List<ProjDescDetail> getProjectDescDetailList(Integer projectId, boolean searchUnderProject);
+	
+	List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail);
 
 	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
@@ -50,5 +53,7 @@ public interface ProjectDescriptionDAO {
 
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 	
-    ProjDescDetail getBaseProjectDescription(String aliasDescription);
+    ProjDescDetail getBaseDescription(String aliasDescription);
+
+	ProjDescDetail getGovProjectDescDetail(String projDescId);
 }

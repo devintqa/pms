@@ -90,14 +90,14 @@
 							<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 						</tr>
 						<tr id="showSearchProjectDesc">
-							<td>Search EMD? :</td>
+							<td>Search EMD? <span id="colon">:</span></td>
 							<td><form:checkbox path="searchProjectDescription"
 									id="searchProjectDescription" /></td>
 							<td><form:errors path="searchProjectDescription"
 									cssClass="error" /></td>
 						</tr>
 						<tr>
-							<td>Search under :</td>
+							<td>Search under <span id="colon">:</span></td>
 							<td><form:radiobutton path="searchUnder" value="Project"
 									id="searchUnderProject" checked="true" />Project</td>
 							<td><form:radiobutton path="searchUnder" value="subProject"

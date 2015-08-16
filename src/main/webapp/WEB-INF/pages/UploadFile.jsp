@@ -67,7 +67,7 @@
                     });
 </script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
@@ -94,7 +94,7 @@
 						<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td>Upload For Sub Project? :</td>
+						<td>Upload For Sub Project? <span id="colon">:</span>
 						<td><form:checkbox path="subProjectUpload"
 								id="subProjectUpload" /></td>
 						<td><form:errors path="subProjectUpload" cssClass="error" /></td>

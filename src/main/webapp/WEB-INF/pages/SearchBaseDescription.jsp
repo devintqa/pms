@@ -78,7 +78,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 					<tbody>
 						<c:forEach var="globalDescription" items="${baseDescriptionList}">
 							<tr>
-								<td><a	href="javascript:openBaseDescLoader('${globalDescription.projDescId}','${employeeObj.employeeId}')"
+								<td><a	href="javascript:openBaseDescLoader('${globalDescription.baseDescId}','${employeeObj.employeeId}')"
 										class="userAction">${globalDescription.aliasDescription}</a>
 										</td>
 								<td>${globalDescription.workType}</td>
@@ -86,7 +86,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 								<td>${globalDescription.quantity}</td>
 								<td>${globalDescription.totalCost}</td>
 								<td><a
-									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit""
+									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
 									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.projDescId}');"

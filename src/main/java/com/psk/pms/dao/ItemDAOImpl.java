@@ -124,8 +124,7 @@ public class ItemDAOImpl implements ItemDAO {
 			@Override
 			public void setValues(PreparedStatement ps, int i)
 					throws SQLException {
-				DescItemDetail.ItemDetail itemDetail = descItemDetail
-						.getItemDetail().get(i);
+				DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
 				ps.setInt(1, descItemDetail.getProjId());
 				ps.setInt(2, descItemDetail.getSubProjId());
 				ps.setInt(3, descItemDetail.getProjDescId());
@@ -144,10 +143,8 @@ public class ItemDAOImpl implements ItemDAO {
 		});
 
 		long sumItemCost = 0;
-		for (DescItemDetail.ItemDetail itemDetail : descItemDetail
-				.getItemDetail()) {
-			long itemCost = Double.valueOf(itemDetail.getItemCost())
-					.longValue();
+		for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
+			long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
 			sumItemCost = sumItemCost + itemCost;
 		}
 
@@ -175,14 +172,17 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
 
 		List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
+		System.out.println(sql);
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
+			System.out.println("(String) row.get(ItemQty)"+(String) row.get("ItemQty"));
 			itemDetailList.add(buildBaseItemDetail(row));
 		}
 		descItemDetail.setItemDetail(itemDetailList);
 		return descItemDetail;
 	}
+	
 
 	private DescItemDetail.ItemDetail buildBaseItemDetail(Map<String, Object> row) {
 		DescItemDetail.ItemDetail itemDetail = new DescItemDetail.ItemDetail();
@@ -498,8 +498,7 @@ public class ItemDAOImpl implements ItemDAO {
 				ps.setString(2, itemDetail.getItemName());
 				ps.setString(3, itemDetail.getItemUnit());
 				ps.setString(4, itemDetail.getItemType());
-				ps.setString(5, itemDetail.getItemQty());
-				System.out.println("############"+itemDetail.getItemPrice());
+				ps.setString(5, "0");
 				ps.setString(6, itemDetail.getItemPrice());
 			}
 

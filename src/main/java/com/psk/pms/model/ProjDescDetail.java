@@ -6,6 +6,7 @@ public class ProjDescDetail {
 
 	private String aliasProjectName;
 	private String aliasSubProjectName;
+	private String baseDescName;
 	private String serialNumber;
 	private String workType;
 	private String quantity;
@@ -23,7 +24,7 @@ public class ProjDescDetail {
 	private boolean subProjectDesc;
 	private String lastUpdatedBy;
 	private Date lastUpdatedAt;
-
+	
 	public String getMetric() {
 		return metric;
 	}
@@ -175,4 +176,13 @@ public class ProjDescDetail {
 	public void setBaseDescId(Integer baseDescId) {
 		this.baseDescId = baseDescId;
 	}
+
+	public String getBaseDescName() {
+		return baseDescName;
+	}
+
+	public void setBaseDescName(String baseDescName) {
+		this.baseDescName = baseDescName;
+	}
+
 }

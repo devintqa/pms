@@ -145,12 +145,14 @@ public class ItemController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
 	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
 								@RequestParam String projId, @RequestParam String subProjId, 
-								@RequestParam String projDescId, @RequestParam String employeeId) {
+								@RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String type) {
 		DescItemDetail descItemDetail = new  DescItemDetail();
+		ProjDescDetail projDescDetail = null;
 		descItemDetail.setProjId(new Integer(projId));
 		descItemDetail.setSubProjId(new Integer(subProjId));
 		descItemDetail.setProjDescId(new Integer(projDescId));
 		descItemDetail.setProjDescSerial(projDescSerial);
+		
 		descItemDetail = itemService.getDataDescription(descItemDetail);
 		
 		Gson gson = new Gson();
@@ -158,12 +160,17 @@ public class ItemController {
 		if (! element.isJsonArray()) {
 			
 		}
+		
+		System.out.println("type: "+type);
 		JsonArray jsonArray = element.getAsJsonArray();
 		descItemDetail.setDescItemDetail(jsonArray.toString());
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
-		
-		ProjDescDetail projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
+		if(type.equalsIgnoreCase("psk")){
+			projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
+		}else{
+			projDescDetail = projectDescService.getGovProjectDescDetail(projDescId);
+		}
 		model.addAttribute("projDescForm", projDescDetail);
         model.addAttribute("itemTypes",fetchItemTypes());
 		
@@ -187,8 +194,6 @@ public class ItemController {
 		boolean status = itemService.insertBaseDescriptionItems(descItemDetail);
 		return status;
 	}
-	
-	
 	
 	@RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes="application/json")
 	public @ResponseBody String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{

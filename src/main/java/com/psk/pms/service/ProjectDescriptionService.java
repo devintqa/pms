@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public interface ProjectDescriptionService {
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);
 
 	List<ProjDescDetail> getProjectDescDetailList(Integer projId, boolean searchUnderProject);
+	
+	List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail);
 
 	List<ProjDescComparisonDetail> getProjectDescComparisonDetail(Integer projId);
 
@@ -40,8 +43,7 @@ public interface ProjectDescriptionService {
 
 	void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
 
-	void saveProposalProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails);
+	void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
 	void saveBaseProjectDescription(ProjDescDetail projDescDetail);
 
@@ -52,4 +54,8 @@ public interface ProjectDescriptionService {
     boolean isGlobalDescriptionAlreadyExisting(String  projectDescDetail);
 
     ProjDescDetail getBaseProjectDescription(String aliasDescription);
+
+	ProjDescDetail getGovProjectDescDetail(String projDescId);
+
+	
 }

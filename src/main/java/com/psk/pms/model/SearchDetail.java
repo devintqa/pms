@@ -6,6 +6,7 @@ public class SearchDetail {
 	private Integer projId;
 	private boolean editSubProject;
 	private boolean searchProjectDescription;
+	private String searchOn;
 	private String searchUnder;
 
 	public String getAliasProjectName() {
@@ -46,5 +47,13 @@ public class SearchDetail {
 
 	public void setSearchUnder(String searchUnder) {
 		this.searchUnder = searchUnder;
+	}
+
+	public String getSearchOn() {
+		return searchOn;
+	}
+
+	public void setSearchOn(String searchOn) {
+		this.searchOn = searchOn;
 	}
 }

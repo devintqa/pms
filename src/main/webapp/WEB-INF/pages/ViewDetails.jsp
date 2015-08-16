@@ -244,12 +244,9 @@
 
          <br>
          <div style="float: left;font-size: larger" >
-         Total Quantity : <input name="totalItemCost" readonly="readonly"
-                         id="totalItemCost" value=${sumOfQuantity} type="text" />
+         Total Quantity : <input name="totalItemCost" readonly="readonly"  id="totalItemCost" value="${sumOfQuantity}" type="text" />
          </div>
          <br>
-         </br>
-
     <table id="compareDescList" class="gridView">
         <thead>
         <tr>

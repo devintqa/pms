@@ -141,14 +141,17 @@ public class SearchController extends BaseController {
 		LOGGER.info("method = searchProjectDetail()");
 		searchValidator.validate(searchDetail, result);
 		if (!result.hasErrors()) {
-			boolean searchUnderProject = "project"
-					.equalsIgnoreCase(searchDetail.getSearchUnder()) ? true
-					: false;
-			LOGGER.info("method = fetchProjectsInfo()"
-					+ searchDetail.getProjId());
-			List<ProjDescDetail> projDescDocList = projectDescriptionService
-					.getProjectDescDetailList(searchDetail.getProjId(),
-							searchUnderProject);
+//			boolean searchUnderProject = "project"
+//					.equalsIgnoreCase(searchDetail.getSearchUnder()) ? true
+//					: false;
+//			boolean searchOnPsk = "psk"
+//					.equalsIgnoreCase(searchDetail.getSearchOn()) ? true
+//					: false;
+			
+//			System.out.println("is a psk search? :" + searchOnPsk);
+//			LOGGER.info("method = fetchProjectsInfo()" + searchDetail.getProjId());
+			//List<ProjDescDetail> projDescDocList = projectDescriptionService.getProjectDescDetailList(searchDetail.getProjId(),	searchUnderProject);
+			List<ProjDescDetail> projDescDocList = projectDescriptionService.getProjectDescDetailList(searchDetail);
 			if (projDescDocList.size() > 0) {
 				model.addAttribute("projDescDocList", projDescDocList);
 				model.addAttribute("projDescDocListSize",

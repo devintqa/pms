@@ -25,13 +25,24 @@
 				}
 	        }
 		});
+		
+		  $("#submit").click(function(){
+			  
+			 
+		  });
+		  
 	});
   
-  function openProjDescLoader(projDescSerial, projId, subProjId, projDescId, employeeId){
+  function openProjDescLoader(projDescSerial, projId, subProjId, projDescId, descType, employeeId){
 	  if(subProjId == ''){
 		  subProjId = 0;
 	  }
-	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
+	  if($("#searchOnPsk").is(':checked')){
+		  descType = "psk";
+	  }else{
+		  descType = "government";
+	  }
+	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&type="+descType+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 	  
   }
   
@@ -91,10 +102,17 @@
 				action="searchProjectDescDetails.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
-						<legend>Search Details</legend>
+						<legend>Search Project Description</legend>
 						<table>
 							<tr>
-								<td>Alias Project Name<span id="colon">:</span>
+								<td>Category  <span id="colon">:</span></td>
+								<td><form:radiobutton path="searchOn" value="psk"
+										id="searchOnPsk" checked="true" />PSK</td>
+								<td><form:radiobutton path="searchOn" value="government"
+										id="searchOnGovernment" />GOVERNEMENT</td>
+							</tr>
+							<tr>
+								<td>Alias Project Name <span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasProjectName"
 										id="aliasProjectName" placeholder="Enter Alias Project Name"
@@ -102,15 +120,16 @@
 								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchProjectDesc">
-								<td>Search Project Description? :</td>
+								<td>Search Project Description? <span id="colon">:</span></td>
 								<td><form:checkbox path="searchProjectDescription"
 										id="searchProjectDescription" /></td>
 								<td><form:errors path="searchProjectDescription"
 										cssClass="error" /></td>
 							</tr>
+
 							<tr>
-								<td>Search under :</td>
-								<td><form:radiobutton path="searchUnder" value="Project"
+								<td>Search under <span id="colon">:</span></td>
+								<td><form:radiobutton path="searchUnder" value="project"
 										id="searchUnderProject" checked="true" />Project</td>
 								<td><form:radiobutton path="searchUnder" value="subProject"
 										id="searchUnderSubProject" />Sub Project</td>
@@ -121,14 +140,14 @@
 					<table>
 						<tr>
 							<td></td>
-							<td><input type="submit" /></td>
+							<td><input id="submit" type="submit" /></td>
 							<td></td>
 						</tr>
 					</table>
 				</center>
 				<br>
 				<br>
-
+			<input id="searchOn" type="hidden">
 			</form:form>
 
 			<c:if test="${projDescDocListSize gt 0}">

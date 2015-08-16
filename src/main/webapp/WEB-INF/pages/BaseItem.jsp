@@ -264,7 +264,7 @@
 		<form:form id="baseDescForm" method="POST" commandName="baseDescForm">
 			<fieldset style="margin: 1em; text-align: left;">
 				<legend>
-					<h2>Base Description Details</h2>
+					Base Description Details
 				</legend>
 				<table>
 					<tr>

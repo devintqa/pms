@@ -107,7 +107,7 @@ public class DescItemDetail {
 		private String itemUnit;
 		private String itemQty;
 		private String itemPrice;
-		private String itemCost;
+		private String itemCost="0";
 
 		public String getItemName() {
 			return itemName;

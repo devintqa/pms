@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,13 +71,12 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId,
-			String subProject) {
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
 		ProjDescDetail projDescDetail = projectDescriptionDAO.getProjectDescDetail(projDescId, subProject);
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
-
+	
 	@Override
 	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
 		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO
@@ -85,10 +85,15 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projId,
-			boolean searchUnderProject) {
+	public List<ProjDescDetail> getProjectDescDetailList(Integer projId, boolean searchUnderProject) {
 		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO
 				.getProjectDescDetailList(projId, searchUnderProject);
+		return projectDescDetailList;
+	}
+	
+	@Override
+	public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail){
+		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO.getProjectDescDetailList(searchDetail);
 		return projectDescDetailList;
 	}
 
@@ -198,6 +203,11 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
     @Override
     public ProjDescDetail getBaseProjectDescription(String aliasDescription){
         LOGGER.info("method = getBaseProjectDescription()");
-        return projectDescriptionDAO.getBaseProjectDescription(aliasDescription);
+        return projectDescriptionDAO.getBaseDescription(aliasDescription);
     }
+
+	@Override
+	public ProjDescDetail getGovProjectDescDetail(String projDescId) {
+		 return projectDescriptionDAO.getGovProjectDescDetail(projDescId);
+	}
 }

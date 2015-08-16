@@ -305,7 +305,7 @@
 		<form:form id="projDescForm" method="POST" commandName="projDescForm">
 			<fieldset style="margin: 1em; text-align: left;">
 				<legend>
-					<h2>Project Description Details</h2>
+					Project Description Details
 				</legend>
 				<table>
 					<tr>

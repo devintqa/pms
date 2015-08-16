@@ -121,52 +121,51 @@
 		</div>
 		<div>
 
-			<form:form method="post" action="saveProjectDescription.do"
-				modelAttribute="uploadForm" enctype="multipart/form-data">
+			<form:form method="post" action="saveProjectDescription.do" modelAttribute="uploadForm" enctype="multipart/form-data">
+				<fieldset style="margin: 1em; text-align: left;">
+					<legend>Project Description</legend>
+					<table id="fileTable">
+						<tr>
+							<td>Is Government Estimation? <span id="colon">:</span></td>
+							<td><form:checkbox path="governmentEst" id="governmentEst" /></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Alias Project Name <span id="colon">:</span></td>
+							<td><form:select path="aliasProjectName"
+									cssClass="inputText" id="projId" items="${aliasProjectList}">
+								</form:select></td>
+							<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td>Upload For Sub Project? <span id="colon">:</span></td>
+							<td><form:checkbox path="subProjectUpload"
+									id="subProjectUpload" /></td>
+							<td><form:errors path="subProjectUpload" cssClass="error" /></td>
+						</tr>
 
-				<p>Select Project Description Data To Be Saved For The Project.</p>
+						<tr id="showSubProject">
+							<td>Sub Project Name <span id="colon">:</span>
+							</td>
+							<td><form:select path="aliasSubProjectName"
+									id="aliasSubProjectName" cssClass="inputText"
+									items="${subAliasProjectList}">
+									<c:if test="${projDescForm.subProjId gt '0'}">
+										<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
+									</c:if>
+								</form:select></td>
+							<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
+						</tr>
+						<tr>
+							<td><form:input name="files[0]" type="file" path="files"
+									id="files" /></td>
+							<td><form:errors path="files" cssClass="error" /></td>
+						</tr>
 
-				<table id="fileTable">
-					<tr>
-						<td>Is Government Estimation? <span id="colon">:</span></td>
-						<td><form:checkbox path="governmentEst" id="governmentEst" /></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>Alias Project Name <span id="colon">:</span></td>
-						<td><form:select path="aliasProjectName" cssClass="inputText"
-								id="projId" items="${aliasProjectList}">
-							</form:select></td>
-						<td><form:errors path="aliasProjectName" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td>Upload For Sub Project? <span id="colon">:</span></td>
-						<td><form:checkbox path="subProjectUpload" id="subProjectUpload" /></td>
-						<td><form:errors path="subProjectUpload" cssClass="error" /></td>
-					</tr>
-					
-					<tr id="showSubProject">
-						<td>Sub Project Name <span id="colon">:</span>
-						</td>
-						<td><form:select path="aliasSubProjectName"
-								id="aliasSubProjectName" cssClass="inputText"
-								items="${subAliasProjectList}">
-								<c:if test="${projDescForm.subProjId gt '0'}">
-									<option value="${projDescForm.subProjId}" selected="selected">${projDescForm.aliasSubProjectName}</option>
-								</c:if>
-							</form:select></td>
-						<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
-					</tr>
-					<tr>
-						<td><form:input name="files[0]" type="file" path="files"
-								id="files" /></td>
-						<td><form:errors path="files" cssClass="error" /></td>
-					</tr>
-
-				</table>
-				<br />
-				<input type="submit" value="Upload" />
-				<form:hidden path="employeeId" />
+					</table>
+					<br /> <input type="submit" value="Upload" />
+					<form:hidden path="employeeId" />
+					</fieldset>
 			</form:form>
 			<br />
 		</div>

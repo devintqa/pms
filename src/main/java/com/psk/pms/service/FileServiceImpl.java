@@ -34,30 +34,25 @@ public class FileServiceImpl implements FileService {
 	@Autowired
 	private BulkUploadDetailsValidator bulkUploadDetailsValidator;
 
-	private static final Logger LOGGER = Logger
-			.getLogger(FileServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
 
 	@Override
 	public ExcelDetail saveProjectDescription(FileUpload fileUpload)
-			throws IOException, BulkUploadException {
+	throws IOException, BulkUploadException {
 		String saveDirectory;
 		ExcelDetail excelDetail = new ExcelDetail();
 		ProjectDetail projectDetail = null;
 		SubProjectDetail subProjDetail = null;
-		List<MultipartFile> pmsFiles;
+		List < MultipartFile > pmsFiles;
 		String sheetName = "";
 		boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
 
-		projectDetail = projectService.getProjectDocument(fileUpload
-				.getAliasProjectName());
-		LOGGER.info("method = uploadFiles() , Alias Project Name"
-				+ projectDetail.getAliasName());
+		projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 
 		if (isSubProjectFileUpload) {
-			subProjDetail = subProjectService.getSubProjectDocument(fileUpload
-					.getAliasSubProjectName());
-			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/"
-					+ subProjDetail.getAliasSubProjName() + "/";
+			subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
 		} else {
 			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
 		}
@@ -70,9 +65,8 @@ public class FileServiceImpl implements FileService {
 		}
 		pmsFiles = fileUpload.getFiles();
 		if (null != pmsFiles && pmsFiles.size() > 0) {
-			for (MultipartFile multipartFile : pmsFiles) {
-				String path = saveDirectory
-						+ multipartFile.getOriginalFilename();
+			for (MultipartFile multipartFile: pmsFiles) {
+				String path = saveDirectory + multipartFile.getOriginalFilename();
 
 				boolean isExcel = isExcelType(path);
 				if (!isExcel) {
@@ -80,34 +74,22 @@ public class FileServiceImpl implements FileService {
 					return excelDetail;
 				}
 				LOGGER.info("Processing Sheet Name" + sheetName);
-				List<ProjDescDetail> extractedProjDescDetails = projectDescriptionDetailBuilder
-						.buildDescDetailList(saveDirectory, multipartFile,
-								sheetName);
-				LOGGER.info("extractedProjDescDetails size"
-						+ extractedProjDescDetails.size());
-				bulkUploadDetailsValidator
-						.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
-				populateProjectDetail(extractedProjDescDetails, projectDetail,
-						fileUpload.getEmployeeId());
+				List < ProjDescDetail > extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile,
+				sheetName);
+				LOGGER.info("extractedProjDescDetails size" + extractedProjDescDetails.size());
+				bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
+				populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
 
 				if (isSubProjectFileUpload) {
-					projectDescriptionService
-							.deleteAllTheDescriptionDetailsOfSubProject(subProjDetail
-									.getSubProjId());
-					populateSubProjectId(extractedProjDescDetails,
-							subProjDetail);
-					projectDescriptionService
-							.saveSubProjectDescriptionDetails(extractedProjDescDetails);
+					projectDescriptionService.deleteAllTheDescriptionDetailsOfSubProject(subProjDetail.getSubProjId());
+					populateSubProjectId(extractedProjDescDetails, subProjDetail);
+					projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
 				} else {
 					if (fileUpload.isGovernmentEst()) {
-						projectDescriptionService
-								.saveProposalProjectDescriptionDetails(extractedProjDescDetails);
+						projectDescriptionService.saveProposalProjectDescriptionDetails(extractedProjDescDetails);
 					} else {
-						projectDescriptionService
-								.deleteAllTheDescriptionDetailsOfProject(projectDetail
-										.getProjId());
-						projectDescriptionService
-								.saveProjectDescriptionDetails(extractedProjDescDetails);
+						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
+						projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
 					}
 				}
 			}
@@ -116,19 +98,18 @@ public class FileServiceImpl implements FileService {
 	}
 
 	private void populateSubProjectId(
-			List<ProjDescDetail> extractedProjDescDetails,
-			SubProjectDetail subProjectDetail) {
-		for (ProjDescDetail extractedProjDescDetail : extractedProjDescDetails) {
+	List < ProjDescDetail > extractedProjDescDetails,
+	SubProjectDetail subProjectDetail) {
+		for (ProjDescDetail extractedProjDescDetail: extractedProjDescDetails) {
 			extractedProjDescDetail.setProjId(subProjectDetail.getProjId());
-			extractedProjDescDetail.setSubProjId(subProjectDetail
-					.getSubProjId());
+			extractedProjDescDetail.setSubProjId(subProjectDetail.getSubProjId());
 		}
 	}
 
 	private void populateProjectDetail(
-			List<ProjDescDetail> extractedProjDescDetails,
-			ProjectDetail projectDetail, String employeeId) {
-		for (ProjDescDetail extractedProjDescDetail : extractedProjDescDetails) {
+	List < ProjDescDetail > extractedProjDescDetails,
+	ProjectDetail projectDetail, String employeeId) {
+		for (ProjDescDetail extractedProjDescDetail: extractedProjDescDetails) {
 			extractedProjDescDetail.setProjId(projectDetail.getProjId());
 			extractedProjDescDetail.setLastUpdatedBy(employeeId);
 		}
@@ -153,17 +134,12 @@ public class FileServiceImpl implements FileService {
 	public void uploadFiles(FileUpload fileUpload) throws IOException {
 		File files;
 		String saveDirectory;
-		ProjectDetail projectDetail = projectService
-				.getProjectDocument(fileUpload.getAliasProjectName());
-		LOGGER.info("method = uploadFiles() , Alias Project Name"
-				+ projectDetail.getAliasName());
+		ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 		if (fileUpload.isSubProjectUpload()) {
-			SubProjectDetail subProjDetail = subProjectService
-					.getSubProjectDocument(fileUpload.getAliasSubProjectName());
-			files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\"
-					+ subProjDetail.getAliasSubProjName());
-			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/"
-					+ subProjDetail.getAliasSubProjName() + "/";
+			SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
+			files = new File("C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName());
+			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/" + subProjDetail.getAliasSubProjName() + "/";
 		} else {
 			files = new File("C:\\PMS\\" + projectDetail.getAliasName());
 			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
@@ -180,15 +156,14 @@ public class FileServiceImpl implements FileService {
 			LOGGER.info("Something went wrong!!");
 		}
 
-		List<MultipartFile> pmsFiles = fileUpload.getFiles();
-		List<String> fileNames = new ArrayList<String>();
+		List < MultipartFile > pmsFiles = fileUpload.getFiles();
+		List < String > fileNames = new ArrayList < String > ();
 		if (null != pmsFiles && pmsFiles.size() > 0) {
-			for (MultipartFile multipartFile : pmsFiles) {
+			for (MultipartFile multipartFile: pmsFiles) {
 				String fileName = multipartFile.getOriginalFilename();
 				if (!"".equalsIgnoreCase(fileName)) {
 					LOGGER.info("File Name: " + fileName);
-					multipartFile
-							.transferTo(new File(saveDirectory + fileName));
+					multipartFile.transferTo(new File(saveDirectory + fileName));
 					fileNames.add(fileName);
 				}
 			}
@@ -196,21 +171,16 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public List<FileUpload> downloadFiles(FileUpload downloadForm) {
+	public List < FileUpload > downloadFiles(FileUpload downloadForm) {
 		String path = null;
 		String fileName;
-		List<FileUpload> projectFileList = new ArrayList<FileUpload>();
-		ProjectDetail projectDetail = projectService
-				.getProjectDocument(downloadForm.getAliasProjectName());
-		LOGGER.info("method = downloadFile(), Alias Project Name :"
-				+ projectDetail.getAliasName());
+		List < FileUpload > projectFileList = new ArrayList < FileUpload > ();
+		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName());
+		LOGGER.info("method = downloadFile(), Alias Project Name :" + projectDetail.getAliasName());
 
 		if (downloadForm.isSubProjectUpload()) {
-			SubProjectDetail subProjDetail = subProjectService
-					.getSubProjectDocument(downloadForm
-							.getAliasSubProjectName());
-			path = "C:\\PMS\\" + projectDetail.getAliasName() + "\\"
-					+ subProjDetail.getAliasSubProjName();
+			SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(downloadForm.getAliasSubProjectName());
+			path = "C:\\PMS\\" + projectDetail.getAliasName() + "\\" + subProjDetail.getAliasSubProjName();
 		} else {
 			path = "C:\\PMS\\" + projectDetail.getAliasName();
 		}
