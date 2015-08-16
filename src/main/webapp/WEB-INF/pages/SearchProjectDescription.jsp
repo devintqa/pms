@@ -109,7 +109,7 @@
 								<td><form:radiobutton path="searchOn" value="psk"
 										id="searchOnPsk" checked="true" />PSK</td>
 								<td><form:radiobutton path="searchOn" value="government"
-										id="searchOnGovernment" />GOVERNEMENT</td>
+										id="searchOnGovernment" />GOVERNMENT</td>
 							</tr>
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
