@@ -1,10 +1,7 @@
 package com.psk.pms.controller;
 
 import static java.lang.Integer.parseInt;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,34 +135,7 @@ public class ViewController extends BaseController {
         }
         return "ViewDetails";
     }
-
-    private List<String> fetchProjectsInfo(String aliasProjectName) {
-        LOGGER.info("method = fetchProjectsInfo()");
-        List<String> result = new ArrayList<String>();
-        Map<String, String> aliasProjectList = populateAliasProjectList();
-        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-            if (entry.getValue().toUpperCase()
-                    .indexOf(aliasProjectName.toUpperCase()) != -1) {
-                result.add(entry.getValue());
-            }
-        }
-        return result;
-    }
-
-    private List<String> fetchSubProjectsInfo(String subaliasProjectName) {
-        LOGGER.info("method = fetchProjectsInfo()");
-        List<String> result = new ArrayList<String>();
-        // intentionally passing empty to get all sub projectNames
-        Map<String, String> aliasProjectList = populateSubAliasProjectList("");
-        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-            if (entry.getValue().toUpperCase()
-                    .indexOf(subaliasProjectName.toUpperCase()) != -1) {
-                result.add(entry.getValue());
-            }
-        }
-        return result;
-    }
-
+    
     private int getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
         int totalQuantity = 0;
         for (int i = 0; i < projectItemDescriptions.size(); i++) {

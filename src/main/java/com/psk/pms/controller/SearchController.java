@@ -1,6 +1,5 @@
 package com.psk.pms.controller;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -273,33 +272,6 @@ public class SearchController extends BaseController {
 		List<SubProjectDetail> subProjectDocumentList = subProjectService
 				.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
-	}
-
-	private List<String> fetchProjectsInfo(String aliasProjectName) {
-		LOGGER.info("method = fetchProjectsInfo()");
-		List<String> result = new ArrayList<String>();
-		Map<String, String> aliasProjectList = populateAliasProjectList();
-		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-			if (entry.getValue().toUpperCase()
-					.indexOf(aliasProjectName.toUpperCase()) != -1) {
-				result.add(entry.getValue());
-			}
-		}
-		return result;
-	}
-
-	private List<String> fetchSubProjectsInfo(String subaliasProjectName) {
-		LOGGER.info("method = fetchProjectsInfo()");
-		List<String> result = new ArrayList<String>();
-		// intentionally passing empty to get all sub projectNames
-		Map<String, String> aliasProjectList = populateSubAliasProjectList("");
-		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-			if (entry.getValue().toUpperCase()
-					.indexOf(subaliasProjectName.toUpperCase()) != -1) {
-				result.add(entry.getValue());
-			}
-		}
-		return result;
 	}
 
 	@RequestMapping(value = "/emp/myview/searchBaseDescription/{employeeId}", method = RequestMethod.GET)

@@ -1,5 +1,7 @@
 package com.psk.pms.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +34,30 @@ public class BaseController {
 				.getSubAliasProjectNames(projectId);
 		return subAliasProjectNames;
 	}
+	
+    public List<String> fetchProjectsInfo(String aliasProjectName) {
+        List<String> result = new ArrayList<String>();
+        Map<String, String> aliasProjectList = populateAliasProjectList();
+        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
+            if (entry.getValue().toUpperCase()
+                    .indexOf(aliasProjectName.toUpperCase()) != -1) {
+                result.add(entry.getValue());
+            }
+        }
+        return result;
+    }
+
+    public List<String> fetchSubProjectsInfo(String subaliasProjectName) {
+        List<String> result = new ArrayList<String>();
+        // intentionally passing empty to get all sub projectNames
+        Map<String, String> aliasProjectList = populateSubAliasProjectList("");
+        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
+            if (entry.getValue().toUpperCase()
+                    .indexOf(subaliasProjectName.toUpperCase()) != -1) {
+                result.add(entry.getValue());
+            }
+        }
+        return result;
+    }
 
 }

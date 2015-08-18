@@ -46,61 +46,6 @@ public class ViewValidator extends BaseValidator implements Validator {
 				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
 			}
 		}
-		
-/*		if (viewDetail.isSearchAggregateItemDetails() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
-			String projId;
-			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
-				projId = fetchProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setProjId(Integer.valueOf(projId));
-				viewDetail.setSubProjId(0);
-			} else {
-				viewDetail.setEditSubProject(true);
-				projId = fetchSubProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setSubProjId(Integer.valueOf(projId));
-			}
-			if (projId == null) {
-				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
-			}
-		}
-		
-		if (viewDetail.isProjectItemDescription() && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
-			String projId;
-			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
-				projId = fetchProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setProjId(Integer.valueOf(projId));
-				viewDetail.setSubProjId(0);
-			} else {
-				viewDetail.setEditSubProject(true);
-				projId = fetchSubProjectId(viewDetail.getAliasProjectName());
-				viewDetail.setSubProjId(Integer.valueOf(projId));
-			}
-			if (projId == null) {
-				errors.rejectValue("aliasProjectName", "invalid.aliasProjectName", "Please select valid Alias Project/ Sub Project Name.");
-			}
-		}*/
-		
-		
-        /*if((viewDetail.isViewProjectItemPrice() || viewDetail.isEditSubProject()) && StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
-            errors.rejectValue("aliasProjectName", "required.aliasProjectName","Please select Alias Project Name.");
-        }
-        	
-        if((viewDetail.isEditSubProject()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())){
-        	String projId = fetchProjectId(viewDetail.getAliasProjectName());
-        	if(projId == null){
-        		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
-        	}else{
-        		viewDetail.setProjId(Integer.valueOf(projId));
-        	}
-        }
-        
-        if(viewDetail.isSearchAggregateItemDetails() || viewDetail.isSearchComparisonData() || viewDetail.isProjectItemDescription()){
-        	String projId = fetchProjectId(viewDetail.getAliasProjectName());
-        	if(projId == null){
-        		errors.rejectValue("aliasProjectName", "invalid.aliasProjectName","Please select valid Alias Project Name.");
-        	}else{
-        		viewDetail.setProjId(Integer.valueOf(projId));
-        	}
-        }*/
 	}
 
 }
