@@ -145,7 +145,7 @@ public class ItemController {
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
 	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
 								@RequestParam String projId, @RequestParam String subProjId, 
-								@RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String type) {
+								@RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String descType) {
 		DescItemDetail descItemDetail = new  DescItemDetail();
 		ProjDescDetail projDescDetail = null;
 		descItemDetail.setProjId(new Integer(projId));
@@ -161,12 +161,11 @@ public class ItemController {
 			
 		}
 		
-		System.out.println("type: "+type);
 		JsonArray jsonArray = element.getAsJsonArray();
 		descItemDetail.setDescItemDetail(jsonArray.toString());
 		descItemDetail.setEmployeeId(employeeId);
 		model.addAttribute("descItemForm", descItemDetail);
-		if(type.equalsIgnoreCase("psk")){
+		if(descType.equalsIgnoreCase("psk")){
 			projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
 		}else{
 			projDescDetail = projectDescService.getGovProjectDescDetail(projDescId);

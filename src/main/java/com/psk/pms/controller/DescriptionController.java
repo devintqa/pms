@@ -54,14 +54,24 @@ public class DescriptionController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildProjDesc(@PathVariable String employeeId, @RequestParam(value = "team", required = true) String team, @RequestParam(value = "action", required = false) String action, @RequestParam(value = "project", required = false) String project, @RequestParam(value = "subproject", required = false) String subProject, @RequestParam(value = "desc", required = false) String descDetail,
-	Model model) {
+	public String buildProjDesc(@PathVariable String employeeId, 
+			@RequestParam(value = "team", required = true) String team, 
+			@RequestParam(value = "action", required = false) String action, 
+			@RequestParam(value = "project", required = false) String project, 
+			@RequestParam(value = "subproject", required = false) String subProject, 
+			@RequestParam(value = "desc", required = false) String descId,
+			@RequestParam(value = "type", required = false) String descType,
+			Model model) {
 
-		if (null != descDetail) {
+		if (null != descId) {
 			Map < String, String > aliasProjectList = new HashMap < String, String > ();
 			Map < String, String > subAliasProjectList = new HashMap < String, String > ();
-
-			ProjDescDetail projDescDetail = projectDescriptionService.getProjectDescDetail(descDetail, subProject);
+			ProjDescDetail projDescDetail = null;
+			if(descType.equalsIgnoreCase("psk")){
+				projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject);
+			}else{
+				projDescDetail = projectDescriptionService.getGovProjectDescDetail(descId);
+			}
 			projDescDetail.setIsUpdate("Y");
 			projDescDetail.setEmployeeId(employeeId);
 

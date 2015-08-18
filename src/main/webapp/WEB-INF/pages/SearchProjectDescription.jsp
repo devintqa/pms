@@ -26,10 +26,6 @@
 	        }
 		});
 		
-		  $("#submit").click(function(){
-			  
-			 
-		  });
 		  
 	});
   
@@ -37,11 +33,7 @@
 	  if(subProjId == ''){
 		  subProjId = 0;
 	  }
-	  if($("#searchOnPsk").is(':checked')){
-		  descType = "psk";
-	  }else{
-		  descType = "government";
-	  }
+	  descType = $("#searchOn").val();
 	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&type="+descType+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 	  
   }
@@ -147,9 +139,9 @@
 				</center>
 				<br>
 				<br>
-			<input id="searchOn" type="hidden">
+			
 			</form:form>
-
+			<input id="searchOn" type="hidden" value="${searchProjDescForm.searchOn}"/>
 			<c:if test="${projDescDocListSize gt 0}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
 					Project Description Details</h1>
@@ -180,7 +172,7 @@
 									<td>${projDesc.pricePerQuantity}</td>
 									<td>${projDesc.totalCost}</td>
 									<td><a
-										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&action=edit"
+										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&type=${searchProjDescForm.searchOn}&action=edit"
 										class="userAction">Update</a> <strong> / </strong> <a
 										id="deleteRow"
 										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}');"
