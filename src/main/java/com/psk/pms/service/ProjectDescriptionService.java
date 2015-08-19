@@ -37,7 +37,7 @@ public interface ProjectDescriptionService {
 
 	boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst);
 
-	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
+	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId, String governmentEst);
 
 	void deleteAllTheDescriptionDetailsOfProject(int projectId);
 

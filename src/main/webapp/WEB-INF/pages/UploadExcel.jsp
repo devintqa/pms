@@ -86,12 +86,19 @@
                   )
 
                   $('#aliasSubProjectName').change(function() {
+                	  var governmentEst  = "N";
+                      if($('#governmentEst').is(':checked')) {
+                      	governmentEst = "Y";
+      	       	  	 };
                             var subProjectId = this.value;
                             $.ajax({
                                  type : "GET",
                                  url : "checkSubProjectDesc.do",
                                  cache : false,
-                                 data: "subProjectId="+subProjectId,
+                                 data: {
+                    		            "subProjectId" : subProjectId,
+                    		            "governmentEst" : governmentEst
+                    		        },
                                  success : function(data) {
                                  if(data == "Exists"){
                                        $( "#dialog-alert" ).html("Sub Project already contains ProjectDescription data. Uploading file will over write the existing data.");
