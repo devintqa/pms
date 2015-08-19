@@ -35,7 +35,7 @@ public interface ProjectDescriptionService {
 
 	void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-	boolean isProjectDescriptionDetailsExistsForProject(int projectId);
+	boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst);
 
 	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId);
 

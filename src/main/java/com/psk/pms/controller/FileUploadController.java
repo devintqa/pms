@@ -298,10 +298,12 @@ public class FileUploadController extends BaseController {
 
 	@RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)@ResponseBody
 	public String checkProjectDescriptionAlreadyExistForProject(
-	HttpServletRequest request, HttpServletResponse response) {
-		int projectId = Integer.parseInt(request.getParameter("projectId"));
-		LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , project Id  :" + projectId);
-		if (projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId)) {
+	HttpServletRequest request, HttpServletResponse response, @RequestParam("projectId") String projectId
+	,@RequestParam("governmentEst") String governmentEst) {
+		int projId = Integer.parseInt(projectId);
+		LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , governmentEst  :" + governmentEst);
+		LOGGER.info("method = checkProjectDescriptionAlreadyExistForProject , project Id  :" + projId);
+		if (projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projId, governmentEst)) {
 			return Constants.EXISTS;
 		} else {
 			return Constants.DOESNOTEXISTS;

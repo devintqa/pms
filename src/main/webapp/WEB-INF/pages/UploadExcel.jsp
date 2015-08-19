@@ -51,13 +51,20 @@
 	       	  };
 
            	  $('#projId').change(function() {
+                  var governmentEst  = "N";
+                  if($('#governmentEst').is(':checked')) {
+                  	governmentEst = "Y";
+  	       	  	 }; 
                           if(!$('#subProjectUpload').is(':checked')) {
-                                var projectId = this.value;
+                                var projectId = this.value;                            
                                  $.ajax({
                        				type : "GET",
                        				url : "checkProjectDesc.do",
                        				cache : false,
-                       				data: "projectId="+projectId,
+                       				data: {
+                       		            "projectId" : projectId,
+                       		            "governmentEst" : governmentEst
+                       		        },
                        				success : function(data) {
                        				if(data == "Exists") {
                        				    $( "#dialog-alert" ).html("Project contains ProjectDescription data. Uploading file will over write the existing data.");

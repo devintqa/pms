@@ -139,9 +139,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
+	public boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst) {
 		return projectDescriptionDAO
-				.isProjectDescriptionDetailsExistsForProject(projectId);
+				.isProjectDescriptionDetailsExistsForProject(projectId,governmentEst);
 	}
 
 	@Override

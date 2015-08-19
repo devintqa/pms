@@ -470,10 +470,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public boolean isProjectDescriptionDetailsExistsForProject(int projectId) {
+	public boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst) {
 		int noOfrows = 0;
-
-		noOfrows = jdbcTemplate.queryForObject(NOOFPROJECTDESCASSOCIATEDTOPROJECT, Integer.class,
+		String sql = "";
+		if("Y".equalsIgnoreCase(governmentEst)){
+			sql = NOOFQUOTEDPROJECTDESCASSOCIATEDTOPROJECT;
+		}else{
+			sql = NOOFPROJECTDESCASSOCIATEDTOPROJECT;
+		}
+		noOfrows = jdbcTemplate.queryForObject(sql, Integer.class,
 		new Object[] {
 			(Integer) projectId
 		});

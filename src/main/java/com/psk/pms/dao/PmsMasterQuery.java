@@ -86,6 +86,8 @@ public class PmsMasterQuery {
 			+ "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static String NOOFPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM projectdesc WHERE ProjId = ?";
+	
+	public static String NOOFQUOTEDPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM quotedprojectdesc WHERE ProjId = ?";
 
 	public static String NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT = "SELECT count(*) FROM projectdesc WHERE SubProjId = ?";
 
