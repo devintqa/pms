@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectItemDescription;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -62,5 +59,7 @@ public interface ItemDAO {
 	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 
     List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+
+    void saveItemRateDescriptions(List<ItemRateDescription> itemRateDescriptions);
 
 }

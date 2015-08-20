@@ -12,11 +12,15 @@ import com.psk.pms.validator.FileUploadValidator;
 
 import org.apache.log4j.Logger;
 import org.apache.poi.util.IOUtils;
+import org.jxls.reader.ReaderBuilder;
+import org.jxls.reader.XLSReadStatus;
+import org.jxls.reader.XLSReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.*;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -288,6 +294,33 @@ public class FileUploadController extends BaseController {
 		}
 
 	}
+
+
+
+    @RequestMapping(value = "/emp/myview/downloadItemDescTemplate.do", method = RequestMethod.GET)
+    public void getItemDescriptionTemplate(HttpServletRequest request,
+                            HttpServletResponse response) {
+        ClassLoader classLoader = this.getClass().getClassLoader();
+        URL url = null;
+        File file = null;
+        FileInputStream fStream = null;
+        try {
+            url = classLoader.getResource("ItemDescription.xlsx");
+            file = new File(url.getPath());
+            fStream = new FileInputStream(file);
+            String headerValue = String.format("attachment; filename=\"%s\"",
+                    file.getName());
+            response.setHeader("Content-Disposition", headerValue);
+            response.setContentLength((int) file.length());
+            response.setContentType(context.getMimeType(url.getPath()));
+            org.apache.commons.io.IOUtils.copy(fStream,
+                    response.getOutputStream());
+            response.flushBuffer();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
 	@RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
 	public void deleteFile(@RequestParam(value = "path", required = true) String path,

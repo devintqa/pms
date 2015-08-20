@@ -22,6 +22,9 @@
     <bean id="projectDescriptionDetailBuilder" class="com.psk.pms.builder.ProjectDescriptionDetailBuilder">
     </bean>
 
+    <bean id="itemRateDescriptionBuilder" class="com.psk.pms.builder.ItemRateDescriptionBuilder">
+    </bean>
+
     <bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
     </bean>
 

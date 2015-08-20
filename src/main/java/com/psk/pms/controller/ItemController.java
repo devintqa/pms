@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.psk.exception.BulkUploadException;
+import com.psk.pms.model.*;
+import com.psk.pms.service.FileService;
+import com.psk.pms.validator.FileUploadValidator;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -27,109 +31,152 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.psk.pms.Constants;
-import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ItemValidator;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ItemController {
-	
-	@Autowired
-	ProjectService projectService;
-	
-	@Autowired
-	ProjectDescriptionService projectDescService;
-	
-	@Autowired
-	ItemValidator itemValidator;
 
-	@Autowired
-	ItemService itemService;
-	
-	private static final Logger LOGGER = Logger.getLogger(ItemController.class);
-	
-	@RequestMapping(value = "/emp/myview/buildItem/{employeeId}", method = RequestMethod.GET)
-	public String buildItem(@PathVariable String employeeId, Model model) {		
-		LOGGER.info("method = buildItem()");
-		Item item = new Item();
-		item.setEmployeeId(employeeId);
-		model.addAttribute("itemForm", item);
-        List<String> itemTypeNames = fetchItemTypes();
-        model.addAttribute("itemTypes", itemTypeNames);
-		return "BuildItem";
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildItem/searchItem.do", method = RequestMethod.GET)
-	public @ResponseBody
-	List<String> getProjectList(@RequestParam("term") String name) {
-		LOGGER.info("method = getItemList()");
-		LOGGER.info("method = fetchItemInfo()");
-		List<String> result = new ArrayList<String>();
-		Set<String> itemNames = itemService.fetchItemNames();
-		LOGGER.info("The Item Name Size:" + itemNames.size());
-		for (String item : itemNames) {
-			if (item.toUpperCase().indexOf(name.toUpperCase())!= -1) {
-				result.add(item);
-			}
-		}
-		return result;
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildItem/createItem.do", method = RequestMethod.POST)
-	public String saveItem(
-			@ModelAttribute("itemForm") Item item,
-			BindingResult result, Model model, SessionStatus status) {
-		boolean isItemSaveSuccessful = false;
-		itemValidator.validate(item, result);
-		if(!result.hasErrors()){
-			isItemSaveSuccessful = itemService.createEditItem(item);
-		}
-		if(result.hasErrors() || !isItemSaveSuccessful) {
-            List<String> itemTypes = fetchItemTypes();
-            model.addAttribute("itemTypes", itemTypes);
-			return "BuildItem";
-		} else {
-			status.setComplete();
-			Employee employee = new Employee();
-			employee.setEmployeeId(item.getEmployeeId());
-			model.addAttribute("employee", employee);
-            List<String> itemTypes = new ArrayList<String>();
-            itemTypes.add(item.getItemType());
-            model.addAttribute("itemTypes",itemTypes);
-			model.addAttribute("itemCreationMessage", "Item Creation Successful.");
-			return "BuildItem";			
-		}
-	}
-	
-	@RequestMapping(value = "/emp/myview/configureItems/{employeeId}", method = RequestMethod.GET)
-	public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId,@RequestParam(value = "subProject") int subProjectId, Model model) {
-		ProjectConfiguration projectConfiguration = new ProjectConfiguration();
-		projectConfiguration.setEmployeeId(employeeId);
-		projectConfiguration.setProjId(projectId);
+    @Autowired
+    ProjectService projectService;
+
+    @Autowired
+    ProjectDescriptionService projectDescService;
+
+    @Autowired
+    ItemValidator itemValidator;
+
+    @Autowired
+    ItemService itemService;
+
+
+    @Autowired
+    FileUploadValidator fileUploadValidator;
+
+    @Autowired
+    FileService fileService;
+
+    private static final Logger LOGGER = Logger.getLogger(ItemController.class);
+
+    @RequestMapping(value = "/emp/myview/buildItem/{employeeId}", method = RequestMethod.GET)
+    public String buildItem(@PathVariable String employeeId, Model model) {
+        LOGGER.info("method = buildItem()");
+        Item item = new Item();
+        item.setEmployeeId(employeeId);
+        model.addAttribute("itemForm", item);
+        setItemTypesInModel(model);
+        return "BuildItem";
+    }
+
+    @RequestMapping(value = "/emp/myview/buildItem/searchItem.do", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    List<String> getProjectList(@RequestParam("term") String name) {
+        LOGGER.info("method = getItemList()");
+        LOGGER.info("method = fetchItemInfo()");
+        List<String> result = new ArrayList<String>();
+        Set<String> itemNames = itemService.fetchItemNames();
+        LOGGER.info("The Item Name Size:" + itemNames.size());
+        for (String item : itemNames) {
+            if (item.toUpperCase().indexOf(name.toUpperCase()) != -1) {
+                result.add(item);
+            }
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/emp/myview/buildItem/createItem.do", method = RequestMethod.POST)
+    public String saveItem(
+            @ModelAttribute("itemForm") Item item,
+            BindingResult result, Model model, SessionStatus status) throws IOException {
+        boolean isItemSaveSuccessful = false;
+        List<MultipartFile> files = item.getFiles();
+        if (files.size() != 0) {
+            fileUploadValidator.validateFileExistance(result, files);
+        } else {
+            itemValidator.validate(item, result);
+        }
+        if (!result.hasErrors()) {
+            if (files.size() != 0) {
+                if (fileUploadServiceUnsuccessful(item, model)) {
+                    setItemTypesInModel(model);
+                    return "BuildItem";
+                } else {
+                    model.addAttribute("itemCreationMessage", "File Upload Successful.");
+                    setItemTypesInModel(model);
+                    return "BuildItem";
+                }
+            } else {
+                isItemSaveSuccessful = itemService.createEditItem(item);
+                if (result.hasErrors() || !isItemSaveSuccessful) {
+                    setItemTypesInModel(model);
+                    return "BuildItem";
+                } else {
+                    status.setComplete();
+                    Employee employee = new Employee();
+                    employee.setEmployeeId(item.getEmployeeId());
+                    model.addAttribute("employee", employee);
+                    List<String> itemTypes = new ArrayList<String>();
+                    itemTypes.add(item.getItemType());
+                    model.addAttribute("itemTypes", itemTypes);
+                    model.addAttribute("itemCreationMessage", "Item Creation Successful.");
+                    return "BuildItem";
+                }
+            }
+        }
+        return "BuildItem";
+    }
+
+    private void setItemTypesInModel(Model model) {
+        List<String> itemTypes = fetchItemTypes();
+        model.addAttribute("itemTypes", itemTypes);
+    }
+
+    private boolean fileUploadServiceUnsuccessful(Item item, Model model) throws IOException {
+        ExcelDetail excelDetail;
+        try {
+            excelDetail = fileService.saveProjectItemDescription(item);
+        } catch (BulkUploadException e) {
+            model.addAttribute(
+                    "uploadItemProjectDescriptionFailed",
+                    String.format("%s%s", Constants.UPLOADFAILED, e.getMessage()));
+            return true;
+        }
+        if (!excelDetail.isExcel()) {
+            model.addAttribute("itemUpdationMessage",
+                    "Please Select Valid File Format");
+            return true;
+        }
+        return false;
+    }
+
+    @RequestMapping(value = "/emp/myview/configureItems/{employeeId}", method = RequestMethod.GET)
+    public String configureItems(@PathVariable String employeeId, @RequestParam(value = "project") int projectId, @RequestParam(value = "subProject") int subProjectId, Model model) {
+        ProjectConfiguration projectConfiguration = new ProjectConfiguration();
+        projectConfiguration.setEmployeeId(employeeId);
+        projectConfiguration.setProjId(projectId);
         projectConfiguration.setSubProjId(subProjectId);
-		
-		projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration,false);
-		model.addAttribute("projectItemForm", projectConfiguration);
+
+        projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration, false);
+        model.addAttribute("projectItemForm", projectConfiguration);
         model.addAttribute("itemTypes", fetchItemTypes());
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
-		if (! element.isJsonArray()) {
-			
-		}
-		JsonArray jsonArray = element.getAsJsonArray();
-		projectConfiguration.setItemPriceConfiguration(jsonArray.toString());
-		projectConfiguration.setEmployeeId(employeeId);
-		model.addAttribute("projectItemForm", projectConfiguration);
-		
-		return "ConfigureItems";
-	}
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {
+        }.getType());
+        if (!element.isJsonArray()) {
+
+        }
+        JsonArray jsonArray = element.getAsJsonArray();
+        projectConfiguration.setItemPriceConfiguration(jsonArray.toString());
+        projectConfiguration.setEmployeeId(employeeId);
+        model.addAttribute("projectItemForm", projectConfiguration);
+
+        return "ConfigureItems";
+    }
 
     private List<String> fetchItemTypes() {
         LOGGER.info("method = fetchTypes()");
@@ -137,107 +184,115 @@ public class ItemController {
         List<String> itemNames = itemService.fetchItemTypes();
         LOGGER.info("The Item Name Size:" + itemNames.size());
         for (String item : itemNames) {
-                result.add(item);
+            result.add(item);
         }
         return result;
     }
-	
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
-	public String loadProjDescItems(Model model, @RequestParam String projDescSerial, 
-								@RequestParam String projId, @RequestParam String subProjId, 
-								@RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String descType) {
-		DescItemDetail descItemDetail = new  DescItemDetail();
-		ProjDescDetail projDescDetail = null;
-		descItemDetail.setProjId(new Integer(projId));
-		descItemDetail.setSubProjId(new Integer(subProjId));
-		descItemDetail.setProjDescId(new Integer(projDescId));
-		descItemDetail.setProjDescSerial(projDescSerial);
-		
-		descItemDetail = itemService.getDataDescription(descItemDetail);
-		
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
-		if (! element.isJsonArray()) {
-			
-		}
-		
-		JsonArray jsonArray = element.getAsJsonArray();
-		descItemDetail.setDescItemDetail(jsonArray.toString());
-		descItemDetail.setEmployeeId(employeeId);
-		model.addAttribute("descItemForm", descItemDetail);
-		if(descType.equalsIgnoreCase("psk")){
-			projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
-		}else{
-			projDescDetail = projectDescService.getGovProjectDescDetail(projDescId);
-		}
-		model.addAttribute("projDescForm", projDescDetail);
-        model.addAttribute("itemTypes",fetchItemTypes());
-		
-		return "DescItem";
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
-		ObjectMapper mapper = new ObjectMapper();
-		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
-		descItemDetail.setItemDetail(itemList);
-		boolean status = itemService.insertProjectDescriptionItems(descItemDetail);
-		return status;
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildBaseDesc/saveBaseDescItems.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody boolean saveBaseDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException{
-		ObjectMapper mapper = new ObjectMapper();
-		List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
-		descItemDetail.setItemDetail(itemList);
-		boolean status = itemService.insertBaseDescriptionItems(descItemDetail);
-		return status;
-	}
-	
-	@RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes="application/json")
-	public @ResponseBody String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException{
-		ObjectMapper mapper = new ObjectMapper();
-		String result = "";
-		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
-		projectItemConfiguration.setItemDetail(itemList);
-		result = itemValidator.validateItem(result,projectItemConfiguration);
-		if(result != ""){
-			return result;
-		}
-		boolean status = itemService.configureItemPrice(projectItemConfiguration);
-		if(status){
-			result = Constants.ITEM_SAVE_SUCCESSFUL;
-		}
-        return result;
-	}
-	
-	@RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
-	public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
-		
-		DescItemDetail descItemDetail = new  DescItemDetail();
-		descItemDetail.setBaseDescId(new Integer(baseDescId));
-		descItemDetail = itemService.getBaseDescription(descItemDetail);
-		
-		Gson gson = new Gson();
-		JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {}.getType());
-		if (! element.isJsonArray()) {
-			
-		}
-		JsonArray jsonArray = element.getAsJsonArray();
-		descItemDetail.setDescItemDetail(jsonArray.toString());
-		descItemDetail.setBaseDescId(new Integer(baseDescId));
-		descItemDetail.setEmployeeId(employeeId);
-		model.addAttribute("descItemForm", descItemDetail);
-		
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		model.addAttribute("baseDescForm", projDescDetail);
-        model.addAttribute("itemTypes",fetchItemTypes());
-    	
-		ProjDescDetail baseDescDetail = projectDescService.getBaseDescDetail(baseDescId);
-		model.addAttribute("baseDescForm", baseDescDetail);
-        model.addAttribute("itemTypes",fetchItemTypes());
-		return "BaseItem";
-	}
 
-	
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
+    public String loadProjDescItems(Model model, @RequestParam String projDescSerial,
+                                    @RequestParam String projId, @RequestParam String subProjId,
+                                    @RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String descType) {
+        DescItemDetail descItemDetail = new DescItemDetail();
+        ProjDescDetail projDescDetail = null;
+        descItemDetail.setProjId(new Integer(projId));
+        descItemDetail.setSubProjId(new Integer(subProjId));
+        descItemDetail.setProjDescId(new Integer(projDescId));
+        descItemDetail.setProjDescSerial(projDescSerial);
+
+        descItemDetail = itemService.getDataDescription(descItemDetail);
+
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
+        }.getType());
+        if (!element.isJsonArray()) {
+
+        }
+
+        JsonArray jsonArray = element.getAsJsonArray();
+        descItemDetail.setDescItemDetail(jsonArray.toString());
+        descItemDetail.setEmployeeId(employeeId);
+        model.addAttribute("descItemForm", descItemDetail);
+        if (descType.equalsIgnoreCase("psk")) {
+            projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
+        } else {
+            projDescDetail = projectDescService.getGovProjectDescDetail(projDescId);
+        }
+        model.addAttribute("projDescForm", projDescDetail);
+        model.addAttribute("itemTypes", fetchItemTypes());
+
+        return "DescItem";
+    }
+
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes = "application/json")
+    public
+    @ResponseBody
+    boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+        descItemDetail.setItemDetail(itemList);
+        boolean status = itemService.insertProjectDescriptionItems(descItemDetail);
+        return status;
+    }
+
+    @RequestMapping(value = "/emp/myview/buildBaseDesc/saveBaseDescItems.do", method = RequestMethod.POST, consumes = "application/json")
+    public
+    @ResponseBody
+    boolean saveBaseDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+        descItemDetail.setItemDetail(itemList);
+        boolean status = itemService.insertBaseDescriptionItems(descItemDetail);
+        return status;
+    }
+
+    @RequestMapping(value = "/emp/myview/configureItems/saveItemPrice.do", method = RequestMethod.POST, consumes = "application/json")
+    public
+    @ResponseBody
+    String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String result = "";
+        List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
+        projectItemConfiguration.setItemDetail(itemList);
+        result = itemValidator.validateItem(result, projectItemConfiguration);
+        if (result != "") {
+            return result;
+        }
+        boolean status = itemService.configureItemPrice(projectItemConfiguration);
+        if (status) {
+            result = Constants.ITEM_SAVE_SUCCESSFUL;
+        }
+        return result;
+    }
+
+    @RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
+    public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
+
+        DescItemDetail descItemDetail = new DescItemDetail();
+        descItemDetail.setBaseDescId(new Integer(baseDescId));
+        descItemDetail = itemService.getBaseDescription(descItemDetail);
+
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
+        }.getType());
+        if (!element.isJsonArray()) {
+
+        }
+        JsonArray jsonArray = element.getAsJsonArray();
+        descItemDetail.setDescItemDetail(jsonArray.toString());
+        descItemDetail.setBaseDescId(new Integer(baseDescId));
+        descItemDetail.setEmployeeId(employeeId);
+        model.addAttribute("descItemForm", descItemDetail);
+
+        ProjDescDetail projDescDetail = new ProjDescDetail();
+        model.addAttribute("baseDescForm", projDescDetail);
+        model.addAttribute("itemTypes", fetchItemTypes());
+
+        ProjDescDetail baseDescDetail = projectDescService.getBaseDescDetail(baseDescId);
+        model.addAttribute("baseDescForm", baseDescDetail);
+        model.addAttribute("itemTypes", fetchItemTypes());
+        return "BaseItem";
+    }
+
+
 }

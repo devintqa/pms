@@ -134,6 +134,8 @@
 				template</a>
 			<br>
 			<br>
+            <br>
+            Click here to <a href="downloadItemDescTemplate.do" class="userAction">download Item Description Template</a>
 		</c:if>
 	</div>
 	<footer>

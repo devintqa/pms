@@ -48,9 +48,11 @@
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${itemUpdationMessage}</h2>
 			<h2
 				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${itemCreationMessage}</h2>
+            <h2
+                    style="text-align: left; font-family: arial; color: #FF0000; font-size: 14px;">${uploadItemProjectDescriptionFailed}</h2>
 		</div>
 		<div>
-			<form:form method="POST" commandName="itemForm" 
+			<form:form method="POST" commandName="itemForm" modelAttribute="itemForm" enctype="multipart/form-data"
 				action="createItem.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">

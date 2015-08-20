@@ -1,10 +1,7 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectItemDescription;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,176 +20,175 @@ import static com.psk.pms.dao.PmsMasterQuery.*;
  */
 public class ItemDAOImpl implements ItemDAO {
 
-	@Qualifier("jdbcTemplate")
-	@Autowired
-	private JdbcTemplate jdbcTemplate;
+    @Qualifier("jdbcTemplate")
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
-	private static final Logger LOGGER = Logger.getLogger(ItemDAOImpl.class);
+    private static final Logger LOGGER = Logger.getLogger(ItemDAOImpl.class);
 
-	@Override
-	public List<ItemDetail> searchItemName(String itemCode, String itemType) {
-		List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
+    @Override
+    public List<ItemDetail> searchItemName(String itemCode, String itemType) {
+        List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
 
-		String sql;
-		List<Map<String, Object>> rows = null;
-		if ("" != itemCode) {
-			sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"
-					+ itemType + "' and itemName LIKE '%" + itemCode + "%'";
-			rows = jdbcTemplate.queryForList(sql);
-		}
-		for (Map<String, Object> row : rows) {
-			ItemDetail itemDetail = new ItemDetail();
-			itemDetail.setLabel((String) row.get("itemName"));
-			itemDetail.setItemName((String) row.get("itemName"));
-			itemDetail.setItemUnit((String) row.get("itemUnit"));
-			itemsDetail.add(itemDetail);
-		}
-		return itemsDetail;
-	}
+        String sql;
+        List<Map<String, Object>> rows = null;
+        if ("" != itemCode) {
+            sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"
+                    + itemType + "' and itemName LIKE '%" + itemCode + "%'";
+            rows = jdbcTemplate.queryForList(sql);
+        }
+        for (Map<String, Object> row : rows) {
+            ItemDetail itemDetail = new ItemDetail();
+            itemDetail.setLabel((String) row.get("itemName"));
+            itemDetail.setItemName((String) row.get("itemName"));
+            itemDetail.setItemUnit((String) row.get("itemUnit"));
+            itemsDetail.add(itemDetail);
+        }
+        return itemsDetail;
+    }
 
-	public Map<String, String> getDescItemCodes(String itemCode,
-			String itemType, String project) {
-		Map<String, String> descItems = new LinkedHashMap<String, String>();
-		String sql;
-		List<Map<String, Object>> rows = null;
-		if ("" != itemCode) {
-			System.out.println("57");
-			sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"
-					+ itemType + "' and itemName LIKE '%" + itemCode + "%'";
-			rows = jdbcTemplate.queryForList(sql);
-		}
-		for (Map<String, Object> row : rows) {
-			descItems.put(String.valueOf(row.get("itemNo")),
-					(String) row.get("itemName"));
-		}
-		return descItems;
-	}
+    public Map<String, String> getDescItemCodes(String itemCode,
+                                                String itemType, String project) {
+        Map<String, String> descItems = new LinkedHashMap<String, String>();
+        String sql;
+        List<Map<String, Object>> rows = null;
+        if ("" != itemCode) {
+            System.out.println("57");
+            sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"
+                    + itemType + "' and itemName LIKE '%" + itemCode + "%'";
+            rows = jdbcTemplate.queryForList(sql);
+        }
+        for (Map<String, Object> row : rows) {
+            descItems.put(String.valueOf(row.get("itemNo")),
+                    (String) row.get("itemName"));
+        }
+        return descItems;
+    }
 
-	public boolean isItemAlreadyExisting(String itemName) {
-		String sql = "SELECT COUNT(*) FROM itemcodes where itemName = ?";
-		int total = jdbcTemplate.queryForObject(sql, Integer.class,
-				new Object[] { itemName });
-		if (total == 0) {
-			return false;
-		}
-		return true;
-	}
+    public boolean isItemAlreadyExisting(String itemName) {
+        String sql = "SELECT COUNT(*) FROM itemcodes where itemName = ?";
+        int total = jdbcTemplate.queryForObject(sql, Integer.class,
+                new Object[]{itemName});
+        if (total == 0) {
+            return false;
+        }
+        return true;
+    }
 
-	public boolean saveItem(Item item) {
-		jdbcTemplate.update(
-				SAVEITEMS,
-				new Object[] { item.getItemName(), item.getItemUnit(),
-						item.getItemType() });
-		return true;
-	}
+    public boolean saveItem(Item item) {
+        jdbcTemplate.update(
+                SAVEITEMS,
+                new Object[]{item.getItemName(), item.getItemUnit(),
+                        item.getItemType()});
+        return true;
+    }
 
-	@Override
-	public Set<String> fetchItemNames() {
-		String sql = "select itemName from itemcodes";
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-		Set<String> itemNames = new HashSet<String>();
-		for (Map<String, Object> row : rows) {
-			itemNames.add((String) row.get("itemName"));
-		}
-		return itemNames;
-	}
+    @Override
+    public Set<String> fetchItemNames() {
+        String sql = "select itemName from itemcodes";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        Set<String> itemNames = new HashSet<String>();
+        for (Map<String, Object> row : rows) {
+            itemNames.add((String) row.get("itemName"));
+        }
+        return itemNames;
+    }
 
-	@Override
-	public Map<String, String> fetchItemInfo() {
-		String sql = "select * from itemcodes";
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-		Map<String, String> itemNames = new HashMap<String, String>();
-		for (Map<String, Object> row : rows) {
-			itemNames.put((String) row.get("itemName"),
-					(String) row.get("itemType"));
-		}
-		return itemNames;
-	}
+    @Override
+    public Map<String, String> fetchItemInfo() {
+        String sql = "select * from itemcodes";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        Map<String, String> itemNames = new HashMap<String, String>();
+        for (Map<String, Object> row : rows) {
+            itemNames.put((String) row.get("itemName"),
+                    (String) row.get("itemType"));
+        }
+        return itemNames;
+    }
 
-	public boolean insertProjectDescriptionItems(final DescItemDetail descItemDetail) {
-		String sql = "INSERT INTO projdescitem"
-				+ "(ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public boolean insertProjectDescriptionItems(final DescItemDetail descItemDetail) {
+        String sql = "INSERT INTO projdescitem"
+                + "(ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		String deleteSql = "DELETE from projdescitem where ProjDescId = "
-				+ descItemDetail.getProjDescId() + " and ProjDescSerial = '"
-				+ descItemDetail.getProjDescSerial() + "'";
-		jdbcTemplate.execute(deleteSql);
+        String deleteSql = "DELETE from projdescitem where ProjDescId = "
+                + descItemDetail.getProjDescId() + " and ProjDescSerial = '"
+                + descItemDetail.getProjDescSerial() + "'";
+        jdbcTemplate.execute(deleteSql);
 
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
-			@Override
-			public void setValues(PreparedStatement ps, int i)
-					throws SQLException {
-				DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-				ps.setInt(1, descItemDetail.getProjId());
-				ps.setInt(2, descItemDetail.getSubProjId());
-				ps.setInt(3, descItemDetail.getProjDescId());
-				ps.setString(4, descItemDetail.getProjDescSerial());
-				ps.setString(5, itemDetail.getItemName());
-				ps.setString(6, itemDetail.getItemUnit());
-				ps.setString(7, itemDetail.getItemQty());
-				ps.setString(8, itemDetail.getItemPrice());
-				ps.setString(9, itemDetail.getItemCost());
-			}
+            @Override
+            public void setValues(PreparedStatement ps, int i)
+                    throws SQLException {
+                DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
+                ps.setInt(1, descItemDetail.getProjId());
+                ps.setInt(2, descItemDetail.getSubProjId());
+                ps.setInt(3, descItemDetail.getProjDescId());
+                ps.setString(4, descItemDetail.getProjDescSerial());
+                ps.setString(5, itemDetail.getItemName());
+                ps.setString(6, itemDetail.getItemUnit());
+                ps.setString(7, itemDetail.getItemQty());
+                ps.setString(8, itemDetail.getItemPrice());
+                ps.setString(9, itemDetail.getItemCost());
+            }
 
-			@Override
-			public int getBatchSize() {
-				return descItemDetail.getItemDetail().size();
-			}
-		});
+            @Override
+            public int getBatchSize() {
+                return descItemDetail.getItemDetail().size();
+            }
+        });
 
-		long sumItemCost = 0;
-		for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
-			long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
-			sumItemCost = sumItemCost + itemCost;
-		}
+        long sumItemCost = 0;
+        for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
+            long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
+            sumItemCost = sumItemCost + itemCost;
+        }
 
-		String projectDescEstimate = "SELECT Quantity from projectdesc WHERE ProjDescId = '"
-				+ descItemDetail.getProjDescId() + "'";
-		List<Map<String, Object>> rows = jdbcTemplate
-				.queryForList(projectDescEstimate);
+        String projectDescEstimate = "SELECT Quantity from projectdesc WHERE ProjDescId = '"
+                + descItemDetail.getProjDescId() + "'";
+        List<Map<String, Object>> rows = jdbcTemplate
+                .queryForList(projectDescEstimate);
 
-		long totalCost = 0;
-		for (Map<String, Object> row : rows) {
-			BigDecimal quantity = (BigDecimal) row.get("Quantity");
-			long qty = quantity.toBigInteger().longValue();
-			totalCost = sumItemCost * qty;
-		}
+        long totalCost = 0;
+        for (Map<String, Object> row : rows) {
+            BigDecimal quantity = (BigDecimal) row.get("Quantity");
+            long qty = quantity.toBigInteger().longValue();
+            totalCost = sumItemCost * qty;
+        }
 
-		String updateSql = "UPDATE projectdesc set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
-		jdbcTemplate.update(updateSql, new Object[] { sumItemCost, totalCost,
-				descItemDetail.getProjDescId() });
+        String updateSql = "UPDATE projectdesc set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+        jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost,
+                descItemDetail.getProjDescId()});
 
-		return true;
-	}
+        return true;
+    }
 
-	
-	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
-		String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
 
-		List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
-		System.out.println(sql);
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+    public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
+        String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
 
-		for (Map<String, Object> row : rows) {
-			System.out.println("(String) row.get(ItemQty)"+(String) row.get("ItemQty"));
-			itemDetailList.add(buildBaseItemDetail(row));
-		}
-		descItemDetail.setItemDetail(itemDetailList);
-		return descItemDetail;
-	}
-	
+        List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
+        System.out.println(sql);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
-	private DescItemDetail.ItemDetail buildBaseItemDetail(Map<String, Object> row) {
-		DescItemDetail.ItemDetail itemDetail = new DescItemDetail.ItemDetail();
-		itemDetail.setItemName((String) row.get("ItemName"));
-		itemDetail.setItemUnit((String) row.get("ItemUnit"));
-		itemDetail.setItemQty((String) row.get("ItemQty"));
-		itemDetail.setItemPrice((String) row.get("ItemPrice"));
-		return itemDetail;
-	}
+        for (Map<String, Object> row : rows) {
+            System.out.println("(String) row.get(ItemQty)" + (String) row.get("ItemQty"));
+            itemDetailList.add(buildBaseItemDetail(row));
+        }
+        descItemDetail.setItemDetail(itemDetailList);
+        return descItemDetail;
+    }
 
+
+    private DescItemDetail.ItemDetail buildBaseItemDetail(Map<String, Object> row) {
+        DescItemDetail.ItemDetail itemDetail = new DescItemDetail.ItemDetail();
+        itemDetail.setItemName((String) row.get("ItemName"));
+        itemDetail.setItemUnit((String) row.get("ItemUnit"));
+        itemDetail.setItemQty((String) row.get("ItemQty"));
+        itemDetail.setItemPrice((String) row.get("ItemPrice"));
+        return itemDetail;
+    }
 
 
     public boolean insertDataDescription(final DescItemDetail descItemDetail) {
@@ -264,11 +260,11 @@ public class ItemDAOImpl implements ItemDAO {
 
     public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
         String sql;
-        if(isEditSubProject){
-        	LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
-        	sql = "Select * from projdescitem where SubProjId = " + projectConfiguration.getSubProjId();
-        }else{
-        	sql = "Select * from projdescitem where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
+        if (isEditSubProject) {
+            LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+            sql = "Select * from projdescitem where SubProjId = " + projectConfiguration.getSubProjId();
+        } else {
+            sql = "Select * from projdescitem where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
         }
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -341,7 +337,7 @@ public class ItemDAOImpl implements ItemDAO {
         String sql;
         List<Map<String, Object>> rows = null;
         if ("" != request.get("itemName")) {
-            sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId")+ "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+            sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
             rows = jdbcTemplate.queryForList(sql);
         }
         for (Map<String, Object> row : rows) {
@@ -354,7 +350,7 @@ public class ItemDAOImpl implements ItemDAO {
         }
         return itemsDetail;
     }
-    
+
     @Override
     public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
         List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
@@ -419,17 +415,17 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     private void deactivateExistingPrices(ProjectConfiguration projectItemConfiguration) {
-        jdbcTemplate.update(DEACTIVATEEXISTINGPRICES,projectItemConfiguration.getProjId(),projectItemConfiguration.getSubProjId());
+        jdbcTemplate.update(DEACTIVATEEXISTINGPRICES, projectItemConfiguration.getProjId(), projectItemConfiguration.getSubProjId());
     }
 
     @Override
     public ProjectConfiguration getProjectItemConfiguration(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
         String sql;
-        if(isEditSubProject){
-        	LOGGER.info("Into Edit Sub Project " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
-        	sql = "Select * from pricedetail where active = 1 and subProjectId = " + projectConfiguration.getSubProjId();
-        }else{
-        	sql = "Select * from pricedetail where active = 1 and projectId = " + projectConfiguration.getProjId() + " and subProjectId = " + projectConfiguration.getSubProjId();
+        if (isEditSubProject) {
+            LOGGER.info("Into Edit Sub Project " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+            sql = "Select * from pricedetail where active = 1 and subProjectId = " + projectConfiguration.getSubProjId();
+        } else {
+            sql = "Select * from pricedetail where active = 1 and projectId = " + projectConfiguration.getProjId() + " and subProjectId = " + projectConfiguration.getSubProjId();
         }
         List<ProjectConfiguration.ItemDetail> itemList = new ArrayList<ProjectConfiguration.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -442,19 +438,18 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
 
-
     @Override
     public List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
-    	String sql;
-        if(isEditSubProject){
-        	LOGGER.info("getProjectItemDescription() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
-        	sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
-            "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
-            "pdi.ProjDescId = pd.ProjDescId and pdi.SubProjId = '"+projectConfiguration.getSubProjId()+"' and pdi.itemName = '"+itemName+"'";
-        }else{
-        	sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
-            "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
-            "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '"+projectConfiguration.getProjId()+"' and pdi.SubProjId = '"+projectConfiguration.getSubProjId()+"' and pdi.itemName = '"+itemName+"'";
+        String sql;
+        if (isEditSubProject) {
+            LOGGER.info("getProjectItemDescription() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
+            sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
+                    "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+                    "pdi.ProjDescId = pd.ProjDescId and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
+        } else {
+            sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
+                    "pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+                    "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '" + projectConfiguration.getProjId() + "' and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         List<ProjectItemDescription> projectItemDescriptions = new ArrayList<ProjectItemDescription>();
@@ -471,53 +466,75 @@ public class ItemDAOImpl implements ItemDAO {
         return projectItemDescriptions;
     }
 
-	@Override
-	public List<String> getItemNames() {
-		String PROJECT_ITEM_NAMES = "select distinct(itemName) from itemCodes;";
-		List<String> types = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES,
-				String.class);
-		return types;
-	}
+    @Override
+    public List<String> getItemNames() {
+        String PROJECT_ITEM_NAMES = "select distinct(itemName) from itemCodes;";
+        List<String> types = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES,
+                String.class);
+        return types;
+    }
 
 
-	@Override
-	public boolean insertBaseDescriptionItems(final DescItemDetail descItemDetail) {
-		String sql = "INSERT INTO basedescitem"
-				+ "(BaseDescId, ItemName, ItemUnit, ItemType, ItemQty, ItemPrice) "
-				+ "VALUES (?, ?, ?, ?, ?, ?)";
+    @Override
+    public boolean insertBaseDescriptionItems(final DescItemDetail descItemDetail) {
+        String sql = "INSERT INTO basedescitem"
+                + "(BaseDescId, ItemName, ItemUnit, ItemType, ItemQty, ItemPrice) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
 
-		String deleteSql = "DELETE from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
-		jdbcTemplate.execute(deleteSql);
+        String deleteSql = "DELETE from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+        jdbcTemplate.execute(deleteSql);
 
-		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
-			@Override
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-				ps.setInt(1, descItemDetail.getBaseDescId());
-				ps.setString(2, itemDetail.getItemName());
-				ps.setString(3, itemDetail.getItemUnit());
-				ps.setString(4, itemDetail.getItemType());
-				ps.setString(5, "0");
-				ps.setString(6, itemDetail.getItemPrice());
-			}
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
+                ps.setInt(1, descItemDetail.getBaseDescId());
+                ps.setString(2, itemDetail.getItemName());
+                ps.setString(3, itemDetail.getItemUnit());
+                ps.setString(4, itemDetail.getItemType());
+                ps.setString(5, "0");
+                ps.setString(6, itemDetail.getItemPrice());
+            }
 
-			@Override
-			public int getBatchSize() {
-				return descItemDetail.getItemDetail().size();
-			}
-		});
+            @Override
+            public int getBatchSize() {
+                return descItemDetail.getItemDetail().size();
+            }
+        });
 
-		long sumItemPrice = 0;
-		for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
-			long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
-			sumItemPrice = sumItemPrice + itemPrice;
-		}
+        long sumItemPrice = 0;
+        for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
+            long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
+            sumItemPrice = sumItemPrice + itemPrice;
+        }
 
-		String updateSql = "UPDATE basedesc set PricePerQuantity = ? where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
-		jdbcTemplate.update(updateSql, new Object[] { sumItemPrice});
+        String updateSql = "UPDATE basedesc set PricePerQuantity = ? where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+        jdbcTemplate.update(updateSql, new Object[]{sumItemPrice});
 
-		return true;
-	}
+        return true;
+    }
 
+
+    @Override
+    public void saveItemRateDescriptions(final List<ItemRateDescription> itemRateDescriptions) {
+        jdbcTemplate.batchUpdate(PmsMasterQuery.INSERT_ITEM_RATE_DESCRIPTION, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ItemRateDescription itemRateDescription = itemRateDescriptions.get(i);
+                ps.setString(1, itemRateDescription.getItemName());
+                ps.setString(2, itemRateDescription.getItemUnit());
+                ps.setString(3, itemRateDescription.getWorkType());
+                ps.setString(4, itemRateDescription.getItemRate());
+                ps.setDate(5, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                ps.setString(6, itemRateDescription.getScheduleItemNumber());
+                ps.setString(7, itemRateDescription.getItemDescription());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return itemRateDescriptions.size();
+            }
+        });
+    }
 }

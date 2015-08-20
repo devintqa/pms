@@ -2,6 +2,8 @@ package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.BulkUploadException;
+import com.psk.pms.model.Item;
+import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.ProjDescDetail;
 
 import java.util.HashSet;
@@ -22,7 +24,7 @@ public class BulkUploadDetailsValidator {
 		rejectIfAliasDescriptionIsDuplicated(projDescDetails);
 	}
 
-	public void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
+	private void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
 			throws BulkUploadException {
 		for (ProjDescDetail projDescDetail : projDescDetails) {
 			if (StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {
@@ -43,7 +45,7 @@ public class BulkUploadDetailsValidator {
 		}
 	}
 
-	public void rejectIfSerialNumberIsDuplicated(
+	private void rejectIfSerialNumberIsDuplicated(
 			List<ProjDescDetail> projDescDetails) throws BulkUploadException {
 		int sizeOfExtractedDetails = projDescDetails.size();
 		Set<String> uniqueSerialNumbers = new HashSet<String>();
@@ -55,7 +57,7 @@ public class BulkUploadDetailsValidator {
 		}
 	}
 
-	public void rejectIfAliasDescriptionIsDuplicated(
+	private void rejectIfAliasDescriptionIsDuplicated(
 			List<ProjDescDetail> projDescDetails) throws BulkUploadException {
 		int sizeOfExtractedDetails = projDescDetails.size();
 		Set<String> uniqueAliasDescription = new HashSet<String>();
@@ -66,4 +68,43 @@ public class BulkUploadDetailsValidator {
 			throw new BulkUploadException(ALIASNOTUNIQUE);
 		}
 	}
+
+    public void validateFields(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
+        rejectIfFieldIsEmpty(itemRateDescriptions);
+        rejectIfItemRateDescriptionIsDuplicated(itemRateDescriptions);
+        rejectIfItemNameExceedLimit(itemRateDescriptions);
+    }
+
+    private void rejectIfFieldIsEmpty(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
+        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
+            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemName())){
+                throw new BulkUploadException(ITEM_NAME_EMPTY);
+            }
+            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemUnit())){
+                throw new BulkUploadException(ITEM_UNIT_EMPTY);
+            }
+            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemRate())){
+                throw new BulkUploadException(ITEM_RATE_EMPTY);
+            }
+        }
+    }
+
+    private void rejectIfItemNameExceedLimit(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
+        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
+            if(itemRateDescription.getItemName().length()>100){
+                throw new BulkUploadException(PROJECT_ITEM_NAME_TOO_BIG);
+            }
+        }
+    }
+
+    private void rejectIfItemRateDescriptionIsDuplicated(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
+        int size = itemRateDescriptions.size();
+        Set<ItemRateDescription>  items = new HashSet<ItemRateDescription>();
+        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
+            items.add(itemRateDescription);
+        }
+        if(size>items.size()){
+            throw new BulkUploadException(PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE);
+        }
+    }
 }
