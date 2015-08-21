@@ -70,13 +70,6 @@ $(function(){
 								<td><form:errors path="aliasSubProjName" cssClass="error" /></td>
 							</tr>
                             <tr>
-								<td>Sub Project Type<span id="colon">:</span>
-								</td>
-								<td><form:select path="subProjectType" cssClass="inputText"
-										items="${projectTypeList}" /></td>
-								<td><form:errors path="subProjectType" cssClass="error" /></td>
-							</tr>
-							<tr>
 								<td>Estimate C.E.R. Number<span id="colon">:</span>
 								</td>
 								<td><form:input path="subCerNo"

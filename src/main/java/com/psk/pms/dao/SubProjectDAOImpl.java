@@ -260,4 +260,12 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 				+ noOfRows + " subProjectId :" + subProjectId);
 	}
 
+
+    @Override
+    public String getProjectType(Integer projectId) {
+        String sql = "SELECT projectType FROM project where ProjId = ?";
+        String projectType = jdbcTemplate.queryForObject(
+                sql, String.class, projectId);
+        return projectType;
+    }
 }

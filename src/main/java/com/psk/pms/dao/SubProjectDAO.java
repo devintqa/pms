@@ -24,4 +24,6 @@ public interface SubProjectDAO {
 	Map<String, String> getSubAliasProjectNames(String projectId);
 
 	boolean saveSubProject(SubProjectDetail subProjectDetail);
+
+    String getProjectType(Integer projectId);
 }
