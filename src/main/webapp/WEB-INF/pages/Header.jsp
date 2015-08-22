@@ -41,6 +41,8 @@
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
 							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Description</a></li>
+						<li><a id="createField"
+                        	href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Field Description</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>

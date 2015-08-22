@@ -48,11 +48,15 @@
     <bean id="itemDAO" class="com.psk.pms.dao.ItemDAOImpl">
     </bean>
 
+    <bean id="fieldDescriptionDAO" class="com.psk.pms.dao.FieldDescriptionDAOImpl"></bean>
+
     <bean id="itemService" class="com.psk.pms.service.ItemServiceImpl"></bean>
 
     <bean id="subProjectService" class="com.psk.pms.service.SubProjectServiceImpl"></bean>
 
     <bean id="projectDescriptionService" class="com.psk.pms.service.ProjectDescriptionServiceImpl"></bean>
+
+    <bean id="fieldDescriptionService" class="com.psk.pms.service.FieldDescriptionServiceImpl"></bean>
 
     <bean class="com.psk.pms.validator.EmployeeValidator"/>
     <bean class="com.psk.pms.validator.ProjectDetailValidator"/>

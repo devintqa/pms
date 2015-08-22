@@ -492,3 +492,24 @@ CREATE TABLE `users` (
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2015-08-16 18:55:49
+
+DROP TABLE IF EXISTS `fieldprojectdesc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fieldprojectdesc` (
+  `ProjId` int(10) NOT NULL,
+  `SerialNumber` varchar(10) NOT NULL,
+  `SubProjId` int(10) DEFAULT NULL,
+  `WorkType` varchar(30) NOT NULL,
+  `Quantity` decimal(15,2) NOT NULL,
+  `Metric` varchar(30) NOT NULL,
+  `Description` text NOT NULL,
+  `AliasDescription` varchar(100) NOT NULL,
+  `PricePerQuantity` decimal(15,2) DEFAULT NULL,
+  `TotalCost` decimal(15,2) DEFAULT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`ProjDescId`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;

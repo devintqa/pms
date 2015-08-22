@@ -256,8 +256,7 @@ public class SearchController extends BaseController {
 	}
 
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-		List<SubProjectDetail> subProjectDocumentList = subProjectService
-				.getSubProjectDocumentList(projectId);
+		List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
 		return subProjectDocumentList;
 	}
 
