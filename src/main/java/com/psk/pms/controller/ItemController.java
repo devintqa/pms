@@ -194,25 +194,22 @@ public class ItemController {
                                     @RequestParam String projId, @RequestParam String subProjId,
                                     @RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String descType) {
         DescItemDetail descItemDetail = new DescItemDetail();
-        ProjDescDetail projDescDetail = null;
         descItemDetail.setProjId(new Integer(projId));
         descItemDetail.setSubProjId(new Integer(subProjId));
         descItemDetail.setProjDescId(new Integer(projDescId));
         descItemDetail.setProjDescSerial(projDescSerial);
-
-        descItemDetail = itemService.getDataDescription(descItemDetail);
-
+        descItemDetail.setDescType(descType);
+        descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
         Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
-        }.getType());
+        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>(){}.getType());
         if (!element.isJsonArray()) {
 
         }
-
         JsonArray jsonArray = element.getAsJsonArray();
         descItemDetail.setDescItemDetail(jsonArray.toString());
         descItemDetail.setEmployeeId(employeeId);
         model.addAttribute("descItemForm", descItemDetail);
+        ProjDescDetail projDescDetail = null;
         if (descType.equalsIgnoreCase("psk")) {
             projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
         } else {
@@ -225,9 +222,8 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes = "application/json")
-    public
-    @ResponseBody
-    boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException {
+    public @ResponseBody boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) 
+    		throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
         descItemDetail.setItemDetail(itemList);

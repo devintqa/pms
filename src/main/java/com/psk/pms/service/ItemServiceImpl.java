@@ -46,8 +46,7 @@ public class ItemServiceImpl implements ItemService {
 
 	@Override
 	public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
-		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO
-				.getProjectData(projectConfiguration,isEditSubProject);
+		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projectConfiguration,isEditSubProject);
 		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
 		if (itemDetailList.size() > 0) {
 			Map<String, String> itemNames = itemDAO.fetchItemInfo();
@@ -62,10 +61,8 @@ public class ItemServiceImpl implements ItemService {
 						item.setItemPrice(itemDetail.getItemPrice());
 						item.setItemUnit(itemDetail.getItemUnit());
 						item.setItemType(itemName.getValue());
-						itemQty = itemQty
-								+ Double.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost
-								+ Double.valueOf(itemDetail.getItemCost());
+						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
+						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
 					}
 				}
 				if (item.getItemName() != null) {
@@ -104,8 +101,8 @@ public class ItemServiceImpl implements ItemService {
 		return isInsertSuccessful;
 	}
 
-    public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
-        return itemDAO.getDataDescription(descItemDetail);
+    public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
+        return itemDAO.getProjectDescriptionItems(descItemDetail);
     }
 
     @Override
@@ -116,7 +113,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean insertDataDescription(DescItemDetail descItemDetail) {
         boolean isInsertSuccessful = false;
         if (descItemDetail.getItemDetail() != null) {
-            isInsertSuccessful = itemDAO.insertDataDescription(descItemDetail);
+            isInsertSuccessful = itemDAO.insertProjectDescriptionItems(descItemDetail);
         }
         return isInsertSuccessful;
     }

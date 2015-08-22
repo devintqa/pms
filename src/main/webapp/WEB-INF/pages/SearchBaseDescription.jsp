@@ -11,6 +11,11 @@
 <%@include file="Utility.jsp"%>
 <script>
 
+
+function popUpClosed() {
+	window.location.reload();
+}
+
 function openBaseDescLoader (baseDescId, employeeId){
 	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }
@@ -84,7 +89,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 								<td>${globalDescription.workType}</td>
 								<td>${globalDescription.metric}</td>
 								<td>${globalDescription.quantity}</td>
-								<td>${globalDescription.totalCost}</td>
+								<td>${globalDescription.pricePerQuantity}</td>
 								<td><a
 									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit"
 									class="userAction">Update</a> <strong> / </strong> <a

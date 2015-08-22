@@ -9,6 +9,12 @@
 
 <script>
 
+window.onunload = function() {
+    if (window.opener && !window.opener.closed) {
+        window.opener.popUpClosed();
+    }
+};
+
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
 		

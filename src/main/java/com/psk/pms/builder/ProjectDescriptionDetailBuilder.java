@@ -98,16 +98,16 @@ public class ProjectDescriptionDetailBuilder {
 									.setQuantity(String.valueOf(cell
 											.getNumericCellValue()));
 							}
-							if (cell.getColumnIndex() == 4
-									&& row.getCell(5) != null) {
-								if (cell.getColumnIndex() == 4)
-									projDescDetail.setPricePerQuantity(String.valueOf(cell
-											.getNumericCellValue()));
-								projDescDetail.setTotalCost(String.valueOf(Double
-										.valueOf(projDescDetail.getQuantity())
-										.doubleValue()
-										* Double.valueOf(projDescDetail.getPricePerQuantity()).doubleValue()));
-							}
+//							if (cell.getColumnIndex() == 4
+//									&& row.getCell(5) != null) {
+//								if (cell.getColumnIndex() == 4)
+//									projDescDetail.setPricePerQuantity(String.valueOf(cell
+//											.getNumericCellValue()));
+//								projDescDetail.setTotalCost(String.valueOf(Double
+//										.valueOf(projDescDetail.getQuantity())
+//										.doubleValue()
+//										* Double.valueOf(projDescDetail.getPricePerQuantity()).doubleValue()));
+//							}
 
 							break;
 						case Cell.CELL_TYPE_STRING:
@@ -121,15 +121,17 @@ public class ProjectDescriptionDetailBuilder {
 							if (cell.getColumnIndex() == 3)
 								projDescDetail.setMetric(cell
 										.getStringCellValue());
-							if (cell.getColumnIndex() == 5)
+							if (cell.getColumnIndex() == 4)
 								projDescDetail.setDescription(cell
 										.getStringCellValue());
-							if (cell.getColumnIndex() == 6)
+							if (cell.getColumnIndex() == 5)
 								projDescDetail.setAliasDescription(cell
 										.getStringCellValue());
-							if (cell.getColumnIndex() == 7)
+							if (cell.getColumnIndex() == 6)
 								projDescDetail.setBaseDescName(cell
 										.getStringCellValue());
+							
+							projDescDetail.setPricePerQuantity("0");
 							break;
 
 						}

@@ -10,6 +10,11 @@
 <%@include file="Utility.jsp" %>
 <script>
   var windowObjectReference = null;
+  
+	function popUpClosed() {
+		window.location.reload();
+	}
+  
   $(document).ready(function () {
         $("#showSearchProjectDesc").hide();
 		$("#aliasProjectName").autocomplete({
@@ -84,10 +89,7 @@
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-		<div>
-			<h2
-				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
-		</div>
+		
 		<div class="ui-widget">
 			<form:form id="searchProjDescForm" method="POST"
 				commandName="searchProjDescForm"
@@ -138,8 +140,9 @@
 					</table>
 				</center>
 				<br>
-				<br>
-			
+			<div>
+			<h2	style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+		</div>
 			</form:form>
 			<input id="searchOn" type="hidden" value="${searchProjDescForm.searchOn}"/>
 			<c:if test="${projDescDocListSize gt 0}">
@@ -163,7 +166,7 @@
 							<c:forEach var="projDesc" items="${projDescDocList}">
 								<tr>
 									<td><a
-										href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${employeeObj.employeeId}')"
+										href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${searchProjDescForm.searchOn}','${employeeObj.employeeId}')"
 										class="userAction">${projDesc.serialNumber}</a></td>
 									<td>${projDesc.aliasDescription}</td>
 									<td>${projDesc.workType}</td>

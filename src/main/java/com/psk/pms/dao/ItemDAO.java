@@ -28,9 +28,7 @@ public interface ItemDAO {
 
 	List<ItemDetail> searchItemName(String itemCode, String itemType);
 
-    boolean insertDataDescription(DescItemDetail descItemDetail);
-
-    DescItemDetail getDataDescription(final DescItemDetail descItemDetail);
+    DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
 
     List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 

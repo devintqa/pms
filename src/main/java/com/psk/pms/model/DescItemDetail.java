@@ -4,6 +4,7 @@ import java.util.List;
 
 public class DescItemDetail {
 
+	private String descType;
 	private String projDescSerial;
 	private Integer projDescId;
 	private Integer baseDescId;
@@ -85,6 +86,14 @@ public class DescItemDetail {
 
 	public void setDescItemDetail(String descItemDetail) {
 		this.descItemDetail = descItemDetail;
+	}
+
+	public String getDescType() {
+		return descType;
+	}
+
+	public void setDescType(String descType) {
+		this.descType = descType;
 	}
 
 	public static class ItemDetail {

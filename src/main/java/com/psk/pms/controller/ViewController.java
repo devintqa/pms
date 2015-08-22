@@ -80,18 +80,13 @@ public class ViewController extends BaseController {
             projectConfiguration.setProjId(viewDetail.getProjId());
             projectConfiguration.setSubProjId(viewDetail.getSubProjId());
             if (viewDetail.isSearchAggregateItemDetails()) {
-                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService
-                        .getProjectData(projectConfiguration, viewDetail.isEditSubProject());
+                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject());
                 if (aggregateItemDetails.size() > 0) {
-                    model.addAttribute("aggregateItemDetails",
-                            aggregateItemDetails);
-                    model.addAttribute("aggregateItemDetailsSize",
-                            aggregateItemDetails.size());
-                    model.addAttribute("projectAliasName",
-                            viewDetail.getAliasProjectName());
+                    model.addAttribute("aggregateItemDetails",  aggregateItemDetails);
+                    model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
+                    model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
                 } else {
-                    model.addAttribute("noDetailsFound",
-                            "No Item Price Configuration Found For The Project.");
+                    model.addAttribute("noDetailsFound", "No Item Price Configuration Found For The Project.");
                 }
             } else if (viewDetail.isViewProjectItemPrice()) {
                 ProjectConfiguration itemConfiguration = itemService.getProjectItemConfiguration(projectConfiguration, viewDetail.isEditSubProject());

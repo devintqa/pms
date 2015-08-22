@@ -53,7 +53,6 @@ public class ItemDAOImpl implements ItemDAO {
         String sql;
         List<Map<String, Object>> rows = null;
         if ("" != itemCode) {
-            System.out.println("57");
             sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '"
                     + itemType + "' and itemName LIKE '%" + itemCode + "%'";
             rows = jdbcTemplate.queryForList(sql);
@@ -107,15 +106,19 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     public boolean insertProjectDescriptionItems(final DescItemDetail descItemDetail) {
-        String sql = "INSERT INTO projdescitem"
-                + "(ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
+    	
+    	String descItemTable = descItemDetail.getDescType().equalsIgnoreCase("psk") ? "projdescitem" : "quotedprojdescitem";
+    	String descTable = descItemDetail.getDescType().equalsIgnoreCase("psk") ? "projectdesc" : "quotedprojectdesc";
+        String sql = "INSERT INTO "+descItemTable
+                + " (ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String deleteSql = "DELETE from projdescitem where ProjDescId = "
+        String deleteSql = "DELETE from "+descItemTable+" where ProjDescId = "
                 + descItemDetail.getProjDescId() + " and ProjDescSerial = '"
                 + descItemDetail.getProjDescSerial() + "'";
         jdbcTemplate.execute(deleteSql);
 
+        System.out.println(sql);
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
             @Override
@@ -145,10 +148,8 @@ public class ItemDAOImpl implements ItemDAO {
             sumItemCost = sumItemCost + itemCost;
         }
 
-        String projectDescEstimate = "SELECT Quantity from projectdesc WHERE ProjDescId = '"
-                + descItemDetail.getProjDescId() + "'";
-        List<Map<String, Object>> rows = jdbcTemplate
-                .queryForList(projectDescEstimate);
+        String projectDescEstimate = "SELECT Quantity from "+descTable+" WHERE ProjDescId = '" + descItemDetail.getProjDescId() + "'";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(projectDescEstimate);
 
         long totalCost = 0;
         for (Map<String, Object> row : rows) {
@@ -157,7 +158,7 @@ public class ItemDAOImpl implements ItemDAO {
             totalCost = sumItemCost * qty;
         }
 
-        String updateSql = "UPDATE projectdesc set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+        String updateSql = "UPDATE "+descTable+" set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
         jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost,
                 descItemDetail.getProjDescId()});
 
@@ -169,11 +170,9 @@ public class ItemDAOImpl implements ItemDAO {
         String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
 
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
-        System.out.println(sql);
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {
-            System.out.println("(String) row.get(ItemQty)" + (String) row.get("ItemQty"));
             itemDetailList.add(buildBaseItemDetail(row));
         }
         descItemDetail.setItemDetail(itemDetailList);
@@ -191,62 +190,13 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
 
-    public boolean insertDataDescription(final DescItemDetail descItemDetail) {
-        String sql = "INSERT INTO projdescitem" +
-                "(ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-        String deleteSql = "DELETE from projdescitem where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
-        jdbcTemplate.execute(deleteSql);
-
-
-        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
-
-            @Override
-            public void setValues(PreparedStatement ps, int i) throws SQLException {
-                DescItemDetail.ItemDetail itemDetail = descItemDetail.getItemDetail().get(i);
-                ps.setInt(1, descItemDetail.getProjId());
-                ps.setInt(2, descItemDetail.getSubProjId());
-                ps.setInt(3, descItemDetail.getProjDescId());
-                ps.setString(4, descItemDetail.getProjDescSerial());
-                ps.setString(5, itemDetail.getItemName());
-                ps.setString(6, itemDetail.getItemUnit());
-                ps.setString(7, itemDetail.getItemQty());
-                ps.setString(8, itemDetail.getItemPrice());
-                ps.setString(9, itemDetail.getItemCost());
-            }
-
-            @Override
-            public int getBatchSize() {
-                return descItemDetail.getItemDetail().size();
-            }
-        });
-
-        long sumItemCost = 0;
-        for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
-            long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
-            sumItemCost = sumItemCost + itemCost;
-        }
-
-        String projectDescEstimate = "SELECT Quantity from projectdesc WHERE ProjDescId = '" + descItemDetail.getProjDescId() + "'";
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(projectDescEstimate);
-
-        long totalCost = 0;
-        for (Map<String, Object> row : rows) {
-            BigDecimal quantity = (BigDecimal) row.get("Quantity");
-            long qty = quantity.toBigInteger().longValue();
-            totalCost = sumItemCost * qty;
-        }
-
-        String updateSql = "UPDATE projectdesc set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
-        jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost, descItemDetail.getProjDescId()});
-
-        return true;
-    }
-
-    public DescItemDetail getDataDescription(final DescItemDetail descItemDetail) {
-        String sql = "Select * from projdescitem where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
-
+    public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
+    	String sql = "";
+    	if(descItemDetail.getDescType().equalsIgnoreCase("psk"))
+    		sql = "Select * from projdescitem where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
+    	else
+    		sql = "Select * from quotedprojdescitem where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
+    		
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -347,12 +297,10 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
         List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
-        System.out.println(request);
         String sql = null;
         List<Map<String, Object>> rows = null;
         if ("" != request.get("itemName")) {
             sql = "select itemType, itemName, itemUnit, itemPrice from govestpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
-            System.out.println(sql);
             rows = jdbcTemplate.queryForList(sql);
         }
         for (Map<String, Object> row : rows) {

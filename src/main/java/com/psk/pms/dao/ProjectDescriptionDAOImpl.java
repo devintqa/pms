@@ -424,24 +424,28 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		});
 
 		for (ProjDescDetail projDescDetail: projDescDetails) {
-			if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
-				ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
-
-				if (null == baseDescDetail.getSubProjId()) {
-					baseDescDetail.setSubProjId(0);
+			try{
+				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
+					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
+					if (null == baseDescDetail.getSubProjId()) {
+						baseDescDetail.setSubProjId(0);
+					}
+					DescItemDetail descItemDetail = new DescItemDetail();
+					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
+					descItemDetail.setProjId(projDescDetail.getProjId());
+					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
+					descItemDetail.setDescType("government");
+					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
+					descItemDetail.setItemDetail(itemDetailList);
+					if (itemDetailList.size() > 0) {
+						itemDAO.insertProjectDescriptionItems(descItemDetail);
+					}
 				}
-
-				DescItemDetail descItemDetail = new DescItemDetail();
-				descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
-				descItemDetail.setProjId(projDescDetail.getProjId());
-				descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-				descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
-				descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
-				List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
-				descItemDetail.setItemDetail(itemDetailList);
-				if (itemDetailList.size() > 0) {
-					itemDAO.insertProjectDescriptionItems(descItemDetail);
-				}
+			}
+			catch(Exception e){
+				
 			}
 		}
 	}

@@ -8,6 +8,12 @@
 <script src="<c:url value="/resources/js/jquery.tabSlideOut.v1.3.js" />"></script>
 
 <script>
+	
+	window.onunload = function() {
+	    if (window.opener && !window.opener.closed) {
+	        window.opener.popUpClosed();
+	    }
+	};
 
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
@@ -24,8 +30,15 @@
 		            	            }, response);
 				},
 				select: function(event, ui) { 
-			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
-			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
+					if(validateItemNameExistence(ui.item.itemName)){
+				        alert("Item already exists!");
+				        event.preventDefault();
+				        $(this).val('');
+					}else{
+						 $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
+				         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
+					}
+			         
 			    }
 			});
 		});
@@ -99,13 +112,12 @@
 	        this.value = val.substring(0, val.length - 1);
 	    }
 	});
-	2
 	
 	$(document).on("keyup","input[name = 'itemQty']",function(){
 		
-		 var valid = /^\d{0,9}?$/.test(this.value),
-	        val = this.value;
-	    
+		var valid = /^[\d]+(\.[\d]{0,2})?$/.test(this.value);
+		val = this.value;
+			    
 	    if(valid){
 	        var qty = $(this).val()
 			var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
@@ -157,6 +169,19 @@
 		this.itemQty = itemQty;
 		this.itemCost = itemCost;
 		} 
+	function validateItemNameExistence(newItemName){
+		var itemTable = document.getElementById('itemTable');
+		var len = itemTable.rows.length;
+		var exists = false;
+		for (i = 1; i <= len - 1; i++) {
+			var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+			if(itemName == newItemName){
+				exists = true;
+				break;
+			}
+		}
+		return exists;
+	}
 	
 	function saveItemDesc() {
 		var itemTable = document.getElementById('itemTable');
@@ -183,8 +208,8 @@
 		itemDescForm["subProjId"] = document.getElementById('subProjId').value;
 		itemDescForm["projDescId"] = document.getElementById('projDescId').value;
 		itemDescForm["projDescSerial"] = document.getElementById('projDescSerial').value;
+		itemDescForm["descType"] = document.getElementById('descType').value;
 		itemDescForm["descItemDetail"] = JSON.stringify(itemObjArray);
-		
 		
 		console.log("data = " + JSON.stringify(itemDescForm));
 		if(err){
@@ -348,7 +373,7 @@
 						<td>Metric<span id="colon">:</span>
 						</td>
 						<td><form:input id="metric" path="metric"
-								placeholder="Enter quantity metric" cssClass="inputText" /></td>
+								placeholder="Enter quantity metric" cssClass="inputText" readonly="true"/></td>
 						<td><form:errors path="metric" cssClass="error" /></td>
 					</tr>
 					<tr>
@@ -397,6 +422,7 @@
 		<form:hidden path="projDescId" id="projDescId" />
 		<form:hidden path="projDescSerial" id="projDescSerial" />
 		<form:hidden path="employeeId" id="employeeId" />
+		<form:hidden path="descType" id="descType" />
 
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
@@ -410,11 +436,10 @@
 
 			<tr>
 				<td><input name="itemName" id="itemName" type="text" /></td>
-				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
+				<td><input name="itemUnit" readonly="readonly" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
 					type="text" /></td>
-				<td><input name="itemQty" id="itemQty" type="text"
-					pattern="([0-9]+\.)?[0-9]+" /></td>
+				<td><input name="itemQty" id="itemQty" type="text"></td>
 				<td><input name="itemCost" readonly="readonly" id="itemCost"
 					type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img
