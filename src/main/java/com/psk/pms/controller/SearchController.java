@@ -111,11 +111,11 @@ public class SearchController extends BaseController {
 	public String searchSubProjectDetail(
 			@ModelAttribute("searchSubForm") SearchDetail searchDetail,
 			BindingResult result, Model model, SessionStatus status) {
-		LOGGER.info("method = searchProjectDetail()");
+		LOGGER.info("method = searchSubProjectDetail()");
 		searchValidator.validate(searchDetail, result);
-		LOGGER.info("method = searchProjectDetail()" + "after validate");
+		LOGGER.info("method = searchSubProjectDetail()" + "after validate");
 		if (!result.hasErrors()) {
-			LOGGER.info("method = searchProjectDetail()" + "into fetch");
+			LOGGER.info("method = searchSubProjectDetail()" + "into fetch");
 			List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(searchDetail
 					.getProjId());
 			if (subProjectDocumentList.size() > 0) {

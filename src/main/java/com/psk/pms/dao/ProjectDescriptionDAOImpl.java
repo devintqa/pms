@@ -214,12 +214,16 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";;
 
 		if (searchDetail.getSearchOn().equalsIgnoreCase("psk")) {
-			if (searchDetail.getSearchUnder().equalsIgnoreCase("project")) {
+			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
 				sql = sql + " FROM projectdesc" + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+			} else {
+				sql = sql + " FROM projectdesc" + " where SubProjId = " + searchDetail.getProjId();
 			}
 		} else {
-			if (searchDetail.getSearchUnder().equalsIgnoreCase("project")) {
+			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
 				sql = sql + " FROM quotedprojectdesc" + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+			} else {
+				sql = sql + " FROM quotedprojectdesc" + " where SubProjId = " + searchDetail.getProjId();
 			}
 		}
 
