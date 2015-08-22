@@ -18,8 +18,6 @@ public interface ItemDAO {
 
     public Map<String, String> fetchItemInfo();
 
-    Set<String> fetchItemNames(String itemCategory);
-
     boolean isItemAlreadyExisting(String itemName);
 
     List<ItemDetail> getDescItemNames(Map<String, Object> request);

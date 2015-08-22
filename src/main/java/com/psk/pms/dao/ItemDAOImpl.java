@@ -323,13 +323,6 @@ public class ItemDAOImpl implements ItemDAO {
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
-
-    @Override
-    public Set<String> fetchItemNames(String itemCategory) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     @Override
     public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
         List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
