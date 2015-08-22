@@ -103,6 +103,15 @@ input[type=submit] {
 	color: white;
 }
 
+.button {
+    background: #007399 none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    padding: 5px 15px;
+}
+
 a {
 	font-family: arial;
 	color: #007399;

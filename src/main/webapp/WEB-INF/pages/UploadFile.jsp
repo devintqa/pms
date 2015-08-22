@@ -121,8 +121,8 @@
 
 				</table>
 				<br />
-				<input type="submit" value="Upload" />
-				<input id="addFile" type="button" value="Add File" />
+				<input class="button" type="submit" value="Upload" />
+				<input class="button" id="addFile" type="button" value="Add File" />
 			</form:form>
 		</div>
 	</div>

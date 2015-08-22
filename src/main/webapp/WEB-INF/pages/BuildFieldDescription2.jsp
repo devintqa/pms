@@ -154,7 +154,7 @@
 					<table>
 						<tr>
 							<td></td>
-							<td><input id="createFieldDescription" type="button" value="Create"
+							<td><input class="button" id="createFieldDescription" type="button" value="Create"
 							onclick="confirmOverwriteOfFieldData($('#aliasProjectName').val(),$('#searchUnderProject').is(':checked'))"/></td>
 							<td></td>
 						</tr>

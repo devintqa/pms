@@ -172,7 +172,7 @@ $(document).ready(function () {
 					<table>
 						<tr>
 							<td></td>
-							<td><input type="submit" /></td>
+							<td><input class="button" type="submit" /></td>
 							<td></td>
 						</tr>
 					</table>

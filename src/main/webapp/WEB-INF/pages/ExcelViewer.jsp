@@ -93,8 +93,8 @@
 	</header>
 	<div id="example1" class="hot handsontable"
 		style="overflow: hidden; width: 1250px; height: 400px;"></div>
-	<input type="button" id="loadData" value="load" />
-	<input type="button" id="saveEdition" value="save" />
+	<input class="button" type="button" id="loadData" value="load" />
+	<input class="button" type="button" id="saveEdition" value="save" />
 	<div id="savedItem">
 		<b>console:</b>
 		<p id="editionData"></p>

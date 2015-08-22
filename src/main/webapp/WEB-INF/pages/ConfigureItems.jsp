@@ -206,8 +206,8 @@
 		<br>
 		<div id="result" style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
 		<br>
-		<input type="button" id="addItem" value="Add" onclick="insertItemRow()" />
-		<input type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />
+		<input class="button" type="button" id="addItem" value="Add" onclick="insertItemRow()" />
+		<input class="button" type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />
 		<form:hidden path="itemPriceConfiguration" id="itemPriceConfiguration"/>
 		<form:hidden path="projId" id="projId"/>
 		<form:hidden path="subProjId" id="subProjId"/>

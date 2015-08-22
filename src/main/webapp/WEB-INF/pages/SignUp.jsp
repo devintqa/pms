@@ -96,7 +96,7 @@
 						<tr></tr>
 						<tr>
 							<td></td>
-							<td><input type="submit" /></td>
+							<td><input class="button" type="submit" /></td>
 						</tr>
 						<tr></tr>
 						<tr>

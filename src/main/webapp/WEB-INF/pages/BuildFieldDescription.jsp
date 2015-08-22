@@ -209,7 +209,7 @@ $(document).ready(function () {
 						<tr>
 							<td></td>
 							<td>
-							<input id="createFieldDescription" type="button" value="Create"
+							<input class="button" id="createFieldDescription" type="button" value="Create"
                                 	onclick="confirmOverwriteOfFieldData($('#projId').val(),$('#aliasSubProjectName').val())"/>
                             </td>
 							<td></td>

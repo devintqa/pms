@@ -354,9 +354,9 @@ window.onunload = function() {
 		<br>
 
 		<br>
-		<input type="button" id="addItem" value="Add"
+		<input class="button" type="button" id="addItem" value="Add"
 			onclick="insertItemRow()" />
-		<input type="button" id="saveDesc" value="Save"
+		<input class="button" type="button" id="saveDesc" value="Save"
 			onclick="saveItemDesc()" />
 	</form:form>
 	<div id="dialog-confirm"></div>

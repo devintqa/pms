@@ -134,7 +134,7 @@
 					<table>
 						<tr>
 							<td></td>
-							<td><input id="submit" type="submit" /></td>
+							<td><input class="button" id="submit" type="submit" /></td>
 							<td></td>
 						</tr>
 					</table>

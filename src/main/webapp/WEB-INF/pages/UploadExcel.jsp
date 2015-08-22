@@ -177,7 +177,7 @@
 						</tr>
 
 					</table>
-					<br /> <input type="submit" value="Upload" />
+					<br /> <input class="button" type="submit" value="Upload" />
 					<form:hidden path="employeeId" />
 					</fieldset>
 			</form:form>
