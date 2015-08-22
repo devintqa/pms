@@ -82,14 +82,9 @@ public class ItemRateDescription {
             return false;
         }
         final ItemRateDescription itemRateDescription = (ItemRateDescription) obj;
-        if (itemName != itemRateDescription.itemName && workType != workType)
+        if (itemName != itemRateDescription.itemName && workType != itemRateDescription.workType) {
             return false;
-     /*   if (workType == null) {
-            if (itemRateDescription.workType != null)
-                return false;
-        } else if (!workType.equals(itemRateDescription.workType))
-            return false;
-*/
+        }
         return true;
     }
 }

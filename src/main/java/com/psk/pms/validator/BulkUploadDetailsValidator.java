@@ -2,7 +2,6 @@ package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.BulkUploadException;
-import com.psk.pms.model.Item;
 import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.ProjDescDetail;
 

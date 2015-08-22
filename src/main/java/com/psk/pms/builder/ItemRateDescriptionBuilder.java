@@ -1,9 +1,7 @@
 package com.psk.pms.builder;
 
-import com.mysql.jdbc.StringUtils;
 import com.psk.pms.Constants;
 import com.psk.pms.model.ItemRateDescription;
-import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SheetNames;
 import org.apache.log4j.Logger;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,7 +27,7 @@ public class ItemRateDescriptionBuilder {
 
     public List<ItemRateDescription> buildItemRateDescription(String saveDirectory,
                                                               MultipartFile multipartFile) throws IOException {
-        List<ItemRateDescription> itemRateDescriptions = new ArrayList<>();
+        List<ItemRateDescription> itemRateDescriptions = new ArrayList<ItemRateDescription>();
         FileInputStream fileInputStream = null;
         try {
             String path = saveDirectory + multipartFile.getOriginalFilename();
