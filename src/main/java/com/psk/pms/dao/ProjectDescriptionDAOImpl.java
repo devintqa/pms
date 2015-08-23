@@ -28,7 +28,7 @@ import static com.psk.pms.dao.PmsMasterQuery.*;
  */
 public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
-	private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionDAOImpl.class);
 
 	@Qualifier("jdbcTemplate")@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -238,6 +238,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	public List < ProjDescComparisonDetail > getProjectDescComparisonDetail(
 	Integer projId) {
+		LOGGER.info("Fetching the comparison detail for the project: " + projId);
 		String sql;
 		sql = compareDataQuery + "  and p.ProjId = " + projId;
 

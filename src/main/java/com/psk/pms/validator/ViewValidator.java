@@ -27,7 +27,7 @@ public class ViewValidator extends BaseValidator implements Validator {
         }
 
 		if ((viewDetail.isViewProjectItemPrice() || viewDetail.isSearchAggregateItemDetails()
-				 || viewDetail.isProjectItemDescription()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
+				 || viewDetail.isProjectItemDescription() || viewDetail.isSearchComparisonData()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
 				projId = fetchProjectId(viewDetail.getAliasProjectName());
