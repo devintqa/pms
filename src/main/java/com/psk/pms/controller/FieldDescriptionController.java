@@ -54,13 +54,14 @@ public class FieldDescriptionController extends BaseController {
             subProjectId = Integer.parseInt(request.getParameter("subProjectId"));
         }
         LOGGER.info("Checking is filedDescription already present for projectId :" + projectId + "subProjectId :" + subProjectId);
-        ProjDescDetail projDescDetail = new ProjDescDetail();
         if (0 != subProjectId) {
             if (!projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId, "N")) {
                 return NOTEXIST;
             } else if (fieldDescriptionService.isFieldDescriptionDetailsExistsForSubProject(subProjectId)) {
                 return ALREADYEXIST;
             }
+            LOGGER.info("method = createFieldDescription , creating  filedDescription data for : projectId" + projectId
+                    + "subProjectId" + subProjectId);
             fieldDescriptionService.createFieldDescription(projectId, subProjectId);
         } else {
             if (!projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId, "N")) {
@@ -68,6 +69,8 @@ public class FieldDescriptionController extends BaseController {
             } else if (fieldDescriptionService.isFieldDescriptionDetailsExistsForProject(projectId)) {
                 return ALREADYEXIST;
             }
+            LOGGER.info("method = createFieldDescription , creating  filedDescription data for : projectId" + projectId
+                    + "subProjectId" + subProjectId);
             fieldDescriptionService.createFieldDescription(projectId, 0);
         }
         return SUCCESS;
@@ -91,13 +94,13 @@ public class FieldDescriptionController extends BaseController {
         String projectId = request.getParameter("projectId");
         String subProjectId = request.getParameter("subProjectId");
         int subProjectIdIntValue;
-        LOGGER.info("Checking is filedDescription already present for :");
         if (NULL_STRING.equalsIgnoreCase(subProjectId)) {
             subProjectIdIntValue = 0;
         } else {
             subProjectIdIntValue = Integer.parseInt(subProjectId);
         }
+        LOGGER.info("method = createFieldDescription , creating  filedDescription data for : projectId" + projectId
+                + "subProjectId" + subProjectId);
         fieldDescriptionService.createFieldDescription(Integer.valueOf(projectId), subProjectIdIntValue);
     }
-
 }
