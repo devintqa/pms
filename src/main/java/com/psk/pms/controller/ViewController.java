@@ -1,6 +1,8 @@
 package com.psk.pms.controller;
 
 import static java.lang.Integer.parseInt;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -119,7 +121,7 @@ public class ViewController extends BaseController {
             } else if (viewDetail.isProjectItemDescription()) {
                 List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(projectConfiguration, viewDetail.isEditSubProject(), viewDetail.getItemName());
                 if (projectItemDescription.size() > 0) {
-                    int sumOfQuantity = getSumOfQuantity(projectItemDescription);
+                	Double sumOfQuantity = getSumOfQuantity(projectItemDescription);
                     model.addAttribute("projectItemDescriptions", projectItemDescription);
                     model.addAttribute("projectItemDescriptionSize", projectItemDescription.size());
                     model.addAttribute("sumOfQuantity", sumOfQuantity);
@@ -131,11 +133,11 @@ public class ViewController extends BaseController {
         return "ViewDetails";
     }
     
-    private int getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
-        int totalQuantity = 0;
+    private Double getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
+        Double totalQuantity = 0.0;
         for (int i = 0; i < projectItemDescriptions.size(); i++) {
             totalQuantity = totalQuantity
-                    + parseInt(projectItemDescriptions.get(i).getItemQuantity());
+                    + Double.valueOf(projectItemDescriptions.get(i).getItemQuantity());
         }
         return totalQuantity;
     }
