@@ -94,20 +94,21 @@ public class ItemController {
             @ModelAttribute("itemForm") Item item,
             BindingResult result, Model model, SessionStatus status) throws IOException {
         boolean isItemSaveSuccessful = false;
+        setItemTypesInModel(model);
         List<MultipartFile> files = item.getFiles();
-        if (files.size() != 0) {
+        if (files.size() != 0 && item.isBaseItem()) {
             fileUploadValidator.validateFileExistance(result, files);
         } else {
             itemValidator.validate(item, result);
         }
         if (!result.hasErrors()) {
-            if (files.size() != 0) {
+            if (files.size() != 0 && item.isBaseItem()) {
                 if (fileUploadServiceUnsuccessful(item, model)) {
                     setItemTypesInModel(model);
                     return "BuildItem";
                 } else {
                     model.addAttribute("itemCreationMessage", "File Upload Successful.");
-                    setItemTypesInModel(model);
+
                     return "BuildItem";
                 }
             } else {
