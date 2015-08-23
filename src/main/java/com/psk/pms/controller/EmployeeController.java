@@ -61,9 +61,9 @@ public class EmployeeController {
 				.jsonToMap(json);
 		Employee employee = new Employee();
 		String action = "";
-		if (details.get("action").equalsIgnoreCase("enable")) {
+		if ("enable".equalsIgnoreCase(details.get("action"))) {
 			action = Constants.ENABLE_EMPLOYEE_ACCESS;
-		} else if (details.get("action").equalsIgnoreCase("deny")) {
+		} else if ("deny".equalsIgnoreCase(details.get("action"))) {
 			action = Constants.DENY_EMPLOYEE_ACCESS;
 		} else {
 			action = Constants.DISABLE_EMPLOYEE_ACCESS;

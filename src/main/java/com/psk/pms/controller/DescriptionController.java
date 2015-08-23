@@ -67,7 +67,7 @@ public class DescriptionController extends BaseController {
 			Map < String, String > aliasProjectList = new HashMap < String, String > ();
 			Map < String, String > subAliasProjectList = new HashMap < String, String > ();
 			ProjDescDetail projDescDetail = null;
-			if(descType.equalsIgnoreCase("psk")){
+			if("psk".equalsIgnoreCase(descType)){
 				projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject);
 			}else{
 				projDescDetail = projectDescriptionService.getGovProjectDescDetail(descId);

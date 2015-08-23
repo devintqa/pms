@@ -210,7 +210,7 @@ public class ItemController {
         descItemDetail.setEmployeeId(employeeId);
         model.addAttribute("descItemForm", descItemDetail);
         ProjDescDetail projDescDetail = null;
-        if (descType.equalsIgnoreCase("psk")) {
+        if ("psk".equalsIgnoreCase(descType)) {
             projDescDetail = projectDescService.getProjectDescDetail(projDescId, null);
         } else {
             projDescDetail = projectDescService.getGovProjectDescDetail(projDescId);
