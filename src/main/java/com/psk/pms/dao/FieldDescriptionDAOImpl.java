@@ -20,14 +20,12 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
     @Override
     public boolean isFieldDescriptionDetailsExistsForProject(int projectId) {
-        int noOfrows = 0;
+        int noOfRows;
 
-        noOfrows = jdbcTemplate.queryForObject(NOOFFIELDDESCASSOCIATEDTOPROJECT, Integer.class,
-                new Object[]{
-                        (Integer) projectId
-                });
-        LOGGER.info("method = isProjectDescriptionDetailsExistsForProject , isDataPresent :" + (noOfrows != 0));
-        if (noOfrows != 0) {
+        noOfRows = jdbcTemplate.queryForObject(NOOFFIELDDESCASSOCIATEDTOPROJECT, Integer.class,
+                (Integer) projectId);
+        LOGGER.info("method = isFieldDescriptionDetailsExistsForProject , isDataPresent :" + (noOfRows != 0));
+        if (noOfRows != 0) {
             return true;
         }
         return false;
@@ -35,15 +33,12 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
     @Override
     public boolean isFieldDescriptionDetailsExistsForSubProject(int subProjectId) {
-        int noOfrows = 0;
-
-        noOfrows = jdbcTemplate.queryForObject(
+        int noOfRows;
+        noOfRows = jdbcTemplate.queryForObject(
                 NOOFFIELDDESCASSOCIATEDTOSUBPROJECT, Integer.class,
-                new Object[]{
-                        (Integer) subProjectId
-                });
-        LOGGER.info("method = isProjectDescriptionDetailsExistsForSubProject , isDataPresent :" + (noOfrows != 0));
-        if (noOfrows != 0) {
+                (Integer) subProjectId);
+        LOGGER.info("method = isFieldDescriptionDetailsExistsForSubProject , isDataPresent :" + (noOfRows != 0));
+        if (noOfRows != 0) {
             return true;
         }
         return false;
@@ -51,12 +46,18 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
     @Override
     public void createFieldDescription(int projectId, int subProjectId) {
+        LOGGER.info("method = createFieldDescription, creating field description,for projectId :"
+                + projectId + " , subProjectId:" + subProjectId);
         if (0 == subProjectId) {
-            jdbcTemplate.update(DELETEPROJECTFIELDDESCRIPTION,new Object[]{projectId});
-            jdbcTemplate.update(CREATEPROJECTFIELDDESCRIPTION, new Object[]{projectId});
+            jdbcTemplate.update(DELETEPROJECTFIELDDESCRIPTION, projectId);
+            jdbcTemplate.update(DELETEPROJECTFIELDDESCRIPTIONITEM, projectId);
+            jdbcTemplate.update(CREATEPROJECTFIELDDESCRIPTION, projectId);
+            jdbcTemplate.update(CREATEPROJECTFIELDDESCRIPTIONITEM, projectId);
         } else {
-            jdbcTemplate.update(DELETESUBPROJECTFIELDDESCRIPTION,new Object[]{subProjectId});
-            jdbcTemplate.update(CREATESUBPROJECTFIELDDESCRIPTION, new Object[]{subProjectId});
+            jdbcTemplate.update(DELETESUBPROJECTFIELDDESCRIPTION, subProjectId);
+            jdbcTemplate.update(DELETESUBPROJECTFIELDDESCRIPTIONITEM, subProjectId);
+            jdbcTemplate.update(CREATESUBPROJECTFIELDDESCRIPTION, subProjectId);
+            jdbcTemplate.update(CREATESUBPROJECTFIELDDESCRIPTIONITEM, subProjectId);
         }
-        }
+    }
 }

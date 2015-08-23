@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+import static com.psk.pms.Constants.*;
+
 /**
  * Created by prakashbhanu57 on 8/18/2015.
  */
@@ -41,8 +43,9 @@ public class FieldDescriptionController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/buildFieldDescription/FieldDescriptionPresent.do", method = RequestMethod.GET)
-    public @ResponseBody String isFieldDescriptionPresent(HttpServletRequest request) {
-        String NULL_STRING = "null";
+    public
+    @ResponseBody
+    String isFieldDescriptionPresent(HttpServletRequest request) {
         int projectId = Integer.parseInt(request.getParameter("projectId"));
         int subProjectId;
         if (NULL_STRING.equalsIgnoreCase(request.getParameter("subProjectId"))) {
@@ -50,24 +53,24 @@ public class FieldDescriptionController extends BaseController {
         } else {
             subProjectId = Integer.parseInt(request.getParameter("subProjectId"));
         }
-        LOGGER.info("Checking is filedDescription already present for projectId :"+projectId +"subProjectId :"+subProjectId);
+        LOGGER.info("Checking is filedDescription already present for projectId :" + projectId + "subProjectId :" + subProjectId);
         ProjDescDetail projDescDetail = new ProjDescDetail();
         if (0 != subProjectId) {
-            if (!projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId,"N")) {
-                return "NotExist";
+            if (!projectDescriptionService.isProjectDescriptionDetailsExistsForSubProject(subProjectId, "N")) {
+                return NOTEXIST;
             } else if (fieldDescriptionService.isFieldDescriptionDetailsExistsForSubProject(subProjectId)) {
-                return "AlreadyExist";
+                return ALREADYEXIST;
             }
-            fieldDescriptionService.createFieldDescription(projectId,subProjectId);
+            fieldDescriptionService.createFieldDescription(projectId, subProjectId);
         } else {
-            if (!projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId,"N")) {
-                return "NotExist";
+            if (!projectDescriptionService.isProjectDescriptionDetailsExistsForProject(projectId, "N")) {
+                return NOTEXIST;
             } else if (fieldDescriptionService.isFieldDescriptionDetailsExistsForProject(projectId)) {
-                return "AlreadyExist";
+                return ALREADYEXIST;
             }
-            fieldDescriptionService.createFieldDescription(Integer.valueOf(projectId),0);
+            fieldDescriptionService.createFieldDescription(projectId, 0);
         }
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/emp/myview/buildFieldDescription/getSubAliasProject.do", method = RequestMethod.GET)
@@ -78,20 +81,17 @@ public class FieldDescriptionController extends BaseController {
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
         subAliasProjectList.put("0", "--Please Select--");
         Gson gson = new Gson();
-        String subAliasProjectJson = gson.toJson(subAliasProjectList);
-        return subAliasProjectJson;
+        return gson.toJson(subAliasProjectList);
     }
 
     @RequestMapping(value = "/emp/myview/buildFieldDescription/createFieldDescription.do", method = RequestMethod.POST)
     @ResponseBody
     public void createFieldDescription(HttpServletRequest request,
                                        HttpServletResponse response) {
-        String NULL_STRING = "null";
         String projectId = request.getParameter("projectId");
         String subProjectId = request.getParameter("subProjectId");
         int subProjectIdIntValue;
         LOGGER.info("Checking is filedDescription already present for :");
-        ProjDescDetail projDescDetail = new ProjDescDetail();
         if (NULL_STRING.equalsIgnoreCase(subProjectId)) {
             subProjectIdIntValue = 0;
         } else {

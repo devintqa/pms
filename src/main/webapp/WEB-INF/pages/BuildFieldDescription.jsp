@@ -77,7 +77,7 @@ $(document).ready(function () {
                                                                  modal: true,
                                                                  title: "Warning!",
                                                                  height: 200,
-                                                                 width: 300,
+                                                                 width: 350,
                                                                  buttons: {
                                                                    Ok: function() {
                                                                      $( this ).dialog( "close" );
@@ -95,7 +95,7 @@ $(document).ready(function () {
                                                    	        modal: true,
                                                    	        title: "Warning!",
                                                    	        height: 200,
-                                                   	        width: 300,
+                                                   	        width: 350,
                                                    	        buttons: {
                                                    	            "Yes": function () {
                                                    	            	$.ajax({

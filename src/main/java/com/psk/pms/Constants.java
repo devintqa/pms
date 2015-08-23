@@ -31,4 +31,8 @@ public interface Constants {
     String ITEM_NAME_EMPTY = "Item name can't be Empty";
     String ITEM_UNIT_EMPTY = "Item unit can't be Empty";
     String ITEM_RATE_EMPTY = "Item rate can't be Empty";
+    String NOTEXIST = "NotExist";
+    String ALREADYEXIST = "AlreadyExist";
+    String SUCCESS = "Success";
+    String NULL_STRING = "null";
 }
