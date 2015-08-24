@@ -115,7 +115,7 @@ public class PmsMasterQuery {
 
 	public static String SAVEITEMS = "INSERT INTO itemcodes (itemName, itemUnit ,itemType) VALUES (?, ?, ?)";
 
-    public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
+    public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set Category = ?, WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
 
 	public static String FETCHPROJECTTYPES = "SELECT projectTypeName FROM projecttype";
 
@@ -124,7 +124,7 @@ public class PmsMasterQuery {
 	public static String INSERTPRICEFORITEMS = "INSERT INTO pricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-	public static String INSERTBASEDESCRIPTION = "INSERT INTO basedesc(WorkType, Metric, Quantity, PricePerQuantity , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?)";
+	public static String INSERTBASEDESCRIPTION = "INSERT INTO basedesc(Category, WorkType, Metric, Quantity, PricePerQuantity , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static String FETCHBASEDESCRIPTIONS = "SELECT * FROM basedesc";
 

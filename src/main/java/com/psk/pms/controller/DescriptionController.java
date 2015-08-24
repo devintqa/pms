@@ -220,6 +220,7 @@ public class DescriptionController extends BaseController {
 	@RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
 	public String saveBaseProjDesc(@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
 	BindingResult result, Model model, SessionStatus status) {
+		System.out.println(projDescDetail.getBaseCategory());
 		baseDescriptionValidator.validate(projDescDetail, result);
 		LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
 		if (result.hasErrors()) {

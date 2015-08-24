@@ -24,6 +24,7 @@ public class ProjDescDetail {
 	private boolean subProjectDesc;
 	private String lastUpdatedBy;
 	private Date lastUpdatedAt;
+	private String baseCategory;
 	
 	public String getMetric() {
 		return metric;
@@ -183,6 +184,14 @@ public class ProjDescDetail {
 
 	public void setBaseDescName(String baseDescName) {
 		this.baseDescName = baseDescName;
+	}
+
+	public String getBaseCategory() {
+		return baseCategory;
+	}
+
+	public void setBaseCategory(String baseCategory) {
+		this.baseCategory = baseCategory;
 	}
 
 }

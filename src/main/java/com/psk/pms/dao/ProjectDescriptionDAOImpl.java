@@ -562,12 +562,14 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("method = saveBaseDescription , baseDescription :" + projDescDetail.getAliasDescription());
 		if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
 			jdbcTemplate.update(UPDATEBASEDESCRIPTION, new Object[] {
+				projDescDetail.getBaseCategory(),
 				projDescDetail.getWorkType(), projDescDetail.getMetric(),
 				projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(),
 				projDescDetail.getDescription(), projDescDetail.getAliasDescription()
 			});
 		} else {
 			jdbcTemplate.update(INSERTBASEDESCRIPTION, new Object[] {
+				projDescDetail.getBaseCategory(),
 				projDescDetail.getWorkType(), projDescDetail.getMetric(),
 				projDescDetail.getQuantity(), projDescDetail.getTotalCost(),
 				projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(),

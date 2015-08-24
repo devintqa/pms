@@ -37,6 +37,13 @@ $(document).ready(function () {
 						<legend>Base Description</legend>
 						<table>
 							<tr>
+								<td>Category  <span id="colon">:</span></td>
+								<td><form:radiobutton path="baseCategory" value="psk"
+										id="baseOnPsk" checked="true" />PSK<span id="colon">:</span>
+								<form:radiobutton path="baseCategory" value="government"
+										id="baseOnGovernment" />GOVERNMENT</td>
+							</tr>
+							<tr>
 								<td>Work Type <span id="colon">:</span>
 								</td>
 								<td><form:select path="workType" cssClass="inputText"
@@ -47,22 +54,24 @@ $(document).ready(function () {
 								<td>Description<span id="colon">:</span>
 								</td>
 								<td><form:textarea path="description"
-										placeholder="Enter description" cssClass="inputText"
-										rows="5" cols="40" maxlength="2000" /></td>
+										placeholder="Enter description" cssClass="inputText" rows="5"
+										cols="40" maxlength="2000" /></td>
 								<td><form:errors path="description" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Base Description<span id="colon">:</span>
 								</td>
-								<td><form:input id ="aliasDescription" path="aliasDescription"
-										placeholder="Enter Base description" cssClass="inputText" /></td>
+								<td><form:input id="aliasDescription"
+										path="aliasDescription" placeholder="Enter Base description"
+										cssClass="inputText" /></td>
 								<td><form:errors path="aliasDescription" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Quantity<span id="colon">:</span>
 								</td>
 								<td><form:input id="quantity" path="quantity"
-										placeholder="Enter quantity for the selected work" cssClass="inputText" /></td>
+										placeholder="Enter quantity for the selected work"
+										cssClass="inputText" /></td>
 								<td><form:errors path="quantity" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -75,7 +84,8 @@ $(document).ready(function () {
 							<tr>
 								<td>Total Cost<span id="colon">:</span>
 								</td>
-								<td><form:input id="totalCost" path="totalCost" cssClass="inputText" /></td>
+								<td><form:input id="totalCost" path="totalCost"
+										cssClass="inputText" /></td>
 								<td><form:errors path="totalCost" cssClass="error" /></td>
 							</tr>
 							<tr></tr>

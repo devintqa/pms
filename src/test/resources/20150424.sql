@@ -26,6 +26,7 @@ DROP TABLE IF EXISTS `basedesc`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `basedesc` (
   `BaseDescId` int(10) NOT NULL AUTO_INCREMENT,
+  `Category` varchar(25) NOT NULL,
   `WorkType` varchar(30) NOT NULL,
   `Metric` varchar(30) NOT NULL,
   `Quantity` decimal(15,2) NOT NULL,
