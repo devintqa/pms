@@ -9,15 +9,58 @@
     <%@include file="Script.jsp" %>
     <%@include file="Utility.jsp" %>
     <script>
-        $(document).ready(function () {
 
-        $(function () {
-            if(document.getElementById('projectItemDescription').checked == true){
-                $('#itemFields').show();
-            }else{
-                $('#itemFields').hide();
-            }
-        });
+        $(document).ready(function () {
+            $("#itemNameField").hide();
+            $("#itemType").change(function () {
+                $("#itemNameField").hide();
+                var itemType = $('#itemType').val();
+                var aliasProjName = $('#aliasProjectName').val();
+                var searchUnderProject = $('#searchUnderProject').val();
+                $.ajax({
+                    type: "GET",
+                    url: "getItemNames.do",
+                    cache: false,
+                    data: "itemType=" + itemType + "&aliasProjName=" + aliasProjName,
+                    success: function (response) {
+                        if (response == "") {
+                            $("#itemNameField").hide();
+                            $("#dialog-confirm").html("Item name is not configured for the selected Item Type");
+                            $("#dialog-confirm").dialog({
+                                modal: true,
+                                title: "Warning!",
+                                height: 200,
+                                width: 300,
+                                buttons: {
+                                    Ok: function () {
+                                        $(this).dialog("close");
+                                    }
+                                }
+                            });
+                            $("#itemType").prop('selectedIndex',0);
+                        } else {
+                            var obj = jQuery.parseJSON(response);
+                            var options = '';
+                            for (var key in obj) {
+                                var attrName = key;
+                                var attrValue = obj[key];
+                                options = options + '<option value="'+attrValue+'">'
+                                        + attrValue + '</option>';
+                            }
+                            $('#itemName').html(options);
+                        }
+                    }
+
+                });
+                $("#itemNameField").show();
+            });
+            $(function () {
+                if (document.getElementById('projectItemDescription').checked == true) {
+                    $('#itemFields').show();
+                } else {
+                    $('#itemFields').hide();
+                }
+            });
             $("#aliasProjectName").autocomplete({
                 source: function (request, response) {
                     if ($("#viewUnderSubProject").is(':checked')) {
@@ -36,13 +79,13 @@
             $('input[type="checkbox"]').on('change', function () {
                 $('input[type="checkbox"]').not(this).prop('checked', false);
 
-                if(this.id=="projectItemDescription"){
-                    if(this.checked==true){
+                if (this.id == "projectItemDescription") {
+                    if (this.checked == true) {
                         $('#itemFields').show();
-                    }else{
+                    } else {
                         $('#itemFields').hide();
                     }
-                }else{
+                } else {
                     $('#itemFields').hide();
                 }
             });
@@ -108,9 +151,17 @@
                                      id="itemType" items="${itemTypes}"/></td>
 
 
-                    <td>Item Name<span id="colon">:</span></td>
-                    <td><form:select path="itemName" cssClass="inputText"
-                                     id="itemName" items="${itemNames}"/></td>
+                    <td>
+                        <div id="itemNameField"> Item Name<span id="colon">:</span>
+                            <form:select path="itemName" cssClass="inputText"
+                                         id="itemName">
+
+                                <option value="${viewDetailsForm.itemName}"
+                                        selected="selected">${viewDetailsForm.itemName}</option>
+
+                            </form:select>
+                        </div>
+                    </td>
                 </tr>
                 <tr>
                     <td>Search under <span id="colon">:</span></td>
@@ -242,11 +293,13 @@
     <h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
         Project Item Desc Details</h1>
 
-         <br>
-         <div style="float: left;font-size: larger" >
-         Total Quantity : <input name="totalItemCost" readonly="readonly"  id="totalItemCost" value="${sumOfQuantity}" type="text" />
-         </div>
-         <br>
+    <br>
+
+    <div style="float: left;font-size: larger">
+        Total Quantity : <input name="totalItemCost" readonly="readonly" id="totalItemCost" value="${sumOfQuantity}"
+                                type="text"/>
+    </div>
+    <br>
     <table id="compareDescList" class="gridView">
         <thead>
         <tr>

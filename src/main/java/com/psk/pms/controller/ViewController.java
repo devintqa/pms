@@ -1,29 +1,21 @@
 package com.psk.pms.controller;
 
-import java.util.List;
-
+import com.google.gson.Gson;
+import com.psk.pms.model.*;
+import com.psk.pms.model.ProjectConfiguration.ItemDetail;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.validator.ViewValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
-import com.psk.pms.model.ProjectItemDescription;
-import com.psk.pms.model.ViewDetail;
-import com.psk.pms.service.ItemService;
-import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.validator.ViewValidator;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class ViewController extends BaseController {
@@ -44,8 +36,8 @@ public class ViewController extends BaseController {
         LOGGER.info("View Controller : viewDetails()");
         ViewDetail viewDetail = new ViewDetail();
         viewDetail.setViewProjectItemPrice(true);
-        model.addAttribute("viewDetailsForm", viewDetail);
-        setModelAttribute(model);
+
+        setModelAttribute(model, viewDetail);
         return "ViewDetails";
     }
 
@@ -73,7 +65,7 @@ public class ViewController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         LOGGER.info("method = viewProjectDetails()");
         viewValidator.validate(viewDetail, result);
-        setModelAttribute(model);
+
         if (!result.hasErrors()) {
             ProjectConfiguration projectConfiguration = new ProjectConfiguration();
             projectConfiguration.setProjId(viewDetail.getProjId());
@@ -81,7 +73,7 @@ public class ViewController extends BaseController {
             if (viewDetail.isSearchAggregateItemDetails()) {
                 List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject());
                 if (aggregateItemDetails.size() > 0) {
-                    model.addAttribute("aggregateItemDetails",  aggregateItemDetails);
+                    model.addAttribute("aggregateItemDetails", aggregateItemDetails);
                     model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
                     model.addAttribute("projectAliasName", viewDetail.getAliasProjectName());
                 } else {
@@ -112,13 +104,14 @@ public class ViewController extends BaseController {
                     model.addAttribute("projectAliasName",
                             viewDetail.getAliasProjectName());
                 } else {
+
                     model.addAttribute("noDetailsFound",
                             "No Project Comparison Data Found For The Project.");
                 }
             } else if (viewDetail.isProjectItemDescription()) {
                 List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(projectConfiguration, viewDetail.isEditSubProject(), viewDetail.getItemName());
                 if (projectItemDescription.size() > 0) {
-                	Double sumOfQuantity = getSumOfQuantity(projectItemDescription);
+                    Double sumOfQuantity = getSumOfQuantity(projectItemDescription);
                     model.addAttribute("projectItemDescriptions", projectItemDescription);
                     model.addAttribute("projectItemDescriptionSize", projectItemDescription.size());
                     model.addAttribute("sumOfQuantity", sumOfQuantity);
@@ -127,9 +120,27 @@ public class ViewController extends BaseController {
                 }
             }
         }
+        setModelAttribute(model, viewDetail);
         return "ViewDetails";
     }
-    
+
+
+    @RequestMapping(value = "/emp/myview/viewDetails/getItemNames.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String getItemNames(HttpServletRequest httpServletRequest) {
+        LOGGER.info("getItemNames for Item Type :" + httpServletRequest.getParameter("itemType"));
+        String json = null;
+        String itemType = httpServletRequest.getParameter("itemType");
+        String aliasProjName = httpServletRequest.getParameter("aliasProjName");
+        String projectId = viewValidator.fetchProjectId(aliasProjName);
+        List<String> itemNames = itemService.getItemNames(itemType, projectId);
+        if (!itemNames.isEmpty()) {
+            Gson gson = new Gson();
+            json = gson.toJson(itemNames);
+        }
+        return json;
+    }
+
     private Double getSumOfQuantity(List<ProjectItemDescription> projectItemDescriptions) {
         Double totalQuantity = 0.0;
         for (int i = 0; i < projectItemDescriptions.size(); i++) {
@@ -139,11 +150,12 @@ public class ViewController extends BaseController {
         return totalQuantity;
     }
 
-    private void setModelAttribute(Model model) {
+    private void setModelAttribute(Model model, ViewDetail viewDetail) {
         List<String> itemTypes = itemService.fetchItemTypes();
-        List<String> itemNames = itemService.getItemNames();
+        itemTypes.add(0, "--Please Select--");
+        viewDetail.setItemType(itemTypes.get(0));
         model.addAttribute("itemTypes", itemTypes);
-        model.addAttribute("itemNames", itemNames);
+        model.addAttribute("viewDetailsForm", viewDetail);
     }
 
 }

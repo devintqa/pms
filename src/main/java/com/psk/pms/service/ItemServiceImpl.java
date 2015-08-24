@@ -81,7 +81,13 @@ public class ItemServiceImpl implements ItemService {
 		return itemNames;
 	}
 
-	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
+
+    @Override
+    public List<String> getItemNames(String itemType, String projectId) {
+        return itemDAO.getItemNames(itemType,projectId);
+    }
+
+    public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
 		return itemDAO.getBaseDescription(descItemDetail);
 	}
 

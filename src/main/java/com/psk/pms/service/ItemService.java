@@ -52,4 +52,6 @@ public interface ItemService {
 	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 
 	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
+
+    List<String> getItemNames(String itemType, String projectId);
 }

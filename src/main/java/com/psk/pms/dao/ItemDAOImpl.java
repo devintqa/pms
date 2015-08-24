@@ -415,6 +415,13 @@ public class ItemDAOImpl implements ItemDAO {
         return types;
     }
 
+    @Override
+    public List<String> getItemNames(String itemType, String projectId) {
+        String PROJECT_ITEM_NAMES = "select distinct(itemName) from pricedetail where itemType=? and projectId=? ";
+        List<String> itemNames = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES,new Object[]{itemType,projectId},String.class);
+        return itemNames;
+
+    }
 
     @Override
     public boolean insertBaseDescriptionItems(final DescItemDetail descItemDetail) {
