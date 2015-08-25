@@ -176,9 +176,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public List<ProjDescDetail> getBaseProjectDescriptions() {
-		LOGGER.info("method = getBaseProjectDescriptions()");
-		return projectDescriptionDAO.fetchBaseProjectDescriptions();
+	public List<ProjDescDetail> getBaseDescriptions(String category) {
+		LOGGER.info("method = getBaseDescriptions()");
+		return projectDescriptionDAO.getBaseDescriptions(category);
 	}
 
 	@Override
@@ -201,7 +201,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
     @Override
-    public ProjDescDetail getBaseProjectDescription(String aliasDescription){
+    public ProjDescDetail getBaseDescription(String aliasDescription){
         LOGGER.info("method = getBaseProjectDescription()");
         return projectDescriptionDAO.getBaseDescription(aliasDescription);
     }

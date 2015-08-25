@@ -521,8 +521,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public List < ProjDescDetail > fetchBaseProjectDescriptions() {
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS);
+	public List < ProjDescDetail > getBaseDescriptions(String category) {
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS + " where category = '"+category+"'");
 		List < ProjDescDetail > projDescDetails = new ArrayList < ProjDescDetail > ();
 		for (Map < String, Object > row: rows) {
 			projDescDetails.add(buildBaseDescDetail(row));
@@ -536,6 +536,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		projDescDetail.setWorkType((String) row.get("WorkType"));
 		BigDecimal quantity = (BigDecimal) row.get("Quantity");
 		projDescDetail.setMetric((String) row.get("Metric"));
+		projDescDetail.setBaseCategory((String) row.get("Category"));
 		projDescDetail.setQuantity(quantity.toString());
 		projDescDetail.setDescription((String) row.get("Description"));
 		projDescDetail.setAliasDescription((String) row.get("BaseDescription"));

@@ -62,9 +62,32 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
+		<form:form id="baseDesc" method="POST"
+			commandName="baseDesc" action="searchBaseDescDetails.do">
+			<center>
+				<fieldset style="margin: 1em; text-align: left;">
+					<legend>Search Base Description</legend>
+					<table>
+						<tr>
+							<td>Category <span id="colon">:</span></td>
+							<td><form:radiobutton path="searchOn" value="psk"
+									id="searchOnPsk" checked="true" />PSK</td>
+							<td><form:radiobutton path="searchOn" value="government"
+									id="searchOnGovernment" />GOVERNMENT</td>
+						</tr>
+					</table>
+				</fieldset>
+				<table>
+					<tr>
+						<td></td>
+						<td><input class="button" id="submit" type="submit" /></td>
+						<td></td>
+					</tr>
+				</table>
+			</center>
+		</form:form>
 		<div>
-			<h2
-				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+			<h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 		</div>
 		<div class="ui-widget">
 			<c:if test="${not empty baseDescriptionList}">

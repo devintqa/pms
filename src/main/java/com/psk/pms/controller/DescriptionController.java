@@ -205,7 +205,7 @@ public class DescriptionController extends BaseController {
 	Model model) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		if (null != action && "edit".equalsIgnoreCase(action)) {
-			projDescDetail = projectDescriptionService.getBaseProjectDescription(aliasDescription);
+			projDescDetail = projectDescriptionService.getBaseDescription(aliasDescription);
 			projDescDetail.setIsUpdate("Y");
 			model.addAttribute("baseDescForm", projDescDetail);
 			return "BaseDescription";

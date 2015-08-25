@@ -45,7 +45,7 @@ public interface ProjectDescriptionDAO {
 
 	void saveBaseDescription(ProjDescDetail projDescDetail);
 
-	public List<ProjDescDetail> fetchBaseProjectDescriptions();
+	public List<ProjDescDetail> getBaseDescriptions(String category);
 
 	void deleteBaseProjectDescription(String serialNumber);
 

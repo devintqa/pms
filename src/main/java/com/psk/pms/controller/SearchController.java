@@ -136,7 +136,9 @@ public class SearchController extends BaseController {
 	@RequestMapping(value = "/emp/myview/searchProjectDescription/searchProjectDescDetails.do", method = RequestMethod.POST)
 	public String searchProjectDescDetail(
 			@ModelAttribute("searchProjDescForm") SearchDetail searchDetail,
-			BindingResult result, Model model, SessionStatus status) {
+			BindingResult result, 
+			Model model, 
+			SessionStatus status) {
 		LOGGER.info("method = searchProjectDetail()");
 		searchValidator.validate(searchDetail, result);
 		if (!result.hasErrors()) {
@@ -261,11 +263,22 @@ public class SearchController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/searchBaseDescription/{employeeId}", method = RequestMethod.GET)
-	public String searchBaseDescription(@PathVariable String employeeId,
+	public String loadSearchBaseDescription(@PathVariable String employeeId,
 			Model model) {
-		LOGGER.info("Search Controller : SearchPwdDescription()");
-		List<ProjDescDetail> projDescDetails = projectDescriptionService.getBaseProjectDescriptions();
+		LOGGER.info("Search Controller : searchBaseDescription()");
+		SearchDetail searchDetail= new SearchDetail();
+		model.addAttribute("baseDesc", searchDetail);
+		return "SearchBaseDescription";
+	}
+	
+	@RequestMapping(value = "/emp/myview/searchBaseDescription/searchBaseDescDetails.do", method = RequestMethod.POST)
+	public String searchBaseDescription(@ModelAttribute("baseDesc") SearchDetail searchDetail, Model model) {
+		LOGGER.info("Search Controller : searchBaseDescription()");
+		
+		model.addAttribute("baseDesc", searchDetail);
+		List<ProjDescDetail> projDescDetails = projectDescriptionService.getBaseDescriptions(searchDetail.getSearchOn());
 		model.addAttribute("baseDescriptionList", projDescDetails);
+		
 		return "SearchBaseDescription";
 	}
 }

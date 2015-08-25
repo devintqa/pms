@@ -39,10 +39,13 @@ $(document).ready(function () {
 							<tr>
 								<td>Category  <span id="colon">:</span></td>
 								<td><form:radiobutton path="baseCategory" value="psk"
-										id="baseOnPsk" checked="true" />PSK<span id="colon">:</span>
+										id="baseOnPsk" checked="true" />PSK
 								<form:radiobutton path="baseCategory" value="government"
 										id="baseOnGovernment" />GOVERNMENT</td>
 							</tr>
+							
+							
+							
 							<tr>
 								<td>Work Type <span id="colon">:</span>
 								</td>

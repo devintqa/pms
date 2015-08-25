@@ -47,13 +47,13 @@ public interface ProjectDescriptionService {
 
 	void saveBaseProjectDescription(ProjDescDetail projDescDetail);
 
-	List<ProjDescDetail> getBaseProjectDescriptions();
+	List<ProjDescDetail> getBaseDescriptions(String category);
 
 	void deleteBaseProjectDescription(String projectDescId);
 
     boolean isGlobalDescriptionAlreadyExisting(String  projectDescDetail);
 
-    ProjDescDetail getBaseProjectDescription(String aliasDescription);
+    ProjDescDetail getBaseDescription(String aliasDescription);
 
 	ProjDescDetail getGovProjectDescDetail(String projDescId);
 
