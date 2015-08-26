@@ -514,3 +514,26 @@ CREATE TABLE `fieldprojectdesc` (
   PRIMARY KEY (`ProjDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `projdescitem`
+--
+
+DROP TABLE IF EXISTS `fieldprojdescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fieldprojdescitem` (
+  `ProjId` int(11) DEFAULT '0',
+  `SubProjId` int(11) DEFAULT '0',
+  `ProjDescId` int(11) DEFAULT '0',
+  `ProjDescSerial` varchar(45) DEFAULT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT '0',
+  `ItemPrice` varchar(45) DEFAULT '0',
+  `ItemCost` varchar(45) DEFAULT '0',
+  `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DescItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
