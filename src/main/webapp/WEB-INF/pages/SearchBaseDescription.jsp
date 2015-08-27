@@ -117,7 +117,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
-									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.projDescId}');"
+									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.baseDescId}');"
 									style="color: red"> Delete</a></td>
 							</tr>
 						</c:forEach>
