@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.ProjDescComparisonDetail;
@@ -210,31 +211,22 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		return projectDescDetailList;
 	}
 
-	public List < ProjDescDetail > getProjectDescDetailList(SearchDetail searchDetail) {
-		String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";;
+    public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail) {
+        String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";
+        if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
+            sql = sql + " FROM " + DescriptionType.getDbTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+        } else {
+            sql = sql + " FROM " + DescriptionType.getDbTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
+        }
 
-		if (searchDetail.getSearchOn().equalsIgnoreCase("psk")) {
-			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-				sql = sql + " FROM projectdesc" + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
-			} else {
-				sql = sql + " FROM projectdesc" + " where SubProjId = " + searchDetail.getProjId();
-			}
-		} else {
-			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-				sql = sql + " FROM quotedprojectdesc" + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
-			} else {
-				sql = sql + " FROM quotedprojectdesc" + " where SubProjId = " + searchDetail.getProjId();
-			}
-		}
+        List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
-		List < ProjDescDetail > projectDescDetailList = new ArrayList < ProjDescDetail > ();
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			projectDescDetailList.add(buildProjectDescDetail(row));
-		}
-		return projectDescDetailList;
-	}
+        for (Map<String, Object> row : rows) {
+            projectDescDetailList.add(buildProjectDescDetail(row));
+        }
+        return projectDescDetailList;
+    }
 
 	public List < ProjDescComparisonDetail > getProjectDescComparisonDetail(
 	Integer projId) {
