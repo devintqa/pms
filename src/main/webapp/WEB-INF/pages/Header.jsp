@@ -35,8 +35,8 @@
 							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base Description</a></li>
-						<li><a id="createEmd"
-							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
+						<li><a id="createDepositDetail"
+							href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}">Deposit Details</a></li>
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
@@ -55,9 +55,9 @@
 						<li><a id="searchProjectDesc"
 							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
 								Project Description </a></li>
-						<li><a id="searchEmd"
-							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
-								EMD </a></li>
+						<li><a id="searchDepositDetail"
+							href="/pms/emp/myview/searchDepositDetail/${employeeObj.employeeId}">
+								Deposit Details </a></li>
 						 <li><a id="searchPwdProjectDescription"
 							href="/pms/emp/myview/searchBaseDescription/${employeeObj.employeeId}">
 								Base Description </a></li>

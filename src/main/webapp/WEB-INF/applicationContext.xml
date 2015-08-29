@@ -32,11 +32,11 @@
         <property name="projectDAO" ref="projectDAO"/>
     </bean>
 
-    <bean id="emdService" class="com.psk.pms.service.EmdServiceImpl">
-        <property name="emdDAO" ref="emdDAO"/>
+    <bean id="depositDetailService" class="com.psk.pms.service.DepositDetailServiceImpl">
+        <property name="depositDetailDAO" ref="depositDetailDAO"/>
     </bean>
 
-    <bean id="emdDAO" class="com.psk.pms.dao.EmdDAOImpl">
+    <bean id="depositDetailDAO" class="com.psk.pms.dao.DepositDetailDAOImpl">
     </bean>
 
     <bean id="subProjectDAO" class="com.psk.pms.dao.SubProjectDAOImpl">
@@ -68,7 +68,7 @@
     <bean class="com.psk.pms.validator.EditDetailValidator"/>
     <bean class="com.psk.pms.validator.SubProjectDetailValidator"/>
     <bean class="com.psk.pms.validator.ProjDescDetailValidator"/>
-    <bean class="com.psk.pms.validator.EmdValidator"/>
+    <bean class="com.psk.pms.validator.DepositDetailValidator"/>
     <bean class="com.psk.pms.validator.FileUploadValidator"/>
     <bean class="com.psk.pms.validator.ItemValidator"/>
     <bean class="com.psk.pms.validator.BaseDescriptionValidator"/>

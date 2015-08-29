@@ -29,10 +29,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.psk.pms.Constants;
-import com.psk.pms.model.EmdDetail;
+import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.service.EmdService;
+import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.utils.JsonHelper;
@@ -49,7 +49,7 @@ public class EmployeeController {
 	@Autowired
 	ProjectService projectService;
 	@Autowired
-	EmdService emdService;
+    DepositDetailService depositDetailService;
 
 	private static final Logger LOGGER = Logger
 			.getLogger(EmployeeController.class);
@@ -101,9 +101,9 @@ public class EmployeeController {
 			}
 		}
 		if ("admin".equalsIgnoreCase(employee.getEmployeeTeam())) {
-			List<EmdDetail> emdEndAlertList = emdService.getEmdEndAlertList();
-			if (emdEndAlertList.size() > 0) {
-				model.addAttribute("emdDocumentList", emdEndAlertList);
+			List<DepositDetail> depositEndAlertList = depositDetailService.getDepositEndAlertList();
+			if (depositEndAlertList.size() > 0) {
+				model.addAttribute("depositDocumentList", depositEndAlertList);
 			}
 		}
 		return "Welcome";

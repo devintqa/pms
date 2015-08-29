@@ -4,22 +4,22 @@
 <!doctype html>
 <html>
     <head>
-        <title>PMS :: Update EMD Detail</title>
+        <title>PMS :: Update Deposit Detail</title>
         <%@include file="Script.jsp" %>
         <%@include file="Utility.jsp" %>
     </head>
     <script>
-    	function deleteEmd(emdId) {
+    	function deleteDeposit(depositId) {
         		$.ajax({
         			type : 'POST',
-        			url : 'deleteEmd.do',
-        			data : "emdId="+emdId,
+        			url : 'deleteDeposit.do',
+        			data : "depositId="+depositId,
         			success : function(response) {
         				location.reload();
     					console.log("Successfully deleted row ");
         			},
         			error : function(err) {
-        				console.log("Error deleting emd");
+        				console.log("Error deleting Deposit");
         			}
         		});
      	}
@@ -29,34 +29,34 @@
 		    <jsp:include page="Header.jsp" />
 	    </header>
 	    <div id="wrapper">
-	    	<c:if test="${emdDetailsSize gt 0}">
-        		<h1 style="text-align: center; color: #007399; font-size: 24px;">EMD Details</h1>
+	    	<c:if test="${depositDetailsSize gt 0}">
+        		<h1 style="text-align: center; color: #007399; font-size: 24px;">Deposit Details</h1>
 	        	<table id="emdList" class="gridView">
             		<thead>
             			<tr>
             				<th>Project Name</th>
             				<th>Sub Project Name</th>
-            				<th>EMD Type</th>
-            		    	<th>EMD Amount</th>
-            				<th>EMD Start Date</th>
-            				<th>EMD End Date</th>
+            				<th>Deposit Type</th>
+            		    	<th>Deposit Amount</th>
+            				<th>Deposit Start Date</th>
+            				<th>Deposit End Date</th>
             				<th>Action</th>
             			</tr>
             		</thead>
 					<tbody>
-						<c:if test="${not empty emdDetails}">
-							<c:forEach var="emd" items="${emdDetails}">
+						<c:if test="${not empty depositDetails}">
+							<c:forEach var="detail" items="${depositDetails}">
 								<tr>
-								    <td>${emd.aliasProjectName}</td>
-								    <td>${emd.aliasSubProjectName}</td>
-									<td>${emd.emdType}</td>
-									<td>${emd.emdAmount}</td>
-									<td>${emd.emdStartDate}</td>
-									<td>${emd.emdEndDate}</td>
-									<td><a href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
+								    <td>${detail.aliasProjectName}</td>
+								    <td>${detail.aliasSubProjectName}</td>
+									<td>${detail.depositType}</td>
+									<td>${detail.depositAmount}</td>
+									<td>${detail.depositStartDate}</td>
+									<td>${detail.depositEndDate}</td>
+									<td><a href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}?depositId=${detail.depositId}&action=updateDepositDetail&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
                                         class="userAction">Update</a>
 									<strong> / </strong>
-									<a id ="deleteRow" href ="javascript:deleteEmd('${emd.emdId}');" style="color:red"> Delete</a>
+									<a id ="deleteRow" href ="javascript:deleteDeposit('${detail.depositId}');" style="color:red"> Delete</a>
 									</td>
 								</tr>
 							</c:forEach>

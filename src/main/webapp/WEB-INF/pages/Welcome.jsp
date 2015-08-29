@@ -97,28 +97,28 @@
 		</c:if>
 
 		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #007399; font-size: 18px;">EMD
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">Deposit
 				end dates are nearing for following projects. Please take necessary
 				action.</h1>
-			<table id="emdDocumentList" class="gridView">
+			<table id="depositDocumentList" class="gridView">
 				<thead>
 					<tr>
-						<th>EMD Amount</th>
-						<th>EMD Start Date</th>
-						<th>EMD End Date</th>
-						<th>EMD Type</th>
-						<th>EMD Extension Date</th>
+						<th>Deposit Amount</th>
+						<th>Deposit Start Date</th>
+						<th>Deposit End Date</th>
+						<th>Deposit Type</th>
+						<th>Deposit Extension Date</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:if test="${not empty emdDocumentList}">
-						<c:forEach var="emdProject" items="${emdDocumentList}">
+					<c:if test="${not empty depositDocumentList}">
+						<c:forEach var="detail" items="${depositDocumentList}">
 							<tr>
-								<td>${emdProject.emdAmount}</td>
-								<td>${emdProject.emdStartDate}</td>
-								<td>${emdProject.emdEndDate}</td>
-								<td>${emdProject.emdType}</td>
-								<td>${emdProject.emdExtensionDate}</td>
+								<td>${detail.depositAmount}</td>
+								<td>${detail.depositStartDate}</td>
+								<td>${detail.depositEndDate}</td>
+								<td>${detail.depositType}</td>
+								<td>${detail.depositExtensionDate}</td>
 							</tr>
 						</c:forEach>
 					</c:if>

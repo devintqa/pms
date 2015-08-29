@@ -22,21 +22,21 @@ public class PmsMasterQuery {
 
     public static String CREATESUBPROJECTFIELDDESCRIPTIONITEM = "insert into fieldprojdescitem select * from projdescitem where SubProjId = ?";
 
-    public static final String CREATEEMDDETAIL = "INSERT INTO emddetail (ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ,"
-			+ "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, LastUpdatedBy,LastUpdatedAt,EmdSubmitter)"
-			+ "VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,?)";
+    public static final String CREATE_DEPOSIT_DETAIL = "INSERT INTO depositdetail (ProjId , SubProjId , DepositAmount , DepositStartDate ,DepositEndDate ,DepositType, BGNumber ,"
+			+ "DepositPeriod,DepositExtensionDate,DepositLedgerNumber, LastUpdatedBy,LastUpdatedAt,DepositSubmitter,DepositDetail,DepositStatus,DepositRecievedDate,DepositRecievedNote)"
+			+ "VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,?,?,?,?,?)";
 
-	public static final String UPDATEEMDDETAIL = "UPDATE emddetail set ProjId = ? , SubProjId = ? ,EmdAmount = ? , EmdStartDate = ? ,EmdEndDate = ?,EmdType =? , BGNumber =?,"
-			+ "EmdPeriod = ?,EmdExtensionDate = ? ,EmdLedgerNumber =? , "
-			+ "LastUpdatedBy = ?,LastUpdatedAt =? ,EmdSubmitter =? WHERE EmdId = ? ";
+	public static final String UPDATE_DEPOSIT_DETAIL = "UPDATE depositdetail set ProjId = ? , SubProjId = ? ,DepositAmount = ? , DepositStartDate = ? ,DepositEndDate = ?,DepositType =? , BGNumber =?,"
+			+ "DepositPeriod = ?,DepositExtensionDate = ? ,DepositLedgerNumber =? , "
+			+ "LastUpdatedBy = ?,LastUpdatedAt =? ,DepositSubmitter =?, DepositDetail =?,DepositStatus=?,DepositRecievedDate=?,DepositRecievedNote=? WHERE DepositId = ? ";
 
-	public static final String FETCHEMDDETAILS = "select e.EmdId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ " s.SubProjName , e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate "
-			+ "from emddetail e left join project as p on e.ProjId = p.ProjId "
+	public static final String FETCH_DEPOSIT_DETAILS = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
+			+ " s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+			+ "from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "left join subproject as s on e.SubProjId=s.SubProjId ";
 
-	public static final String FETCHEMDDETAILBYEMDID = "select  ProjId , SubProjId , EmdAmount , EmdStartDate ,EmdEndDate ,EmdType, BGNumber ,"
-			+ "EmdPeriod,EmdExtensionDate,EmdLedgerNumber, EmdSubmitter from emddetail where EmdId = ?";
+	public static final String FETCH_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "select  ProjId , SubProjId , DepositAmount , DepositStartDate ,DepositEndDate ,DepositType, BGNumber ,"
+			+ "DepositPeriod,DepositExtensionDate,DepositLedgerNumber, DepositSubmitter,DepositStatus,DepositRecievedDate,DepositRecievedNote from depositdetail where DepositId = ?";
 
 	public static final String DELETEPROJECTBYPROJECTID = "DELETE FROM project WHERE ProjId = ?";
 
@@ -44,24 +44,30 @@ public class PmsMasterQuery {
 
 	public static final String DELETESUBPROJECTBYSUBPROJECTID = "DELETE FROM subproject WHERE SubProjId = ?";
 
-	public static final String DELETEEMDDETAILBYPROJECTID = "DELETE FROM emddetail WHERE ProjId = ?";
+	public static final String DELETE_DEPOSIT_DETAIL_BY_PROJECTID = "DELETE FROM depositdetail WHERE ProjId = ?";
 
-	public static final String DELETEEMDDETAILBYSUBPROJECTID = "DELETE FROM emddetail WHERE SubProjId = ?";
+	public static final String DELETE_DEPOSIT_DETAIL_BY_SUB_PROJECTID = "DELETE FROM depositdetail WHERE SubProjId = ?";
 
 	public static final String DELETEPROJECTDESCRIPTIONBYPROJECTID = "DELETE FROM projectdesc WHERE ProjId = ?";
 
 	public static final String DELETEPROJECTDESCRIPTIONBYSUBPROJECTID = "DELETE FROM projectdesc WHERE SubProjId = ?";
 
-	public static final String DELTEPEMDDETAILBYEMDID = "DELETE FROM emddetail WHERE EmdId = ?";
+	public static final String DELETE_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "DELETE FROM depositdetail WHERE DepositId = ?";
 
-	public static final String GETEMDDETAILSBYPROJECTID = "select e.EmdId ,e.ProjId , p.AliasProjName, e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate "
-			+ "                from emddetail e  left join project as p on e.ProjId = p.ProjId "
+	public static final String GET_DEPOSIT_DETAILS_BY_PROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName, e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+			+ "                from depositdetail e  left join project as p on e.ProjId = p.ProjId "
 			+ "                where e.ProjId = ? and e.SubProjId is null ";
 
-	public static final String GETEMDDETAILSBYSUBPROJECTID = "select e.EmdId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ "     s.SubProjName , e.EmdType , e.EmdAmount , e.EmdStartDate , e.EmdEndDate "
-			+ "    from emddetail e left join project as p on e.ProjId = p.ProjId "
+	public static final String GET_DEPOSIT_DETAILS_BY_SUBPROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
+			+ "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+			+ "    from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
+
+
+    public static final String GET_DEPOSIT_DETAILS_IN_SUBMITTED_STATUS = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
+            + "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+            + "    from depositdetail e left join project as p on e.ProjId = p.ProjId "
+            + "    left join subproject as s on e.SubProjId=s.SubProjId where e.DepositStatus='Submitted' ";
 
 	public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric,"
 			+ "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
@@ -77,7 +83,7 @@ public class PmsMasterQuery {
 	
 	public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
 
-	public static String emdDatesQuery = "select EmdAmount, EmdStartDate, EmdEndDate, EmdType, EmdExtensionDate from emddetail";
+	public static String DEPOSIT_DATE_QUERY = "select DepositAmount, DepositStartDate, DepositEndDate, DepositType, DepositExtensionDate from depositdetail";
 
 	public static String DELETEPROJDESCITEMBYPROJECTID = "DELETE FROM projdescitem WHERE ProjId = ?";
 
@@ -89,7 +95,7 @@ public class PmsMasterQuery {
 
 	public static String FETCHITEMTYPES = "SELECT itemTypeName FROM itemtype";
 
-	public static String FETCHEMDTYPES = "SELECT emdTypeName FROM emdtype";
+	public static String FETCH_DEPOSIT_TYPES = "SELECT depositTypeName FROM deposittype";
 
 	public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
 
