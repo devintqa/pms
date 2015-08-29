@@ -41,8 +41,6 @@
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
 							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Description</a></li>
-						<li><a id="createField"
-                        	href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Field Description</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>
@@ -107,6 +105,29 @@
 		<li><a id="profile"
 			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 				Profile</a></li>
+        <li>
+              <a href="#">Create</a>
+			    <ul><li><a id="createField"
+                         href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                         Field Description
+                         </a>
+                    </li>
+                </ul>
+        </li>
+        <li>
+              <a href="#">Search</a>
+			    <ul><li><a id="createField"
+                         href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                         Employee
+                        </a>
+                    </li>
+                    <li><a id="searchProjectDesc"
+                    	 href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
+                    	 Project Description
+                    	</a>
+                    </li>
+                </ul>
+        </li>
 		<li><a id="logout"
 			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 		<!--<li><a id="excelViewer"
