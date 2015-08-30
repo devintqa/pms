@@ -9,105 +9,101 @@
 
 <%@include file="Script.jsp"%>
 
-<script>
-    $(document)
-            .ready(
-                    function() {
-                    	$("#showSubProject").hide();
-                        //add more file components if Add is clicked
-                        $('#addFile')
-                                .click(
-                                        function() {
-                                            var fileIndex = $('#fileTable tr')
-                                                    .children().length - 1;
-                                            $('#fileTable')
-                                                    .append(
-                                                            '<tr><td>'
-                                                                    + '   <input type="file" name="files['+ fileIndex +']" />'
-                                                                    + '</td></tr>');
-                                        });
-                  	  $('#subProjectUpload').change(function() {
-              	        if($(this).is(":checked")) {
-              			var aliasProjectName  = $('#projId').val();
-              			$.ajax({
-              				type : "GET",
-              				url : "getSubAliasProject.do",
-              				cache : false,
-              				data: "aliasProjectName="+aliasProjectName,
-              				success : function(response) {
-              					var options = '';
-              					if (response != null) {
-              						var obj = jQuery.parseJSON(response);
-              						var options = '';
-              						//options = '<option value=0>--Please Select--</option>';
-              						for ( var key in obj) {
-              							var attrName = key;
-              							var attrValue = obj[key];
-              							options = options + '<option value='+attrName+'>'
-              									+ attrValue + '</option>';
-              						}
-              						$('#aliasSubProjectName').html(options);
-              					}
-              				}
-              			});
-              				$("#showSubProject").show();
-              	        }else {
-              	        	$("#showSubProject").hide();
-              	        }
-              		}); 
-              	  $('#projId').change(function() {
-              		  $("#showSubProject").hide();
-              		  $('#subProjectUpload').attr('checked', false);
-              	  });
-
-              	  if($('#subProjectUpload').is(':checked')) {
-              	  		$("#showSubProject").show();
-              	  };
-              	  
-              	$(function() {
-              		var table = $("#projectFileList").dataTable();
-              	})
- 
-                    });
-
- function deleteFile(fileName, filePath) {
- 	  $("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
-	alert(filePath);
- 	    // Define the Dialog and its properties.
- 	    $("#dialog-confirm").dialog({
- 	        resizable: false,
- 	        modal: true,
- 	        title: "Warning!",
- 	        height: 200,
- 	        width: 400,
- 	        buttons: {
- 	            "Yes": function () {
- 	            	$.ajax({
- 	        			type : 'POST',
- 	        			url : 'deleteFile.do',
- 	        			data : "path="+filePath,
- 	        			success : function(response) {
- 	        				location.reload();
- 	    					console.log("Successfully deleted file");
- 	        			},
- 	        			error : function(err) {
- 	        				console.log("Error deleting file ");
- 	        			}
- 	        		});
- 	                $(this).dialog('close');
- 	                window.location.reload();
-
- 	            },
- 	                "No": function () {
- 	                $(this).dialog('close');
-
- 	            }
- 	        }
- 	    });
- }
-</script>
+<script> 
+$(document).ready(
+	function() {
+		$("#showSubProject").hide();
+		$('#addFile')
+			.click(
+	
+		function() {
+			var fileIndex = $('#fileTable tr')
+				.children().length - 1;
+			$('#fileTable')
+				.append(
+				'<tr><td>' + '   <input type="file" name="files[' + fileIndex + ']" />' + '</td></tr>');
+		});
+		$('#subProjectUpload').change(function() {
+			if ($(this).is(":checked")) {
+				var aliasProjectName = $('#projId').val();
+				$.ajax({
+					type: "GET",
+					url: "getSubAliasProject.do",
+					cache: false,
+					data: "aliasProjectName=" + aliasProjectName,
+					success: function(response) {
+						var options = '';
+						if (response != null) {
+							var obj = jQuery.parseJSON(response);
+							var options = '';
+							//options = '<option value=0>--Please Select--</option>';
+							for (var key in obj) {
+								var attrName = key;
+								var attrValue = obj[key];
+								options = options + '<option value=' + attrName + '>' + attrValue + '</option>';
+							}
+							$('#aliasSubProjectName').html(options);
+						}
+					}
+				});
+				$("#showSubProject").show();
+			} else {
+				$("#showSubProject").hide();
+			}
+		});
+		$('#projId').change(function() {
+			$("#showSubProject").hide();
+			$('#subProjectUpload').attr('checked', false);
+		});
+	
+		if ($('#subProjectUpload').is(':checked')) {
+			$("#showSubProject").show();
+		};
+	
+		$(function() {
+			var table = $("#projectFileList").dataTable();
+		})
+	
+	});
+	
+	function deleteFile(fileName, filePath) {
+		$("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
+		alert(filePath);
+		$("#dialog-confirm").dialog({
+			resizable: false,
+			modal: true,
+			title: "Warning!",
+			height: 200,
+			width: 400,
+			buttons: {
+				"Yes": function() {
+					$.ajax({
+						type: 'POST',
+						url: 'deleteFile.do',
+						data: "path=" + filePath,
+						success: function(response) {
+							location.reload();
+							console.log("Successfully deleted file");
+						},
+						error: function(err) {
+							console.log("Error deleting file ");
+						}
+					});
+					$(this).dialog('close');
+					window.location.reload();
+	
+				},
+				"No": function() {
+					$(this).dialog('close');
+	
+				}
+			}
+		});
+	}
+	
+	</script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
@@ -146,12 +142,7 @@
 			<br />
 			<input class="button" type="submit" value="Show Files" />
 		</form:form>
-
-		<br />
-	</div>
-
 	<div>
-
 		<c:if test="${projectFileSize gt 0}">
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectName}
 				File Details</h1>
@@ -182,7 +173,7 @@
 			<br>
 			<br>
 		</c:if>
-
+		</div>
 	</div>
 	<div id="dialog-confirm"></div>
 	<footer>

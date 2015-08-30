@@ -259,13 +259,13 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
-
-		String updateSql = "UPDATE projectDesc set WorkType  = ?, Quantity = ?, Metric = ?, Description = ?," + "AliasDescription = ?, PricePerQuantity = ?, TotalCost=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
+		String descTable = projDescDetail.getDescType().equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "quotedprojectdesc";
+		String updateSql = "UPDATE "+descTable+" set WorkType  = ?, Quantity = ?, Metric = ?, Description = ?," + "AliasDescription = ?, PricePerQuantity = ?, TotalCost=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
 		String insertSql = null;
 
 		if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
 			if (projDescDetail.isSubProjectDesc()) {
-				insertSql = "INSERT INTO projectDesc (ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy ,LastUpdatedAt) " + "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
+				insertSql = "INSERT INTO "+descTable+" (ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy ,LastUpdatedAt) " + "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 				jdbcTemplate.update(
 				insertSql,
 				new Object[] {
@@ -283,7 +283,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					projDescDetail.getLastUpdatedAt()
 				});
 			} else {
-				insertSql = "INSERT INTO projectDesc (ProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy, LastUpdatedAt) " + "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?)";
+				insertSql = "INSERT INTO "+descTable+" (ProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy, LastUpdatedAt) " + "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?)";
 				jdbcTemplate.update(
 				insertSql,
 				new Object[] {

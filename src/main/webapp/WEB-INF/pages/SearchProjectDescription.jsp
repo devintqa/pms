@@ -110,10 +110,10 @@
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
 								</td>
-								<td><form:input path="aliasProjectName"
+								<td colspan="2"><form:input path="aliasProjectName"
 										id="aliasProjectName" placeholder="Enter Alias Project Name"
 										cssClass="inputText" /></td>
-								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
+								<td ><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchProjectDesc">
 								<td>Search Project Description? <span id="colon">:</span></td>

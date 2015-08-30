@@ -169,6 +169,7 @@ $(document).ready(function () {
 					<form:hidden path="subProjId" />
 					<form:hidden path="isUpdate" />
 					<form:hidden path="projDescId" />
+					<form:hidden path="descType" />
 					<table>
 						<tr>
 							<td></td>
