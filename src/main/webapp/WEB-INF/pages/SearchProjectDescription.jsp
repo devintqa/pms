@@ -180,9 +180,9 @@
 									<td>${projDesc.totalCost}</td>
 									<td><a
 										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&type=${searchProjDescForm.searchOn}&action=edit"
-										class="userAction">Update</a> <strong> / </strong> <a
-										id="deleteRow"
-										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descriptionType}');"
+										class="userAction">Update</a> <strong> / </strong> 
+										<a id="deleteRow"
+										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descType}');"
 										style="color: red"> Delete</a></td>
 								</tr>
 							</c:forEach>

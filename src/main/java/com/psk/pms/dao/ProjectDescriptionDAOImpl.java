@@ -268,8 +268,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				jdbcTemplate.update(
 				insertSql,
 				new Object[] {
-					projDescDetail.getAliasProjectName(),
-					projDescDetail.getAliasSubProjectName(),
+					projDescDetail.getProjId(),
+					projDescDetail.getSubProjId(),
 					projDescDetail.getSerialNumber(),
 					projDescDetail.getWorkType(),
 					projDescDetail.getQuantity(),
@@ -286,7 +286,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				jdbcTemplate.update(
 				insertSql,
 				new Object[] {
-					projDescDetail.getAliasProjectName(),
+					projDescDetail.getProjId(),
 					projDescDetail.getSerialNumber(),
 					projDescDetail.getWorkType(),
 					projDescDetail.getQuantity(),

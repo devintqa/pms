@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
+import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
@@ -65,16 +66,10 @@ public class DescriptionController extends BaseController {
 		if (null != descId) {
 			Map < String, String > aliasProjectList = new HashMap < String, String > ();
 			Map < String, String > subAliasProjectList = new HashMap < String, String > ();
-			//				if (Constants.PSK.equalsIgnoreCase(descType)) {
-			//					projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject);
-			//				} else {
-			//					projDescDetail = projectDescriptionService.getGovProjectDescDetail(descId);
-			//				}
 			projDescDetail = projectDescriptionService.getProjectDescDetail(descId,subProject,descType);
 			projDescDetail.setIsUpdate("Y");
 			projDescDetail.setEmployeeId(employeeId);
-			aliasProjectList.put(projDescDetail.getProjId().toString(),
-					projDescDetail.getAliasProjectName());
+			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 			model.addAttribute("aliasProjectList", aliasProjectList);
 			projDescDetail.setDescType(descType);
 
@@ -111,13 +106,20 @@ public class DescriptionController extends BaseController {
 			if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 				model.addAttribute("aliasProjectList", aliasProjectList);
-				model.addAttribute("subAliasProjectList",
-						fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 			} else {
 				isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
+				String subProjId = null;
+				if(null!=projDescDetail.getSubProjId()){
+					subProjId = projDescDetail.getSubProjId().toString();
+				}
+				projDescDetail = projectDescriptionService.getProjectDescDetail(projDescDetail.getProjDescId().toString(), 
+																				subProjId,
+																				projDescDetail.getDescType());
+				projDescDetail.setIsUpdate("Y");
+				projDescDetail.setEmployeeId(projDescDetail.getEmployeeId());
 				aliasProjectList = new HashMap < String, String > ();
-				aliasProjectList.put(projDescDetail.getProjId().toString(),
-						projDescDetail.getAliasProjectName());
+				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 				model.addAttribute("aliasProjectList", aliasProjectList);
 				if (null != projDescDetail.getAliasSubProjectName()) {
 					projDescDetail.setIsUpdate("Y");
