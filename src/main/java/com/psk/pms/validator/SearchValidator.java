@@ -19,7 +19,7 @@ public class SearchValidator extends BaseValidator implements Validator {
 
         SearchDetail searchDetail = (SearchDetail) target;
         if (!GLOBAL.equalsIgnoreCase(searchDetail.getSearchUnder())) {
-            if ((searchDetail.isSearchProjectDescription() || searchDetail
+            if ((searchDetail
                     .isEditSubProject())
                     && StringUtils
                     .isNullOrEmpty(searchDetail.getAliasProjectName())) {
@@ -40,8 +40,7 @@ public class SearchValidator extends BaseValidator implements Validator {
                 }
             }
 
-            if (searchDetail.isSearchProjectDescription()
-                    && !StringUtils.isNullOrEmpty(searchDetail
+            if (!StringUtils.isNullOrEmpty(searchDetail
                     .getAliasProjectName())) {
                 String projId;
                 if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {

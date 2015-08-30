@@ -112,6 +112,11 @@
                          Field Description
                          </a>
                     </li>
+                    <li><a id="createRole"
+                               href="/pms/emp/myview/createRole/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                        Role
+                    </a>
+                    </li>
                 </ul>
         </li>
         <li>

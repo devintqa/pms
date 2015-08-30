@@ -82,7 +82,6 @@ public class SearchController extends BaseController {
                                            Model model) {
         LOGGER.info("Search Controller : searchProjectDescription()");
         SearchDetail searchDetail = new SearchDetail();
-        searchDetail.setSearchProjectDescription(true);
         model.addAttribute("searchProjDescForm", searchDetail);
         return "SearchProjectDescription";
     }
@@ -172,7 +171,7 @@ public class SearchController extends BaseController {
                     + searchDetail.getProjId());
             String searchUnder = searchDetail.getSearchUnder();
             if ("Global".equalsIgnoreCase(searchUnder)) {
-                depositDetails= depositDetailService.getDepositDetailsInSubmittedStatus();
+                depositDetails = depositDetailService.getDepositDetailsInSubmittedStatus();
             } else {
                 boolean searchUnderProject = "project"
                         .equalsIgnoreCase(searchUnder);
@@ -269,7 +268,6 @@ public class SearchController extends BaseController {
     public String searchDepositDetail(@PathVariable String employeeId, Model model) {
         LOGGER.info("Search Controller : searchDepositDetail()");
         SearchDetail searchDetail = new SearchDetail();
-        searchDetail.setSearchProjectDescription(true);
         model.addAttribute("searchDepositForm", searchDetail);
         return "SearchDepositDetail";
     }

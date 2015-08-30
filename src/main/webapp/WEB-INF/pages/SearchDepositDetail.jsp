@@ -89,13 +89,6 @@
 									cssClass="inputText" /></td>
 							<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 						</tr>
-						<tr id="showSearchProjectDesc">
-							<td>Search Deposit Detail? <span id="colon">:</span></td>
-							<td><form:checkbox path="searchProjectDescription"
-									id="searchProjectDescription" /></td>
-							<td><form:errors path="searchProjectDescription"
-									cssClass="error" /></td>
-						</tr>
 						<tr>
 							<td>Search under <span id="colon">:</span></td>
 							<td><form:radiobutton path="searchUnder" value="project"
