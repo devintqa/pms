@@ -60,7 +60,7 @@
 						<table>
 
 							<tr>
-								<td>Is Base Item? <span id="colon">:</span></td>
+								<td>Is Schedule Of Rate? <span id="colon">:</span></td>
 								<td><form:checkbox path="baseItem" id="baseItem" /></td>
 								<td></td>
 							</tr>
