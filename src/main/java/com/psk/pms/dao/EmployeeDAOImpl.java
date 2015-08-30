@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.psk.pms.model.Team;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +13,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
+
+import static com.psk.pms.dao.PmsMasterQuery.SAVE_ROLES;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
@@ -179,4 +182,25 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return status;
     }
 
+
+    @Override
+    public boolean isRoleExists(String roleName, String teamName) {
+        String sql = "SELECT COUNT(*) FROM teamRole where roleName = ? and teamName=?";
+        int total = jdbcTemplate.queryForObject(sql, Integer.class,
+                new Object[]{roleName,teamName});
+        if (total == 0) {
+            return false;
+        }
+        return true;
+    }
+
+
+    @Override
+    public boolean saveTeamRoles(Team team) {
+        jdbcTemplate.update(
+                SAVE_ROLES,
+                new Object[]{team.getTeamName(),
+                        team.getRoleName()});
+        return true;
+    }
 }

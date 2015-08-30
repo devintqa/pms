@@ -564,3 +564,18 @@ CREATE TABLE `quotedprojdescitem` (
   PRIMARY KEY (`DescItemId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `teamRole`
+--
+
+DROP TABLE IF EXISTS `teamRole`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `teamRole` (
+  `teamRoleId` int(11) NOT NULL AUTO_INCREMENT,
+  `teamName` varchar(100) NOT NULL,
+  `roleName` varchar(100) NOT NULL,
+  PRIMARY KEY (`teamRoleId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;

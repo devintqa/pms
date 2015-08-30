@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.Team;
 import com.psk.pms.utils.Encryption;
 import com.psk.pms.utils.MailClient;
 
@@ -132,4 +133,15 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return status;
 	}
 
+
+    @Override
+    public boolean isRoleExists(String roleName, String teamName) {
+        return employeeDAO.isRoleExists(roleName,teamName);
+    }
+
+
+    @Override
+    public boolean saveTeamRoles(Team team) {
+        return employeeDAO.saveTeamRoles(team);
+    }
 }

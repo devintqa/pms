@@ -1,37 +1,41 @@
 package com.psk.pms.service;
 
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.Team;
+
 import java.util.List;
 import java.util.Map;
 
-import com.psk.pms.model.Employee;
-
 public interface EmployeeService {
 
-	public boolean isValidLogin(String userName, String password);
+    boolean isValidLogin(String userName, String password);
 
-	public boolean isEmployeeExisting(String userName);
+    boolean isEmployeeExisting(String userName);
 
-	public boolean signupEmployee(Employee employee);
+    boolean signupEmployee(Employee employee);
 
-	public Map<String, String> fetchTeamNames();
+    Map<String, String> fetchTeamNames();
 
-	public Employee getEmployeeDetails(String empId);
+    Employee getEmployeeDetails(String empId);
 
-	public boolean updateEmployee(Employee employee);
+    boolean updateEmployee(Employee employee);
 
-	public String getUserRole(String empId);
+    String getUserRole(String empId);
 
-	public boolean isEmployeeMotherMaidenExisting(String userName,
-			String motherMaiden);
+    boolean isEmployeeMotherMaidenExisting(String userName,
+                                           String motherMaiden);
 
-	public boolean isEmployeeMailExisting(String mail);
+    boolean isEmployeeMailExisting(String mail);
 
-	public boolean isEmployeeMobNumExisting(String mobile);
+    boolean isEmployeeMobNumExisting(String mobile);
 
-	public boolean resetPassword(String userName, String password);
+    boolean resetPassword(String userName, String password);
 
-	public List<Employee> getNewRegistrationRequest(String fromDate);
+    List<Employee> getNewRegistrationRequest(String fromDate);
 
-	public int manageUserAccess(Employee employee);
+    int manageUserAccess(Employee employee);
 
+    boolean isRoleExists(String roleName, String teamName);
+
+    boolean saveTeamRoles(Team team);
 }

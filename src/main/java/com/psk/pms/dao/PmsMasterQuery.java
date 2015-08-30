@@ -142,4 +142,7 @@ public class PmsMasterQuery {
 
     public static String INSERT_ITEM_RATE_DESCRIPTION = "INSERT INTO govestpricedetail (itemName, itemUnit, itemType, itemPrice, priceFeed,scheduledItemNumber,itemDescription) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+
+    public static String SAVE_ROLES = "INSERT INTO teamRole (teamName, roleName) VALUES (?, ?)";
 }
