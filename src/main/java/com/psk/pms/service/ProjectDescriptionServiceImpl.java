@@ -23,15 +23,13 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	@Autowired
 	ProjectDescriptionDAO projectDescriptionDAO;
 
-	private static final Logger LOGGER = Logger
-			.getLogger(ProjectDescriptionServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionServiceImpl.class);
 
 	public boolean createEditProjDesc(ProjDescDetail projDescDetail) {
 		fillEmptyProjDesValuesWithNull(projDescDetail);
 		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
 		projDescDetail.setLastUpdatedAt(getCurrentDateTime());
-		boolean isInsertSuccessful = projectDescriptionDAO
-				.saveProjDesc(projDescDetail);
+		boolean isInsertSuccessful = projectDescriptionDAO.saveProjDesc(projDescDetail);
 		return isInsertSuccessful;
 	}
 
@@ -40,7 +38,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		calendar.getTimeInMillis();
 		Date date = new Date();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss");
+			"yyyy-MM-dd HH:mm:ss");
 		String formattedDate = simpleDateFormat.format(date);
 		return getSQLDate(formattedDate, simpleDateFormat);
 	}
@@ -52,7 +50,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	public boolean isSerialNumberAlreadyExisting(
-			ProjDescDetail projectDescDetail) {
+	ProjDescDetail projectDescDetail) {
 		boolean isAvailable = false;
 		isAvailable = projectDescriptionDAO.isSerialNumberAlreadyExisting(projectDescDetail);
 		return isAvailable;
@@ -76,32 +74,29 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
-	
+
 	@Override
-	public List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId) {
-		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO
-				.getSubProjectDescDetailList(subProjectId);
+	public List < ProjDescDetail > getSubProjectDescDetailList(Integer subProjectId) {
+		List < ProjDescDetail > projectDescDetailList = projectDescriptionDAO.getSubProjectDescDetailList(subProjectId);
 		return projectDescDetailList;
 	}
 
 	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(Integer projId, boolean searchUnderProject) {
-		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO
-				.getProjectDescDetailList(projId, searchUnderProject);
-		return projectDescDetailList;
-	}
-	
-	@Override
-	public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail){
-		List<ProjDescDetail> projectDescDetailList = projectDescriptionDAO.getProjectDescDetailList(searchDetail);
+	public List < ProjDescDetail > getProjectDescDetailList(Integer projId, boolean searchUnderProject) {
+		List < ProjDescDetail > projectDescDetailList = projectDescriptionDAO.getProjectDescDetailList(projId, searchUnderProject);
 		return projectDescDetailList;
 	}
 
 	@Override
-	public List<ProjDescComparisonDetail> getProjectDescComparisonDetail(
-			Integer projId) {
-		List<ProjDescComparisonDetail> projDescComparisonDetail = projectDescriptionDAO
-				.getProjectDescComparisonDetail(projId);
+	public List < ProjDescDetail > getProjectDescDetailList(SearchDetail searchDetail) {
+		List < ProjDescDetail > projectDescDetailList = projectDescriptionDAO.getProjectDescDetailList(searchDetail);
+		return projectDescDetailList;
+	}
+
+	@Override
+	public List < ProjDescComparisonDetail > getProjectDescComparisonDetail(
+	Integer projId) {
+		List < ProjDescComparisonDetail > projDescComparisonDetail = projectDescriptionDAO.getProjectDescComparisonDetail(projId);
 		return projDescComparisonDetail;
 	}
 
@@ -122,61 +117,52 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		return date;
 	}
 
-	public void saveProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails) {
+	public void saveProjectDescriptionDetails(List < ProjDescDetail > projDescDetails) {
 		projectDescriptionDAO.saveProjectDescriptionDetails(projDescDetails);
 	}
 
-	public void saveProposalProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails) {
-		projectDescriptionDAO
-				.saveProposalProjectDescriptionDetails(projDescDetails);
+	public void saveProposalProjectDescriptionDetails(List < ProjDescDetail > projDescDetails) {
+		projectDescriptionDAO.saveProposalProjectDescriptionDetails(projDescDetails);
 	}
 
 	public void saveSubProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails) {
+	List < ProjDescDetail > projDescDetails) {
 		projectDescriptionDAO.saveSubProjectDescriptionDetails(projDescDetails);
 	}
 
 	@Override
 	public boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst) {
-		return projectDescriptionDAO
-				.isProjectDescriptionDetailsExistsForProject(projectId,governmentEst);
+		return projectDescriptionDAO.isProjectDescriptionDetailsExistsForProject(projectId, governmentEst);
 	}
 
 	@Override
 	public boolean isProjectDescriptionDetailsExistsForSubProject(
-			int subProjectId, String governmentEst) {
-		return projectDescriptionDAO
-				.isProjectDescriptionDetailsExistsForSubProject(subProjectId, governmentEst);
+	int subProjectId, String governmentEst) {
+		return projectDescriptionDAO.isProjectDescriptionDetailsExistsForSubProject(subProjectId, governmentEst);
 	}
 
 	@Override
 	public void deleteAllTheDescriptionDetailsOfProject(int projectId) {
-		LOGGER.info("Deleting all the project description items for project Id: "
-				+ projectId);
+		LOGGER.info("Deleting all the project description items for project Id: " + projectId);
 		projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
 	}
 
 	@Override
 	public void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId) {
-		LOGGER.info("Deleting all the project description items for Sub project Id: "
-				+ subProjectId);
-		projectDescriptionDAO
-				.deleteProjectDescriptionBySubProjectId(subProjectId);
+		LOGGER.info("Deleting all the project description items for Sub project Id: " + subProjectId);
+		projectDescriptionDAO.deleteProjectDescriptionBySubProjectId(subProjectId);
 	}
 
 	@Override
 	public void saveBaseProjectDescription(ProjDescDetail projDescDetail) {
-		LOGGER.info("Saving base description : baseDescription "
-				+ projDescDetail.getAliasProjectName());
+		LOGGER.info("Saving base description : baseDescription " + projDescDetail.getAliasProjectName());
 		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
 		projDescDetail.setLastUpdatedAt(getCurrentDateTime());
 		projectDescriptionDAO.saveBaseDescription(projDescDetail);
 	}
 
 	@Override
-	public List<ProjDescDetail> getBaseDescriptions(String category) {
+	public List < ProjDescDetail > getBaseDescriptions(String category) {
 		LOGGER.info("method = getBaseDescriptions()");
 		return projectDescriptionDAO.getBaseDescriptions(category);
 	}
@@ -190,8 +176,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	@Override
 	public boolean isGlobalDescriptionAlreadyExisting(String baseDescription) {
 		LOGGER.info("method = isGlobalDescriptionAlreadyExisting()");
-		return projectDescriptionDAO
-				.isGlobalDescriptionAlreadyExisting(baseDescription);
+		return projectDescriptionDAO.isGlobalDescriptionAlreadyExisting(baseDescription);
 	}
 
 	@Override
@@ -200,14 +185,14 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		return projDescDetail;
 	}
 
-    @Override
-    public ProjDescDetail getBaseDescription(String aliasDescription){
-        LOGGER.info("method = getBaseProjectDescription()");
-        return projectDescriptionDAO.getBaseDescription(aliasDescription);
-    }
+	@Override
+	public ProjDescDetail getBaseDescription(String aliasDescription) {
+		LOGGER.info("method = getBaseProjectDescription()");
+		return projectDescriptionDAO.getBaseDescription(aliasDescription);
+	}
 
 	@Override
 	public ProjDescDetail getGovProjectDescDetail(String projDescId) {
-		 return projectDescriptionDAO.getGovProjectDescDetail(projDescId);
+		return projectDescriptionDAO.getGovProjectDescDetail(projDescId);
 	}
 }

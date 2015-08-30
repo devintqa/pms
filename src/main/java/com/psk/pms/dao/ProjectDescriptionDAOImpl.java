@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.Constants;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.ProjDescComparisonDetail;
@@ -32,6 +33,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	@Qualifier("jdbcTemplate")@Autowired
 	private JdbcTemplate jdbcTemplate;
+
 
 	@Autowired
 	private ItemDAO itemDAO;
@@ -213,7 +215,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	public List < ProjDescDetail > getProjectDescDetailList(SearchDetail searchDetail) {
 		String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";;
 
-		if (searchDetail.getSearchOn().equalsIgnoreCase("psk")) {
+		if (searchDetail.getSearchOn().equalsIgnoreCase(Constants.PSK)) {
 			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
 				sql = sql + " FROM projectdesc" + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
 			} else {
@@ -383,10 +385,39 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 		});
 
+		for (ProjDescDetail projDescDetail: projDescDetails) {
+			try {
+				System.out.println("saveProjectDescriptionDetails: " + projDescDetails.size());
+				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
+					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
+					if (null == baseDescDetail.getSubProjId()) {
+						baseDescDetail.setSubProjId(0);
+					}
+					DescItemDetail descItemDetail = new DescItemDetail();
+					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
+					descItemDetail.setProjId(projDescDetail.getProjId());
+					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.PSK, projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
+					descItemDetail.setDescType(Constants.PSK);
+					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
+					System.out.println("saveProjectDescriptionDetails:itemDetailList: " + itemDetailList.size());
+					descItemDetail.setItemDetail(itemDetailList);
+					if (itemDetailList.size() > 0) {
+						itemDAO.insertProjectDescriptionItems(descItemDetail);
+					}
+				}
+			} catch (Exception e) {
+
+			}
+		}
+
 	}
 
-	private Integer getProjectDescDetailByAlias(String aliasDescription) {
-		String sql = "SELECT ProjDescId FROM quotedprojectdesc where AliasDescription = ?";
+	private Integer getProjectDescDetailByAlias(String descType, String aliasDescription) {
+
+		String descTable = descType.equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "quotedprojectdesc";
+		String sql = "SELECT ProjDescId FROM " + descTable + " where AliasDescription = ?";
 		List < Map < String, Object >> maps = jdbcTemplate.queryForList(sql, new Object[] {
 			aliasDescription
 		});
@@ -397,9 +428,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	public void saveProposalProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
-		
-		deleteGovProjectDescriptionByProjectId(projDescDetails.get(0).getProjId());
-		
+
+		if(projDescDetails.size() > 0)
+			deleteGovProjectDescriptionByProjectId(projDescDetails.get(0).getProjId());
+
 		jdbcTemplate.batchUpdate(INSERTGOVPROJECTDESCRIPTION,
 		new BatchPreparedStatementSetter() {@Override
 			public void setValues(PreparedStatement ps, int i)
@@ -425,7 +457,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		});
 
 		for (ProjDescDetail projDescDetail: projDescDetails) {
-			try{
+			try {
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
 					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
@@ -435,18 +467,17 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.GOVERNMENT, projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
-					descItemDetail.setDescType("government");
+					descItemDetail.setDescType(Constants.GOVERNMENT);
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
 					descItemDetail.setItemDetail(itemDetailList);
 					if (itemDetailList.size() > 0) {
 						itemDAO.insertProjectDescriptionItems(descItemDetail);
 					}
 				}
-			}
-			catch(Exception e){
-				
+			} catch (Exception e) {
+
 			}
 		}
 	}
@@ -482,9 +513,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	public boolean isProjectDescriptionDetailsExistsForProject(int projectId, String governmentEst) {
 		int noOfrows = 0;
 		String sql = "";
-		if("Y".equalsIgnoreCase(governmentEst)){
+		if ("Y".equalsIgnoreCase(governmentEst)) {
 			sql = NOOFQUOTEDPROJECTDESCASSOCIATEDTOPROJECT;
-		}else{
+		} else {
 			sql = NOOFPROJECTDESCASSOCIATEDTOPROJECT;
 		}
 		noOfrows = jdbcTemplate.queryForObject(sql, Integer.class,
@@ -503,13 +534,13 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	int subProjectId, String governmentEst) {
 		int noOfrows = 0;
 		String sql = "";
-		if("Y".equalsIgnoreCase(governmentEst)){
+		if ("Y".equalsIgnoreCase(governmentEst)) {
 			sql = NOOFQUOTEDPROJECTDESCASSOCIATEDTOSUBPROJECT;
-		}else{
+		} else {
 			sql = NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT;
 		}
 		noOfrows = jdbcTemplate.queryForObject(
-				sql, Integer.class,
+		sql, Integer.class,
 		new Object[] {
 			(Integer) subProjectId
 		});
@@ -522,7 +553,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	@Override
 	public List < ProjDescDetail > getBaseDescriptions(String category) {
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS + " where category = '"+category+"'");
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS + " where category = '" + category + "'");
 		List < ProjDescDetail > projDescDetails = new ArrayList < ProjDescDetail > ();
 		for (Map < String, Object > row: rows) {
 			projDescDetails.add(buildBaseDescDetail(row));
@@ -625,8 +656,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	@Override
 	public ProjDescDetail getGovProjectDescDetail(String projDescId) {
 
-		String	sql = projDescDetail + ",  p.AliasProjName FROM quotedprojectdesc as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
-		
+		String sql = projDescDetail + ",  p.AliasProjName FROM quotedprojectdesc as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
+
 		System.out.println(sql);
 		ProjDescDetail projDescDetail = null;
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
@@ -636,7 +667,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		}
 		return projDescDetail;
 	}
-	
+
 	public void deleteGovProjectDescriptionByProjectId(Integer projectId) {
 
 		int noOfRows = jdbcTemplate.update("DELETE FROM quotedprojectdesc WHERE ProjId = ?",
