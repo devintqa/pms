@@ -6,7 +6,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>PMS :: Search EMD</title>
+<title>PMS :: Search Deposit Detail</title>
 <%@include file="Script.jsp"%>
 <%@include file="Utility.jsp"%>
 <script>
@@ -27,7 +27,7 @@
 		});
 	});
 
-  function deleteEmd(aliasProjectName, emdId) {
+  function deleteDeposit(aliasProjectName, depositId) {
 	  
 	  $("#dialog-confirm").html(aliasProjectName + " : Deletion Operation!, Please confirm to proceed");
 
@@ -42,14 +42,14 @@
 	            "Yes": function () {
 	            	$.ajax({
 	        			type : 'POST',
-	        			url : 'deleteEmd.do',
-	        			data : "emdId="+emdId,
+	        			url : 'deleteDeposit.do',
+	        			data : "depositId="+depositId,
 	        			success : function(response) {
 	        				location.reload();
 	    					console.log("Successfully deleted row ");
 	        			},
 	        			error : function(err) {
-	        				console.log("Error deleting Emd  ");
+	        				console.log("Error deleting Deposit Detail  ");
 	        			}
 	        		});
 	                $(this).dialog('close');
@@ -75,11 +75,11 @@
 		<h2
 			style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 	<div class="ui-widget">
-		<form:form id="searchEmdForm" method="POST"
-			commandName="searchEmdForm" action="searchEmdDetails.do">
+		<form:form id="searchDepositForm" method="POST"
+			commandName="searchDepositForm" action="searchDepositDetails.do">
 			<center>
 				<fieldset style="margin: 1em; text-align: left;">
-					<legend>Search Details</legend>
+					<legend>Search Deposit Details</legend>
 					<table>
 						<tr>
 							<td>Alias Project Name<span id="colon">:</span>
@@ -90,7 +90,7 @@
 							<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 						</tr>
 						<tr id="showSearchProjectDesc">
-							<td>Search EMD? <span id="colon">:</span></td>
+							<td>Search Deposit Detail? <span id="colon">:</span></td>
 							<td><form:checkbox path="searchProjectDescription"
 									id="searchProjectDescription" /></td>
 							<td><form:errors path="searchProjectDescription"
@@ -98,10 +98,12 @@
 						</tr>
 						<tr>
 							<td>Search under <span id="colon">:</span></td>
-							<td><form:radiobutton path="searchUnder" value="Project"
+							<td><form:radiobutton path="searchUnder" value="project"
 									id="searchUnderProject" checked="true" />Project</td>
 							<td><form:radiobutton path="searchUnder" value="subProject"
 									id="searchUnderSubProject" />Sub Project</td>
+                            <td><form:radiobutton path="searchUnder" value="Global"
+                                                  id="searchUnderProject"/>Global</td>
 						</tr>
 						<tr></tr>
 					</table>
@@ -119,36 +121,36 @@
 
 		</form:form>
 
-		<c:if test="${emdDetailsSize gt 0}">
+		<c:if test="${depositDetailsSize gt 0}">
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
-				EMD Details</h1>
-			<table id="emdList" class="gridView">
+				Deposit Detail Details</h1>
+			<table id="depositDetails" class="gridView">
 				<thead>
 					<tr>
 						<th>Project Name</th>
 						<th>Sub Project Name</th>
-						<th>EMD Type</th>
-						<th>EMD Amount</th>
-						<th>EMD Start Date</th>
-						<th>EMD End Date</th>
+						<th>Deposit Type</th>
+						<th>Deposit Amount</th>
+						<th>Deposit Start Date</th>
+						<th>Deposit End Date</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:if test="${not empty emdList}">
-						<c:forEach var="emd" items="${emdList}">
+					<c:if test="${not empty depositDetails}">
+						<c:forEach var="detail" items="${depositDetails}">
 							<tr>
-								<td>${emd.aliasProjectName}</td>
-								<td>${emd.aliasSubProjectName}</td>
-								<td>${emd.emdType}</td>
-								<td>${emd.emdAmount}</td>
-								<td>${emd.emdStartDate}</td>
-								<td>${emd.emdEndDate}</td>
+								<td>${detail.aliasProjectName}</td>
+								<td>${detail.aliasSubProjectName}</td>
+								<td>${detail.depositType}</td>
+								<td>${detail.depositAmount}</td>
+								<td>${detail.depositStartDate}</td>
+								<td>${detail.depositEndDate}</td>
 								<td><a
-									href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}?emdId=${emd.emdId}&action=updateEmd&aliasProjectName=${emd.aliasProjectName}&aliasSubProjectName=${emd.aliasSubProjectName}"
+									href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}?depositId=${detail.depositId}&action=updateDepositDetail&aliasProjectName=${detail.aliasProjectName}&aliasSubProjectName=${detail.aliasSubProjectName}"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
-									href="javascript:deleteEmd('${emd.aliasProjectName}','${emd.emdId}');"
+									href="javascript:deleteDeposit('${detail.aliasProjectName}','${detail.depositId}');"
 									style="color: red"> Delete</a></td>
 							</tr>
 						</c:forEach>

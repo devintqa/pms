@@ -1,6 +1,6 @@
 <script>
 var tblNewSignUpRequest = $("#newSignUpRequests").dataTable();
-var tblEmdDocument = $("#emdDocumentList").dataTable();
+var tblEmdDocument = $("#depositDocumentList").dataTable();
 </script>
 
 

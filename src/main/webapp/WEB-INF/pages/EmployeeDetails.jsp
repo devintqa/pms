@@ -5,7 +5,7 @@
 <!doctype html>
 <html>
 <head>
-<title>PMS :: Project Home</title>
+<title>PMS :: Employee Details</title>
 
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
@@ -34,21 +34,12 @@
 	}
 </script>
 </head>
-
-
 <body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-		<div>
-			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
-			<h2
-				style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noProjectCreated}</h2>
-		</div>
-		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">New
-				Signup Requests</h1>
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Employee Details</h1>
 			<table id="newSignUpRequests" class="gridView">
 				<thead>
 					<tr>
@@ -94,49 +85,6 @@
 			</table>
 			<br>
 			<br>
-		</c:if>
-
-		<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-			<h1 style="text-align: center; color: #007399; font-size: 18px;">Deposit
-				end dates are nearing for following projects. Please take necessary
-				action.</h1>
-			<table id="depositDocumentList" class="gridView">
-				<thead>
-					<tr>
-						<th>Deposit Amount</th>
-						<th>Deposit Start Date</th>
-						<th>Deposit End Date</th>
-						<th>Deposit Type</th>
-						<th>Deposit Extension Date</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:if test="${not empty depositDocumentList}">
-						<c:forEach var="detail" items="${depositDocumentList}">
-							<tr>
-								<td>${detail.depositAmount}</td>
-								<td>${detail.depositStartDate}</td>
-								<td>${detail.depositEndDate}</td>
-								<td>${detail.depositType}</td>
-								<td>${detail.depositExtensionDate}</td>
-							</tr>
-						</c:forEach>
-					</c:if>
-				</tbody>
-			</table>
-			<br>
-			<br>
-		</c:if>
-
-		<c:if test="${employeeObj.employeeTeam eq 'Technical'}">
-			
-				Click here to <a href="downloadTemplate.do" class="userAction">download
-				template</a>
-			<br>
-			<br>
-            <br>
-            Click here to <a href="downloadItemDescTemplate.do" class="userAction">download Item Description Template</a>
-		</c:if>
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />

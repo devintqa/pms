@@ -35,14 +35,12 @@
 							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base Description</a></li>
-						<li><a id="createEmd"
-							href="/pms/emp/myview/buildEmd/${employeeObj.employeeId}">EMD</a></li>
+						<li><a id="createDepositDetail"
+							href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}">Deposit Details</a></li>
 						<li><a id="createItem"
 							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">Item</a></li>
 						<li><a id="uploadExcel"
 							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">Bulk Description</a></li>
-						<li><a id="createField"
-                        	href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Field Description</a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>
@@ -55,9 +53,9 @@
 						<li><a id="searchProjectDesc"
 							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
 								Project Description </a></li>
-						<li><a id="searchEmd"
-							href="/pms/emp/myview/searchEmd/${employeeObj.employeeId}">
-								EMD </a></li>
+						<li><a id="searchDepositDetail"
+							href="/pms/emp/myview/searchDepositDetail/${employeeObj.employeeId}">
+								Deposit Details </a></li>
 						 <li><a id="searchPwdProjectDescription"
 							href="/pms/emp/myview/searchBaseDescription/${employeeObj.employeeId}">
 								Base Description </a></li>
@@ -107,6 +105,29 @@
 		<li><a id="profile"
 			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 				Profile</a></li>
+        <li>
+              <a href="#">Create</a>
+			    <ul><li><a id="createField"
+                         href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                         Field Description
+                         </a>
+                    </li>
+                </ul>
+        </li>
+        <li>
+              <a href="#">Search</a>
+			    <ul><li><a id="searchEmployee"
+                         href="/pms/emp/myview/searchEmployee/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                         Employee
+                        </a>
+                    </li>
+                    <li><a id="searchProjectDesc"
+                    	 href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
+                    	 Project Description
+                    	</a>
+                    </li>
+                </ul>
+        </li>
 		<li><a id="logout"
 			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 		<!--<li><a id="excelViewer"

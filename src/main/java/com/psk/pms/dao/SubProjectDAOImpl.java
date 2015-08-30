@@ -30,7 +30,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 	private JdbcTemplate jdbcTemplate;
 
 	@Autowired
-	private EmdDAO emdDAO;
+	private DepositDetailDAO depositDetailDAO;
 
 	@Autowired
 	private ItemDAO itemDAO;
@@ -251,7 +251,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 	@Override
 	public void deleteSubProjectBySubProjectId(Integer subProjectId) {
 		itemDAO.deleteItemBySubProjectId(subProjectId);
-		emdDAO.deleteEmddetailBySubProjectId(subProjectId);
+		depositDetailDAO.deleteDepositDetailBySubProjectId(subProjectId);
 		projectDescriptionDAO
 				.deleteProjectDescriptionBySubProjectId(subProjectId);
 		int noOfRows = jdbcTemplate.update(DELETESUBPROJECTBYSUBPROJECTID,

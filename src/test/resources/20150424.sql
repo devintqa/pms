@@ -59,54 +59,60 @@ CREATE TABLE `basedescitem` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `emddetail`
+-- Table structure for table `depositdetail`
 --
-
 DROP TABLE IF EXISTS `emddetail`;
+DROP TABLE IF EXISTS `emdtype`;
+DROP TABLE IF EXISTS `depositdetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emddetail` (
+CREATE TABLE `depositdetail` (
   `ProjId` int(10) NOT NULL,
   `SubProjId` int(10) DEFAULT NULL,
-  `EmdAmount` decimal(15,2) NOT NULL,
-  `EmdStartDate` datetime NOT NULL,
-  `EmdEndDate` datetime NOT NULL,
-  `EmdType` varchar(20) NOT NULL,
+  `DepositAmount` decimal(15,2) NOT NULL,
+  `DepositStartDate` datetime NOT NULL,
+  `DepositEndDate` datetime NOT NULL,
+  `DepositType` varchar(20) NOT NULL,
   `BGNumber` varchar(20) NOT NULL,
-  `EmdPeriod` int(10) NOT NULL,
-  `EmdExtensionDate` datetime NOT NULL,
-  `EmdLedgerNumber` varchar(20) NOT NULL,
+  `DepositStatus` varchar(20) NOT NULL,
+  `DepositPeriod` int(10) NOT NULL,
+  `DepositExtensionDate` datetime,
+  `DepositLedgerNumber` varchar(20) NOT NULL,
   `SubProjectEmd` varchar(20) DEFAULT '0',
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
-  `EmdId` int(11) NOT NULL AUTO_INCREMENT,
-  `EmdSubmitter` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`EmdId`)
+  `DepositId` int(11) NOT NULL AUTO_INCREMENT,
+  `DepositSubmitter` varchar(50) DEFAULT NULL,
+  `DepositDetail` varchar(30) NOT NULL,
+  `DepositRecievedDate` datetime,
+   `DepositRecievedNote` text NULL,
+
+  PRIMARY KEY (`DepositId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `emdtype`
+-- Table structure for table `deposittype`
 --
 
-DROP TABLE IF EXISTS `emdtype`;
+DROP TABLE IF EXISTS `deposittype`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `emdtype` (
-  `emdTypeId` int(10) NOT NULL AUTO_INCREMENT,
-  `emdTypeName` varchar(20) NOT NULL,
-  PRIMARY KEY (`emdTypeId`)
+CREATE TABLE `deposittype` (
+  `depositTypeId` int(10) NOT NULL AUTO_INCREMENT,
+  `depositTypeName` varchar(20) NOT NULL,
+  PRIMARY KEY (`depositTypeId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `emdtype`
+-- Dumping data for table `deposittype`
 --
 
-LOCK TABLES `emdtype` WRITE;
-/*!40000 ALTER TABLE `emdtype` DISABLE KEYS */;
-INSERT INTO `emdtype` VALUES (1,'Bank Guarantee'),(2,'DD'),(3,'FD'),(4,'IVP'),(5,'KVP');
-/*!40000 ALTER TABLE `emdtype` ENABLE KEYS */;
+LOCK TABLES `deposittype` WRITE;
+/*!40000 ALTER TABLE `deposittype` DISABLE KEYS */;
+INSERT INTO `deposittype` VALUES (1,'Bank Guarantee'),(2,'DD'),(3,'FD'),(4,'IVP'),(5,'KVP'),(6,'DDD');
+/*!40000 ALTER TABLE `deposittype` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -513,4 +519,48 @@ CREATE TABLE `fieldprojectdesc` (
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`ProjDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `projdescitem`
+--
+
+DROP TABLE IF EXISTS `fieldprojdescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `fieldprojdescitem` (
+  `ProjId` int(11) DEFAULT '0',
+  `SubProjId` int(11) DEFAULT '0',
+  `ProjDescId` int(11) DEFAULT '0',
+  `ProjDescSerial` varchar(45) DEFAULT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT '0',
+  `ItemPrice` varchar(45) DEFAULT '0',
+  `ItemCost` varchar(45) DEFAULT '0',
+  `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DescItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `quotedprojdescitem`
+--
+
+DROP TABLE IF EXISTS `quotedprojdescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `quotedprojdescitem` (
+  `ProjId` int(11) DEFAULT '0',
+  `SubProjId` int(11) DEFAULT '0',
+  `ProjDescId` int(11) DEFAULT '0',
+  `ProjDescSerial` varchar(45) DEFAULT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT '0',
+  `ItemPrice` varchar(45) DEFAULT '0',
+  `ItemCost` varchar(45) DEFAULT '0',
+  `DescItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`DescItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -16,13 +16,13 @@ $(function() {
 	$("#commencementDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
-	$("#emdStartDate").datepicker(
+	$("#depositStartDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
 	$("#completionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
-	$("#emdEndDate").datepicker(
+	$("#depositEndDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);	
 	$("#subAgreementDate").datepicker(
@@ -37,7 +37,10 @@ $(function() {
 	$("#subCompletionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
-	$("#emdExtensionDate").datepicker(
+	$("#depositExtensionDate").datepicker(
+    			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+    			);
+    $("#depositRecievedDate").datepicker(
     			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
     			);
     $("#completionDateForBonus").datepicker(

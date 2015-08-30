@@ -7,55 +7,57 @@ import org.springframework.validation.Validator;
 
 public class SearchValidator extends BaseValidator implements Validator {
 
-	@Override
-	public boolean supports(Class<?> clazz) {
-		return SearchDetail.class.isAssignableFrom(clazz);
-	}
+    public static final String GLOBAL = "Global";
 
-	@Override
-	public void validate(Object target, Errors errors) {
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return SearchDetail.class.isAssignableFrom(clazz);
+    }
 
-		SearchDetail searchDetail = (SearchDetail) target;
+    @Override
+    public void validate(Object target, Errors errors) {
 
-		if ((searchDetail.isSearchProjectDescription() || searchDetail
-				.isEditSubProject())
-				&& StringUtils
-						.isNullOrEmpty(searchDetail.getAliasProjectName())) {
-			errors.rejectValue("aliasProjectName", "required.aliasProjectName",
-					"Please select Alias Project Name.");
-		}
+        SearchDetail searchDetail = (SearchDetail) target;
+        if (!GLOBAL.equalsIgnoreCase(searchDetail.getSearchUnder())) {
+            if ((searchDetail.isSearchProjectDescription() || searchDetail
+                    .isEditSubProject())
+                    && StringUtils
+                    .isNullOrEmpty(searchDetail.getAliasProjectName())) {
+                errors.rejectValue("aliasProjectName", "required.aliasProjectName",
+                        "Please select Alias Project Name.");
+            }
 
-		if ((searchDetail.isEditSubProject())
-				&& !StringUtils.isNullOrEmpty(searchDetail
-						.getAliasProjectName())) {
-			String projId = fetchProjectId(searchDetail.getAliasProjectName());
-			if (projId == null) {
-				errors.rejectValue("aliasProjectName",
-						"invalid.aliasProjectName",
-						"Please select valid Alias Project Name.");
-			} else {
-				searchDetail.setProjId(Integer.valueOf(projId));
-			}
-		}
+            if ((searchDetail.isEditSubProject())
+                    && !StringUtils.isNullOrEmpty(searchDetail
+                    .getAliasProjectName())) {
+                String projId = fetchProjectId(searchDetail.getAliasProjectName());
+                if (projId == null) {
+                    errors.rejectValue("aliasProjectName",
+                            "invalid.aliasProjectName",
+                            "Please select valid Alias Project Name.");
+                } else {
+                    searchDetail.setProjId(Integer.valueOf(projId));
+                }
+            }
 
-		if (searchDetail.isSearchProjectDescription()
-				&& !StringUtils.isNullOrEmpty(searchDetail
-						.getAliasProjectName())) {
-			String projId;
-			if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-				projId = fetchProjectId(searchDetail.getAliasProjectName());
-			} else {
-				projId = fetchSubProjectId(searchDetail.getAliasProjectName());
-			}
+            if (searchDetail.isSearchProjectDescription()
+                    && !StringUtils.isNullOrEmpty(searchDetail
+                    .getAliasProjectName())) {
+                String projId;
+                if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
+                    projId = fetchProjectId(searchDetail.getAliasProjectName());
+                } else {
+                    projId = fetchSubProjectId(searchDetail.getAliasProjectName());
+                }
 
-			if (projId == null) {
-				errors.rejectValue("aliasProjectName",
-						"invalid.aliasProjectName",
-						"Please select valid Alias Project/ Sub Project Name.");
-			} else {
-				searchDetail.setProjId(Integer.valueOf(projId));
-			}
-		}
-	}
-
+                if (projId == null) {
+                    errors.rejectValue("aliasProjectName",
+                            "invalid.aliasProjectName",
+                            "Please select valid Alias Project/ Sub Project Name.");
+                } else {
+                    searchDetail.setProjId(Integer.valueOf(projId));
+                }
+            }
+        }
+    }
 }
