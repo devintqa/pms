@@ -26,7 +26,6 @@ public class ProjDescDetail {
 	private Date lastUpdatedAt;
 	private String baseCategory;
 	private String descType;
-	
 	public String getMetric() {
 		return metric;
 	}

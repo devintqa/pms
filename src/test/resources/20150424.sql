@@ -446,7 +446,7 @@ CREATE TABLE `team` (
 
 LOCK TABLES `team` WRITE;
 /*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES ('Admin',1),('Account',2),('Management',3),('Purchase',4),('Technical',5),('Store',6);
+INSERT INTO `team` VALUES ('Admin',1),('Account',2),('Management',3),('Purchase',4),('Technical',5),('Store',6),('Field',7);
 /*!40000 ALTER TABLE `team` ENABLE KEYS */;
 UNLOCK TABLES;
 

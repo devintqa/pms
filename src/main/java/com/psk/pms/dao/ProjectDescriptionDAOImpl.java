@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -34,7 +35,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	@Qualifier("jdbcTemplate")@Autowired
 	private JdbcTemplate jdbcTemplate;
-
 
 	@Autowired
 	private ItemDAO itemDAO;
@@ -58,8 +58,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
 
-	public void deleteProjectDescription(String projectDescriptionId) {
-		itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId);
+	public void deleteProjectDescription(String projectDescriptionId,String descType) {
+		itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId,descType);
 
 		int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery,
 		new Object[] {
@@ -69,15 +69,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject) {
+	public ProjDescDetail getProjectDescDetail(String projDescId, String subProject, String descType) {
 		String sql = null;
 		LOGGER.info("subProject value" + subProject);
 		if (!StringUtils.isNullOrEmpty(subProject)) {
 			LOGGER.info("subProject value for sub project" + subProject);
-			sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM projectdesc as d " + "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId " + "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
+			sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM "+ DescriptionType.getdescriptionTableName(descType) +" as d " + "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId " + "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
 		} else {
 			LOGGER.info("subProject value for project" + subProject);
-			sql = projDescDetail + ",  p.AliasProjName FROM projectdesc as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
+			sql = projDescDetail + ",  p.AliasProjName FROM "+ DescriptionType.getdescriptionTableName(descType) +" as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
 		}
 
 		ProjDescDetail projDescDetail = null;
@@ -213,13 +213,12 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		return projectDescDetailList;
 	}
 
-
     public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail) {
         String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";
         if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-            sql = sql + " FROM " + DescriptionType.getDbTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+            sql = sql + " FROM " + DescriptionType.getdescriptionTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
         } else {
-            sql = sql + " FROM " + DescriptionType.getDbTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
+            sql = sql + " FROM " + DescriptionType.getdescriptionTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
         }
 
         List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
@@ -390,7 +389,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.PSK, projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
 					descItemDetail.setDescType(Constants.PSK);
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
@@ -407,10 +406,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	}
 
-	private Integer getProjectDescDetailByAlias(String descType, String aliasDescription) {
-
-		String descTable = descType.equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "quotedprojectdesc";
-		String sql = "SELECT ProjDescId FROM " + descTable + " where AliasDescription = ?";
+	private Integer getProjectDescDetailByAlias(String aliasDescription) {
+		String sql = "SELECT ProjDescId FROM quotedprojectdesc where AliasDescription = ?";
 		List < Map < String, Object >> maps = jdbcTemplate.queryForList(sql, new Object[] {
 			aliasDescription
 		});
@@ -460,7 +457,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.GOVERNMENT, projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
 					descItemDetail.setDescType(Constants.GOVERNMENT);
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
@@ -642,21 +639,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 		for (Map < String, Object > row: rows) {
 			projDescDetail = buildBaseDescDetail(row);
-		}
-		return projDescDetail;
-	}
-
-	@Override
-	public ProjDescDetail getGovProjectDescDetail(String projDescId) {
-
-		String sql = projDescDetail + ",  p.AliasProjName FROM quotedprojectdesc as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
-
-		System.out.println(sql);
-		ProjDescDetail projDescDetail = null;
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			projDescDetail = buildProjectDescDetail(row);
 		}
 		return projDescDetail;
 	}

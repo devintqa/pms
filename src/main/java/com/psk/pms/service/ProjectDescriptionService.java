@@ -13,7 +13,7 @@ public interface ProjectDescriptionService {
 
 	boolean createEditProjDesc(ProjDescDetail projDescDetail);
 
-	ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
+	ProjDescDetail getProjectDescDetail(String projDescId, String subProject,String descType);
 	
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 
@@ -29,7 +29,7 @@ public interface ProjectDescriptionService {
 
 	boolean isSerialNumberAlreadyExisting(ProjDescDetail projectDescDetail);
 
-	void deleteProjectDescriptionDetail(String projectDescriptionId);
+	void deleteProjectDescriptionDetail(String projectDescriptionId,String descType);
 
 	void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
@@ -54,8 +54,6 @@ public interface ProjectDescriptionService {
     boolean isGlobalDescriptionAlreadyExisting(String  projectDescDetail);
 
     ProjDescDetail getBaseDescription(String aliasDescription);
-
-	ProjDescDetail getGovProjectDescDetail(String projDescId);
 
 	
 }

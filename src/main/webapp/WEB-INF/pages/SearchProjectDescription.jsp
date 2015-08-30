@@ -44,7 +44,7 @@
   }
   
   
-  function deleteProjectDescription(projectDescriptionAlias, projectDescriptionId) {
+  function deleteProjectDescription(projectDescriptionAlias, projectDescriptionId, projectDescriptionType) {
 	  
 	  $("#dialog-confirm").html(projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
 
@@ -60,7 +60,7 @@
 	            	$.ajax({
 	        			type : 'POST',
 	        			url : 'deleteProjectDescription.do',
-	        			data : "projectDescriptionId="+projectDescriptionId,
+	        			data : "projectDescriptionId="+projectDescriptionId+"&projectDescriptionType="+projectDescriptionType,
 	        			success : function(response) {
 	        				location.reload();
 	    					console.log("Successfully deleted row ");
@@ -89,7 +89,7 @@
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-		
+
 		<div class="ui-widget">
 			<form:form id="searchProjDescForm" method="POST"
 				commandName="searchProjDescForm"
@@ -99,13 +99,13 @@
 						<legend>Search Project Description</legend>
 						<table>
 							<tr>
-								<td>Category  <span id="colon">:</span></td>
+								<td>Category <span id="colon">:</span></td>
 								<td><form:radiobutton path="searchOn" value="psk"
 										id="searchOnPsk" checked="true" />PSK</td>
 								<td><form:radiobutton path="searchOn" value="government"
 										id="searchOnGovernment" />GOVERNMENT</td>
-							    <td><form:radiobutton path="searchOn" value="field"
-                                	    id="searchOnField"/>FIELD</td>
+								<td><form:radiobutton path="searchOn" value="field"
+										id="searchOnField" />FIELD</td>
 							</tr>
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
@@ -113,7 +113,7 @@
 								<td colspan="2"><form:input path="aliasProjectName"
 										id="aliasProjectName" placeholder="Enter Alias Project Name"
 										cssClass="inputText" /></td>
-								<td ><form:errors path="aliasProjectName" cssClass="error" /></td>
+								<td><form:errors path="aliasProjectName" cssClass="error" /></td>
 							</tr>
 							<tr id="showSearchProjectDesc">
 								<td>Search Project Description? <span id="colon">:</span></td>
@@ -142,11 +142,13 @@
 					</table>
 				</center>
 				<br>
-			<div>
-			<h2	style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
-		</div>
+				<div>
+					<h2
+						style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+				</div>
 			</form:form>
-			<input id="searchOn" type="hidden" value="${searchProjDescForm.searchOn}"/>
+			<input id="searchOn" type="hidden"
+				value="${searchProjDescForm.searchOn}" />
 			<c:if test="${projDescDocListSize gt 0}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
 					Project Description Details</h1>
@@ -180,7 +182,7 @@
 										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&type=${searchProjDescForm.searchOn}&action=edit"
 										class="userAction">Update</a> <strong> / </strong> <a
 										id="deleteRow"
-										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}');"
+										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descriptionType}');"
 										style="color: red"> Delete</a></td>
 								</tr>
 							</c:forEach>
