@@ -116,8 +116,8 @@
         </li>
         <li>
               <a href="#">Search</a>
-			    <ul><li><a id="createField"
-                         href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+			    <ul><li><a id="searchEmployee"
+                         href="/pms/emp/myview/searchEmployee/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
                          Employee
                         </a>
                     </li>

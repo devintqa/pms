@@ -151,7 +151,7 @@ public class EmployeeController {
 	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(
-				dateFormat, true));
+                dateFormat, true));
 	}
 
 	@ModelAttribute("employeeTeamList")
@@ -162,7 +162,22 @@ public class EmployeeController {
 		employeeTeam.put("Management", "Management");
 		employeeTeam.put("Purchase", "Purchase");
 		employeeTeam.put("Technical", "Technical");
+        employeeTeam.put("Field", "Field");
 		return employeeTeam;
 	}
 
+    @RequestMapping(value = "/emp/myview/searchEmployee/{empId}", method = RequestMethod.GET)
+    public String getEmployeeDetails(@PathVariable String empId,
+                              @RequestParam(value = "team", required = false) String team,
+                              Model model, Principal principal) {
+        Employee employee = employeeService.getEmployeeDetails(principal
+                .getName());
+        model.addAttribute("employeeObj", employee);
+            List<Employee> newSignupRequestList = employeeService
+                    .getNewRegistrationRequest(null);
+            if (!newSignupRequestList.isEmpty()) {
+                model.addAttribute("newSignupRequestList", newSignupRequestList);
+            }
+        return "EmployeeDetails";
+    }
 }
