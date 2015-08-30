@@ -67,11 +67,7 @@ public class DescriptionController extends BaseController {
 			Map < String, String > aliasProjectList = new HashMap < String, String > ();
 			Map < String, String > subAliasProjectList = new HashMap < String, String > ();
 			ProjDescDetail projDescDetail = null;
-			if("psk".equalsIgnoreCase(descType)){
-				projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject);
-			}else{
-				projDescDetail = projectDescriptionService.getGovProjectDescDetail(descId);
-			}
+            projDescDetail = projectDescriptionService.getProjectDescDetail(descId,subProject,descType);
 			projDescDetail.setIsUpdate("Y");
 			projDescDetail.setEmployeeId(employeeId);
 
@@ -131,23 +127,26 @@ public class DescriptionController extends BaseController {
 				fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 				return "BuildDescription";
 			} else {
-				isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
-				projDescDetail = projectDescriptionService.getProjectDescDetail(
-				String.valueOf(projDescDetail.getProjDescId()),
-				projDescDetail.getAliasSubProjectName());
+				//isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
+				//projDescDetail = projectDescriptionService.getProjectDescDetail(
+				//String.valueOf(projDescDetail.getProjDescId()),
+				//projDescDetail.getAliasSubProjectName(),"psk");
 				projDescDetail.setIsUpdate("Y");
-				aliasProjectList = new HashMap < String, String > ();
-				aliasProjectList.put(projDescDetail.getProjId().toString(),
-				projDescDetail.getAliasProjectName());
-				model.addAttribute("aliasProjectList", aliasProjectList);
-				if (null != projDescDetail.getAliasSubProjectName()) {
+				//aliasProjectList = new HashMap < String, String > ();
+				//aliasProjectList.put(projDescDetail.getProjId().toString(),
+				//projDescDetail.getAliasProjectName());
+				//model.addAttribute("aliasProjectList", aliasProjectList);
+				/*if (null != projDescDetail.getAliasSubProjectName()) {
 					HashMap < String, String > subAliasProjectList = new HashMap < String, String > ();
 					subAliasProjectList.put(projDescDetail.getSubProjId()
 						.toString(), projDescDetail.getAliasSubProjectName());
 					projDescDetail.setSubProjectDesc(true);
 					model.addAttribute("subAliasProjectList",
 					subAliasProjectList);
-				}
+				}*/
+                model.addAttribute("aliasProjectList", aliasProjectList);
+                model.addAttribute("subAliasProjectList",
+                        fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 				model.addAttribute("projDescForm", projDescDetail);
 				model.addAttribute("projDescCreationMessage",
 					"Project Description Updated Successfully.");
@@ -160,8 +159,9 @@ public class DescriptionController extends BaseController {
 	public void deleteProjectDescriptionDetail(HttpServletRequest request,
 	HttpServletResponse response) {
 		String projectDescriptionId = request.getParameter("projectDescriptionId");
+        String projectDescriptionType = request.getParameter("projectDescriptionType");
 		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-		projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId);
+		projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId,projectDescriptionType);
 	}
 
 	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)@ResponseBody

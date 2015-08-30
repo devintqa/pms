@@ -36,7 +36,7 @@ public interface ItemDAO {
 
     void deleteItemBySubProjectId(Integer subProjectId);
 
-    void deleteItemByProjectDescriptionId(String projectDescId);
+    void deleteItemByProjectDescriptionId(String projectDescId, String descType);
 
     void deleteItemByProjectDescItemId(Integer itemId);
 

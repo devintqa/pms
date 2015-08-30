@@ -17,9 +17,9 @@ public interface ProjectDescriptionDAO {
 
 	void deleteProjectDescriptionBySubProjectId(Integer subProjectId);
 
-	void deleteProjectDescription(String projectDescriptionId);
+	void deleteProjectDescription(String projectDescriptionId,String descType);
 
-	ProjDescDetail getProjectDescDetail(String projDescId, String subProject);
+	ProjDescDetail getProjectDescDetail(String projDescId, String subProject, String descType);
 
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjectId);
 
@@ -55,5 +55,5 @@ public interface ProjectDescriptionDAO {
 	
     ProjDescDetail getBaseDescription(String aliasDescription);
 
-	ProjDescDetail getGovProjectDescDetail(String projDescId);
+	ProjDescDetail getGovProjectDescDetail(String projDescId,String descType);
 }

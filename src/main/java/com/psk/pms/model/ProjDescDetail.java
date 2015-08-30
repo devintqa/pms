@@ -25,7 +25,7 @@ public class ProjDescDetail {
 	private String lastUpdatedBy;
 	private Date lastUpdatedAt;
 	private String baseCategory;
-	
+	private String descriptionType;
 	public String getMetric() {
 		return metric;
 	}
@@ -194,4 +194,11 @@ public class ProjDescDetail {
 		this.baseCategory = baseCategory;
 	}
 
+    public String getDescriptionType() {
+        return descriptionType;
+    }
+
+    public void setDescriptionType(String descriptionType) {
+        this.descriptionType = descriptionType;
+    }
 }

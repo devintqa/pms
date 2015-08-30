@@ -5,22 +5,35 @@ package com.psk.pms.constants;
  */
 public enum DescriptionType {
 
-    PSK("projectdesc"),
-    FIELD("fieldprojectdesc"),
-    GOVERNMENT("quotedprojectdesc"),
-    INVALID("");
+    PSK("projectdesc","projdescitem"),
+    FIELD("fieldprojectdesc","quotedprojdescitem"),
+    GOVERNMENT("quotedprojectdesc","fieldprojdescitem"),
+    INVALID("","");
 
-    DescriptionType(String dbTableName) {
-        this.dbTableName = dbTableName;
+    DescriptionType(String descriptionTableName,String descriptionItemTableName) {
+        this.descriptionTableName = descriptionTableName;
+        this.descriptionItemTableName = descriptionItemTableName;
     }
 
-    String dbTableName;
+    String descriptionTableName;
+    String descriptionItemTableName;
 
-    public static String getDbTableName(String descriptionString) {
+    public static String getdescriptionTableName(String descriptionString) {
         String dbName = "";
         for (DescriptionType descriptionType : DescriptionType.values()) {
             if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
-                dbName = descriptionType.dbTableName;
+                dbName = descriptionType.descriptionTableName;
+                break;
+            }
+        }
+        return dbName;
+    }
+
+    public static String getdescriptionItemTableName(String descriptionString) {
+        String dbName = "";
+        for (DescriptionType descriptionType : DescriptionType.values()) {
+            if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
+                dbName = descriptionType.descriptionItemTableName;
                 break;
             }
         }
