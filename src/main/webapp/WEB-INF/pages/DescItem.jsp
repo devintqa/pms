@@ -27,7 +27,7 @@
 								itemType: $('#itemType').val(),
 								projectId: $('#projId').val(),
 								subProjectId: $('#subProjId').val(),
-		            	            }, response);
+		            	        }, response);
 				},
 				select: function(event, ui) { 
 					if(validateItemNameExistence(ui.item.itemName)){

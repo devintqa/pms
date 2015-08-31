@@ -6,8 +6,8 @@ package com.psk.pms.constants;
 public enum DescriptionType {
 
     PSK("projectdesc","projdescitem"),
-    FIELD("fieldprojectdesc","quotedprojdescitem"),
-    GOVERNMENT("quotedprojectdesc","fieldprojdescitem"),
+    FIELD("fieldprojectdesc","fieldprojdescitem"),
+    GOVERNMENT("quotedprojectdesc","quotedprojdescitem"),
     INVALID("","");
 
     DescriptionType(String descriptionTableName,String descriptionItemTableName) {

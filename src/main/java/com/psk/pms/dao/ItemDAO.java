@@ -59,4 +59,6 @@ public interface ItemDAO {
     void saveItemRateDescriptions(List<ItemRateDescription> itemRateDescriptions);
 
     List<String> getItemNames(String itemType, String projectId);
+    
+    List<ItemDetail> getMissingProjectDescriptionItems(Integer projectId);
 }

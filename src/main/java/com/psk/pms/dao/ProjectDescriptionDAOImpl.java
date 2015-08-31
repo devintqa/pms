@@ -613,11 +613,11 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public boolean isGlobalDescriptionAlreadyExisting(String baseDescription) {
+	public boolean isGlobalDescriptionAlreadyExisting(String descType, String baseDescription) {
 		int noOfrows = 0;
 		noOfrows = jdbcTemplate.queryForObject(ISBASEDESCEXISTS, Integer.class,
 		new Object[] {
-			baseDescription
+			descType, baseDescription
 		});
 		LOGGER.info("method = isGlobalDescriptionAlreadyExisting , isDataPresent :" + (noOfrows != 0));
 		if (noOfrows != 0) {

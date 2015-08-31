@@ -5,8 +5,8 @@ import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
-
 import com.psk.pms.model.ProjectItemDescription;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -174,5 +174,11 @@ public class ItemServiceImpl implements ItemService {
     		ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
         return itemDAO.getProjectItemDescription(projectConfiguration, isEditSubProject, itemName);
     }
+
+	@Override
+	public List<ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
+		 List<ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
+        return itemsDetail;
+	}
 
 }

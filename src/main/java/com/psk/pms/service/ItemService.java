@@ -54,4 +54,6 @@ public interface ItemService {
 	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
 
     List<String> getItemNames(String itemType, String projectId);
+    
+    List<ItemDetail> getMissingProjectDescriptionItems(Integer projectId);
 }

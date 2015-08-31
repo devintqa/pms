@@ -178,9 +178,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public boolean isGlobalDescriptionAlreadyExisting(String baseDescription) {
+	public boolean isGlobalDescriptionAlreadyExisting(String descType, String baseDescription) {
 		LOGGER.info("method = isGlobalDescriptionAlreadyExisting()");
-		return projectDescriptionDAO.isGlobalDescriptionAlreadyExisting(baseDescription);
+		return projectDescriptionDAO.isGlobalDescriptionAlreadyExisting(descType, baseDescription);
 	}
 
 	@Override

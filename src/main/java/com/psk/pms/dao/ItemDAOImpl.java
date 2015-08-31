@@ -398,12 +398,12 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql;
 		if (isEditSubProject) {
 			LOGGER.info("getProjectItemDescription() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
-			sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
-				"pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+			sql = "select pdi.ProjDescId, pdi.ProjDescSerial, pd.AliasDescription,\n" +
+				"pdi.itemName, pdi.ItemQty, pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
 				"pdi.ProjDescId = pd.ProjDescId and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
 		} else {
-			sql = "select pdi.ProjDescId,pdi.ProjDescSerial,pd.AliasDescription,\n" +
-				"pdi.itemName,pdi.ItemQty,pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
+			sql = "select pdi.ProjDescId, pdi.ProjDescSerial, pd.AliasDescription,\n" +
+				"pdi.itemName, pdi.ItemQty, pdi.itemUnit from projdescitem pdi, projectdesc pd where\n" +
 				"pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '" + projectConfiguration.getProjId() + "' and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
 		}
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
@@ -500,4 +500,25 @@ public class ItemDAOImpl implements ItemDAO {
 			}
 		});
 	}
+
+	
+	public List <ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
+		List < DescItemDetail.ItemDetail > itemsDetail = new ArrayList < DescItemDetail.ItemDetail > ();
+		String sql = null;
+		List < Map < String, Object >> rows = null;
+		if (null!= projectId) {
+			sql = "select distinct(itemName), itemType, itemUnit, itemPrice from projdescitem where ProjId = '" + projectId + "'";
+			rows = jdbcTemplate.queryForList(sql);
+		}
+		for (Map < String, Object > row: rows) {
+			ItemDetail itemDetail = new ItemDetail();
+			itemDetail.setItemName((String) row.get("itemName"));
+			itemDetail.setItemUnit((String) row.get("itemUnit"));
+			itemDetail.setItemType((String) row.get("itemType"));
+			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
+			itemsDetail.add(itemDetail);
+		}
+		return itemsDetail;
+	}
+
 }
