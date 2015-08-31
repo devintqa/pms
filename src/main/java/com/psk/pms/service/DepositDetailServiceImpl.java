@@ -34,13 +34,13 @@ public class DepositDetailServiceImpl implements DepositDetailService {
                 formatter));
         depositDetail.setDepositExtensionSqlDate(getSQLDate(
                 depositDetail.getDepositExtensionDate(), formatter));
-        depositDetail.setSqlDepositRecievedDate(getSQLDate(depositDetail.getDepositRecievedDate(),formatter));
+        depositDetail.setSqlDepositRecievedDate(getSQLDate(depositDetail.getDepositRecievedDate(), formatter));
         depositDetail.setLastUpdatedBy(depositDetail.getEmployeeId());
         depositDetail.setLastUpdatedAt(getCurrentDateTime());
         if ("" == depositDetail.getDepositDetailSubmitter()) {
             depositDetail.setDepositDetailSubmitter("PSK");
         }
-        if (isNullOrEmpty(depositDetail.getDepositStatus())){
+        if (isNullOrEmpty(depositDetail.getDepositStatus())) {
             depositDetail.setDepositStatus("Submitted");
         }
         boolean isEmdUpdateSuccess = depositDetailDAO.saveDepositDetail(depositDetail);
@@ -73,7 +73,7 @@ public class DepositDetailServiceImpl implements DepositDetailService {
         depositDetail.setDepositExtensionDate(DateFormatter.getStringDate(
                 depositDetail.getDepositExtensionSqlDate(), formatter));
         depositDetail.setDepositRecievedDate(DateFormatter.getStringDate(
-                depositDetail.getSqlDepositRecievedDate(),formatter));
+                depositDetail.getSqlDepositRecievedDate(), formatter));
         return depositDetail;
     }
 
@@ -150,20 +150,6 @@ public class DepositDetailServiceImpl implements DepositDetailService {
 
     public List<String> fetchDepositTypes() {
         return depositDetailDAO.fetchDepositTypes();
-    }
-
-
-    @Override
-    public List<DepositDetail> getDepositDetailsInSubmittedStatus() {
-        List<DepositDetail> depositDetailsInSubmittedStatus = depositDetailDAO.getDepositDetailsInSubmittedStatus();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        for (DepositDetail depositDetail : depositDetailsInSubmittedStatus) {
-            depositDetail.setDepositStartDate(DateFormatter.getStringDate(
-                    depositDetail.getSqlDepositStartDate(), formatter));
-            depositDetail.setDepositEndDate(DateFormatter.getStringDate(
-                    depositDetail.getSqlDepositEndDate(), formatter));
-        }
-        return depositDetailsInSubmittedStatus;
     }
 
     public void deleteDeposit(Integer depositId) {

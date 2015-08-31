@@ -180,14 +180,4 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
     }
 
 
-    @Override
-    public List<DepositDetail> getDepositDetailsInSubmittedStatus() {
-        LOGGER.info("Fetch Submitted Deposit Details");
-        List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DEPOSIT_DETAILS_IN_SUBMITTED_STATUS);
-        for (Map<String, Object> row : rows) {
-            getDepositDetails(depositDetails, row);
-        }
-        return depositDetails;
-    }
 }

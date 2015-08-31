@@ -22,5 +22,4 @@ public interface DepositDetailService {
 
 	List<String> fetchDepositTypes();
 
-    List<DepositDetail> getDepositDetailsInSubmittedStatus();
 }

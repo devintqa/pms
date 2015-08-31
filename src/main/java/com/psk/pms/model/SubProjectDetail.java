@@ -36,7 +36,6 @@ public class SubProjectDetail {
 	private String isUpdate;
 	private String lastUpdatedBy;
 	private Date lastUpdatedAt;
-	private String subAddSecurityDeposit;
 	private String subPerformanceGuarantee;
 
 	public String getSubProjectName() {
@@ -255,13 +254,6 @@ public class SubProjectDetail {
 		this.lastUpdatedBy = lastUpdatedBy;
 	}
 
-	public String getSubAddSecurityDeposit() {
-		return subAddSecurityDeposit;
-	}
-
-	public void setSubAddSecurityDeposit(String subAddSecurityDeposit) {
-		this.subAddSecurityDeposit = subAddSecurityDeposit;
-	}
 
 	public String getSubAliasContractorName() {
 		return subAliasContractorName;

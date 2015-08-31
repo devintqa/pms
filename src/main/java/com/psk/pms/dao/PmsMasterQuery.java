@@ -64,11 +64,6 @@ public class PmsMasterQuery {
 			+ "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 
 
-    public static final String GET_DEPOSIT_DETAILS_IN_SUBMITTED_STATUS = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-            + "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
-            + "    from depositdetail e left join project as p on e.ProjId = p.ProjId "
-            + "    left join subproject as s on e.SubProjId=s.SubProjId where e.DepositStatus='Submitted' ";
-
 	public static String projDescDetailQuery = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric,"
 			+ "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
 
