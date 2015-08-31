@@ -6,9 +6,9 @@ var tblEmdDocument = $("#depositDocumentList").dataTable();
 
 <script>
 $(function() {
-    var table = $("#emdList").dataTable({"pageLength": 10});
+    var table = $("#depositDetails").dataTable({"pageLength": 10});
 	
-     $("#emdList_columnUl").on('change', 'input:checkbox', function(e) {
+     $("#depositDetails_columnUl").on('change', 'input:checkbox', function(e) {
         var columnName = $(this).attr('name');			  
         
 		  var isColumnStatusChecked = $( this ).is( ":checked" ) 
@@ -17,35 +17,35 @@ $(function() {
 		  } else{
 				$(this).attr('value', '');
 		  }
-        $("table[id*=emdList] th").each(function(index, item) {			  
+        $("table[id*=depositDetails] th").each(function(index, item) {
             if (columnName == item.innerHTML) {
-                $('table[id*=emdList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+                $('table[id*=depositDetails] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
             }
         })
     });
 
 
-    $("#emdList_paginate").on('click', function(e) {
-        $("#emdList_columnUl").find('input:checkbox').each(function(index, item) {
+    $("#depositDetails_paginate").on('click', function(e) {
+        $("#depositDetails_columnUl").find('input:checkbox').each(function(index, item) {
             var columnStatus = $(this).attr('value');
             var columnName = $(this).attr('name');				  
 			  
             if (columnStatus == 'hidden') {						
-                $("table[id*=emdList] th").each(function(index, item) {						
+                $("table[id*=depositDetails] th").each(function(index, item) {
                     if (columnName == item.innerHTML) {
-                        var displayType = $('#emdList tr').find("td:eq(" + index + ")").css('display');
+                        var displayType = $('#depositDetails tr').find("td:eq(" + index + ")").css('display');
                         if (displayType != 'none') {
-                            $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
+                            $('table[id*=depositDetails] tr').find("td:eq(" + index + ")").toggle();
                         }
                     }
                 })
             }
             else{					
-				 $("table[id*=emdList] th").each(function(index, item) {						
+				 $("table[id*=depositDetails] th").each(function(index, item) {
                     if (columnName == item.innerHTML) {
-                        var displayType = $('#emdList tr').find("td:eq(" + index + ")").css('display');							  
+                        var displayType = $('#depositDetails tr').find("td:eq(" + index + ")").css('display');
                         if (displayType == 'none') {
-                            $('table[id*=emdList] tr').find("td:eq(" + index + ")").toggle();
+                            $('table[id*=depositDetails] tr').find("td:eq(" + index + ")").toggle();
                         }
                     }
                 })
