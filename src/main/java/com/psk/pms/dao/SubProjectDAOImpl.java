@@ -61,7 +61,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 			+ "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
 			+ "TenderValue, ExcessInAmount, ExcessInPercentage,LessInPercentage ,subCompletionDateForBonus,"
 			+ "TenderDate, AgreementDate, CommencementDate, CompletedDate, "
-			+ "AgreementPeriod, ProjId, SubAddSecurityDeposit,SubPerformanceGuarantee FROM subproject";
+			+ "AgreementPeriod, ProjId,SubPerformanceGuarantee FROM subproject";
 
 	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
 		String sql = subProjQuery + " where ProjId = " + projectId;
@@ -123,10 +123,6 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 		subProjDoc.setSubCompletionSqlDate((Date) row.get("CompletedDate"));
 		subProjDoc.setSubAgreementPeriod((Integer) row.get("AgreementPeriod"));
 
-		BigDecimal addSecurityDeposit = (BigDecimal) row
-				.get("SubAddSecurityDeposit");
-		subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
-		subProjDoc.setSubAddSecurityDeposit(addSecurityDeposit.toString());
 
 		BigDecimal subPerformanceGuarantee = (BigDecimal) row
 				.get("SubPerformanceGuarantee");
@@ -143,13 +139,13 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 		String insertSql = "INSERT INTO subproject (ProjId, SubProjName,SubProjectType, AliasSubProjName, AgreementNum, CERNum, "
 				+ "Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, TenderValue, ExcessInAmount, "
 				+ "ExcessInPercentage,LessInPercentage,subCompletionDateForBonus, TenderDate, AgreementDate, CommencementDate, CompletedDate, AgreementPeriod,"
-				+ "LastUpdatedBy ,LastUpdatedAt ,SubAddSecurityDeposit,SubPerformanceGuarantee) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?)";
+				+ "LastUpdatedBy ,LastUpdatedAt ,SubPerformanceGuarantee) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?)";
 
 		String updateSql = "UPDATE subproject set SubProjectType =? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?,"
 				+ "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?,"
 				+ "ExcessInPercentage = ?,LessInPercentage = ?,subCompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?, CommencementDate = ?, CompletedDate = ?,"
-				+ "AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubAddSecurityDeposit = ? ,SubPerformanceGuarantee = ? WHERE SubProjId = ?";
+				+ "AgreementPeriod = ?, LastUpdatedBy = ?,  LastUpdatedAt = ?, SubPerformanceGuarantee = ? WHERE SubProjId = ?";
 
 		if (!"Y".equalsIgnoreCase(subProjectDetail.getIsUpdate())) {
 			jdbcTemplate.update(
@@ -177,7 +173,6 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 							subProjectDetail.getSubAgreementPeriod(),
 							subProjectDetail.getLastUpdatedBy(),
 							subProjectDetail.getLastUpdatedAt(),
-							subProjectDetail.getSubAddSecurityDeposit(),
 							subProjectDetail.getSubPerformanceGuarantee() });
 		} else {
 			jdbcTemplate.update(
@@ -202,7 +197,6 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 							subProjectDetail.getSubAgreementPeriod(),
 							subProjectDetail.getLastUpdatedBy(),
 							subProjectDetail.getLastUpdatedAt(),
-							subProjectDetail.getSubAddSecurityDeposit(),
 							subProjectDetail.getSubPerformanceGuarantee(),
 							subProjectDetail.getSubProjId() });
 		}
@@ -213,7 +207,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 			+ "s.CERNum, s.Amount, s.ContractorName,s.ContractorAliasName, s.ContractorAdd, s.AgreementValue, "
 			+ "s.TenderValue, s.ExcessInAmount, s.ExcessInPercentage,s.LessInPercentage,s.subCompletionDateForBonus, "
 			+ "s.TenderDate, s.AgreementDate, s.CommencementDate, s.CompletedDate, "
-			+ "s.AgreementPeriod, s.ProjId ,s.SubAddSecurityDeposit , s.SubPerformanceGuarantee";
+			+ "s.AgreementPeriod, s.ProjId  , s.SubPerformanceGuarantee";
 
 	public SubProjectDetail getSubProjectDocument(String subProjectId) {
 		String sql = subProj

@@ -145,15 +145,6 @@ $(function(){
 								<td><form:errors path="subLessPercentage" cssClass="error" /></td>
 							</tr>
 							<tr>
-								<td>Additional Security Deposit<span id="colon">:</span>
-								</td>
-								<td><form:input path="subAddSecurityDeposit"
-										placeholder="Enter additional security deposit"
-										cssClass="inputText" /></td>
-								<td><form:errors path="subAddSecurityDeposit"
-										cssClass="error" /></td>
-							</tr>
-							<tr>
 								<td>Performance Guarantee <span id="colon">:</span>
 								</td>
 								<td><form:input path="subPerformanceGuarantee"

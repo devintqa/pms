@@ -171,7 +171,7 @@ public class SearchController extends BaseController {
                     + searchDetail.getProjId());
             String searchUnder = searchDetail.getSearchUnder();
             if ("Global".equalsIgnoreCase(searchUnder)) {
-                depositDetails = depositDetailService.getDepositDetailsInSubmittedStatus();
+                depositDetails = depositDetailService.getDepositDetails();
             } else {
                 boolean searchUnderProject = "project"
                         .equalsIgnoreCase(searchUnder);

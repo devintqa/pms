@@ -108,7 +108,8 @@ public class DepositDetailController extends BaseController {
             employee.setEmployeeId(depositDetail.getEmployeeId());
             model.addAttribute("employee", employee);
             model.addAttribute("depositDetailForm", depositDetail);
-            model.addAttribute("depositCreationMessage", "Deposit Detail Creation Successful.");
+            String successMessage = "Y".equalsIgnoreCase(depositDetail.getIsUpdate())?"Deposit Details Updation Successful":"Deposit Detail Creation Successful.";
+            model.addAttribute("depositCreationMessage", successMessage);
             model.addAttribute("aliasProjectList", aliasProjectList);
             if (depositDetail.isSubProjectDepositDetail()) {
                 model.addAttribute("subAliasProjectList", subAliasProjectList);

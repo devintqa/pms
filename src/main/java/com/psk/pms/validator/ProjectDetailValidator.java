@@ -52,9 +52,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator {
 				"required.exAmount", "Enter Expected Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tenderDate",
 				"required.tenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "addSecurityDeposit",
-				"required.addSecurityDeposit",
-				"Enter Additional Security Deposit Amount.");
 
 		ProjectDetail projectDetail = (ProjectDetail) target;
 
@@ -132,20 +129,6 @@ public class ProjectDetailValidator extends BaseValidator implements Validator {
 						"Field must not exceed 15 characters.");
 			}
 		}
-		if (!StringUtils.isNullOrEmpty(projectDetail.getAddSecurityDeposit())) {
-			pattern = Pattern.compile(AMOUNT_PATTERN);
-			matcher = pattern.matcher(projectDetail.getAddSecurityDeposit());
-			if (!matcher.matches()) {
-				errors.rejectValue("addSecurityDeposit",
-						"addSecurityDeposit.incorrect",
-						"Enter a numeric value and only a single dot is allowed");
-			} else if (projectDetail.getExAmount().length() > 15) {
-				errors.rejectValue("addSecurityDeposit",
-						"addSecurityDeposit.incorrect",
-						"Field must not exceed 15 characters.");
-			}
-		}
-
 		if (projectDetail.getAliasName().length() > 50) {
 			errors.rejectValue("aliasName", "aliasName.incorrect",
 					"Field must not exceed 50 characters.");

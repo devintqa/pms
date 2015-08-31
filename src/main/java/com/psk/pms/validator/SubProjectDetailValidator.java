@@ -62,9 +62,6 @@ public class SubProjectDetailValidator extends BaseValidator implements
 				"required.subExAmount", "Enter Expected Amount.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subTenderDate",
 				"required.subTenderDate", "Select Tender Date.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors,
-				"subAddSecurityDeposit", "required.subAddSecurityDeposit",
-				"Enter additional security amount.");
 		SubProjectDetail subProjectDetail = (SubProjectDetail) target;
 
 		if (subProjectDetail.getProjId() == 0) {
@@ -182,21 +179,6 @@ public class SubProjectDetailValidator extends BaseValidator implements
 			}
 		}
 
-		if (!StringUtils.isNullOrEmpty(subProjectDetail
-				.getSubAddSecurityDeposit())) {
-			pattern = Pattern.compile(AMOUNT_PATTERN);
-			matcher = pattern.matcher(subProjectDetail
-					.getSubAddSecurityDeposit());
-			if (!matcher.matches()) {
-				errors.rejectValue("subAddSecurityDeposit",
-						"subAddSecurityDeposit.incorrect",
-						"Enter a numeric value and only a single dot is allowed");
-			} else if (subProjectDetail.getSubAddSecurityDeposit().length() > 15) {
-				errors.rejectValue("subAddSecurityDeposit",
-						"subAddSecurityDeposit.incorrect",
-						"Field must not exceed 15 characters.");
-			}
-		}
 
 		if (StringUtils.isNullOrEmpty(subProjectDetail.getSubLessPercentage())) {
 			ValidationUtils.rejectIfEmptyOrWhitespace(errors,

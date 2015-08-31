@@ -67,7 +67,7 @@
     	}
   </script>
 </head>
-<body>
+<body ng-app="sampleApp">
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
