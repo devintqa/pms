@@ -104,8 +104,12 @@
 										id="searchOnPsk" checked="true" />PSK</td>
 								<td><form:radiobutton path="searchOn" value="government"
 										id="searchOnGovernment" />GOVERNMENT</td>
+								<c:choose>
+								<c:when test="${employeeObj.employeeTeam eq 'Admin'}">
 								<td><form:radiobutton path="searchOn" value="field"
 										id="searchOnField" />FIELD</td>
+								</c:when>
+								</c:choose>
 							</tr>
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>

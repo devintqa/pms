@@ -51,7 +51,7 @@
 							href="/pms/emp/myview/searchSubProject/${employeeObj.employeeId}">
 								Sub Project</a></li>
 						<li><a id="searchProjectDesc"
-							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
+							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Project Description </a></li>
 						<li><a id="searchDepositDetail"
 							href="/pms/emp/myview/searchDepositDetail/${employeeObj.employeeId}">
@@ -102,11 +102,8 @@
 		<li><a id="emphome"
 			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 		</li>
-		<li><a id="profile"
-			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-				Profile</a></li>
         <li>
-              <a href="#">Create</a>
+             <a href="#">Create</a>
 			    <ul><li><a id="createField"
                          href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
                          Field Description
@@ -115,7 +112,7 @@
                     <li><a id="createRole"
                                href="/pms/emp/myview/createRole/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
                         Role
-                    </a>
+                        </a>
                     </li>
                 </ul>
         </li>
@@ -127,12 +124,16 @@
                         </a>
                     </li>
                     <li><a id="searchProjectDesc"
-                    	 href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}">
+                    	 href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
                     	 Project Description
                     	</a>
                     </li>
                 </ul>
         </li>
+		<li><a id="profile"
+			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile
+			</a>
+		</li>
 		<li><a id="logout"
 			href="${pageContext.request.contextPath}/logout">Logout</a></li>
 		<!--<li><a id="excelViewer"
@@ -166,9 +167,18 @@
 
 	</c:when>
 
+	<c:when test="${employeeObj.employeeTeam eq 'Field'}">
+    		<li><a id="emphome"
+    			href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
+    		</li>
+    		<li><a id="profile"
+    			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+    				Profile</a></li>
+    		<li><a id="logout"
+    			href="${pageContext.request.contextPath}/logout">Logout</a></li>
+    	</c:when>
+
 	<c:otherwise>
-
-
 	</c:otherwise>
 	</c:choose>
 	</ul>

@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,11 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.DepositDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SearchDetail;
-import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
@@ -78,11 +74,15 @@ public class SearchController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/{employeeId}", method = RequestMethod.GET)
-    public String searchProjectDescription(@PathVariable String employeeId,
+    public String searchProjectDescription(@PathVariable String employeeId,@RequestParam("team") String team,
                                            Model model) {
         LOGGER.info("Search Controller : searchProjectDescription()");
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
+        employee.setEmployeeTeam(team);
         SearchDetail searchDetail = new SearchDetail();
         model.addAttribute("searchProjDescForm", searchDetail);
+        model.addAttribute("employeeObj", employee);
         return "SearchProjectDescription";
     }
 
