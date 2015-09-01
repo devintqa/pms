@@ -122,12 +122,13 @@
 	        var qty = $(this).val()
 			var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
 			var cost = qty*price;
-			$(this).parents('tr:first').find('td:nth-child(5) input').val(cost);
+			$(this).parents('tr:first').find('td:nth-child(5) input').val(cost.toFixed(2));
 	    }
 	    else{
 	    	 console.log("Invalid input!");
 		     this.value = val.substring(0, val.length - 1);
 	    }
+	    calculateTotalItemCost();
 		
 	});
 	
@@ -147,11 +148,11 @@
 		for (i = 1; i <= len - 1; i++) {
 			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
 			if(itemCost){
-				totalItemCost = parseInt(totalItemCost) + parseInt(itemCost);
+				totalItemCost = parseFloat(totalItemCost) + parseFloat(itemCost);
 			}
 			
 		}
-		document.getElementById('totalItemCost').value = parseInt(totalItemCost);
+		document.getElementById('totalItemCost').value = totalItemCost.toFixed(2);;
 	}
 	
 	$(document).on("focusout","input",function(){
@@ -279,7 +280,7 @@
 		
 		var itemCost = row.cells[4].getElementsByTagName('input')[0];
 		itemCost.id += len;
-		itemCost.value = item.itemCost;
+		itemCost.value = parseFloat(item.itemPrice*item.itemQty).toFixed(2);
 
 		document.getElementById('itemTable').appendChild(row);
 

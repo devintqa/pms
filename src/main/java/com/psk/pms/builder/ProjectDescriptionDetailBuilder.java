@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.pms.Constants;
 import com.psk.pms.model.ProjDescDetail;
 
 public class ProjectDescriptionDetailBuilder {
@@ -24,6 +25,7 @@ public class ProjectDescriptionDetailBuilder {
 
 		System.out.println(sheetName);
 		List < ProjDescDetail > detailList = new ArrayList < ProjDescDetail > ();
+		String descType = sheetName.equalsIgnoreCase("psk_desc")?Constants.PSK:Constants.GOVERNMENT;
 		try {
 			String path = saveDirectory + multipartFile.getOriginalFilename();
 			File file = new File(path);
@@ -34,6 +36,7 @@ public class ProjectDescriptionDetailBuilder {
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
 				ProjDescDetail projDescDetail = new ProjDescDetail();
+				projDescDetail.setDescType(descType);
 				if (row.getRowNum() == 0) {
 					continue;
 				}

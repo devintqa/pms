@@ -53,7 +53,7 @@ public interface ProjectDescriptionService {
 
     boolean isGlobalDescriptionAlreadyExisting(String descType, String projectDescDetail);
 
-    ProjDescDetail getBaseDescription(String aliasDescription);
+    ProjDescDetail getBaseDescription(String descType, String aliasDescription);
 
 	
 }

@@ -259,7 +259,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
-    public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId) {
+    public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId,  @RequestParam String descType) {
 
         DescItemDetail descItemDetail = new DescItemDetail();
         descItemDetail.setBaseDescId(new Integer(baseDescId));
@@ -275,6 +275,7 @@ public class ItemController {
         descItemDetail.setDescItemDetail(jsonArray.toString());
         descItemDetail.setBaseDescId(new Integer(baseDescId));
         descItemDetail.setEmployeeId(employeeId);
+        descItemDetail.setDescType(descType);
         model.addAttribute("descItemForm", descItemDetail);
 
         ProjDescDetail projDescDetail = new ProjDescDetail();

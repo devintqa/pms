@@ -31,12 +31,12 @@ window.onunload = function() {
 			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
 			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
 			         $(this).focus();
-			         calculateTotalItemPrice()
+			         calculateTotalItemCost()
 			    }
 			});
 		});
 		
-		fillItemDesc();
+	  fillItemDesc();
 	
       $('#slideOpen').click(function(){
     	  	$(this).toggle();
@@ -61,8 +61,10 @@ window.onunload = function() {
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[1].value = '';
 			document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[3].getElementsByTagName('input')[0].value = '';
+			document.getElementById('itemTable').rows[1].cells[4].getElementsByTagName('input')[0].value = '';
 		}
-		calculateTotalItemPrice();
+		calculateTotalItemCost();
 	}
 
 	function insertItemRow() {
@@ -86,49 +88,70 @@ window.onunload = function() {
 		itemPrice.id += len;
 		itemPrice.value = '';
 		
+		var itemQty = new_row.cells[3].getElementsByTagName('input')[0];
+		itemQty.id += len;
+		itemQty.value = '';
+		
+		var itemCost = new_row.cells[4].getElementsByTagName('input')[0];
+		itemCost.id += len;
+		itemCost.value = '';
+		
 		itemTable.appendChild(new_row);
 
 	}
 	
-	$(document).on("keyup","input[name = 'itemPrice']",function(){
-		 var valid = /^\d+(\.\d{0,2})?$/.test(this.value),
-	        val = this.value;
-	    
-	    if(!valid){
-	        console.log("Invalid input!");
-	        this.value = val.substring(0, val.length - 1);
+	$(document).on("keyup","input[name = 'itemQty']",function(){
+		
+		var valid = /^[\d]+(\.[\d]{0,2})?$/.test(this.value);
+		val = this.value;
+			    
+	    if(valid){
+	        var qty = $(this).val()
+			var price = $(this).parents('tr:first').find('td:nth-child(3) input').val();
+			var cost = qty*price;
+			$(this).parents('tr:first').find('td:nth-child(5) input').val(cost.toFixed(2));
 	    }
+	    else{
+	    	 console.log("Invalid input!");
+		     this.value = val.substring(0, val.length - 1);
+	    }
+	    calculateTotalItemCost();
+		
 	});
-	
 
-	function calculateTotalItemPrice(){
+	function calculateTotalItemCost(){
 		var itemTable = document.getElementById('itemTable');
 		var itemObjArray = [];
 		var len = itemTable.rows.length;
-		var totalItemPrice = 0;
+		var totalItemCost = 0;
 		for (i = 1; i < len; i++) {
-			var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-			if(itemPrice){
-				totalItemPrice = parseInt(totalItemPrice) + parseInt(itemPrice);
+			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
+			if(itemCost){
+				totalItemCost = parseFloat(totalItemCost) + parseFloat(itemCost);
 			}
 			
 		}
-		document.getElementById('totalItemPrice').value = parseInt(totalItemPrice);
+		var totalCost = document.getElementById('totalItemCost');
+		if(totalCost){
+			totalCost.value = totalItemCost.toFixed(2);
+		}
 	}
 	
 	$(document).on("focusout","input",function(){
-		calculateTotalItemPrice();
+		calculateTotalItemCost();
 	});
 	
 	$(document).on("keyup","input",function(){
-		calculateTotalItemPrice();
+		calculateTotalItemCost();
 	});
 	
-	function ItemDetail(itemName, itemType, itemUnit, itemPrice) {
+	function ItemDetail(itemName, itemType, itemUnit, itemPrice, itemQty, itemCost) {
 		this.itemName = itemName;
 		this.itemType = itemType;
 		this.itemUnit = itemUnit;
 		this.itemPrice = itemPrice;
+		this.itemQty = itemQty;
+		this.itemCost = itemCost;
 		} 
 	
 	function saveItemDesc() {
@@ -142,9 +165,11 @@ window.onunload = function() {
 			var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
 			var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
 			var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
+			var itemQty = itemTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
+			var itemCost = itemTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
 			
-			var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice);
-			if(itemName && itemUnit && itemPrice){
+			var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice, itemQty, itemCost);
+			if(itemName && itemUnit && itemPrice && itemQty){
 				itemObjArray.push(obj); 
 			}else{
 				err = true;
@@ -152,6 +177,7 @@ window.onunload = function() {
 		}
 		itemDescForm["employeeId"] = document.getElementById('employeeId').value;
 		itemDescForm["baseDescId"] = document.getElementById('baseDescId').value;
+		itemDescForm["descType"] = document.getElementById('descType').value;
 		itemDescForm["descItemDetail"] = JSON.stringify(itemObjArray);
 		
 		
@@ -198,7 +224,7 @@ window.onunload = function() {
 		if(obj!= ''){
 			document.getElementById('itemTable').rows[1].remove();
 		}
-		calculateTotalItemPrice();
+		calculateTotalItemCost();
 	}
 	
 	function fillItemRow(item) {
@@ -220,6 +246,14 @@ window.onunload = function() {
 		var itemPrice = row.cells[2].getElementsByTagName('input')[0];
 		itemPrice.id += len;
 		itemPrice.value = item.itemPrice;
+		
+		var itemQty = row.cells[3].getElementsByTagName('input')[0];
+		itemQty.id += len;
+		itemQty.value = item.itemQty;
+		
+		var itemCost = row.cells[4].getElementsByTagName('input')[0];
+		itemCost.id += len;
+		itemCost.value = parseFloat(item.itemPrice*item.itemQty).toFixed(2);
 		
 		document.getElementById('itemTable').appendChild(row);
 
@@ -329,29 +363,64 @@ window.onunload = function() {
 		<form:hidden path="descItemDetail" id="descItemDetail" />
 		<form:hidden path="baseDescId" id="baseDescId" />
 		<form:hidden path="employeeId" id="employeeId" />
+		<form:hidden path="descType" id="descType" />
 
 		<table id="itemTable" border="1" class="gridView">
-			<tr>
-				<th>Item</th>
-				<th>Unit</th>
-				<th>Price</th>
-				<th>Action</th>
-			</tr>
-
-			<tr>
-				<td><input name="itemName" id="itemName" type="text" size="80%" />
-				<input name="itemType" id="itemType" type="hidden" /></td>
-				<td><input name="itemUnit" id="itemUnit" type="text" /></td>
-				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
-					type="text" /></td>
-				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img
-						src="<c:url value="/resources/images/delete.png" />" /></a></td>
-			</tr>
+			
+			<c:if test="${descItemForm.descType eq 'government'}">
+			
+				<tr>
+					<th>Item</th>
+					<th>Unit</th>
+					<th>Price</th>
+					<th>Quantity</th>
+					<th style="display:none;">Cost</th>
+					<th>Action</th>
+				</tr>
+				<tr>
+					<td><input name="itemName" id="itemName" type="text"
+						size="50%" /> <input name="itemType" id="itemType" type="hidden" /></td>
+					<td><input name="itemUnit" id="itemUnit" type="text" /></td>
+					<td><input name="itemPrice" readonly="readonly" id="itemPrice"
+						type="text" /></td>
+					<td><input name="itemQty" id="itemQty" type="text" /></td>
+					<td style="display: none;"><input name="itemCost"
+						id="itemCost" type="text" /></td>
+					<td><a id="deleteItem" onclick="deleteItemRow(this)"> <img
+							src="<c:url value="/resources/images/delete.png" />" /></a></td>
+				</tr>
+			</c:if>
+			
+			<c:if test="${descItemForm.descType eq 'psk'}">
+			
+				<tr>
+					<th>Item</th>
+					<th>Unit</th>
+					<th style="display:none;">Price</th>
+					<th>Quantity</th>
+					<th style="display:none;">Cost</th>
+					<th>Action</th>
+				</tr>
+				<tr>
+					<td><input name="itemName" id="itemName" type="text"
+						size="50%" /> <input name="itemType" id="itemType" type="hidden" /></td>
+					<td><input name="itemUnit" id="itemUnit" type="text" /></td>
+					<td style="display:none;"><input name="itemPrice" readonly="readonly" id="itemPrice"
+						type="text" /></td>
+					<td><input name="itemQty" id="itemQty" type="text" /></td>
+					<td style="display: none;"><input name="itemCost"
+						id="itemCost" type="text" /></td>
+					<td><a id="deleteItem" onclick="deleteItemRow(this)"> <img
+							src="<c:url value="/resources/images/delete.png" />" /></a></td>
+				</tr>
+			</c:if>
 
 		</table>
-		<br>
-		Amount : <input name="totalItemPrice" readonly="readonly" id="totalItemPrice" type="text" />
-		<br>
+		<c:if test="${descItemForm.descType eq 'government'}">
+			<br>
+			Amount : <input name="totalItemCost" readonly="readonly" id="totalItemCost" type="text" />
+			<br>
+		</c:if>
 
 		<br>
 		<input class="button" type="button" id="addItem" value="Add"

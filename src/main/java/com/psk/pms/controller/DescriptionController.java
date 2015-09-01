@@ -178,11 +178,14 @@ public class DescriptionController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildBaseProjDesc(@PathVariable String employeeId, @RequestParam(value = "team", required = true) String team, @RequestParam(value = "action", required = false) String action, @RequestParam(value = "project", required = false) String aliasDescription,
+	public String buildBaseProjDesc(@PathVariable String employeeId, 
+			@RequestParam(value = "team", required = true) String team, 
+			@RequestParam(value = "action", required = false) String action, 
+			@RequestParam(value = "project", required = false) String aliasDescription,
 			Model model) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		if (null != action && "edit".equalsIgnoreCase(action)) {
-			projDescDetail = projectDescriptionService.getBaseDescription(aliasDescription);
+			projDescDetail = projectDescriptionService.getBaseDescription(null, aliasDescription);
 			projDescDetail.setIsUpdate("Y");
 			model.addAttribute("baseDescForm", projDescDetail);
 			return "BaseDescription";

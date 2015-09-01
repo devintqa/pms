@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
@@ -126,11 +127,11 @@ public class ItemDAOImpl implements ItemDAO {
 
     public boolean insertProjectDescriptionItems(final DescItemDetail descItemDetail) {
         String descType = descItemDetail.getDescType();
-        String sql = "INSERT INTO "+DescriptionType.getdescriptionItemTableName(descType)
+        String sql = "INSERT INTO "+DescriptionType.getDescriptionItemTableName(descType)
                 + " (ProjId, SubProjId, ProjDescId, ProjDescSerial, ItemName, ItemUnit, ItemQty, ItemPrice, ItemCost) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        String deleteSql = "DELETE from "+DescriptionType.getdescriptionItemTableName(descType)+" where ProjDescId = "
+        String deleteSql = "DELETE from "+DescriptionType.getDescriptionItemTableName(descType)+" where ProjDescId = "
                 + descItemDetail.getProjDescId() + " and ProjDescSerial = '"
                 + descItemDetail.getProjDescSerial() + "'";
         jdbcTemplate.execute(deleteSql);
@@ -163,7 +164,7 @@ public class ItemDAOImpl implements ItemDAO {
 			long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
 			sumItemCost = sumItemCost + itemCost;
 		}
-        String projectDescEstimate = "SELECT Quantity from "+DescriptionType.getdescriptionTableName(descType)+" WHERE ProjDescId = '" + descItemDetail.getProjDescId() + "'";
+        String projectDescEstimate = "SELECT Quantity from "+DescriptionType.getDescriptionTableName(descType)+" WHERE ProjDescId = '" + descItemDetail.getProjDescId() + "'";
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(projectDescEstimate);
 
 		long totalCost = 0;
@@ -172,7 +173,7 @@ public class ItemDAOImpl implements ItemDAO {
 			long qty = quantity.toBigInteger().longValue();
 			totalCost = sumItemCost * qty;
 		}
-        String updateSql = "UPDATE "+DescriptionType.getdescriptionTableName(descType)+" set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+        String updateSql = "UPDATE "+DescriptionType.getDescriptionTableName(descType)+" set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
         jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost,
                 descItemDetail.getProjDescId()});
 
@@ -198,6 +199,7 @@ public class ItemDAOImpl implements ItemDAO {
 		itemDetail.setItemName((String) row.get("ItemName"));
 		itemDetail.setItemUnit((String) row.get("ItemUnit"));
 		itemDetail.setItemQty((String) row.get("ItemQty"));
+		itemDetail.setItemType((String) row.get("ItemType"));
 		itemDetail.setItemPrice((String) row.get("ItemPrice"));
 		return itemDetail;
 	}
@@ -205,7 +207,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
     	String sql = "";
-        sql = "Select * from  "+ DescriptionType.getdescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
+        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -274,7 +276,7 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public void deleteItemByProjectDescriptionId(String projectDescId,String descType) {
         LOGGER.info("method = deleteItemByProjectDescriptionId()");
-        String DELETEPROJDESCAITEMBYPROJECTDESCID = "DELETE FROM "+DescriptionType.getdescriptionItemTableName(descType)+" WHERE ProjDescId = ?";
+        String DELETEPROJDESCAITEMBYPROJECTDESCID = "DELETE FROM "+DescriptionType.getDescriptionItemTableName(descType)+" WHERE ProjDescId = ?";
         int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCID, new Object[]{projectDescId});
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
@@ -455,8 +457,12 @@ public class ItemDAOImpl implements ItemDAO {
 				ps.setString(2, itemDetail.getItemName());
 				ps.setString(3, itemDetail.getItemUnit());
 				ps.setString(4, itemDetail.getItemType());
-				ps.setString(5, "0");
-				ps.setString(6, itemDetail.getItemPrice());
+				ps.setString(5, itemDetail.getItemQty());
+				if(descItemDetail.getDescType().equalsIgnoreCase(Constants.GOVERNMENT)){
+					ps.setString(6, itemDetail.getItemPrice());
+				}else{
+					ps.setString(6, "0");
+				}
 			}
 
 			@Override
@@ -465,17 +471,24 @@ public class ItemDAOImpl implements ItemDAO {
 			}
 		});
 
-		long sumItemPrice = 0;
-		for (DescItemDetail.ItemDetail itemDetail: descItemDetail.getItemDetail()) {
-			long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
-			sumItemPrice = sumItemPrice + itemPrice;
+		long sumItemCost = 0;
+		
+		if(descItemDetail.getDescType().equalsIgnoreCase(Constants.GOVERNMENT)){
+			for (DescItemDetail.ItemDetail itemDetail: descItemDetail.getItemDetail()) {
+				long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
+				long itemQty = Double.valueOf(itemDetail.getItemQty()).longValue();
+				long itemCost = itemPrice*itemQty;
+				sumItemCost = sumItemCost + itemCost;
+			}
 		}
-
-		String updateSql = "UPDATE basedesc set PricePerQuantity = ? where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+		
+		String updateSql = "UPDATE basedesc set PricePerQuantity = ? where Category = '"+descItemDetail.getDescType()+"' and BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+		System.out.println(updateSql);
 		jdbcTemplate.update(updateSql, new Object[] {
-			sumItemPrice
+				sumItemCost
 		});
-
+		
+		
 		return true;
 	}
 

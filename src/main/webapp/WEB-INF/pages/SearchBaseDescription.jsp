@@ -16,8 +16,8 @@ function popUpClosed() {
 	window.location.reload();
 }
 
-function openBaseDescLoader (baseDescId, employeeId){
-	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
+function openBaseDescLoader (baseDescId, employeeId, descType){
+	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId+"&descType="+descType,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }
 
 function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
@@ -106,7 +106,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 					<tbody>
 						<c:forEach var="globalDescription" items="${baseDescriptionList}">
 							<tr>
-								<td><a	href="javascript:openBaseDescLoader('${globalDescription.baseDescId}','${employeeObj.employeeId}')"
+								<td><a	href="javascript:openBaseDescLoader('${globalDescription.baseDescId}','${employeeObj.employeeId}','${baseDesc.searchOn}')"
 										class="userAction">${globalDescription.aliasDescription}</a>
 										</td>
 								<td>${globalDescription.workType}</td>

@@ -74,10 +74,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("subProject value" + subProject);
 		if (!StringUtils.isNullOrEmpty(subProject)) {
 			LOGGER.info("subProject value for sub project" + subProject);
-			sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM "+ DescriptionType.getdescriptionTableName(descType) +" as d " + "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId " + "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
+			sql = projDescDetail + ",  p.AliasProjName, s.AliasSubProjName FROM "+ DescriptionType.getDescriptionTableName(descType) +" as d " + "INNER JOIN subproject as s ON d.SubProjId = s.SubProjId " + "JOIN project as p ON s.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
 		} else {
 			LOGGER.info("subProject value for project" + subProject);
-			sql = projDescDetail + ",  p.AliasProjName FROM "+ DescriptionType.getdescriptionTableName(descType) +" as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
+			sql = projDescDetail + ",  p.AliasProjName FROM "+ DescriptionType.getDescriptionTableName(descType) +" as d " + "JOIN project as p ON d.ProjId = p.ProjId WHERE d.ProjDescId = " + projDescId;
 		}
 
 		ProjDescDetail projDescDetail = null;
@@ -216,9 +216,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
     public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail) {
         String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";
         if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-            sql = sql + " FROM " + DescriptionType.getdescriptionTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+            sql = sql + " FROM " + DescriptionType.getDescriptionTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
         } else {
-            sql = sql + " FROM " + DescriptionType.getdescriptionTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
+            sql = sql + " FROM " + DescriptionType.getDescriptionTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
         }
 
         List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
@@ -349,6 +349,16 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		}
 		return true;
 	}
+	
+	private Integer getProjectDescDetailByAlias(String descType, String aliasDescription) {
+		String sql = "SELECT ProjDescId FROM "+DescriptionType.getDescriptionTableName(descType)+" where AliasDescription = ?";
+		List < Map < String, Object >> maps = jdbcTemplate.queryForList(sql, new Object[] {
+				aliasDescription
+		});
+		System.out.println("getProjectDescDetailByAlias" + maps.size());
+		Integer projectDescriptionId = (Integer) maps.get(0).get("ProjDescId");
+		return projectDescriptionId;
+	}
 
 	public void saveProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
 
@@ -381,17 +391,17 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			try {
 				System.out.println("saveProjectDescriptionDetails: " + projDescDetails.size());
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
-					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
+					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getDescType(), projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
 						baseDescDetail.setSubProjId(0);
 					}
 					DescItemDetail descItemDetail = new DescItemDetail();
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
+					descItemDetail.setDescType(projDescDetail.getDescType());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getDescType(), projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
-					descItemDetail.setDescType(Constants.PSK);
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
 					System.out.println("saveProjectDescriptionDetails:itemDetailList: " + itemDetailList.size());
 					descItemDetail.setItemDetail(itemDetailList);
@@ -404,17 +414,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			}
 		}
 
-	}
-
-	private Integer getProjectDescDetailByAlias(String aliasDescription) {
-		String sql = "SELECT ProjDescId FROM quotedprojectdesc where AliasDescription = ?";
-		List < Map < String, Object >> maps = jdbcTemplate.queryForList(sql, new Object[] {
-			aliasDescription
-		});
-		System.out.println(sql + aliasDescription);
-		System.out.println("maps.size()" + maps.size());
-		Integer projectDescriptionId = (Integer) maps.get(0).get("ProjDescId");
-		return projectDescriptionId;
 	}
 
 	public void saveProposalProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
@@ -449,7 +448,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		for (ProjDescDetail projDescDetail: projDescDetails) {
 			try {
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
-					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getBaseDescName());
+					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getDescType(), projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
 						baseDescDetail.setSubProjId(0);
 					}
@@ -457,9 +456,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getAliasDescription()));
+					descItemDetail.setDescType(projDescDetail.getDescType());
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getDescType(), projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
-					descItemDetail.setDescType(Constants.GOVERNMENT);
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
 					descItemDetail.setItemDetail(itemDetailList);
 					if (itemDetailList.size() > 0) {
@@ -601,10 +600,11 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public ProjDescDetail getBaseDescription(String aliasDescription) {
+	public ProjDescDetail getBaseDescription(String descType, String aliasDescription) {
 		ProjDescDetail baseDescDetail = new ProjDescDetail();
 		List < Map < String, Object >> maps = jdbcTemplate.queryForList(GETBASEDESCRIPTION, new Object[] {
-			aliasDescription
+				descType,
+				aliasDescription
 		});
 		for (Map < String, Object > map: maps) {
 			baseDescDetail = buildBaseDescDetail(map);

@@ -133,7 +133,7 @@ public class PmsMasterQuery {
 
     public static String ISBASEDESCEXISTS = "SELECT count(*) FROM basedesc WHERE category = ? and BaseDescription = ?";
 
-    public static String GETBASEDESCRIPTION = "SELECT * FROM basedesc WHERE BaseDescription = ?";
+    public static String GETBASEDESCRIPTION = "SELECT * FROM basedesc WHERE Category = ? and BaseDescription = ?";
 
     public static String INSERT_ITEM_RATE_DESCRIPTION = "INSERT INTO govestpricedetail (itemName, itemUnit, itemType, itemPrice, priceFeed,scheduledItemNumber,itemDescription) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?)";

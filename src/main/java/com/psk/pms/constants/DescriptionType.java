@@ -18,7 +18,7 @@ public enum DescriptionType {
     String descriptionTableName;
     String descriptionItemTableName;
 
-    public static String getdescriptionTableName(String descriptionString) {
+    public static String getDescriptionTableName(String descriptionString) {
         String dbName = "";
         for (DescriptionType descriptionType : DescriptionType.values()) {
             if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
@@ -29,7 +29,7 @@ public enum DescriptionType {
         return dbName;
     }
 
-    public static String getdescriptionItemTableName(String descriptionString) {
+    public static String getDescriptionItemTableName(String descriptionString) {
         String dbName = "";
         for (DescriptionType descriptionType : DescriptionType.values()) {
             if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
