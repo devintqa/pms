@@ -31,11 +31,11 @@ public class PmsMasterQuery {
 			+ "LastUpdatedBy = ?,LastUpdatedAt =? ,DepositSubmitter =?, DepositDetail =?,DepositStatus=?,DepositRecievedDate=?,DepositRecievedNote=? WHERE DepositId = ? ";
 
 	public static final String FETCH_DEPOSIT_DETAILS = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ " s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate , e.DepositExtensionDate "
+			+ " s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate ,e.DepositStatus, e.DepositExtensionDate "
 			+ " from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "left join subproject as s on e.SubProjId=s.SubProjId ";
 
-	public static final String FETCH_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "select  ProjId , SubProjId , DepositAmount , DepositStartDate ,DepositEndDate ,DepositType, BGNumber ,"
+	public static final String FETCH_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "select  ProjId ,DepositDetail, SubProjId , DepositAmount , DepositStartDate ,DepositEndDate ,DepositType, BGNumber ,"
 			+ "DepositPeriod,DepositExtensionDate,DepositLedgerNumber, DepositSubmitter,DepositStatus,DepositRecievedDate,DepositRecievedNote from depositdetail where DepositId = ?";
 
 	public static final String DELETEPROJECTBYPROJECTID = "DELETE FROM project WHERE ProjId = ?";
@@ -54,12 +54,12 @@ public class PmsMasterQuery {
 
 	public static final String DELETE_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "DELETE FROM depositdetail WHERE DepositId = ?";
 
-	public static final String GET_DEPOSIT_DETAILS_BY_PROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName, e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+	public static final String GET_DEPOSIT_DETAILS_BY_PROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName,e.DepositStatus, e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
 			+ "                from depositdetail e  left join project as p on e.ProjId = p.ProjId "
 			+ "                where e.ProjId = ? and e.SubProjId is null ";
 
 	public static final String GET_DEPOSIT_DETAILS_BY_SUBPROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate ,e.DepositExtensionDate"
+			+ "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate ,e.DepositStatus, e.DepositEndDate ,e.DepositExtensionDate"
 			+ "    from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 

@@ -125,6 +125,7 @@
 						<th>Deposit Type</th>
 						<th>Deposit Amount</th>
 						<th>Deposit Start Date</th>
+						<th>Deposit Status</th>
 						<th>Deposit End Date</th>
 						<th>Action</th>
 					</tr>
@@ -139,6 +140,7 @@
 								<td>${detail.depositAmount}</td>
 								<td>${detail.depositStartDate}</td>
 								<td>${detail.depositEndDate}</td>
+								<td>${detail.depositStatus}</td>
 								<td><a
 									href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}?depositId=${detail.depositId}&action=updateDepositDetail&aliasProjectName=${detail.aliasProjectName}&aliasSubProjectName=${detail.aliasSubProjectName}"
 									class="userAction">Update</a> <strong> / </strong> <a

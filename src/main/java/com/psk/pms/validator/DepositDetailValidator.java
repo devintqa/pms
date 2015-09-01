@@ -46,7 +46,7 @@ public class DepositDetailValidator extends BaseValidator implements Validator {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositExtensionDate",
                     "required.depositExtensionDate", "Select Deposit Extension Date.");
         }
-        if("Completed".equalsIgnoreCase(depositDetail.getDepositStatus())){
+        if("Refunded".equalsIgnoreCase(depositDetail.getDepositStatus())){
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositRecievedDate",
                     "required.depositRecievedDate", "Select Deposit Recieved Date.");
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositRecievedComments",

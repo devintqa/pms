@@ -75,6 +75,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
             depositDetail.setSubProjId(rs.getInt("SubProjId"));
             depositDetail.setDepositAmount(rs.getString("DepositAmount"));
             depositDetail.setDepositType(rs.getString("DepositType"));
+            depositDetail.setDepDetail(rs.getString("DepositDetail"));
             depositDetail.setBgNumber(rs.getString("BGNumber"));
             depositDetail.setDepositPeriod(rs.getInt("DepositPeriod"));
             depositDetail.setDepositLedgerNumber(rs.getString("DepositLedgerNumber"));
@@ -110,6 +111,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
             depositDetail.setSqlDepositStartDate((Date) row.get("DepositStartDate"));
             depositDetail.setSqlDepositEndDate((Date) row.get("DepositEndDate"));
             depositDetail.setDepositType((String) row.get("DepositType"));
+            depositDetail.setDepositStatus((String) row.get("DepositStatus"));
             depositDetails.add(depositDetail);
         }
         return depositDetails;
@@ -137,6 +139,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         depositDetail.setSqlDepositEndDate((Date) row.get("DepositEndDate"));
         depositDetail.setDepositExtensionSqlDate((Date) row.get("DepositExtensionDate"));
         depositDetail.setDepositType((String) row.get("DepositType"));
+        depositDetail.setDepositStatus((String) row.get("DepositStatus"));
         depositDetails.add(depositDetail);
     }
 

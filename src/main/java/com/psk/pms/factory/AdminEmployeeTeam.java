@@ -20,6 +20,7 @@ import java.util.List;
 @Component
 public class AdminEmployeeTeam implements EmployeeTeam {
 
+    public static final String SUBMITTED = "Submitted";
     @Autowired
     EmployeeService employeeService;
 
@@ -45,17 +46,19 @@ public class AdminEmployeeTeam implements EmployeeTeam {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         List<DepositDetail> depositDocumentList = new ArrayList<DepositDetail>();
         for (DepositDetail depositDetail : depositEndAlertList) {
-            long diff = depositDetail.getSqlDepositEndDate().getTime()
-                    - todayDate.getTime();
-            long diffDays = diff / (24 * 60 * 60 * 1000);
-            if (diffDays < 10) {
-                depositDetail.setDepositStartDate(DateFormatter.getStringDate(
-                        depositDetail.getSqlDepositStartDate(), formatter));
-                depositDetail.setDepositEndDate(DateFormatter.getStringDate(
-                        depositDetail.getSqlDepositEndDate(), formatter));
-                depositDetail.setDepositExtensionDate(DateFormatter.getStringDate(
-                        depositDetail.getDepositExtensionSqlDate(), formatter));
-                depositDocumentList.add(depositDetail);
+            if (SUBMITTED.equalsIgnoreCase(depositDetail.getDepositStatus())) {
+                long diff = depositDetail.getSqlDepositEndDate().getTime()
+                        - todayDate.getTime();
+                long diffDays = diff / (24 * 60 * 60 * 1000);
+                if (diffDays < 10) {
+                    depositDetail.setDepositStartDate(DateFormatter.getStringDate(
+                            depositDetail.getSqlDepositStartDate(), formatter));
+                    depositDetail.setDepositEndDate(DateFormatter.getStringDate(
+                            depositDetail.getSqlDepositEndDate(), formatter));
+                    depositDetail.setDepositExtensionDate(DateFormatter.getStringDate(
+                            depositDetail.getDepositExtensionSqlDate(), formatter));
+                    depositDocumentList.add(depositDetail);
+                }
             }
         }
         return depositDocumentList;
