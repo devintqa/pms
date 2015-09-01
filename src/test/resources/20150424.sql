@@ -109,7 +109,7 @@ CREATE TABLE `deposittype` (
 
 LOCK TABLES `deposittype` WRITE;
 /*!40000 ALTER TABLE `deposittype` DISABLE KEYS */;
-INSERT INTO `deposittype` VALUES (1,'Bank Guarantee'),(2,'DD'),(3,'FD'),(4,'IVP'),(5,'KVP'),(6,'DDD');
+INSERT INTO `deposittype` VALUES (1,'Bank Guarantee'),(2,'DD'),(3,'FD'),(4,'IVP'),(5,'KVP');
 /*!40000 ALTER TABLE `deposittype` ENABLE KEYS */;
 UNLOCK TABLES;
 
