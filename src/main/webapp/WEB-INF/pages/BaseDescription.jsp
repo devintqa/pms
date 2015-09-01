@@ -80,9 +80,9 @@ $(document).ready(function () {
 							<tr>
 								<td>Metric<span id="colon">:</span>
 								</td>
-								<td><form:input id="metric" path="metric"
-										placeholder="Enter quantity metric" cssClass="inputText" /></td>
-								<td><form:errors path="metric" cssClass="error" /></td>
+                                <td><form:select path="metric" cssClass="inputText"
+                                                 items="${metricList}"/></td>
+                                <td><form:errors path="metric" cssClass="error"/></td>
 							</tr>
 							<tr>
 								<td>Total Cost<span id="colon">:</span>

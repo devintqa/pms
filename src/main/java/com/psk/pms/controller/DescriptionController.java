@@ -1,9 +1,6 @@
 package com.psk.pms.controller;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -222,4 +219,13 @@ public class DescriptionController extends BaseController {
 		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
 		projectDescriptionService.deleteBaseProjectDescription(projectDescriptionId);
 	}
+
+
+    @ModelAttribute("metricList")
+    public List<String> metricList() {
+        List<String> metricList= Arrays.asList("CUM", "SQM", "NOS", "NO", "RM", "KG", "QTL", "MT");
+        Collections.sort(metricList);
+        return metricList;
+
+    }
 }
