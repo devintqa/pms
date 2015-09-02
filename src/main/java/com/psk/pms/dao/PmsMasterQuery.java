@@ -140,4 +140,9 @@ public class PmsMasterQuery {
 
 
     public static String SAVE_ROLES = "INSERT INTO teamRole (teamName, roleName) VALUES (?, ?)";
+
+
+    public static String GET_ROLES = "select roleName from teamRole where teamName = ?";
+
+
 }

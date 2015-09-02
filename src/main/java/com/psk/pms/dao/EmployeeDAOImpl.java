@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 
+import static com.psk.pms.dao.PmsMasterQuery.GET_ROLES;
 import static com.psk.pms.dao.PmsMasterQuery.SAVE_ROLES;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -202,5 +203,11 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 new Object[]{team.getTeamName(),
                         team.getRoleName()});
         return true;
+    }
+
+    @Override
+    public List<String> getRolesForTeam(String teamName) {
+        List<String> roles = jdbcTemplate.queryForList(GET_ROLES, new Object[]{teamName}, String.class);
+        return roles;
     }
 }

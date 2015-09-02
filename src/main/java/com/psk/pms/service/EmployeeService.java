@@ -38,4 +38,6 @@ public interface EmployeeService {
     boolean isRoleExists(String roleName, String teamName);
 
     boolean saveTeamRoles(Team team);
+
+    List<String> getRolesForTeam(String teamName);
 }

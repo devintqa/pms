@@ -26,10 +26,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @SessionAttributes("employeeObj")
@@ -194,6 +191,15 @@ public class EmployeeController {
             }
         }
         return "BuildRole";
+    }
+
+
+    @RequestMapping(value = "/emp/myview/createRole/getRole.do", method = RequestMethod.GET)
+    @ResponseBody
+    List<String> getRole(@RequestParam("teamName") String teamName) {
+        LOGGER.info("method = getRole()");
+        List<String> roleList = employeeService.getRolesForTeam(teamName);
+        return roleList;
     }
 
 
