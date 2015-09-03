@@ -11,7 +11,13 @@
 
     <script>
         $(document).ready(function () {
-
+            $("#roleName").autocomplete({
+                source: function (request, response) {
+                    $.getJSON("/pms/emp/myview/createRole/getRole.do", {
+                        teamName: $('#teamName').val()
+                    }, response);
+                }
+            });
         });
     </script>
 

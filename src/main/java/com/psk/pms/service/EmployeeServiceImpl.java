@@ -144,4 +144,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     public boolean saveTeamRoles(Team team) {
         return employeeDAO.saveTeamRoles(team);
     }
+
+
+    @Override
+    public List<String> getRolesForTeam(String teamName) {
+        return employeeDAO.getRolesForTeam(teamName);
+    }
 }
