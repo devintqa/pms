@@ -164,6 +164,47 @@
 			document.getElementById('itemTable').appendChild(row);
 
 	}
+		
+		function syncItems(){
+			var employeeId = document.getElementById('employeeId').value;
+			var projectId = document.getElementById('projId').value;
+			var itemTable = document.getElementById('itemTable');
+			var itemPriceConfiguration = document.getElementById('itemPriceConfiguration');
+			
+			var itemTable = document.getElementById('itemTable');
+			var itemObjArray = [];
+			var itemDescForm = {};
+			var len = itemTable.rows.length;
+			var err = null;
+			for (i = 1; i <= len - 1; i++) {
+				var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+				var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
+				var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
+				var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
+				
+				var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
+				if(itemName && itemType && itemUnit && itemPrice){
+					itemObjArray.push(obj); 
+				}else{
+					err = true;
+				}
+			}
+			itemDescForm["employeeId"] = document.getElementById('employeeId').value;
+			itemDescForm["projId"] = document.getElementById('projId').value;
+			itemDescForm["subProjId"] = document.getElementById('subProjId').value;
+			itemDescForm["itemPriceConfiguration"] = JSON.stringify(itemObjArray);
+			
+			$.ajax({
+				type : 'POST',
+				url : 'syncItems.do',
+				contentType: "application/json",
+				data : JSON.stringify(itemDescForm),
+				success : function(response) {
+					console.log("Successfully deleted row ");
+				}
+			});
+			fillItemPrice();
+		}
 </script>
 </head>
 <body>
@@ -208,6 +249,7 @@
 		<br>
 		<input class="button" type="button" id="addItem" value="Add" onclick="insertItemRow()" />
 		<input class="button" type="button" id="saveDesc" value="Save" onclick="saveItemPrice()" />
+		<input class="button" type="button" id="pullMissingItem" value="Sync Items" onclick="syncItems()" />
 		<form:hidden path="itemPriceConfiguration" id="itemPriceConfiguration"/>
 		<form:hidden path="projId" id="projId"/>
 		<form:hidden path="subProjId" id="subProjId"/>

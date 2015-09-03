@@ -53,6 +53,6 @@ public interface ProjectDescriptionDAO {
 
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 	
-    ProjDescDetail getBaseDescription(String descType, String aliasDescription);
+    ProjDescDetail getBaseDescription(String descId);
 
 }

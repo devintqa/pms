@@ -520,7 +520,11 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql = null;
 		List < Map < String, Object >> rows = null;
 		if (null!= projectId) {
-			sql = "select distinct(itemName), itemType, itemUnit, itemPrice from projdescitem where ProjId = '" + projectId + "'";
+			sql = "select distinct(pi.itemName), pi.itemUnit, bi.itemType from projdescitem as pi, basedescitem as bi "+
+					"where pi.itemName = bi.itemName and "+
+					 "not exists "+
+					  "  (select 1 from pricedetail b where b.itemName = pi.itemName and pi.projId ='" + projectId + "')";
+					    
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {
@@ -528,7 +532,6 @@ public class ItemDAOImpl implements ItemDAO {
 			itemDetail.setItemName((String) row.get("itemName"));
 			itemDetail.setItemUnit((String) row.get("itemUnit"));
 			itemDetail.setItemType((String) row.get("itemType"));
-			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
 			itemsDetail.add(itemDetail);
 		}
 		return itemsDetail;

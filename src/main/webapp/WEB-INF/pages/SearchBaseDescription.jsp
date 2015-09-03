@@ -99,7 +99,9 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 							<th>Work Type</th>
 							<th>Metric</th>
 							<th>Quantity</th>
+							<c:if test="${baseDesc.searchOn eq 'government'}">
 							<th>Total Cost</th>
+							</c:if>
 							<th>Action</th>
 						</tr>
 					</thead>
@@ -112,9 +114,11 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 								<td>${globalDescription.workType}</td>
 								<td>${globalDescription.metric}</td>
 								<td>${globalDescription.quantity}</td>
+								<c:if test="${baseDesc.searchOn eq 'government'}">
 								<td>${globalDescription.pricePerQuantity}</td>
+								</c:if>
 								<td><a
-									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${globalDescription.aliasDescription}&action=edit"
+									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&desc=${globalDescription.baseDescId}&action=edit"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
 									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.baseDescId}');"

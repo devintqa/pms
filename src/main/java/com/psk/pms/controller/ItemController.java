@@ -179,6 +179,17 @@ public class ItemController {
         return "ConfigureItems";
     }
 
+    @RequestMapping(value = "/emp/myview/configureItems/syncItems.do", method = RequestMethod.POST, consumes = "application/json")
+    public @ResponseBody boolean syncItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException {
+    	ObjectMapper mapper = new ObjectMapper();
+    	List<com.psk.pms.model.DescItemDetail.ItemDetail> itemDetails = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
+        List <ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(descItemDetail.getProjId());
+        itemDetails.addAll(missingItemDetails);
+        descItemDetail.setItemDetail(itemDetails);
+        itemService.insertProjectDescriptionItems(descItemDetail);
+        return true;
+    }
+
     private List<String> fetchItemTypes() {
         LOGGER.info("method = fetchTypes()");
         List<String> result = new ArrayList<String>();

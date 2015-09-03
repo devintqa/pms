@@ -8,14 +8,28 @@
 <%@include file="Script.jsp" %>
 <script type="text/javascript">
 $(document).ready(function () {
+	toggleTotalCost();
+	
     $("#quantity").attr("readonly", "readonly");
     $("#totalCost").attr("readonly", "readonly");
 
     if($("#isUpdate").val()=='Y'){
         $("#aliasDescription").attr("readonly", "readonly");
     }
+    
+    
+    $("input:radio[name='baseCategory']").click(function() {      
+    	toggleTotalCost();
+    });
 
   });
+  function toggleTotalCost(){
+	  if($("input:radio[name='baseCategory']:checked").val()=='psk'){
+      	$('.totalCost').hide();
+      }else{
+      	$('.totalCost').show();
+      }
+  }
 </script>
 </head>
 <body>
@@ -39,7 +53,7 @@ $(document).ready(function () {
 							<tr>
 								<td>Category  <span id="colon">:</span></td>
 								<td><form:radiobutton path="baseCategory" value="psk"
-										id="baseOnPsk" checked="true" />PSK
+										id="baseOnPsk" checked="true"/>PSK
 								<form:radiobutton path="baseCategory" value="government"
 										id="baseOnGovernment" />GOVERNMENT</td>
 							</tr>
@@ -84,14 +98,13 @@ $(document).ready(function () {
                                                  items="${metricList}"/></td>
                                 <td><form:errors path="metric" cssClass="error"/></td>
 							</tr>
-							<tr>
+							<tr class="totalCost">
 								<td>Total Cost<span id="colon">:</span>
 								</td>
-								<td><form:input id="totalCost" path="totalCost"
+								<td><form:input id="pricePerQuantity" path="pricePerQuantity"
 										cssClass="inputText" /></td>
-								<td><form:errors path="totalCost" cssClass="error" /></td>
+								<td><form:errors path="pricePerQuantity" cssClass="error" /></td>
 							</tr>
-							<tr></tr>
 						</table>
 					</fieldset>
 					<form:hidden path="employeeId" />

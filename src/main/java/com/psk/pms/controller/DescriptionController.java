@@ -178,11 +178,11 @@ public class DescriptionController extends BaseController {
 	public String buildBaseProjDesc(@PathVariable String employeeId, 
 			@RequestParam(value = "team", required = true) String team, 
 			@RequestParam(value = "action", required = false) String action, 
-			@RequestParam(value = "project", required = false) String aliasDescription,
+			@RequestParam(value = "desc", required = false) String descId,
 			Model model) {
 		ProjDescDetail projDescDetail = new ProjDescDetail();
 		if (null != action && "edit".equalsIgnoreCase(action)) {
-			projDescDetail = projectDescriptionService.getBaseDescription(null, aliasDescription);
+			projDescDetail = projectDescriptionService.getBaseDescription(descId);
 			projDescDetail.setIsUpdate("Y");
 			model.addAttribute("baseDescForm", projDescDetail);
 			return "BaseDescription";

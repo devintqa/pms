@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
-import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -416,6 +415,19 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	}
 
+	private ProjDescDetail getBaseDescription(String descType, String baseDescName) {
+			ProjDescDetail baseDescDetail = new ProjDescDetail();
+			String sql = "SELECT * FROM basedesc WHERE category = ? and BaseDescription = ?";;
+			List < Map < String, Object >> maps = jdbcTemplate.queryForList(sql, new Object[] {
+					descType,
+					baseDescName
+			});
+			for (Map < String, Object > map: maps) {
+				baseDescDetail = buildBaseDescDetail(map);
+			}
+			return baseDescDetail;
+	}
+
 	public void saveProposalProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
 
 		if(projDescDetails.size() > 0)
@@ -600,11 +612,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public ProjDescDetail getBaseDescription(String descType, String aliasDescription) {
+	public ProjDescDetail getBaseDescription(String descId) {
 		ProjDescDetail baseDescDetail = new ProjDescDetail();
 		List < Map < String, Object >> maps = jdbcTemplate.queryForList(GETBASEDESCRIPTION, new Object[] {
-				descType,
-				aliasDescription
+				descId
 		});
 		for (Map < String, Object > map: maps) {
 			baseDescDetail = buildBaseDescDetail(map);
