@@ -176,8 +176,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
 	@Override
-	public List<ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
-		 List<ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
+	public List<com.psk.pms.model.ProjectConfiguration.ItemDetail>getMissingProjectDescriptionItems(Integer projectId) {
+		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
         return itemsDetail;
 	}
 

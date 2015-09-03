@@ -252,7 +252,8 @@ public class ItemDAOImpl implements ItemDAO {
 		itemDetail.setItemName((String) row.get("ItemName"));
 		itemDetail.setItemType((String) row.get("ItemType"));
 		itemDetail.setItemUnit((String) row.get("ItemUnit"));
-		itemDetail.setItemPrice(row.get("ItemPrice").toString());
+		if(null!=row.get("itemPrice"))
+			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
 		return itemDetail;
 	}
 
@@ -515,8 +516,8 @@ public class ItemDAOImpl implements ItemDAO {
 	}
 
 	
-	public List <ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
-		List < DescItemDetail.ItemDetail > itemsDetail = new ArrayList < DescItemDetail.ItemDetail > ();
+	public List<com.psk.pms.model.ProjectConfiguration.ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
+		List < com.psk.pms.model.ProjectConfiguration.ItemDetail> itemsDetail = new ArrayList <com.psk.pms.model.ProjectConfiguration.ItemDetail> ();
 		String sql = null;
 		List < Map < String, Object >> rows = null;
 		if (null!= projectId) {
@@ -528,7 +529,7 @@ public class ItemDAOImpl implements ItemDAO {
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {
-			ItemDetail itemDetail = new ItemDetail();
+			com.psk.pms.model.ProjectConfiguration.ItemDetail itemDetail = new com.psk.pms.model.ProjectConfiguration.ItemDetail();
 			itemDetail.setItemName((String) row.get("itemName"));
 			itemDetail.setItemUnit((String) row.get("itemUnit"));
 			itemDetail.setItemType((String) row.get("itemType"));

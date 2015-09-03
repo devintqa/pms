@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.psk.exception.BulkUploadException;
-import com.psk.pms.model.*;
-import com.psk.pms.service.FileService;
-import com.psk.pms.validator.FileUploadValidator;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -25,18 +21,27 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.psk.exception.BulkUploadException;
 import com.psk.pms.Constants;
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.ExcelDetail;
+import com.psk.pms.model.Item;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.service.FileService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.FileUploadValidator;
 import com.psk.pms.validator.ItemValidator;
-import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class ItemController {
@@ -180,14 +185,15 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/emp/myview/configureItems/syncItems.do", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean syncItems(@RequestBody DescItemDetail descItemDetail) throws JsonParseException, JsonMappingException, IOException {
+    public @ResponseBody boolean syncItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException {
     	ObjectMapper mapper = new ObjectMapper();
-    	List<com.psk.pms.model.DescItemDetail.ItemDetail> itemDetails = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
-        List <ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(descItemDetail.getProjId());
-        itemDetails.addAll(missingItemDetails);
-        descItemDetail.setItemDetail(itemDetails);
-        itemService.insertProjectDescriptionItems(descItemDetail);
-        return true;
+    	List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
+    	projectItemConfiguration.setItemDetail(itemList);
+    	List <com.psk.pms.model.ProjectConfiguration.ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(projectItemConfiguration.getProjId());
+    	itemList.addAll(missingItemDetails);
+    	projectItemConfiguration.setItemDetail(itemList);
+    	boolean status = itemService.configureItemPrice(projectItemConfiguration);
+    	return status;
     }
 
     private List<String> fetchItemTypes() {

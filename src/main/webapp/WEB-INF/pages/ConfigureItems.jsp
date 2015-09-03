@@ -159,7 +159,8 @@
 			
 			var itemPrice = row.cells[2].getElementsByTagName('input')[0];
 			itemPrice.id += len;
-			itemPrice.value = item.itemPrice;
+			if(item.itemPrice)
+				itemPrice.value = item.itemPrice;
 	
 			document.getElementById('itemTable').appendChild(row);
 
@@ -194,16 +195,17 @@
 			itemDescForm["subProjId"] = document.getElementById('subProjId').value;
 			itemDescForm["itemPriceConfiguration"] = JSON.stringify(itemObjArray);
 			
+			console.log("data = " + JSON.stringify(itemDescForm));
 			$.ajax({
 				type : 'POST',
 				url : 'syncItems.do',
 				contentType: "application/json",
 				data : JSON.stringify(itemDescForm),
 				success : function(response) {
-					console.log("Successfully deleted row ");
+					location.reload();
+					console.log("Successfully");
 				}
 			});
-			fillItemPrice();
 		}
 </script>
 </head>
