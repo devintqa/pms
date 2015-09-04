@@ -134,6 +134,7 @@ CREATE TABLE `employee` (
   `empMotherName` varchar(30) NOT NULL,
   `enabled` tinyint(4) NOT NULL DEFAULT '1',
   `empTeam` varchar(30) DEFAULT NULL,
+  `empRole` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`empId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

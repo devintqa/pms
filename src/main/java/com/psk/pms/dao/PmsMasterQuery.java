@@ -141,6 +141,10 @@ public class PmsMasterQuery {
 
     public static String SAVE_ROLES = "INSERT INTO teamRole (teamName, roleName) VALUES (?, ?)";
 
+    public static String GET_ALL_EMPLOYEE = "SELECT * FROM employee where empTeam != 'Admin'";
+
+    public static String DELETE_EMPLOYEE = "DELETE FROM employee WHERE empId = ? ";
+
 
     public static String GET_ROLES = "select roleName from teamRole where teamName = ?";
 

@@ -39,5 +39,9 @@ public interface EmployeeService {
 
     boolean saveTeamRoles(Team team);
 
+    List<Employee> getAllEmployeeDetails();
+
+    void deleteEmployee(String empId);
+
     List<String> getRolesForTeam(String teamName);
 }

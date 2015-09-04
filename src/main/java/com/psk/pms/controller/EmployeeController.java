@@ -147,22 +147,6 @@ public class EmployeeController {
     }
 
 
-    @RequestMapping(value = "/emp/myview/searchEmployee/{empId}", method = RequestMethod.GET)
-    public String getEmployeeDetails(@PathVariable String empId,
-                                     @RequestParam(value = "team", required = false) String team,
-                                     Model model, Principal principal) {
-        Employee employee = employeeService.getEmployeeDetails(principal
-                .getName());
-        model.addAttribute("employeeObj", employee);
-        List<Employee> newSignupRequestList = employeeService
-                .getNewRegistrationRequest(null);
-        if (!newSignupRequestList.isEmpty()) {
-            model.addAttribute("newSignupRequestList", newSignupRequestList);
-        }
-        return "EmployeeDetails";
-    }
-
-
     @RequestMapping(value = "/emp/myview/createRole/{empId}", method = RequestMethod.GET)
     public String getEmployeeRole(@PathVariable String empId,
                                   @RequestParam(value = "team", required = false) String team,
@@ -193,7 +177,6 @@ public class EmployeeController {
         return "BuildRole";
     }
 
-
     @RequestMapping(value = "/emp/myview/createRole/getRole.do", method = RequestMethod.GET)
     @ResponseBody
     List<String> getRole(@RequestParam("teamName") String teamName) {
@@ -210,5 +193,36 @@ public class EmployeeController {
         return teamNames;
     }
 
+    @RequestMapping(value = "/emp/myview/searchEmployee/{empId}", method = RequestMethod.GET)
+    public String getAllEmployeeDetails(Model model) {
+        List<Employee> employees = employeeService.getAllEmployeeDetails();
+        model.addAttribute("employees", employees);
+        return "EmployeeDetails";
+    }
 
+    @RequestMapping(value = "/emp/myview/searchEmployee/deleteEmployee.do", method = RequestMethod.POST)
+    public String deleteEmployee(HttpServletRequest request,Model model) {
+        String empId = request.getParameter("employeeId");
+        employeeService.deleteEmployee(empId);
+        return "EmployeeDetails";
+    }
+
+    @RequestMapping(value = "/emp/myview/updateEmployee/{empId}", method = RequestMethod.GET)
+    public String searchEmployee(@PathVariable String empId, @RequestParam("team") String team, Model model) {
+        Employee employee = employeeService.getEmployeeDetails(empId);
+        List<String> roles = employeeService.getRolesForTeam(team);
+        model.addAttribute("employeeRoleList",roles);
+        model.addAttribute("updateEmpform", employee);
+        return "UpdateEmployee";
+    }
+
+    @RequestMapping(value = "/emp/myview/updateEmployee/updateEmployeeRole.do", method = RequestMethod.POST)
+    public String updateEmployee(@ModelAttribute("updateEmpform") Employee employee,Model model,BindingResult result) {
+        employeeService.updateEmployee(employee);
+        model.addAttribute("message", "updated role successfully");
+        List<String> roles = employeeService.getRolesForTeam(employee.getEmployeeTeam());
+        model.addAttribute("updateEmpform",employee);
+        model.addAttribute("employeeRoleList",roles);
+        return "UpdateEmployee";
+    }
 }
