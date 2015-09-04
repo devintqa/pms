@@ -218,8 +218,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public void deleteEmployee(String employeeId) {
         jdbcTemplate.update(
                 DELETE_EMPLOYEE,
-                String.class,
-                        employeeId);
+                employeeId);
     }
 
     @Override
