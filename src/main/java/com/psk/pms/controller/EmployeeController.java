@@ -1,6 +1,8 @@
 package com.psk.pms.controller;
 
 import com.psk.pms.Constants;
+import com.psk.pms.factory.EmployeeTeam;
+import com.psk.pms.factory.EmployeeTeamFactory;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
@@ -40,6 +42,8 @@ public class EmployeeController {
     ProjectService projectService;
     @Autowired
     DepositDetailService depositDetailService;
+    @Autowired
+    EmployeeTeamFactory employeeTeamFactory;
 
     private static final Logger LOGGER = Logger
             .getLogger(EmployeeController.class);
@@ -77,27 +81,9 @@ public class EmployeeController {
         Employee employee = employeeService.getEmployeeDetails(principal
                 .getName());
         model.addAttribute("employeeObj", employee);
-        if ("admin".equalsIgnoreCase(employee.getEmployeeTeam())) {
-            List<Employee> newSignupRequestList = employeeService
-                    .getNewRegistrationRequest(null);
-            if (!newSignupRequestList.isEmpty()) {
-                model.addAttribute("newSignupRequestList", newSignupRequestList);
-            }
-        }
-        if ("technical".equalsIgnoreCase(employee.getEmployeeTeam())) {
-            List<ProjectDetail> projectDocumentList = projectService
-                    .getProjectDocumentList();
-            if (!projectDocumentList.isEmpty()) {
-                model.addAttribute("projectDocumentList", projectDocumentList);
-                model.addAttribute("action", action);
-            }
-        }
-        if ("admin".equalsIgnoreCase(employee.getEmployeeTeam())) {
-            List<DepositDetail> depositEndAlertList = depositDetailService.getDepositEndAlertList();
-            if (depositEndAlertList.size() > 0) {
-                model.addAttribute("depositDocumentList", depositEndAlertList);
-            }
-        }
+        model.addAttribute("action", action);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        employeeTeam.performTeamActivity(model);
         return "Welcome";
     }
 
@@ -201,7 +187,7 @@ public class EmployeeController {
     }
 
     @RequestMapping(value = "/emp/myview/searchEmployee/deleteEmployee.do", method = RequestMethod.POST)
-    public String deleteEmployee(HttpServletRequest request,Model model) {
+    public String deleteEmployee(HttpServletRequest request, Model model) {
         String empId = request.getParameter("employeeId");
         employeeService.deleteEmployee(empId);
         return "EmployeeDetails";
@@ -211,18 +197,18 @@ public class EmployeeController {
     public String searchEmployee(@PathVariable String empId, @RequestParam("team") String team, Model model) {
         Employee employee = employeeService.getEmployeeDetails(empId);
         List<String> roles = employeeService.getRolesForTeam(team);
-        model.addAttribute("employeeRoleList",roles);
+        model.addAttribute("employeeRoleList", roles);
         model.addAttribute("updateEmpform", employee);
         return "UpdateEmployee";
     }
 
     @RequestMapping(value = "/emp/myview/updateEmployee/updateEmployeeRole.do", method = RequestMethod.POST)
-    public String updateEmployee(@ModelAttribute("updateEmpform") Employee employee,Model model,BindingResult result) {
+    public String updateEmployee(@ModelAttribute("updateEmpform") Employee employee, Model model, BindingResult result) {
         employeeService.updateEmployee(employee);
         model.addAttribute("message", "updated role successfully");
         List<String> roles = employeeService.getRolesForTeam(employee.getEmployeeTeam());
-        model.addAttribute("updateEmpform",employee);
-        model.addAttribute("employeeRoleList",roles);
+        model.addAttribute("updateEmpform", employee);
+        model.addAttribute("employeeRoleList", roles);
         return "UpdateEmployee";
     }
 }
