@@ -31,8 +31,8 @@ public class PmsMasterQuery {
 			+ "LastUpdatedBy = ?,LastUpdatedAt =? ,DepositSubmitter =?, DepositDetail =?,DepositStatus=?,DepositRecievedDate=?,DepositRecievedNote=? WHERE DepositId = ? ";
 
 	public static final String FETCH_DEPOSIT_DETAILS = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ " s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
-			+ "from depositdetail e left join project as p on e.ProjId = p.ProjId "
+			+ " s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate , e.DepositExtensionDate "
+			+ " from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "left join subproject as s on e.SubProjId=s.SubProjId ";
 
 	public static final String FETCH_DEPOSIT_DETAIL_BY_DEPOSIT_ID = "select  ProjId , SubProjId , DepositAmount , DepositStartDate ,DepositEndDate ,DepositType, BGNumber ,"
@@ -59,7 +59,7 @@ public class PmsMasterQuery {
 			+ "                where e.ProjId = ? and e.SubProjId is null ";
 
 	public static final String GET_DEPOSIT_DETAILS_BY_SUBPROJECTID = "select e.DepositId ,e.ProjId , p.AliasProjName , s.AliasSubProjName ,"
-			+ "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate "
+			+ "     s.SubProjName , e.DepositType , e.DepositAmount , e.DepositStartDate , e.DepositEndDate ,e.DepositExtensionDate"
 			+ "    from depositdetail e left join project as p on e.ProjId = p.ProjId "
 			+ "    left join subproject as s on e.SubProjId=s.SubProjId where e.SubProjId=?";
 
@@ -77,8 +77,6 @@ public class PmsMasterQuery {
 	public static String baseDescDetail = "SELECT BaseDescId, WorkType, Metric, Quantity, PricePerQuantity, LastUpdatedBy, LastUpdatedAt, Description, BaseDescription FROM basedesc";
 	
 	public static String deleteProjDescDetailQuery = "DELETE FROM projectdesc where ProjDescId = ?";
-
-	public static String DEPOSIT_DATE_QUERY = "select DepositAmount, DepositStartDate, DepositEndDate, DepositType, DepositExtensionDate from depositdetail";
 
 	public static String DELETEPROJDESCITEMBYPROJECTID = "DELETE FROM projdescitem WHERE ProjId = ?";
 

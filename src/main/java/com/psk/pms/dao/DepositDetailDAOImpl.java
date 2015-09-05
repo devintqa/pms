@@ -135,6 +135,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         depositDetail.setDepositAmount(depositAmount.toString());
         depositDetail.setSqlDepositStartDate((Date) row.get("DepositStartDate"));
         depositDetail.setSqlDepositEndDate((Date) row.get("DepositEndDate"));
+        depositDetail.setDepositExtensionSqlDate((Date) row.get("DepositExtensionDate"));
         depositDetail.setDepositType((String) row.get("DepositType"));
         depositDetails.add(depositDetail);
     }
@@ -151,25 +152,6 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         LOGGER.info("method = deleteDepositDetailByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
 
-    public List<DepositDetail> getDepositDatesList() {
-        List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(DEPOSIT_DATE_QUERY);
-        for (Map<String, Object> row : rows) {
-            depositDetails.add(buildEMDDetail(row));
-        }
-        return depositDetails;
-    }
-
-    private DepositDetail buildEMDDetail(Map<String, Object> row) {
-        DepositDetail depositDetail = new DepositDetail();
-        BigDecimal depositAmount = (BigDecimal) row.get("DepositAmount");
-        depositDetail.setDepositAmount(depositAmount.toString());
-        depositDetail.setSqlDepositStartDate((Date) row.get("DepositStartDate"));
-        depositDetail.setSqlDepositEndDate((Date) row.get("DepositEndDate"));
-        depositDetail.setDepositType((String) row.get("DepositType"));
-        depositDetail.setDepositExtensionSqlDate((Date) row.get("DepositExtensionDate"));
-        return depositDetail;
-    }
 
     @Override
     public List<String> fetchDepositTypes() {
