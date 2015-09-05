@@ -32,6 +32,41 @@
 			}
 		});
 	}
+	function deleteEmployee(employeeId, employeeName) {
+
+    	  $("#dialog-confirm").html(employeeName + " : Delete this employee permanently ??, Please confirm to proceed");
+
+    	    // Define the Dialog and its properties.
+    	    $("#dialog-confirm").dialog({
+    	        resizable: false,
+    	        modal: true,
+    	        title: "Warning!",
+    	        height: 200,
+    	        width: 400,
+    	        buttons: {
+    	            "Yes": function () {
+    	            	$.ajax({
+    	        			type : 'POST',
+    	        			url : 'deleteEmployee.do',
+    	        			data : "employeeId="+employeeId,
+    	        			success : function(response) {
+    	        				location.reload();
+    	    					console.log("Successfully deleted employee ");
+    	        			},
+    	        			error : function(err) {
+    	        				console.log("Error deleting employee ");
+    	        			}
+    	        		});
+    	                $(this).dialog('close');
+    	                window.location.reload();
+    	            },
+    	                "No": function () {
+    	                $(this).dialog('close');
+    	            }
+    	        }
+    	    });
+        	}
+
 </script>
 </head>
 <body>
@@ -46,38 +81,30 @@
 						<th>User Name</th>
 						<th>First Name</th>
 						<th>Last Name</th>
-						<th>Gender</th>
 						<th>Team</th>
-						<th>Address</th>
 						<th>Mobile</th>
 						<th>Mail</th>
 						<th>Action</th>
 					</tr>
 				</thead>
 				<tbody>
-					<c:if test="${not empty newSignupRequestList}">
-						<c:forEach var="signReq" items="${newSignupRequestList}">
+					<c:if test="${not empty employees}">
+						<c:forEach var="employee" items="${employees}">
 							<tr>
-								<td>${signReq.employeeId}</td>
-								<td>${signReq.employeeFName}</td>
-								<td>${signReq.employeeLName}</td>
-								<td>${signReq.employeeGender}</td>
-								<td>${signReq.employeeTeam}</td>
-								<td>${signReq.employeeAddress}</td>
-								<td>${signReq.employeeMobile}</td>
-								<td>${signReq.employeeMail}</td>
-								<td><c:if test="${signReq.enabled eq '0'}">
-										<a
-											href="javascript:manageUser('${signReq.employeeId}', 'enable');"
-											class="userAction">Enable</a> &nbsp;&nbsp;
-										<a
-											href="javascript:manageUser('${signReq.employeeId}', 'deny');"
-											class="userAction">Deny</a>
-									</c:if> <c:if test="${listValue.enabled eq '1'}">
-										<a
-											href="javascript:manageUser('${signReq.employeeId}', 'disable');"
-											class="userAction">Disable</a>
-									</c:if></td>
+								<td>${employee.employeeId}</td>
+								<td>${employee.employeeFName}</td>
+								<td>${employee.employeeLName}</td>
+								<td>${employee.employeeTeam}</td>
+								<td>${employee.employeeMobile}</td>
+								<td>${employee.employeeMail}</td>
+								<td>
+                                    <a
+										href="javascript:deleteEmployee('${employee.employeeId}', '${employee.employeeFName}');"
+										class="userAction">Delete</a>
+                                    <a
+										href="/pms/emp/myview/updateEmployee/${employee.employeeId}?team=${employee.employeeTeam}"
+										class="userAction">Update</a>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:if>
@@ -86,9 +113,9 @@
 			<br>
 			<br>
 	</div>
+	<div id="dialog-confirm"></div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>
 </body>
 </html>
-

@@ -18,8 +18,6 @@ public interface DepositDetailService {
 
 	List<DepositDetail> getDepositDetailsBySubProjectId(Integer subProjectId);
 
-	List<DepositDetail> getDepositEndAlertList();
-
 	List<String> fetchDepositTypes();
 
 }

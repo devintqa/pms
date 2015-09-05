@@ -55,6 +55,58 @@ $(function() {
 });
 </script>
 
+
+<script>
+$(function() {
+    var table = $("#depositDocumentList").dataTable({"pageLength": 10});
+
+     $("#depositDocumentList_columnUl").on('change', 'input:checkbox', function(e) {
+        var columnName = $(this).attr('name');
+
+		  var isColumnStatusChecked = $( this ).is( ":checked" )
+		  if(!isColumnStatusChecked){
+				$(this).attr('value', 'hidden');
+		  } else{
+				$(this).attr('value', '');
+		  }
+        $("table[id*=depositDocumentList] th").each(function(index, item) {
+            if (columnName == item.innerHTML) {
+                $('table[id*=depositDocumentList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+            }
+        })
+    });
+
+
+    $("#depositDocumentList_paginate").on('click', function(e) {
+        $("#depositDocumentList_columnUl").find('input:checkbox').each(function(index, item) {
+            var columnStatus = $(this).attr('value');
+            var columnName = $(this).attr('name');
+
+            if (columnStatus == 'hidden') {
+                $("table[id*=depositDocumentList] th").each(function(index, item) {
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#depositDocumentList tr').find("td:eq(" + index + ")").css('display');
+                        if (displayType != 'none') {
+                            $('table[id*=depositDocumentList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+                    }
+                })
+            }
+            else{
+				 $("table[id*=depositDocumentList] th").each(function(index, item) {
+                    if (columnName == item.innerHTML) {
+                        var displayType = $('#depositDocumentList tr').find("td:eq(" + index + ")").css('display');
+                        if (displayType == 'none') {
+                            $('table[id*=depositDocumentList] tr').find("td:eq(" + index + ")").toggle();
+                        }
+                    }
+                })
+			  }
+        });
+    });
+});
+</script>
+
 <script>
 $(function() {
     var table = $("#baseDescriptionList").dataTable({"pageLength": 10});

@@ -20,6 +20,7 @@ public class EmployeeRowMapper implements RowMapper {
 		employee.setEmployeeAddress(rs.getString("empAddress"));
 		employee.setEmployeeMail(rs.getString("empMail"));
 		employee.setEmployeeMobile(rs.getString("empMobNum"));
+        employee.setEmployeeRole(rs.getString("empRole"));
 		return employee;
 	}
 }

@@ -18,8 +18,6 @@ public interface DepositDetailDAO {
 
     List<DepositDetail> getDepositDetailsBySubProjectId(Integer subProjectId);
 
-    List<DepositDetail> getDepositDatesList();
-
     void deleteDepositDetailByProjectId(Integer projectId);
 
     void deleteDepositDetailBySubProjectId(Integer subProjectId);

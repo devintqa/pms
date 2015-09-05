@@ -125,28 +125,6 @@ public class DepositDetailServiceImpl implements DepositDetailService {
         return depositDetails;
     }
 
-    public List<DepositDetail> getDepositEndAlertList() {
-        Date todayDate = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        List<DepositDetail> projectDocumentList = depositDetailDAO.getDepositDatesList();
-        List<DepositDetail> depositDocumentList = new ArrayList<DepositDetail>();
-        for (DepositDetail depositDetail : projectDocumentList) {
-            long diff = depositDetail.getSqlDepositEndDate().getTime()
-                    - todayDate.getTime();
-            long diffDays = diff / (24 * 60 * 60 * 1000);
-            if (diffDays < 14) {
-                depositDetail.setDepositStartDate(DateFormatter.getStringDate(
-                        depositDetail.getSqlDepositStartDate(), formatter));
-                depositDetail.setDepositEndDate(DateFormatter.getStringDate(
-                        depositDetail.getSqlDepositEndDate(), formatter));
-                depositDetail.setDepositExtensionDate(DateFormatter.getStringDate(
-                        depositDetail.getDepositExtensionSqlDate(), formatter));
-                depositDocumentList.add(depositDetail);
-            }
-        }
-        return depositDocumentList;
-    }
-
     public List<String> fetchDepositTypes() {
         return depositDetailDAO.fetchDepositTypes();
     }

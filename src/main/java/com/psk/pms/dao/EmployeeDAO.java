@@ -42,4 +42,8 @@ public interface EmployeeDAO {
     boolean saveTeamRoles(Team team);
 
     List<String> getRolesForTeam(String teamName);
+
+    List<Employee> getAllEmployeeDetails();
+
+    void deleteEmployee(String employeeId);
 }

@@ -145,6 +145,17 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeDAO.saveTeamRoles(team);
     }
 
+    @Override
+    public List<Employee> getAllEmployeeDetails(){
+        return employeeDAO.getAllEmployeeDetails();
+    }
+
+
+    @Override
+    public void deleteEmployee(String empId){
+        employeeDAO.deleteEmployee(empId);
+    }
+
 
     @Override
     public List<String> getRolesForTeam(String teamName) {

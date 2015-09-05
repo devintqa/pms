@@ -15,6 +15,8 @@ import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 
 import static com.psk.pms.dao.PmsMasterQuery.GET_ROLES;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_EMPLOYEE;
+import static com.psk.pms.dao.PmsMasterQuery.GET_ALL_EMPLOYEE;
 import static com.psk.pms.dao.PmsMasterQuery.SAVE_ROLES;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
@@ -55,15 +57,15 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public boolean signupEmployee(Employee employee) {
         String sql = "INSERT INTO employee" +
                 "(empId, empPassword, empFirstName, empLastName, empTeam, empAddress, empGender, "
-                + "empMobNum, empMail, empMotherName, enabled) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "empMobNum, empMail, empMotherName, enabled,empRole) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         jdbcTemplate.update(sql, new Object[]{employee.getEmployeeId(),
                 employee.getEmployeePwd(), employee.getEmployeeFName(),
                 employee.getEmployeeLName(), employee.getEmployeeTeam(),
                 employee.getEmployeeAddress(), employee.getEmployeeGender(),
                 employee.getEmployeeMobile(), employee.getEmployeeMail(),
-                employee.getEmployeeMotherMaidenName(), employee.getEnabled()
+                employee.getEmployeeMotherMaidenName(), employee.getEnabled(),employee.getEmployeeRole()
         });
 
         String sql2 = "INSERT INTO userroles" +
@@ -75,10 +77,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     public boolean updateEmployee(Employee employee) {
-        String sql = "UPDATE employee set empAddress  = ?, empMobNum = ?, empMail = ? WHERE empId = ?";
+        String sql = "UPDATE employee set empAddress  = ?, empMobNum = ?, empMail = ? , empRole = ? WHERE empId = ?";
         jdbcTemplate.update(sql, new Object[]{
                 employee.getEmployeeAddress(), employee.getEmployeeMobile(),
-                employee.getEmployeeMail(), employee.getEmployeeId()
+                employee.getEmployeeMail(), employee.getEmployeeRole(),employee.getEmployeeId()
         });
         return true;
     }
@@ -154,10 +156,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 + "employee.empMobNum, employee.empMail, employee.empMotherName, employee.enabled, "
                 + "employee.empTeam FROM pms.employee where employee.enabled = 0";
 
-
-        List<Employee> newRequestList = new ArrayList<Employee>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        return buildEmployeeDetail(rows);
+    }
 
+    private List<Employee> buildEmployeeDetail(List<Map<String, Object>> rows) {
+        List<Employee> newRequestList = new ArrayList<Employee>();
         for (Map<String, Object> row : rows) {
             Employee employee = new Employee();
             employee.setEmployeeId((String) row.get("empId"));
@@ -203,6 +207,18 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 new Object[]{team.getTeamName(),
                         team.getRoleName()});
         return true;
+    }
+
+    @Override
+    public List<Employee> getAllEmployeeDetails() {
+        return buildEmployeeDetail(jdbcTemplate.queryForList(GET_ALL_EMPLOYEE));
+    }
+
+    @Override
+    public void deleteEmployee(String employeeId) {
+        jdbcTemplate.update(
+                DELETE_EMPLOYEE,
+                employeeId);
     }
 
     @Override
