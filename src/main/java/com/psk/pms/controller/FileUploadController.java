@@ -124,8 +124,7 @@ public class FileUploadController extends BaseController {
 			fileService.uploadFiles(uploadForm);
 		} else {
 			if (uploadForm.getFiles().size() == 0) {
-				map.addAttribute("fileAdditionSuccessful",
-					"Please select one or more files");
+				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
 			}
 			populateAliasProjectAndSubprojectAlias(map, aliasProjectList,
 			subAliasProjectList);
@@ -134,8 +133,7 @@ public class FileUploadController extends BaseController {
 		subAliasProjectList.put("0", "--Please Select--");
 		map.addAttribute("subAliasProjectList", subAliasProjectList);
 		map.addAttribute("aliasProjectList", aliasProjectList);
-		map.addAttribute("fileAdditionSuccessful",
-			"Files have got uploaded successfully");
+		map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
 		return "UploadFile";
 	}
 
@@ -152,17 +150,13 @@ public class FileUploadController extends BaseController {
 			try {
 				excelDetail = fileService.saveProjectDescription(uploadForm);
 			} catch (BulkUploadException e) {
-				map.addAttribute(
-					"uploadProjectDescriptionFailed",
-				String.format("%s%s", Constants.UPLOADFAILED, e.getMessage()));
+				map.addAttribute("uploadProjectDescriptionFailed", String.format("%s%s", Constants.UPLOADFAILED, e.getMessage()));
 				populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 				return "UploadExcel";
 			}
 			if (!excelDetail.isExcel()) {
-				map.addAttribute("fileAdditionSuccessful",
-					"Please Select Valid File Format");
-				populateAliasProjectAndSubprojectAlias(map, aliasProjectList,
-				subAliasProjectList);
+				map.addAttribute("fileAdditionSuccessful", "Please Select Valid File Format");
+				populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 				return "UploadExcel";
 			}
 		} else {
@@ -245,8 +239,7 @@ public class FileUploadController extends BaseController {
 
 			// response header
 			String headerKey = "Content-Disposition";
-			String headerValue = String.format("attachment; filename=\"%s\"",
-			downloadFile.getName());
+			String headerValue = String.format("attachment; filename=\"%s\"", downloadFile.getName());
 			response.setHeader(headerKey, headerValue);
 
 			// Write response
@@ -289,8 +282,6 @@ public class FileUploadController extends BaseController {
 		}
 
 	}
-
-
 
     @RequestMapping(value = "/emp/myview/downloadItemDescTemplate.do", method = RequestMethod.GET)
     public void getItemDescriptionTemplate(HttpServletRequest request,

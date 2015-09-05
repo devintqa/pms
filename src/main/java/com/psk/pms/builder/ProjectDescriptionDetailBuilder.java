@@ -46,19 +46,19 @@ public class ProjectDescriptionDetailBuilder {
 					switch (cell.getCellType()) {
 					case Cell.CELL_TYPE_NUMERIC:
 						if (cell.getColumnIndex() == 0 && row.getCell(1) != null) {
-							if (cell.getColumnIndex() == 0) projDescDetail.setSerialNumber(String.valueOf(cell.getNumericCellValue()));
+							if (cell.getColumnIndex() == 0) projDescDetail.setSerialNumber(String.valueOf(cell.getNumericCellValue()).trim());
 						}
 						if (cell.getColumnIndex() == 2 && row.getCell(3) != null) {
-							if (cell.getColumnIndex() == 2) projDescDetail.setQuantity(String.valueOf(cell.getNumericCellValue()));
+							if (cell.getColumnIndex() == 2) projDescDetail.setQuantity(String.valueOf(cell.getNumericCellValue()).trim());
 						}
 						break;
 					case Cell.CELL_TYPE_STRING:
-						if (cell.getColumnIndex() == 0 && row.getCell(1) != null) projDescDetail.setSerialNumber(cell.getStringCellValue());
-						if (cell.getColumnIndex() == 1) projDescDetail.setWorkType(cell.getStringCellValue());
-						if (cell.getColumnIndex() == 3) projDescDetail.setMetric(cell.getStringCellValue());
-						if (cell.getColumnIndex() == 4) projDescDetail.setDescription(cell.getStringCellValue());
-						if (cell.getColumnIndex() == 5) projDescDetail.setAliasDescription(cell.getStringCellValue());
-						if (cell.getColumnIndex() == 6) projDescDetail.setBaseDescName(cell.getStringCellValue());
+						if (cell.getColumnIndex() == 0 && row.getCell(1) != null) projDescDetail.setSerialNumber(cell.getStringCellValue().trim());
+						if (cell.getColumnIndex() == 1) projDescDetail.setWorkType(cell.getStringCellValue().trim());
+						if (cell.getColumnIndex() == 3) projDescDetail.setMetric(cell.getStringCellValue().trim());
+						if (cell.getColumnIndex() == 4) projDescDetail.setDescription(cell.getStringCellValue().trim());
+						if (cell.getColumnIndex() == 5) projDescDetail.setAliasDescription(cell.getStringCellValue().trim());
+						if (cell.getColumnIndex() == 6) projDescDetail.setBaseDescName(cell.getStringCellValue().trim());
 						break;
 					}
 				}
