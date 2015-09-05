@@ -371,19 +371,19 @@ window.onunload = function() {
 			
 				<tr>
 					<th>Item</th>
-					<th>Adequacy</th>
 					<th>Unit</th>
 					<th>Price</th>
+					<th>Adequacy</th>
 					<th style="display:none;">Cost</th>
 					<th>Action</th>
 				</tr>
 				<tr>
 					<td><input name="itemName" id="itemName" type="text"
 						size="50%" /> <input name="itemType" id="itemType" type="hidden" /></td>
-					<td><input name="itemQty" id="itemQty" type="text" /></td>
 					<td><input name="itemUnit" id="itemUnit" type="text" /></td>
 					<td><input name="itemPrice" readonly="readonly" id="itemPrice"
 						type="text" /></td>
+					<td><input name="itemQty" id="itemQty" type="text" /></td>
 					<td style="display: none;"><input name="itemCost"
 						id="itemCost" type="text" /></td>
 					<td><a id="deleteItem" onclick="deleteItemRow(this)"> <img
