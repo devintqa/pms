@@ -67,8 +67,9 @@ public class ItemValidator extends BaseValidator implements Validator {
 		if (projectItemConfiguration.getItemDetail() != null) {
 			for (ProjectConfiguration.ItemDetail items : projectItemConfiguration
 					.getItemDetail()) {
-				itemNames.add(items.getItemName());
-				itemName.add(items.getItemName());
+				String item = items.getItemName().toUpperCase();
+				itemNames.add(item);
+				itemName.add(item);
 			}
 			if (itemNames.size() != itemName.size()) {
 				return Constants.DUPLICATED_ITEM_NAMES;
