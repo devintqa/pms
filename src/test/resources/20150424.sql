@@ -166,14 +166,16 @@ DROP TABLE IF EXISTS `govpricedetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `govpricedetail` (
-  `itemName` varchar(100) NOT NULL,
-  `itemUnit` varchar(20) NOT NULL,
-  `itemType` varchar(45) NOT NULL,
-  `itemPrice` decimal(15,2) DEFAULT '0.00',
-  `priceFeed` datetime NOT NULL,
-  `entryId` int(11) NOT NULL AUTO_INCREMENT,
-  `active` int(1) DEFAULT '1',
-  PRIMARY KEY (`entryId`)
+  `scheduledItemNumber` varchar(10) NOT NULL,
+    `itemName` varchar(100) NOT NULL,
+    `itemDescription` text NOT NULL,
+    `itemUnit` varchar(20) NOT NULL,
+    `itemType` varchar(45) NOT NULL,
+    `itemPrice` decimal(15,2) DEFAULT '0.00',
+    `priceFeed` datetime NOT NULL,
+    `entryId` int(11) NOT NULL AUTO_INCREMENT,
+    `active` int(1) DEFAULT '1',
+    PRIMARY KEY (`entryId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 /*!40101 SET character_set_client = @saved_cs_client */;
