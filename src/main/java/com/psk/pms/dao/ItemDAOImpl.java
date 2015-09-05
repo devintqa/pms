@@ -526,9 +526,9 @@ public class ItemDAOImpl implements ItemDAO {
 		List < Map < String, Object >> rows = null;
 		if (null!= projectId) {
 			sql = "select distinct(pi.itemName), pi.itemUnit, bi.itemType from projdescitem as pi, basedescitem as bi "+
-					"where pi.itemName = bi.itemName and "+
+					"where pi.projId ='" + projectId + "' and pi.itemName = bi.itemName and "+
 					 "not exists "+
-					  "  (select 1 from pskpricedetail b where b.itemName = pi.itemName and pi.projId ='" + projectId + "')";
+					  "  (select 1 from pskpricedetail b where b.itemName = pi.itemName and b.active = 1)";
 					    
 			rows = jdbcTemplate.queryForList(sql);
 		}
@@ -539,6 +539,7 @@ public class ItemDAOImpl implements ItemDAO {
 			itemDetail.setItemType((String) row.get("itemType"));
 			itemsDetail.add(itemDetail);
 		}
+		System.out.println("getMissingProjectDescriptionItems: "+itemsDetail.size());
 		return itemsDetail;
 	}
 

@@ -190,6 +190,8 @@ public class ItemController {
     	List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
     	projectItemConfiguration.setItemDetail(itemList);
     	List <com.psk.pms.model.ProjectConfiguration.ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(projectItemConfiguration.getProjId());
+    	
+    	System.out.println("missingItemDetails "+missingItemDetails.size());
     	itemList.addAll(missingItemDetails);
     	projectItemConfiguration.setItemDetail(itemList);
     	boolean status = itemService.configureItemPrice(projectItemConfiguration);
@@ -229,7 +231,7 @@ public class ItemController {
         descItemDetail.setEmployeeId(employeeId);
         model.addAttribute("descItemForm", descItemDetail);
         ProjDescDetail projDescDetail = null;
-            projDescDetail = projectDescService.getProjectDescDetail(projDescId, null,descType);
+        projDescDetail = projectDescService.getProjectDescDetail(projDescId, null,descType);
         model.addAttribute("projDescForm", projDescDetail);
         model.addAttribute("itemTypes", fetchItemTypes());
 
