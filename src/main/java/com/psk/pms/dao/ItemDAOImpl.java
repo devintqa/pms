@@ -296,9 +296,13 @@ public class ItemDAOImpl implements ItemDAO {
 		List < DescItemDetail.ItemDetail > itemsDetail = new ArrayList < DescItemDetail.ItemDetail > ();
 		String sql;
 		List < Map < String, Object >> rows = null;
-		String priceTblName = request.get("descType").toString().equalsIgnoreCase(Constants.PSK)?"pskpricedetail":"govpricedetail";
 		if ("" != request.get("itemName")) {
-			sql = "select itemName, itemUnit, itemPrice from "+priceTblName+" where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			if(request.get("descType").toString().equalsIgnoreCase(Constants.PSK)){
+				sql = "select itemName, itemUnit, itemPrice from pskpricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			}else{
+				sql = "select itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			}
+			
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {

@@ -61,8 +61,6 @@ CREATE TABLE `basedescitem` (
 --
 -- Table structure for table `depositdetail`
 --
-DROP TABLE IF EXISTS `emddetail`;
-DROP TABLE IF EXISTS `emdtype`;
 DROP TABLE IF EXISTS `depositdetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -164,13 +162,11 @@ UNLOCK TABLES;
 -- Table structure for table `govestpricedetail`
 --
 
-DROP TABLE IF EXISTS `govestpricedetail`;
+DROP TABLE IF EXISTS `govpricedetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `govestpricedetail` (
-  `scheduledItemNumber` varchar(10) NOT NULL,
+CREATE TABLE `govpricedetail` (
   `itemName` varchar(100) NOT NULL,
-  `itemDescription` text NOT NULL,
   `itemUnit` varchar(20) NOT NULL,
   `itemType` varchar(45) NOT NULL,
   `itemPrice` decimal(15,2) DEFAULT '0.00',
@@ -178,7 +174,8 @@ CREATE TABLE `govestpricedetail` (
   `entryId` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(1) DEFAULT '1',
   PRIMARY KEY (`entryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -237,10 +234,10 @@ UNLOCK TABLES;
 -- Table structure for table `pricedetail`
 --
 
-DROP TABLE IF EXISTS `pricedetail`;
+DROP TABLE IF EXISTS `pskpricedetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `pricedetail` (
+CREATE TABLE `pskpricedetail` (
   `itemName` varchar(100) NOT NULL,
   `itemUnit` varchar(20) NOT NULL,
   `itemType` varchar(45) NOT NULL,
@@ -251,7 +248,8 @@ CREATE TABLE `pricedetail` (
   `entryId` int(11) NOT NULL AUTO_INCREMENT,
   `active` int(1) DEFAULT '1',
   PRIMARY KEY (`entryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

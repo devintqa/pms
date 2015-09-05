@@ -89,8 +89,7 @@ public class EmployeeController {
     public String getHomePage(@PathVariable String empId,
                               @RequestParam(value = "action", required = false) String action,
                               Model model, Principal principal) {
-        Employee employee = employeeService.getEmployeeDetails(principal
-                .getName());
+        Employee employee = employeeService.getEmployeeDetails(principal.getName());
         model.addAttribute("employeeObj", employee);
         model.addAttribute("action", action);
         EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
