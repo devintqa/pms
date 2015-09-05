@@ -577,3 +577,17 @@ CREATE TABLE `teamRole` (
   PRIMARY KEY (`teamRoleId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;
+DELIMITER $$
+CREATE TRIGGER SYNC_PROJECT_DESCRIPTION AFTER DELETE on quotedprojectdesc
+	FOR EACH ROW
+		BEGIN
+			DELETE FROM projectdesc WHERE (projectdesc.ProjId = old.ProjId) 
+				AND 
+				(projectdesc.Description = old.Description)
+                AND
+				(projectdesc.AliasDescription = old.AliasDescription);
+END$$
+
+

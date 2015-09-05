@@ -12,7 +12,9 @@
   var windowObjectReference = null;
   
 	function popUpClosed() {
-		window.location.reload();
+		if(windowObjectReference){
+			window.location.reload();
+		}
 	}
   
   $(document).ready(function () {
@@ -70,8 +72,6 @@
 	        			}
 	        		});
 	                $(this).dialog('close');
-	                window.location.reload();
-	                
 	            },
 	                "No": function () {
 	                $(this).dialog('close');

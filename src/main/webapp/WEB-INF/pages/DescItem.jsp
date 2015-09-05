@@ -14,10 +14,8 @@
 	        window.opener.popUpClosed();
 	    }
 	};
-
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
-		
 		
 		$(document).on('keydown.autocomplete', selector, function() {
 			$(this).autocomplete({
@@ -27,6 +25,7 @@
 								itemType: $('#itemType').val(),
 								projectId: $('#projId').val(),
 								subProjectId: $('#subProjId').val(),
+								descType: $('#descType').val()
 		            	        }, response);
 				},
 				select: function(event, ui) { 

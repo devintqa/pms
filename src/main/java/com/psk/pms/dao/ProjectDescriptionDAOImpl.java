@@ -60,7 +60,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	public void deleteProjectDescription(String projectDescriptionId,String descType) {
 		itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId,descType);
 
-		int noOfRows = jdbcTemplate.update(deleteProjDescDetailQuery,
+		int noOfRows = jdbcTemplate.update("DELETE FROM "+DescriptionType.getDescriptionTableName(descType)+" where ProjDescId = ?",
 		new Object[] {
 			projectDescriptionId
 		});

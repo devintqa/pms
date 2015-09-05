@@ -207,13 +207,15 @@ public class SearchController extends BaseController {
             @RequestParam("itemName") String itemName,
             @RequestParam("itemType") String itemType,
             @RequestParam("projectId") String projectId,
-            @RequestParam("subProjectId") String subProjectId) {
+            @RequestParam("subProjectId") String subProjectId,
+            @RequestParam("descType") String descType) {
         LOGGER.info("method = getDescItem()");
         Map<String, Object> request = new Hashtable<String, Object>();
         request.put("itemName", itemName);
         request.put("itemType", itemType);
         request.put("projectId", projectId);
         request.put("subProjectId", subProjectId);
+        request.put("descType", descType);
         List<ItemDetail> itemsDetail = itemService.getDescItemNames(request);
         return itemsDetail;
     }

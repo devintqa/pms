@@ -210,7 +210,8 @@ public class ItemController {
     @RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
     public String loadProjDescItems(Model model, @RequestParam String projDescSerial,
                                     @RequestParam String projId, @RequestParam String subProjId,
-                                    @RequestParam String projDescId, @RequestParam String employeeId, @RequestParam String descType) {
+                                    @RequestParam String projDescId, @RequestParam String employeeId, 
+                                    @RequestParam String descType) {
         DescItemDetail descItemDetail = new DescItemDetail();
         descItemDetail.setProjId(new Integer(projId));
         descItemDetail.setSubProjId(new Integer(subProjId));

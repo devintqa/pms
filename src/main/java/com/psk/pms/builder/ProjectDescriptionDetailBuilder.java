@@ -25,7 +25,7 @@ public class ProjectDescriptionDetailBuilder {
 
 		System.out.println(sheetName);
 		List < ProjDescDetail > detailList = new ArrayList < ProjDescDetail > ();
-		String descType = sheetName.equalsIgnoreCase("psk_desc")?Constants.PSK:Constants.GOVERNMENT;
+		String descType = sheetName.equalsIgnoreCase(Constants.PSK_SHEET)?Constants.PSK:Constants.GOVERNMENT;
 		try {
 			String path = saveDirectory + multipartFile.getOriginalFilename();
 			File file = new File(path);

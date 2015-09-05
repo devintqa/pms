@@ -120,9 +120,9 @@ public class PmsMasterQuery {
 
 	public static String FETCHPROJECTTYPES = "SELECT projectTypeName FROM projecttype";
 
-	public static String DEACTIVATEEXISTINGPRICES = "UPDATE pricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
+	public static String DEACTIVATEEXISTINGPRICES = "UPDATE pskpricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
 
-	public static String INSERTPRICEFORITEMS = "INSERT INTO pricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) "
+	public static String INSERTPRICEFORITEMS = "INSERT INTO pskpricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 	public static String INSERTBASEDESCRIPTION = "INSERT INTO basedesc(Category, WorkType, Metric, Quantity, PricePerQuantity , LastUpdatedBy, LastUpdatedAt, Description, BaseDescription) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -135,7 +135,7 @@ public class PmsMasterQuery {
 
     public static String GETBASEDESCRIPTION = "SELECT * FROM basedesc WHERE BaseDescId = ?";
 
-    public static String INSERT_ITEM_RATE_DESCRIPTION = "INSERT INTO govestpricedetail (itemName, itemUnit, itemType, itemPrice, priceFeed,scheduledItemNumber,itemDescription) "
+    public static String INSERT_ITEM_RATE_DESCRIPTION = "INSERT INTO govpricedetail (itemName, itemUnit, itemType, itemPrice, priceFeed,scheduledItemNumber,itemDescription) "
             + "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 

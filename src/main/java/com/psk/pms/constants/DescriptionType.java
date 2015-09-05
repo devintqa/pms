@@ -19,24 +19,24 @@ public enum DescriptionType {
     String descriptionItemTableName;
 
     public static String getDescriptionTableName(String descriptionString) {
-        String dbName = "";
+        String tblName = "";
         for (DescriptionType descriptionType : DescriptionType.values()) {
             if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
-                dbName = descriptionType.descriptionTableName;
+            	tblName = descriptionType.descriptionTableName;
                 break;
             }
         }
-        return dbName;
+        return tblName;
     }
 
     public static String getDescriptionItemTableName(String descriptionString) {
-        String dbName = "";
+        String tblName = "";
         for (DescriptionType descriptionType : DescriptionType.values()) {
             if (descriptionType.name().equalsIgnoreCase(descriptionString)) {
-                dbName = descriptionType.descriptionItemTableName;
+            	tblName = descriptionType.descriptionItemTableName;
                 break;
             }
         }
-        return dbName;
+        return tblName;
     }
 }

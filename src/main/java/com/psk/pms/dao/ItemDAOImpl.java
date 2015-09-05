@@ -294,11 +294,11 @@ public class ItemDAOImpl implements ItemDAO {
 	@Override
 	public List < ItemDetail > getDescItemNames(Map < String, Object > request) {
 		List < DescItemDetail.ItemDetail > itemsDetail = new ArrayList < DescItemDetail.ItemDetail > ();
-
 		String sql;
 		List < Map < String, Object >> rows = null;
+		String priceTblName = request.get("descType").toString().equalsIgnoreCase(Constants.PSK)?"pskpricedetail":"govpricedetail";
 		if ("" != request.get("itemName")) {
-			sql = "select itemName, itemUnit, itemPrice from pricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			sql = "select itemName, itemUnit, itemPrice from "+priceTblName+" where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {
@@ -318,7 +318,7 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql = null;
 		List < Map < String, Object >> rows = null;
 		if ("" != request.get("itemName")) {
-			sql = "select itemType, itemName, itemUnit, itemPrice from govestpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			sql = "select itemType, itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {
@@ -381,9 +381,9 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql;
 		if (isEditSubProject) {
 			LOGGER.info("Into Edit Sub Project " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
-			sql = "Select * from pricedetail where active = 1 and subProjectId = " + projectConfiguration.getSubProjId();
+			sql = "Select * from pskpricedetail where active = 1 and subProjectId = " + projectConfiguration.getSubProjId();
 		} else {
-			sql = "Select * from pricedetail where active = 1 and projectId = " + projectConfiguration.getProjId() + " and subProjectId = " + projectConfiguration.getSubProjId();
+			sql = "Select * from pskpricedetail where active = 1 and projectId = " + projectConfiguration.getProjId() + " and subProjectId = " + projectConfiguration.getSubProjId();
 		}
 		List < ProjectConfiguration.ItemDetail > itemList = new ArrayList < ProjectConfiguration.ItemDetail > ();
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
@@ -434,7 +434,7 @@ public class ItemDAOImpl implements ItemDAO {
 
 	@Override
 	public List < String > getItemNames(String itemType, String projectId) {
-		String PROJECT_ITEM_NAMES = "select distinct(itemName) from pricedetail where itemType=? and projectId=? ";
+		String PROJECT_ITEM_NAMES = "select distinct(itemName) from pskpricedetail where itemType=? and projectId=? ";
 		List < String > itemNames = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES, new Object[] {
 			itemType, projectId
 		}, String.class);
@@ -524,7 +524,7 @@ public class ItemDAOImpl implements ItemDAO {
 			sql = "select distinct(pi.itemName), pi.itemUnit, bi.itemType from projdescitem as pi, basedescitem as bi "+
 					"where pi.itemName = bi.itemName and "+
 					 "not exists "+
-					  "  (select 1 from pricedetail b where b.itemName = pi.itemName and pi.projId ='" + projectId + "')";
+					  "  (select 1 from pskpricedetail b where b.itemName = pi.itemName and pi.projId ='" + projectId + "')";
 					    
 			rows = jdbcTemplate.queryForList(sql);
 		}
