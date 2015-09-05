@@ -95,14 +95,15 @@ public class DescriptionController extends BaseController {
 			model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
 			return "BuildDescription";
 		} else {
-			status.setComplete();
-			Employee employee = new Employee();
-			employee.setEmployeeId(projDescDetail.getEmployeeId());
-			model.addAttribute("employee", employee);
 			if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+				status.setComplete();
+				Employee employee = new Employee();
+				employee.setEmployeeId(projDescDetail.getEmployeeId());
+				model.addAttribute("employee", employee);
 				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
 				model.addAttribute("aliasProjectList", aliasProjectList);
 				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+				return "BuildDescription";
 			} else {
 				isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
 				String subProjId = null;
@@ -117,13 +118,9 @@ public class DescriptionController extends BaseController {
 				aliasProjectList = new HashMap < String, String > ();
 				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
 				model.addAttribute("aliasProjectList", aliasProjectList);
-				if (null != projDescDetail.getAliasSubProjectName()) {
-					projDescDetail.setIsUpdate("Y");
-					model.addAttribute("aliasProjectList", aliasProjectList);
-					model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
-					model.addAttribute("projDescForm", projDescDetail);
-					model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
-				}
+				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+				model.addAttribute("projDescForm", projDescDetail);
+				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
 			}
 			return "BuildDescription";
 		}

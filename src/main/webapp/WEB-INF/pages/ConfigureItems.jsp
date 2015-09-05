@@ -216,7 +216,7 @@
 	<div id="wrapper">	
 	<form:form id="projectItemForm" method="POST" commandName="projectItemForm">
 		
-		<h1 style="text-align: center; color: #007399; font-size: 24px;">Configure Item Breakdown Structure</h1>
+		<h1 style="text-align: center; color: #007399; font-size: 24px;">Configure Items For The Project</h1>
 		
 		<table>
         <tr>

@@ -373,7 +373,7 @@ window.onunload = function() {
 					<th>Item</th>
 					<th>Unit</th>
 					<th>Price</th>
-					<th>Quantity</th>
+					<th>Adequacy</th>
 					<th style="display:none;">Cost</th>
 					<th>Action</th>
 				</tr>

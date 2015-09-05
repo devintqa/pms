@@ -429,7 +429,7 @@
 				<th>Item</th>
 				<th>Unit</th>
 				<th>Unit Price</th>
-				<th>Qty</th>
+				<th>Adequacy</th>
 				<th>Cost</th>
 				<th>Action</th>
 			</tr>
