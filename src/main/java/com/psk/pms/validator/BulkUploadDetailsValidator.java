@@ -5,6 +5,7 @@ import com.psk.exception.BulkUploadException;
 import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.ProjDescDetail;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,57 +17,78 @@ import static com.psk.pms.Constants.*;
  */
 public class BulkUploadDetailsValidator {
 
-	public void validateExtractedProjectDescriptionDetails(
-			List<ProjDescDetail> projDescDetails) throws BulkUploadException {
-		rejectIfEmptyFieldsFound(projDescDetails);
-		rejectIfSerialNumberIsDuplicated(projDescDetails);
-		rejectIfAliasDescriptionIsDuplicated(projDescDetails);
-	}
+    public void validateExtractedProjectDescriptionDetails(
+            List<ProjDescDetail> projDescDetails) throws BulkUploadException {
+        rejectIfEmptyFieldsFound(projDescDetails);
+        rejectIfSerialNumberIsDuplicated(projDescDetails);
+        rejectIfAliasDescriptionIsDuplicated(projDescDetails);
+    }
 
-	private void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
-			throws BulkUploadException {
-		for (ProjDescDetail projDescDetail : projDescDetails) {
-			if (StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {
-				throw new BulkUploadException(SERIALNUMBEREMPTY);
-			}
-			if (StringUtils.isNullOrEmpty(projDescDetail.getWorkType())) {
-				throw new BulkUploadException(WORKTYPEEMPTY);
-			}
-			if (StringUtils.isNullOrEmpty(projDescDetail.getQuantity())) {
-				throw new BulkUploadException(QUANTITYINFIGEMPTY);
-			}
-			if (StringUtils.isNullOrEmpty(projDescDetail.getDescription())) {
-				throw new BulkUploadException(DESCEMPTY);
-			}
-			if (StringUtils.isNullOrEmpty(projDescDetail.getAliasDescription())) {
-				throw new BulkUploadException(ALIASDESCEMPTY);
-			}
-		}
-	}
+    private void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
+            throws BulkUploadException {
+        for (ProjDescDetail projDescDetail : projDescDetails) {
+            if (StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {
+                throw new BulkUploadException(SERIALNUMBEREMPTY);
+            }
+            if (StringUtils.isNullOrEmpty(projDescDetail.getWorkType())) {
+                throw new BulkUploadException(WORKTYPEEMPTY);
+            }
+            if (StringUtils.isNullOrEmpty(projDescDetail.getQuantity())) {
+                throw new BulkUploadException(QUANTITYINFIGEMPTY);
+            }
+            if (StringUtils.isNullOrEmpty(projDescDetail.getDescription())) {
+                throw new BulkUploadException(DESCEMPTY);
+            }
+            if (StringUtils.isNullOrEmpty(projDescDetail.getAliasDescription())) {
+                throw new BulkUploadException(ALIASDESCEMPTY);
+            }
+        }
+    }
 
-	private void rejectIfSerialNumberIsDuplicated(
-			List<ProjDescDetail> projDescDetails) throws BulkUploadException {
-		int sizeOfExtractedDetails = projDescDetails.size();
-		Set<String> uniqueSerialNumbers = new HashSet<String>();
-		for (ProjDescDetail projDescDetail : projDescDetails) {
-			uniqueSerialNumbers.add(projDescDetail.getSerialNumber());
-		}
-		if (sizeOfExtractedDetails > uniqueSerialNumbers.size()) {
-			throw new BulkUploadException(SERIALNOTUNIQUE);
-		}
-	}
+    private void rejectIfSerialNumberIsDuplicated(
+            List<ProjDescDetail> projDescDetails) throws BulkUploadException {
+        int sizeOfExtractedDetails = projDescDetails.size();
+        Set<String> uniqueSerialNumbers = new HashSet<String>();
+        Set<String> duplicateSerialNumbers = new HashSet<>();
+        for (ProjDescDetail projDescDetail : projDescDetails) {
+           if(!uniqueSerialNumbers.add(projDescDetail.getSerialNumber())){
+            duplicateSerialNumbers.add(projDescDetail.getSerialNumber());
+           }
+        }
+        StringBuilder duplicateValues = getDuplicateValues(duplicateSerialNumbers);
+        if (sizeOfExtractedDetails > uniqueSerialNumbers.size()) {
+            throw new BulkUploadException(duplicateValues.toString()+ " are not unique");
+        }
+    }
 
-	private void rejectIfAliasDescriptionIsDuplicated(
-			List<ProjDescDetail> projDescDetails) throws BulkUploadException {
-		int sizeOfExtractedDetails = projDescDetails.size();
-		Set<String> uniqueAliasDescription = new HashSet<String>();
-		for (ProjDescDetail projDescDetail : projDescDetails) {
-			uniqueAliasDescription.add(projDescDetail.getAliasDescription());
-		}
-		if (sizeOfExtractedDetails > uniqueAliasDescription.size()) {
-			throw new BulkUploadException(ALIASNOTUNIQUE);
-		}
-	}
+    private void rejectIfAliasDescriptionIsDuplicated(
+            List<ProjDescDetail> projDescDetails) throws BulkUploadException {
+        int sizeOfExtractedDetails = projDescDetails.size();
+        Set<String> uniqueAliasDescription = new HashSet<String>();
+        Set<String> duplicateAliasDescription = new HashSet<>();
+        for (ProjDescDetail projDescDetail : projDescDetails) {
+            if (!uniqueAliasDescription.add(projDescDetail.getAliasDescription())) {
+                duplicateAliasDescription.add(projDescDetail.getAliasDescription());
+            }
+        }
+        StringBuilder buffer = getDuplicateValues(duplicateAliasDescription);
+        if (sizeOfExtractedDetails > uniqueAliasDescription.size()) {
+            throw new BulkUploadException(buffer.toString() + " are not unique");
+        }
+    }
+
+    private StringBuilder getDuplicateValues(Set<String> duplicateAliasDescription) {
+        StringBuilder buffer = new StringBuilder();
+        if (duplicateAliasDescription.size() > 0) {
+            String delim = "";
+            for (String o : duplicateAliasDescription) {
+                buffer.append(delim);
+                delim = ", ";
+                buffer.append(o);
+            }
+        }
+        return buffer;
+    }
 
     public void validateFields(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         rejectIfFieldIsEmpty(itemRateDescriptions);
@@ -75,22 +97,22 @@ public class BulkUploadDetailsValidator {
     }
 
     private void rejectIfFieldIsEmpty(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
-        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
-            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemName())){
+        for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
+            if (StringUtils.isNullOrEmpty(itemRateDescription.getItemName())) {
                 throw new BulkUploadException(ITEM_NAME_EMPTY);
             }
-            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemUnit())){
+            if (StringUtils.isNullOrEmpty(itemRateDescription.getItemUnit())) {
                 throw new BulkUploadException(ITEM_UNIT_EMPTY);
             }
-            if(StringUtils.isNullOrEmpty(itemRateDescription.getItemRate())){
+            if (StringUtils.isNullOrEmpty(itemRateDescription.getItemRate())) {
                 throw new BulkUploadException(ITEM_RATE_EMPTY);
             }
         }
     }
 
     private void rejectIfItemNameExceedLimit(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
-        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
-            if(itemRateDescription.getItemName().length()>100){
+        for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
+            if (itemRateDescription.getItemName().length() > 100) {
                 throw new BulkUploadException(PROJECT_ITEM_NAME_TOO_BIG);
             }
         }
@@ -98,11 +120,11 @@ public class BulkUploadDetailsValidator {
 
     private void rejectIfItemRateDescriptionIsDuplicated(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         int size = itemRateDescriptions.size();
-        Set<ItemRateDescription>  items = new HashSet<ItemRateDescription>();
-        for (ItemRateDescription itemRateDescription:itemRateDescriptions){
+        Set<ItemRateDescription> items = new HashSet<ItemRateDescription>();
+        for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
             items.add(itemRateDescription);
         }
-        if(size>items.size()){
+        if (size > items.size()) {
             throw new BulkUploadException(PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE);
         }
     }
