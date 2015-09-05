@@ -35,8 +35,6 @@
 	function deleteEmployee(employeeId, employeeName) {
 
     	  $("#dialog-confirm").html(employeeName + " : Delete this employee permanently ??, Please confirm to proceed");
-
-    	    // Define the Dialog and its properties.
     	    $("#dialog-confirm").dialog({
     	        resizable: false,
     	        modal: true,
@@ -74,8 +72,9 @@
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
+	    <div class="ui-widget">
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">Employee Details</h1>
-			<table id="newSignUpRequests" class="gridView">
+			<table id="employeeDetails" class="gridView">
 				<thead>
 					<tr>
 						<th>User Name</th>
@@ -112,6 +111,7 @@
 			</table>
 			<br>
 			<br>
+		</div>
 	</div>
 	<div id="dialog-confirm"></div>
 	<footer>
