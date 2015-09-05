@@ -25,15 +25,13 @@ $(document).ready(function () {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-		<div>
-			<h1 style="text-align: center; color: #007399; font-size: 24px;">Update Employee Details</h1>
-			<br>
 			<div>
-            	<h2
-            		style="text-align: cener; font-family: arial; color: #007399; font-size: 14px;">${message}</h2>
-                </div>
-			<form:form method="POST" commandName="updateEmpform" action="updateEmployeeRole.do">
-			    <center>
+            	<h2 style="text-align: cener; font-family: arial; color: #007399; font-size: 14px;">${message}</h2>
+            </div>
+			    <form:form method="POST" commandName="updateEmpform" action="updateEmployeeRole.do">
+			        <center>
+                        <fieldset style="margin: 1em; text-align: left;">
+                        <legend>Update Employee</legend>
 					<table>
 						<tr>
 							<td>First Name <span id="colon">:</span>
@@ -76,7 +74,6 @@ $(document).ready(function () {
 									placeholder="Enter mailID" cssClass="inputText" /></td>
 							<td><form:errors path="employeeMail" cssClass="error" /></td>
 						</tr>
-					</div>
 						<tr>
 							<td>Employee Role<span id="colon">:</span>
 							</td>
@@ -84,13 +81,17 @@ $(document).ready(function () {
                             <td><form:errors path="employeeRole" cssClass="error" /></td>
 						</tr>
 						<tr></tr>
-						<tr>
-							<td></td>
-							<td><input class="button" type="submit" value="update" /></td>
-						</tr>
 					</table>
-				</center>
-			<form:hidden path="employeeId" />
+			    </fieldset>
+			    <form:hidden path="employeeId" />
+			    <table>
+			    <tr>
+                	<td></td>
+                	<td><input class="button" type="submit" value="update" /></td>
+                	<td></td>
+                </tr>
+                <center>
+                </table>
 			</form:form>
 		</div>
 	</div>
