@@ -427,19 +427,19 @@
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
 				<th>Item</th>
+				<th>Adequacy</th>
 				<th>Unit</th>
 				<th>Unit Price</th>
-				<th>Qty</th>
 				<th>Cost</th>
 				<th>Action</th>
 			</tr>
 
 			<tr>
 				<td><input name="itemName" id="itemName" type="text" /></td>
+				<td><input name="itemQty" id="itemQty" type="text"></td>
 				<td><input name="itemUnit" readonly="readonly" id="itemUnit" type="text" /></td>
 				<td><input name="itemPrice" readonly="readonly" id="itemPrice"
 					type="text" /></td>
-				<td><input name="itemQty" id="itemQty" type="text"></td>
 				<td><input name="itemCost" readonly="readonly" id="itemCost"
 					type="text" /></td>
 				<td><a id="deleteItem" onclick="deleteItemRow(this)"><img
