@@ -161,7 +161,7 @@ public class DepositDetailController extends BaseController {
 
     @ModelAttribute("depositStatusList")
     public List<String> populateDepositStatusList() {
-        List<String> depositStatusList = Arrays.asList("Submitted", "Completed");
+        List<String> depositStatusList = Arrays.asList("Submitted", "Refunded");
         return depositStatusList;
     }
 }

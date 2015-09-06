@@ -13,7 +13,7 @@
     <script>
         $(document).ready(function () {
 
-            if ($('#depositStatus').val() == 'Completed') {
+            if ($('#depositStatus').val() == 'Refunded') {
                 $('#showDepositRecievedDate').show();
                 $('#showDepositRecievedcomments').show();
             }else{
@@ -92,7 +92,7 @@
 
             $('#depositStatus').change(function () {
                 var status = $('#depositStatus').val();
-                if (status == 'Completed') {
+                if (status == 'Refunded') {
                     $('#showDepositRecievedDate').show();
                     $('#showDepositRecievedcomments').show();
                 }else{
