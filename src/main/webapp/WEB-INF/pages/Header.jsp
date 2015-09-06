@@ -104,41 +104,83 @@
 		</li>
         <li>
              <a href="#">Create</a>
-			    <ul><li><a id="createField"
-                         href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-                         Field Description
-                         </a>
-                    </li>
-                    <li><a id="createRole"
+			    <ul>
+                    <li><a id="createProject"
+							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+							Project</a></li>
+						<li><a id="createSubProject"
+							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+							Sub-Project</a></li>
+						<li><a id="BaseProjectDescription"
+							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+							Base Description</a></li>
+						<li><a id="createDepositDetail"
+							href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}">
+							Deposit Details</a></li>
+						<li><a id="createItem"
+							href="/pms/emp/myview/buildItem/${employeeObj.employeeId}">
+							Item</a></li>
+						<li><a id="uploadExcel"
+							href="/pms/emp/myview/uploadExcel/${employeeObj.employeeId}">
+							Bulk Description</a></li>
+                        <li><a id="createField"
+                                href="/pms/emp/myview/buildFieldDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                                Field Description</a></li>
+                        <li><a id="createRole"
                                href="/pms/emp/myview/createRole/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-                        Role
-                        </a>
-                    </li>
+                               Role</a></li>
                 </ul>
         </li>
         <li>
-              <a href="#">Search</a>
-			    <ul><li><a id="searchEmployee"
-                         href="/pms/emp/myview/searchEmployee/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-                         Employee
-                        </a>
-                    </li>
-                    <li><a id="searchProjectDesc"
-                    	 href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-                    	 Project Description
-                    	</a>
-                    </li>
+             <a href="#">Search</a>
+			    <ul>
+                    <li><a id="searchProject"
+							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}">
+								Project</a></li>
+				    <li><a id="searchSubProject"
+							href="/pms/emp/myview/searchSubProject/${employeeObj.employeeId}">
+								Sub Project</a></li>
+					<li><a id="searchProjectDesc"
+							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+								Project Description </a></li>
+					<li><a id="searchDepositDetail"
+							href="/pms/emp/myview/searchDepositDetail/${employeeObj.employeeId}">
+								Deposit Details </a></li>
+					<li><a id="searchPwdProjectDescription"
+							href="/pms/emp/myview/searchBaseDescription/${employeeObj.employeeId}">
+							Base Description </a></li>
+                    <li><a id="searchEmployee"
+                            href="/pms/emp/myview/searchEmployee/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                            Employee </a></li>
                 </ul>
         </li>
-		<li><a id="profile"
-			href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update Profile
-			</a>
+		<li> <a href="#">View</a>
+				<ul>
+					<li><a id="viewDetails"
+							href="/pms/emp/myview/viewDetails/${employeeObj.employeeId}">
+							Project Details</a></li>
+			    </ul>
+	    </li>
+		<li> <a href="#">File</a>
+				<ul>
+					<li><a id="uploadFile"
+							href="/pms/emp/myview/uploadFile/${employeeObj.employeeId}">
+							Upload</a></li>
+					<li><a id="downloadFile"
+							href="/pms/emp/myview/downloadFile/${employeeObj.employeeId}">
+							Download</a></li>
+				</ul>
 		</li>
-		<li><a id="logout"
-			href="${pageContext.request.contextPath}/logout">Logout</a></li>
-		<!--<li><a id="excelViewer"
-			href="/pms/emp/myview/excel/${empId}/editOrViewExcel.do"
-			class="active">Excel</a></li>-->
+		<li> <a href="#">User</a>
+		        <ul>
+		            <li> <a id="logout"
+                    		href="${pageContext.request.contextPath}/logout">
+                    		Logout</a></li>
+                    <li> <a id="profile"
+                    	    href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">
+                    	    Update Profile</a></li>
+		        </ul>
+		</li>
 	</c:when> 
 
 	<c:when test="${employeeObj.employeeTeam eq 'Management'}">

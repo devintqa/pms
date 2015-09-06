@@ -85,12 +85,16 @@
 								<td>${projDoc.projectStatus}</td>
 								<td><a
 									href="/pms/emp/myview/updateProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDoc.projId}&action=${action}"
-									class="userAction">Update</a> <strong> / </strong> <a
+									class="userAction">Update
+									</a> <strong> / </strong> <a
 									href="/pms/emp/myview/configureItems/${employeeObj.employeeId}?project=${projDoc.projId}&subProject=0"
-									class="userAction"> Configure</a> <strong> / </strong> <a
-									id="deleteRow"
-									href="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');"
-									style="color: red"> Delete</a></td>
+									class="userAction"> Configure</a>
+									<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
+									<strong> / </strong>
+									<a id="deleteRow"
+									    href="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');"
+									    style="color: red"> Delete</a></td>
+									</c:if>
 							</tr>
 						</c:forEach>
 					</tbody>

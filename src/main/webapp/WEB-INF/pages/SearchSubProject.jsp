@@ -143,10 +143,12 @@
 										<strong> / </strong>
 										<a href="/pms/emp/myview/configureItems/${employeeObj.employeeId}?project=${subProjDoc.projId}&subProject=${subProjDoc.subProjId}"
                                         class="userAction"> Configure</a>
-                                        <strong> / </strong>
-										<a id="deleteRow"
-										href="javascript:deleteSubProject('${subProjDoc.aliasSubProjName}','${subProjDoc.subProjId}');"
-										style="color: red"> Delete</a>
+                                        <c:if test="${employeeObj.employeeTeam eq 'Admin'}">
+                                            <strong> / </strong>
+										    <a id="deleteRow"
+										    href="javascript:deleteSubProject('${subProjDoc.aliasSubProjName}','${subProjDoc.subProjId}');"
+										    style="color: red"> Delete</a>
+										</c:if>
 									</td>
 								</tr>
 							</c:forEach>
