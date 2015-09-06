@@ -145,8 +145,7 @@ public class ItemServiceImpl implements ItemService {
             ProjectConfiguration projectItemConfiguration) {
         boolean isInsertSuccessful = false;
         if (projectItemConfiguration.getItemDetail() != null) {
-            isInsertSuccessful = itemDAO
-                    .configureItemPrice(projectItemConfiguration);
+            isInsertSuccessful = itemDAO.configureItemPrice(projectItemConfiguration);
         }
         return isInsertSuccessful;
     }

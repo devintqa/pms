@@ -135,7 +135,6 @@ public class ItemDAOImpl implements ItemDAO {
                 + descItemDetail.getProjDescId() + " and ProjDescSerial = '"
                 + descItemDetail.getProjDescSerial() + "'";
         jdbcTemplate.execute(deleteSql);
-		System.out.println(sql);
 		jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
 			@Override
@@ -207,7 +206,12 @@ public class ItemDAOImpl implements ItemDAO {
 
     public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
     	String sql = "";
-        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
+//        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
+        if(descItemDetail.getDescType().equalsIgnoreCase(Constants.PSK))
+        	sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '"+descItemDetail.getProjDescId()+"' and pdi.ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"' ";
+        else
+        	sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  quotedprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and ppd.active = '1' and pdi.ProjDescId = '"+descItemDetail.getProjDescId()+"' and pdi.ProjDescSerial = '"+descItemDetail.getProjDescSerial()+"' ";
+        System.out.println(sql);
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
@@ -242,7 +246,8 @@ public class ItemDAOImpl implements ItemDAO {
 		itemDetail.setItemName((String) row.get("ItemName"));
 		itemDetail.setItemUnit((String) row.get("ItemUnit"));
 		itemDetail.setItemQty((String) row.get("ItemQty"));
-		itemDetail.setItemPrice((String) row.get("ItemPrice"));
+		if(null!=row.get("itemPrice"))
+			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
 		itemDetail.setItemCost((String) row.get("ItemCost"));
 		return itemDetail;
 	}
