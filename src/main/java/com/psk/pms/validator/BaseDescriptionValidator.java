@@ -73,9 +73,8 @@ public class BaseDescriptionValidator extends BaseValidator implements Validator
         }
 
         if ( null!=projectDescDetail.getAliasDescription() && !"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
-            LOGGER.info("Global Project description detail is update: " + projectDescDetail.getIsUpdate());
             LOGGER.info("Basedescription  " + projectDescDetail.getAliasDescription());
-            boolean isAliasDescriptionAlreadyExisting = projectDescriptionService.isGlobalDescriptionAlreadyExisting(projectDescDetail.getDescType(), projectDescDetail.getAliasDescription());
+            boolean isAliasDescriptionAlreadyExisting = projectDescriptionService.isGlobalDescriptionAlreadyExisting(projectDescDetail.getBaseCategory(), projectDescDetail.getAliasDescription());
             if (isAliasDescriptionAlreadyExisting) {
                 errors.rejectValue("aliasDescription", "aliasDescription.incorrect", "Base Description Already Found To Be Existing.");
             }
