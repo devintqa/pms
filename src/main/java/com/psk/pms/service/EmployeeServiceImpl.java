@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Team;
@@ -8,6 +9,7 @@ import com.psk.pms.utils.MailClient;
 
 import org.apache.log4j.Logger;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private EmployeeDAO employeeDAO;
 	private MailClient mailClient;
 
-	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger
-			.getLogger(EmployeeServiceImpl.class);
+	private static final Logger LOGGER = Logger.getLogger(EmployeeServiceImpl.class);
 
 	public boolean isValidLogin(String userName, String password) {
 		int total = employeeDAO.getEmployeeLoginDetails(userName, password);
@@ -126,7 +126,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	@Override
-	public int manageUserAccess(Employee employee) {
+	public int manageUserAccess(HashMap<String, String> accessDetails) {
+        Employee employee = new Employee();
+        String action = "";
+        if ("enable".equalsIgnoreCase(accessDetails.get("action"))) {
+            action = Constants.ENABLE_EMPLOYEE_ACCESS;
+        } else if ("deny".equalsIgnoreCase(accessDetails.get("action"))) {
+            action = Constants.DENY_EMPLOYEE_ACCESS;
+        } else {
+            action = Constants.DISABLE_EMPLOYEE_ACCESS;
+        }
+        employee.setEnabled(action);
+        employee.setEmployeeId(accessDetails.get("user"));
+        LOGGER.info("Employee Id :" + employee.getEmployeeId()
+                + " Employee Enabled : " + employee.getEnabled()
+                + " Employee mail Id: " + employee.getEmployeeMail());
 		int status = employeeDAO.manageUserAccess(employee);
 		// mailClient.sendAccessMail(employee.getEmployeeMail(),
 		// employee.getEmployeeId(), employee.getEnabled());

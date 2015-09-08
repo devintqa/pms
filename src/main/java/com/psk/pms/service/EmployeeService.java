@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Team;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ public interface EmployeeService {
 
     List<Employee> getNewRegistrationRequest(String fromDate);
 
-    int manageUserAccess(Employee employee);
+    int manageUserAccess(HashMap<String, String> accessDetails);
 
     boolean isRoleExists(String roleName, String teamName);
 

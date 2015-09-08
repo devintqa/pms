@@ -56,32 +56,15 @@ public class EmployeeController {
     @Autowired
     EmployeeTeamFactory employeeTeamFactory;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(EmployeeController.class);
+    private static final Logger LOGGER = Logger.getLogger(EmployeeController.class);
 
     @RequestMapping(value = "/emp/myview/manageAccess.do", method = RequestMethod.POST, consumes = "application/json")
     public
     @ResponseBody
     int enableAccess(@RequestBody String json) {
         LOGGER.info("method = enableAccess() : request" + json);
-        HashMap<String, String> details = (HashMap<String, String>) JsonHelper
-                .jsonToMap(json);
-        Employee employee = new Employee();
-        String action = "";
-        if ("enable".equalsIgnoreCase(details.get("action"))) {
-            action = Constants.ENABLE_EMPLOYEE_ACCESS;
-        } else if ("deny".equalsIgnoreCase(details.get("action"))) {
-            action = Constants.DENY_EMPLOYEE_ACCESS;
-        } else {
-            action = Constants.DISABLE_EMPLOYEE_ACCESS;
-        }
-        employee.setEnabled(action);
-        employee.setEmployeeId(details.get("user"));
-        // employee.setEmployeeMail(details.get("mail"));
-        LOGGER.info("Employee Id :" + employee.getEmployeeId()
-                + " Employee Enabled : " + employee.getEnabled()
-                + " Employee mail Id: " + employee.getEmployeeMail());
-        int status = employeeService.manageUserAccess(employee);
+        HashMap<String, String> accessDetails = (HashMap<String, String>) JsonHelper.jsonToMap(json);
+        int status = employeeService.manageUserAccess(accessDetails);
         return status;
     }
 
