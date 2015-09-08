@@ -137,16 +137,6 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return count;
     }
 
-    @Override
-    public Map<String, String> fetchTeamNames() {
-        String sql = "select teamName from team";
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-        Map<String, String> teamNames = new LinkedHashMap<String, String>();
-        for (Map<String, Object> row : rows) {
-            teamNames.put((String) row.get("teamName"), (String) row.get("teamName"));
-        }
-        return teamNames;
-    }
 
     @Override
     public List<Employee> getNewRegistrationRequest(String fromDate) {

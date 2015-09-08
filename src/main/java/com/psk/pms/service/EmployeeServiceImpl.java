@@ -28,11 +28,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 		return true;
 	}
 
-	public Map<String, String> fetchTeamNames() {
-		Map<String, String> teamList = employeeDAO.fetchTeamNames();
-		return teamList;
-	}
-
 	public List<Employee> getNewRegistrationRequest(String fromDate) {
 
 		List<Employee> newRequests = employeeDAO

@@ -41,6 +41,9 @@ import com.psk.pms.service.ProjectService;
 import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
 
+import static com.psk.pms.Constants.PROJECT_TYPE;
+import static com.psk.pms.Constants.TEAM;
+
 @Controller
 @SessionAttributes("employeeObj")
 public class EmployeeController {
@@ -166,10 +169,10 @@ public class EmployeeController {
 
 
     @ModelAttribute("teamNames")
-    public Map<String, String> populateDepositDetailList() {
-        Map<String, String> teamNames = employeeService.fetchTeamNames();
-        teamNames.remove("Admin");
-        return teamNames;
+    public List<String> populateDepositDetailList() {
+        List<String> depositDetails = projectService.getDropDownValuesFor(TEAM);
+        depositDetails.remove("Admin");
+        return depositDetails;
     }
 
     @RequestMapping(value = "/emp/myview/searchEmployee/{empId}", method = RequestMethod.GET)

@@ -15,8 +15,6 @@ public interface EmployeeService {
 
     boolean signupEmployee(Employee employee);
 
-    Map<String, String> fetchTeamNames();
-
     Employee getEmployeeDetails(String empId);
 
     boolean updateEmployee(Employee employee);

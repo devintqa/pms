@@ -3,6 +3,7 @@ package com.psk.pms.controller;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.SignUpValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -24,6 +26,8 @@ public class SignUpController {
 	SignUpValidator signupValidator;
 	@Autowired
 	EmployeeService employeeService;
+    @Autowired
+    ProjectService projectService;
 
 	private static final Logger LOGGER = Logger
 			.getLogger(SignUpController.class);
@@ -66,8 +70,8 @@ public class SignUpController {
 	}
 
 	@ModelAttribute("employeeTeamList")
-	public Map<String, String> populateTeamList() {
-		Map<String, String> employeeTeam = employeeService.fetchTeamNames();
+	public List<String> populateTeamList() {
+		List<String> employeeTeam = projectService.getDropDownValuesFor(Constants.TEAM);
 		LOGGER.info("method = populateTeamList()");
 		return employeeTeam;
 	}

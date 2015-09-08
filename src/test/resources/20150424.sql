@@ -401,30 +401,6 @@ CREATE TABLE `subproject` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `team`
---
-
-DROP TABLE IF EXISTS `team`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `team` (
-  `teamName` varchar(100) NOT NULL,
-  `teamNumber` int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`teamNumber`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `team`
---
-
-LOCK TABLES `team` WRITE;
-/*!40000 ALTER TABLE `team` DISABLE KEYS */;
-INSERT INTO `team` VALUES ('Admin',1),('Account',2),('Management',3),('Purchase',4),('Technical',5),('Store',6),('Field',7);
-/*!40000 ALTER TABLE `team` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `userroles`
 --
 

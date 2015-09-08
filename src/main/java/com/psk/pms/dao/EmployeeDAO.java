@@ -35,8 +35,6 @@ public interface EmployeeDAO {
 
 	public boolean isEmployeeMobNumExisting(String mobile);
 
-	public Map<String, String> fetchTeamNames();
-
     boolean isRoleExists(String roleName, String teamName);
 
     boolean saveTeamRoles(Team team);
