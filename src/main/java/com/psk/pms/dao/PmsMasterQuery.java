@@ -88,8 +88,6 @@ public class PmsMasterQuery {
 
 	public static String FETCHITEMTYPES = "SELECT itemTypeName FROM itemtype";
 
-	public static String FETCH_DEPOSIT_TYPES = "SELECT depositTypeName FROM deposittype";
-
 	public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
 
 	public static String INSERTSUBPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, Quantity, Metric, "

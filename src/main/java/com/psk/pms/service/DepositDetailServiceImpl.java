@@ -125,10 +125,6 @@ public class DepositDetailServiceImpl implements DepositDetailService {
         return depositDetails;
     }
 
-    public List<String> fetchDepositTypes() {
-        return depositDetailDAO.fetchDepositTypes();
-    }
-
     public void deleteDeposit(Integer depositId) {
         depositDetailDAO.deleteDepositDetailById(depositId);
     }

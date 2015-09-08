@@ -22,6 +22,4 @@ public interface DepositDetailDAO {
 
     void deleteDepositDetailBySubProjectId(Integer subProjectId);
 
-    List<String> fetchDepositTypes();
-
 }

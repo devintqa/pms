@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.DepositDetailService;
+import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.DepositDetailValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static com.psk.pms.Constants.*;
+
 @Controller
 public class DepositDetailController extends BaseController {
 
@@ -26,6 +29,9 @@ public class DepositDetailController extends BaseController {
 
     @Autowired
     private DepositDetailService depositDetailService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @Autowired
     private DepositDetailValidator depositDetailValidator;
@@ -82,13 +88,13 @@ public class DepositDetailController extends BaseController {
 
     @RequestMapping(value = "/emp/myview/buildDepositDetail/createDepositDetail.do", method = RequestMethod.POST)
     public String saveDepositAction(@ModelAttribute("depositDetailForm") DepositDetail depositDetail,
-                                BindingResult result, Model model, SessionStatus status) {
+                                    BindingResult result, Model model, SessionStatus status) {
         Map<String, String> aliasProjectList = populateAliasProjectList();
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(depositDetail
                 .getAliasProjectName());
         boolean isDepositDetailSaveSuccessful = false;
 
-        if(new Integer("0").equals(depositDetail.getSubProjId())){
+        if (new Integer("0").equals(depositDetail.getSubProjId())) {
             depositDetail.setSubProjId(null);
         }
         LOGGER.info("depositDetail.getDepositFor()" + depositDetail.getDepositFor());
@@ -108,7 +114,7 @@ public class DepositDetailController extends BaseController {
             employee.setEmployeeId(depositDetail.getEmployeeId());
             model.addAttribute("employee", employee);
             model.addAttribute("depositDetailForm", depositDetail);
-            String successMessage = "Y".equalsIgnoreCase(depositDetail.getIsUpdate())?"Deposit Details Updation Successful":"Deposit Detail Creation Successful.";
+            String successMessage = "Y".equalsIgnoreCase(depositDetail.getIsUpdate()) ? "Deposit Details Updation Successful" : "Deposit Detail Creation Successful.";
             model.addAttribute("depositCreationMessage", successMessage);
             model.addAttribute("aliasProjectList", aliasProjectList);
             if (depositDetail.isSubProjectDepositDetail()) {
@@ -120,12 +126,11 @@ public class DepositDetailController extends BaseController {
     }
 
 
-
     @RequestMapping(value = "/emp/myview/updateDepositDetail/{employeeId}", method = RequestMethod.GET)
     public String updateDepositDetail(@PathVariable String employeeId,
-                            @RequestParam(value = "team", required = false) String team,
-                            @RequestParam(value = "action", required = false) String action,
-                            Model model) {
+                                      @RequestParam(value = "team", required = false) String team,
+                                      @RequestParam(value = "action", required = false) String action,
+                                      Model model) {
 
         LOGGER.info("method = updateDepositDetail() ,Action : " + action);
         Employee employee = new Employee();
@@ -140,7 +145,7 @@ public class DepositDetailController extends BaseController {
 
     @RequestMapping(value = "/emp/myview/searchDepositDetail/deleteDeposit.do", method = RequestMethod.POST)
     public void deleteDeposit(HttpServletRequest request,
-                          HttpServletResponse response) {
+                              HttpServletResponse response) {
         String depositId = request.getParameter("depositId");
         LOGGER.info("method = deleteDeposit() , depositId Id : " + depositId);
         Integer numericDepositId = Integer.parseInt(depositId);
@@ -149,19 +154,16 @@ public class DepositDetailController extends BaseController {
 
     @ModelAttribute("depositTypeList")
     public List<String> populateDepositTypeList() {
-        List<String> depositTypes = depositDetailService.fetchDepositTypes();
-        return depositTypes;
+        return projectService.getDropDownValuesFor(DEPOSIT_TYPE);
     }
 
     @ModelAttribute("depositDetailList")
     public List<String> populateDepositDetailList() {
-        List<String> depositDetails = Arrays.asList("EMD", "ASD", "WHA", "SD");
-        return depositDetails;
+        return projectService.getDropDownValuesFor(DEPOSIT_DETAIL);
     }
 
     @ModelAttribute("depositStatusList")
     public List<String> populateDepositStatusList() {
-        List<String> depositStatusList = Arrays.asList("Submitted", "Refunded");
-        return depositStatusList;
+        return projectService.getDropDownValuesFor(DEPOSIT_STATUS);
     }
 }

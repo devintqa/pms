@@ -33,8 +33,8 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
                     depositDetail.getAliasProjectName(), depositDetail.getAliasSubProjectName(), depositDetail.getDepositAmount(), depositDetail.getSqlDepositStartDate(),
                     depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getBgNumber(), depositDetail.getDepositPeriod(),
                     depositDetail.getDepositExtensionSqlDate(), depositDetail.getDepositLedgerNumber(),
-                    depositDetail.getLastUpdatedBy(), depositDetail.getLastUpdatedAt(), depositDetail.getDepositDetailSubmitter(), depositDetail.getDepDetail(),depositDetail.getDepositStatus()
-                    ,depositDetail.getSqlDepositRecievedDate(),depositDetail.getDepositRecievedComments()
+                    depositDetail.getLastUpdatedBy(), depositDetail.getLastUpdatedAt(), depositDetail.getDepositDetailSubmitter(), depositDetail.getDepDetail(), depositDetail.getDepositStatus()
+                    , depositDetail.getSqlDepositRecievedDate(), depositDetail.getDepositRecievedComments()
             });
         } else {
             jdbcTemplate.update(UPDATE_DEPOSIT_DETAIL, new Object[]
@@ -42,7 +42,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
                             depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getBgNumber(), depositDetail.getDepositPeriod(),
                             depositDetail.getDepositExtensionSqlDate(), depositDetail.getDepositLedgerNumber(),
                             depositDetail.getLastUpdatedBy(), depositDetail.getLastUpdatedAt(), depositDetail.getDepositDetailSubmitter(), depositDetail.getDepDetail(),
-                            depositDetail.getDepositStatus(),depositDetail.getSqlDepositRecievedDate(),depositDetail.getDepositRecievedComments(),depositDetail.getDepositId()
+                            depositDetail.getDepositStatus(), depositDetail.getSqlDepositRecievedDate(), depositDetail.getDepositRecievedComments(), depositDetail.getDepositId()
                     });
         }
         LOGGER.info("Save EMD DAO End");
@@ -154,15 +154,5 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         int noOfRows = jdbcTemplate.update(DELETE_DEPOSIT_DETAIL_BY_PROJECTID, new Object[]{projectId});
         LOGGER.info("method = deleteDepositDetailByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
     }
-
-
-    @Override
-    public List<String> fetchDepositTypes() {
-        LOGGER.info("method = fetchDepositTypes");
-        List<String> itemTypes = jdbcTemplate.queryForList(PmsMasterQuery.FETCH_DEPOSIT_TYPES, String.class);
-        LOGGER.info("No of rows fetched :" + itemTypes.size());
-        return itemTypes;
-    }
-
 
 }

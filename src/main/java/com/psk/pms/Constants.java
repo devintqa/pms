@@ -44,4 +44,7 @@ public interface Constants {
     //Drop down Types
     String TEAM = "team";
     String PROJECT_TYPE = "projectType";
+    String DEPOSIT_TYPE = "depositType";
+    String DEPOSIT_DETAIL = "depositDetail";
+    String DEPOSIT_STATUS = "depositStatus";
 }

@@ -90,30 +90,6 @@ CREATE TABLE `depositdetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `deposittype`
---
-
-DROP TABLE IF EXISTS `deposittype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `deposittype` (
-  `depositTypeId` int(10) NOT NULL AUTO_INCREMENT,
-  `depositTypeName` varchar(20) NOT NULL,
-  PRIMARY KEY (`depositTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `deposittype`
---
-
-LOCK TABLES `deposittype` WRITE;
-/*!40000 ALTER TABLE `deposittype` DISABLE KEYS */;
-INSERT INTO `deposittype` VALUES (1,'Bank Guarantee'),(2,'DD'),(3,'FD'),(4,'IVP'),(5,'KVP');
-/*!40000 ALTER TABLE `deposittype` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `employee`
 --
 
