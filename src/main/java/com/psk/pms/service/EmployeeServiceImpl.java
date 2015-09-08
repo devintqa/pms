@@ -46,7 +46,11 @@ public class EmployeeServiceImpl implements EmployeeService {
 	}
 
 	public Employee getEmployeeDetails(String empId) {
-		return employeeDAO.getEmployeeDetails(empId);
+		Employee employee = employeeDAO.getEmployeeDetails(empId);
+		if(employee.getEmployeeRole() == null){
+			employee.setEmployeeRole(Constants.NO_ROLE_TAGGED);
+		}
+		return employee;
 	}
 
 	public boolean isEmployeeExisting(String userName) {

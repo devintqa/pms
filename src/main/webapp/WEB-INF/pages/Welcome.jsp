@@ -43,6 +43,7 @@
 <div id="wrapper">
     <div>
         <h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
+        <h4 id="welcomeRole">Role: ${employeeObj.employeeRole}</h4>
 
         <h2
                 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noProjectCreated}</h2>

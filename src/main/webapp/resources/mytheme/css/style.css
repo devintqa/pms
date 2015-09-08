@@ -50,6 +50,11 @@ h1 {
 	margin-right: 50px;
 }
 
+#welcomeRole {
+	text-align: right;
+	margin-right: 50px;
+}
+
 #colon {
 	float: right;
 }
