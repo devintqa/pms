@@ -40,4 +40,8 @@ public interface Constants {
 	String PSK_SHEET = "PSK_DESC";
 	String GOV_SHEET = "GOV_DESC";
 	String NO_ROLE_TAGGED = "No Role Tagged";
+
+    //Drop down Types
+    String TEAM = "team";
+    String PROJECT_TYPE = "projectType";
 }

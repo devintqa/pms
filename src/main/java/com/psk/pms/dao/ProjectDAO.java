@@ -18,6 +18,7 @@ public interface ProjectDAO {
 
 	void deleteProject(Integer projectId);
 
-	List<String> getProjectTypes();
+    List<String>getDropDownValues(String type);
+
 
 }

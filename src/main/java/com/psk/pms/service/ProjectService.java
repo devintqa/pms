@@ -19,6 +19,5 @@ public interface ProjectService {
 
 	void deleteProject(Integer projectId);
 
-	List<String> getProjectTypes();
-
+    List<String> getDropDownValuesFor(String type);
 }

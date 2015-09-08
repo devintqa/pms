@@ -116,8 +116,6 @@ public class PmsMasterQuery {
 
     public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set Category = ?, WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
 
-	public static String FETCHPROJECTTYPES = "SELECT projectTypeName FROM projecttype";
-
 	public static String DEACTIVATEEXISTINGPRICES = "UPDATE pskpricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
 
 	public static String INSERTPRICEFORITEMS = "INSERT INTO pskpricedetail (projectId, subProjectId, itemName, itemUnit, itemPrice, itemType, priceFeed) "
@@ -145,6 +143,9 @@ public class PmsMasterQuery {
 
 
     public static String GET_ROLES = "select roleName from teamRole where teamName = ?";
+
+
+    public static String GET_DROP_DOWN_VALUES = "select Value from pmsmastertable where Type = ?";
 
 
 }

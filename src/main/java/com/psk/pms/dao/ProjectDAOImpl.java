@@ -1,21 +1,16 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
-import static com.psk.pms.dao.PmsMasterQuery.FETCHPROJECTTYPES;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.psk.pms.model.ProjectDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.psk.pms.model.ProjectDetail;
+import java.math.BigDecimal;
+import java.util.*;
+
+import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.GET_DROP_DOWN_VALUES;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -205,13 +200,13 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
-    public List<String> getProjectTypes() {
-        LOGGER.info("method = getProjectTypes");
-        List<String> projectTypes = new ArrayList<String>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(FETCHPROJECTTYPES);
+    public List<String> getDropDownValues(String type) {
+        LOGGER.info("method = getDropDownValues for type "+type);
+        List<String> values = new ArrayList<String>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DROP_DOWN_VALUES, new Object[]{type});
         for (Map<String, Object> row : rows) {
-            projectTypes.add(String.valueOf(row.get("projectTypeName")));
+            values.add(String.valueOf(row.get("Value")));
         }
-        return projectTypes;
+        return values;
     }
 }

@@ -339,31 +339,6 @@ CREATE TABLE `projectdesc` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `projecttype`
---
-
-DROP TABLE IF EXISTS `projecttype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `projecttype` (
-  `projectTypeId` int(10) NOT NULL AUTO_INCREMENT,
-  `projectTypeName` varchar(20) NOT NULL,
-  PRIMARY KEY (`projectTypeId`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping data for table `projecttype`
---
-
-LOCK TABLES `projecttype` WRITE;
-/*!40000 ALTER TABLE `projecttype` DISABLE KEYS */;
-INSERT INTO `projecttype` VALUES (1,'PWD'),(2,'CPWD'),(3,'MRPL'),(4,'Private'),(5,'NPCC'),(6,'NBCC'),(7,'DAE'),(8,'NIT');
-/*!40000 ALTER TABLE `projecttype` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `quotedprojectdesc`
 --
 
@@ -578,6 +553,77 @@ CREATE TABLE `teamRole` (
   PRIMARY KEY (`teamRoleId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+
+--
+-- Table structure for table `pmsmastertable`
+--
+
+DROP TABLE IF EXISTS `pmsmastertable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pmsmastertable` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Type` varchar(100) NOT NULL,
+  `Value` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+--
+-- Dumping data for table `pmsmastertable`
+--
+
+LOCK TABLES `pmsmastertable` WRITE;
+/*!40000 ALTER TABLE `pmsmastertable` DISABLE KEYS */;
+
+
+INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
+,('team','Account')
+,('team','Management')
+,('team','Purchase')
+,('team','Technical')
+,('team','Store')
+,('team','Field')
+,('projectType','PWD')
+,('projectType','CPWD')
+,('projectType','MRPL')
+,('projectType','Private')
+,('projectType','NPCC')
+,('projectType','NBCC')
+,('projectType','DAE')
+,('projectType','NIT')
+,('depositDetail','EMD')
+,('depositDetail','ASD')
+,('depositDetail','WHA')
+,('depositDetail','SD')
+,('depositStatus','Submitted')
+,('depositStatus','Refunded')
+,('metric','CUM')
+,('metric','SQM')
+,('metric','NOS')
+,('metric','NO')
+,('metric','RM')
+,('metric','KG')
+,('metric','QTL')
+,('metric','MT')
+,('depositType','Bank Guarantee')
+,('depositType','DD')
+,('depositType','FD')
+,('depositType','IVP')
+,('depositType','KVP')
+,('itemType','Material')
+,('itemType','Labour')
+,('itemType','Machinery')
+,('itemType','Other');
+
+
+/*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
+UNLOCK TABLES;
 
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;
 DELIMITER $$
