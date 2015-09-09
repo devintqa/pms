@@ -45,7 +45,7 @@ public interface ItemService {
 
     List<String> getItemNames();
 
-    List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+    List<ItemDetail> getBaseItemNames(Map<String, Object> request, String itemType);
 
     DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 

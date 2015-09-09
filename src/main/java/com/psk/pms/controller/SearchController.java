@@ -230,7 +230,7 @@ public class SearchController extends BaseController {
         Map<String, Object> request = new Hashtable<String, Object>();
         request.put("itemName", itemName.toUpperCase());
         request.put("itemType", itemType.toUpperCase());
-        List<ItemDetail> itemsDetail = itemService.getBaseItemNames(request);
+        List<ItemDetail> itemsDetail = itemService.getBaseItemNames(request,itemType);
         return itemsDetail;
     }
 
