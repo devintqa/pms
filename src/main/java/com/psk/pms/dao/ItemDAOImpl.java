@@ -1,40 +1,21 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.DEACTIVATEEXISTINGPRICES;
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJDESCAITEMBYPROJECTDESCITEMID;
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJDESCITEMBYPROJECTID;
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJDESCITEMBYSUBPROJECTID;
-import static com.psk.pms.dao.PmsMasterQuery.FETCHITEMTYPES;
-import static com.psk.pms.dao.PmsMasterQuery.FETCHUNIQUEITEMUNIT;
-import static com.psk.pms.dao.PmsMasterQuery.INSERTPRICEFORITEMS;
-import static com.psk.pms.dao.PmsMasterQuery.SAVEITEMS;
-
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import com.psk.pms.Constants;
+import com.psk.pms.constants.DescriptionType;
+import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import com.psk.pms.Constants;
-import com.psk.pms.constants.DescriptionType;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ItemRateDescription;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectItemDescription;
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -342,13 +323,6 @@ public class ItemDAOImpl implements ItemDAO {
 		return itemsDetail;
 	}
 
-	@Override
-	public List < String > fetchItemTypes() {
-		LOGGER.info("method = fetchItemTypes");
-		List < String > itemTypes = jdbcTemplate.queryForList(FETCHITEMTYPES, String.class);
-		LOGGER.info("No of rows fetched :" + itemTypes.size());
-		return itemTypes;
-	}
 
 	@Override
 	public List < String > fetchUniqueItemUnits() {

@@ -47,4 +47,5 @@ public interface Constants {
     String DEPOSIT_TYPE = "depositType";
     String DEPOSIT_DETAIL = "depositDetail";
     String DEPOSIT_STATUS = "depositStatus";
+    String ITEM_TYPE = "itemType";
 }

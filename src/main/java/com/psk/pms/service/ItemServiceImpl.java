@@ -130,11 +130,6 @@ public class ItemServiceImpl implements ItemService {
         return itemsDetail;
     }
 
-    public List<String> fetchItemTypes() {
-        List<String> itemTypes = itemDAO.fetchItemTypes();
-        return itemTypes;
-    }
-
     public List<String> fetchUniqueItemUnits() {
         List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
         return itemUnits;

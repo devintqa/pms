@@ -43,6 +43,8 @@ import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.FileUploadValidator;
 import com.psk.pms.validator.ItemValidator;
 
+import static com.psk.pms.Constants.ITEM_TYPE;
+
 @Controller
 public class ItemController {
 
@@ -73,7 +75,6 @@ public class ItemController {
         Item item = new Item();
         item.setEmployeeId(employeeId);
         model.addAttribute("itemForm", item);
-        setItemTypesInModel(model);
         return "BuildItem";
     }
 
@@ -99,7 +100,6 @@ public class ItemController {
             @ModelAttribute("itemForm") Item item,
             BindingResult result, Model model, SessionStatus status) throws IOException {
         boolean isItemSaveSuccessful = false;
-        setItemTypesInModel(model);
         List<MultipartFile> files = item.getFiles();
         if (files.size() != 0 && item.isBaseItem()) {
             fileUploadValidator.validateFileExistance(result, files);
@@ -109,7 +109,6 @@ public class ItemController {
         if (!result.hasErrors()) {
             if (files.size() != 0 && item.isBaseItem()) {
                 if (fileUploadServiceUnsuccessful(item, model)) {
-                    setItemTypesInModel(model);
                     return "BuildItem";
                 } else {
                     model.addAttribute("itemCreationMessage", "File Upload Successful.");
@@ -119,7 +118,6 @@ public class ItemController {
             } else {
                 isItemSaveSuccessful = itemService.createEditItem(item);
                 if (result.hasErrors() || !isItemSaveSuccessful) {
-                    setItemTypesInModel(model);
                     return "BuildItem";
                 } else {
                     status.setComplete();
@@ -135,11 +133,6 @@ public class ItemController {
             }
         }
         return "BuildItem";
-    }
-
-    private void setItemTypesInModel(Model model) {
-        List<String> itemTypes = fetchItemTypes();
-        model.addAttribute("itemTypes", itemTypes);
     }
 
     private boolean fileUploadServiceUnsuccessful(Item item, Model model) throws IOException {
@@ -169,7 +162,6 @@ public class ItemController {
 
         projectConfiguration = itemService.getProjectItemConfiguration(projectConfiguration, false);
         model.addAttribute("projectItemForm", projectConfiguration);
-        model.addAttribute("itemTypes", fetchItemTypes());
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(projectConfiguration.getItemDetail(), new TypeToken<List<ItemDetail>>() {
         }.getType());
@@ -185,34 +177,25 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/emp/myview/configureItems/syncItems.do", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean syncItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException {
-    	ObjectMapper mapper = new ObjectMapper();
-    	List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
-    	projectItemConfiguration.setItemDetail(itemList);
-    	List <com.psk.pms.model.ProjectConfiguration.ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(projectItemConfiguration.getProjId());
-    	
-    	System.out.println("missingItemDetails "+missingItemDetails.size());
-    	itemList.addAll(missingItemDetails);
-    	projectItemConfiguration.setItemDetail(itemList);
-    	boolean status = itemService.configureItemPrice(projectItemConfiguration);
-    	return status;
-    }
+    public
+    @ResponseBody
+    boolean syncItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
+        projectItemConfiguration.setItemDetail(itemList);
+        List<com.psk.pms.model.ProjectConfiguration.ItemDetail> missingItemDetails = itemService.getMissingProjectDescriptionItems(projectItemConfiguration.getProjId());
 
-    private List<String> fetchItemTypes() {
-        LOGGER.info("method = fetchTypes()");
-        List<String> result = new ArrayList<String>();
-        List<String> itemNames = itemService.fetchItemTypes();
-        LOGGER.info("The Item Name Size:" + itemNames.size());
-        for (String item : itemNames) {
-            result.add(item);
-        }
-        return result;
+        System.out.println("missingItemDetails " + missingItemDetails.size());
+        itemList.addAll(missingItemDetails);
+        projectItemConfiguration.setItemDetail(itemList);
+        boolean status = itemService.configureItemPrice(projectItemConfiguration);
+        return status;
     }
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/loadProjDescItems.do")
     public String loadProjDescItems(Model model, @RequestParam String projDescSerial,
                                     @RequestParam String projId, @RequestParam String subProjId,
-                                    @RequestParam String projDescId, @RequestParam String employeeId, 
+                                    @RequestParam String projDescId, @RequestParam String employeeId,
                                     @RequestParam String descType) {
         DescItemDetail descItemDetail = new DescItemDetail();
         descItemDetail.setProjId(new Integer(projId));
@@ -222,7 +205,8 @@ public class ItemController {
         descItemDetail.setDescType(descType);
         descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
         Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>(){}.getType());
+        JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
+        }.getType());
         if (!element.isJsonArray()) {
 
         }
@@ -231,16 +215,16 @@ public class ItemController {
         descItemDetail.setEmployeeId(employeeId);
         model.addAttribute("descItemForm", descItemDetail);
         ProjDescDetail projDescDetail = null;
-        projDescDetail = projectDescService.getProjectDescDetail(projDescId, null,descType);
+        projDescDetail = projectDescService.getProjectDescDetail(projDescId, null, descType);
         model.addAttribute("projDescForm", projDescDetail);
-        model.addAttribute("itemTypes", fetchItemTypes());
-
         return "DescItem";
     }
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes = "application/json")
-    public @ResponseBody boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail) 
-    		throws JsonParseException, JsonMappingException, IOException {
+    public
+    @ResponseBody
+    boolean saveProjDescItems(@RequestBody DescItemDetail descItemDetail)
+            throws JsonParseException, JsonMappingException, IOException {
         ObjectMapper mapper = new ObjectMapper();
         List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
         descItemDetail.setItemDetail(itemList);
@@ -279,7 +263,7 @@ public class ItemController {
     }
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")
-    public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId,  @RequestParam String descType) {
+    public String loadBaseDescItems(Model model, @RequestParam String baseDescId, @RequestParam String employeeId, @RequestParam String descType) {
 
         DescItemDetail descItemDetail = new DescItemDetail();
         descItemDetail.setBaseDescId(new Integer(baseDescId));
@@ -297,15 +281,17 @@ public class ItemController {
         descItemDetail.setEmployeeId(employeeId);
         descItemDetail.setDescType(descType);
         model.addAttribute("descItemForm", descItemDetail);
-
         ProjDescDetail projDescDetail = new ProjDescDetail();
         model.addAttribute("baseDescForm", projDescDetail);
-        model.addAttribute("itemTypes", fetchItemTypes());
-
         ProjDescDetail baseDescDetail = projectDescService.getBaseDescDetail(baseDescId);
         model.addAttribute("baseDescForm", baseDescDetail);
-        model.addAttribute("itemTypes", fetchItemTypes());
         return "BaseItem";
+    }
+
+    @ModelAttribute("itemTypes")
+    public List<String> fetchItemTypes() {
+        LOGGER.info("method = fetchTypes()");
+        return projectService.getDropDownValuesFor(ITEM_TYPE);
     }
 
 

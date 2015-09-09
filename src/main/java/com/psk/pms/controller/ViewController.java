@@ -1,10 +1,12 @@
 package com.psk.pms.controller;
 
 import com.google.gson.Gson;
+import com.psk.pms.Constants;
 import com.psk.pms.model.*;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.ViewValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.psk.pms.Constants.ITEM_TYPE;
+
 @Controller
 public class ViewController extends BaseController {
 
@@ -27,6 +31,9 @@ public class ViewController extends BaseController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @Autowired
     private ProjectDescriptionService projectDescriptionService;
@@ -151,7 +158,7 @@ public class ViewController extends BaseController {
     }
 
     private void setModelAttribute(Model model, ViewDetail viewDetail) {
-        List<String> itemTypes = itemService.fetchItemTypes();
+        List<String> itemTypes = projectService.getDropDownValuesFor(ITEM_TYPE);
         itemTypes.add(0, "--Please Select--");
         viewDetail.setItemType(itemTypes.get(0));
         model.addAttribute("itemTypes", itemTypes);

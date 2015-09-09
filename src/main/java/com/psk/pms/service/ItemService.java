@@ -27,17 +27,15 @@ public interface ItemService {
 
     List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
 
-	boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
-	
-	boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
+    boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
 
-	boolean insertDataDescription(DescItemDetail descItemDetail);
+    boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
+
+    boolean insertDataDescription(DescItemDetail descItemDetail);
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
 
     void deleteItemByDescriptionItemId(Integer subProjectid);
-
-    List<String> fetchItemTypes();
 
     List<String> fetchUniqueItemUnits();
 
@@ -47,13 +45,13 @@ public interface ItemService {
 
     List<String> getItemNames();
 
-	List<ItemDetail> getBaseItemNames(Map<String, Object> request);
+    List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 
-	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
+    DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 
-	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
+    List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
 
     List<String> getItemNames(String itemType, String projectId);
-    
+
     List<com.psk.pms.model.ProjectConfiguration.ItemDetail> getMissingProjectDescriptionItems(Integer projectId);
 }

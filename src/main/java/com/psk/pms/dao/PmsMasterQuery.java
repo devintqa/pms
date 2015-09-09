@@ -86,8 +86,6 @@ public class PmsMasterQuery {
 
 	public static String DELETEPROJDESCAITEMBYPROJECTDESCITEMID = "DELETE FROM projdescitem WHERE DescItemId = ?";
 
-	public static String FETCHITEMTYPES = "SELECT itemTypeName FROM itemtype";
-
 	public static String FETCHUNIQUEITEMUNIT = "SELECT DISTINCT itemUnit FROM itemcodes";
 
 	public static String INSERTSUBPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SubProjId,SerialNumber ,WorkType, Quantity, Metric, "

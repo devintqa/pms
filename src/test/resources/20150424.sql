@@ -184,31 +184,6 @@ INSERT INTO `itemcodes` VALUES ('CEMENT','Bag',1,'MATERIAL'),('RIVER SAND','Bag'
 UNLOCK TABLES;
 
 --
--- Table structure for table `itemtype`
---
-
-DROP TABLE IF EXISTS `itemtype`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `itemtype` (
-  `itemId` int(10) NOT NULL AUTO_INCREMENT,
-  `itemTypeName` varchar(20) NOT NULL,
-  PRIMARY KEY (`itemId`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-
---
--- Dumping data for table `itemtype`
---
-
-LOCK TABLES `itemtype` WRITE;
-/*!40000 ALTER TABLE `itemtype` DISABLE KEYS */;
-INSERT INTO `itemtype` VALUES (1,'Material'),(2,'Labour'),(3,'Machinery'),(4,'Other');
-/*!40000 ALTER TABLE `itemtype` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `pricedetail`
 --
 
