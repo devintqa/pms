@@ -5,6 +5,8 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.Constants;
+import com.psk.pms.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,203 +30,211 @@ import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.validator.BaseDescriptionValidator;
 import com.psk.pms.validator.ProjDescDetailValidator;
 
+import static com.psk.pms.Constants.METRIC;
+import static java.util.Collections.sort;
+
 @Controller
 public class DescriptionController extends BaseController {
 
-	@Autowired
-	private ProjDescDetailValidator projDescDetailValidator;
+    @Autowired
+    private ProjDescDetailValidator projDescDetailValidator;
 
-	@Autowired
-	private ProjectDescriptionService projectDescriptionService;
+    @Autowired
+    private ProjectDescriptionService projectDescriptionService;
 
-	@Autowired
-	private ItemService itemService;
+    @Autowired
+    private ItemService itemService;
 
-	@Autowired
-	private BaseDescriptionValidator baseDescriptionValidator;
+    @Autowired
+    private ProjectService projectService;
 
-	private static final Logger LOGGER = Logger.getLogger(DescriptionController.class);
 
-	@ModelAttribute("itemUnits")
-	public List < String > populateItemUnits() {
-		return itemService.fetchUniqueItemUnits();
-	}
+    @Autowired
+    private BaseDescriptionValidator baseDescriptionValidator;
 
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildProjDesc(@PathVariable String employeeId, @RequestParam(value = "team", required = true) String team, 
-			@RequestParam(value = "action", required = false) String action, 
-			@RequestParam(value = "project", required = false) String project, 
-			@RequestParam(value = "subproject", required = false) String subProject, 
-			@RequestParam(value = "desc", required = false) String descId, 
-			@RequestParam(value = "type", required = false) String descType,
-			Model model) {
-		ProjDescDetail projDescDetail = null;
-		if (null != descId) {
-			Map < String, String > aliasProjectList = new HashMap < String, String > ();
-			Map < String, String > subAliasProjectList = new HashMap < String, String > ();
-			projDescDetail = projectDescriptionService.getProjectDescDetail(descId,subProject,descType);
-			projDescDetail.setIsUpdate("Y");
-			projDescDetail.setEmployeeId(employeeId);
-			aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
-			model.addAttribute("aliasProjectList", aliasProjectList);
-			projDescDetail.setDescType(descType);
+    private static final Logger LOGGER = Logger.getLogger(DescriptionController.class);
 
-			if (null != projDescDetail.getAliasSubProjectName()) {
-				subAliasProjectList.put(projDescDetail.getSubProjId().toString(), projDescDetail.getAliasSubProjectName());
-				projDescDetail.setSubProjectDesc(true);
-				model.addAttribute("subAliasProjectList", subAliasProjectList);
-			}
+    @ModelAttribute("itemUnits")
+    public List<String> populateItemUnits() {
+        return itemService.fetchUniqueItemUnits();
+    }
 
-			model.addAttribute("projDescForm", projDescDetail);
-		} 
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/{employeeId}", method = RequestMethod.GET)
+    public String buildProjDesc(@PathVariable String employeeId, @RequestParam(value = "team", required = true) String team,
+                                @RequestParam(value = "action", required = false) String action,
+                                @RequestParam(value = "project", required = false) String project,
+                                @RequestParam(value = "subproject", required = false) String subProject,
+                                @RequestParam(value = "desc", required = false) String descId,
+                                @RequestParam(value = "type", required = false) String descType,
+                                Model model) {
+        ProjDescDetail projDescDetail = null;
+        if (null != descId) {
+            Map<String, String> aliasProjectList = new HashMap<String, String>();
+            Map<String, String> subAliasProjectList = new HashMap<String, String>();
+            projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject, descType);
+            projDescDetail.setIsUpdate("Y");
+            projDescDetail.setEmployeeId(employeeId);
+            aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
+            model.addAttribute("aliasProjectList", aliasProjectList);
+            projDescDetail.setDescType(descType);
 
-		return "BuildDescription";
-	}
+            if (null != projDescDetail.getAliasSubProjectName()) {
+                subAliasProjectList.put(projDescDetail.getSubProjId().toString(), projDescDetail.getAliasSubProjectName());
+                projDescDetail.setSubProjectDesc(true);
+                model.addAttribute("subAliasProjectList", subAliasProjectList);
+            }
 
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
-	public String saveProjDescAction(@ModelAttribute("projDescForm") ProjDescDetail projDescDetail, BindingResult result, Model model, SessionStatus status) {
-		boolean isProjectSaveSuccessful = false;
-		Map < String, String > aliasProjectList = populateAliasProjectList();
-		projDescDetailValidator.validate(projDescDetail, result);
-		LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
-		if (!result.hasErrors()) {
-			isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
-		}
-		if (result.hasErrors() || !isProjectSaveSuccessful) {
-			model.addAttribute("aliasProjectList", aliasProjectList);
-			model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
-			return "BuildDescription";
-		} else {
-			if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
-				status.setComplete();
-				Employee employee = new Employee();
-				employee.setEmployeeId(projDescDetail.getEmployeeId());
-				model.addAttribute("employee", employee);
-				model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
-				model.addAttribute("aliasProjectList", aliasProjectList);
-				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
-				return "BuildDescription";
-			} else {
-				isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
-				String subProjId = null;
-				if(null!=projDescDetail.getSubProjId()){
-					subProjId = projDescDetail.getSubProjId().toString();
-				}
-				projDescDetail = projectDescriptionService.getProjectDescDetail(projDescDetail.getProjDescId().toString(), 
-																				subProjId,
-																				projDescDetail.getDescType());
-				projDescDetail.setIsUpdate("Y");
-				projDescDetail.setEmployeeId(projDescDetail.getEmployeeId());
-				aliasProjectList = new HashMap < String, String > ();
-				aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
-				model.addAttribute("aliasProjectList", aliasProjectList);
-				model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
-				model.addAttribute("projDescForm", projDescDetail);
-				model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
-			}
-			return "BuildDescription";
-		}
-	}
+            model.addAttribute("projDescForm", projDescDetail);
+        }
 
-	@RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
-	public void deleteProjectDescriptionDetail(HttpServletRequest request,
-			HttpServletResponse response) {
-		String projectDescriptionId = request.getParameter("projectDescriptionId");
-		String projectDescriptionType = request.getParameter("projectDescriptionType");
-		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-		projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId,projectDescriptionType);
-	}
+        return "BuildDescription";
+    }
 
-	@RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)@ResponseBody
-	public String getSubAliasProject(HttpServletRequest request,
-			HttpServletResponse response) {
-		LOGGER.info("method = getSubAliasProject() , Sub Project Id : " + request.getParameter("subProjId"));
-		Map < String, String > subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
-		subAliasProjectList.put("0", "--Please Select--");
-		Gson gson = new Gson();
-		String subAliasProjectJson = gson.toJson(subAliasProjectList);
-		return subAliasProjectJson;
-	}
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
+    public String saveProjDescAction(@ModelAttribute("projDescForm") ProjDescDetail projDescDetail, BindingResult result, Model model, SessionStatus status) {
+        boolean isProjectSaveSuccessful = false;
+        Map<String, String> aliasProjectList = populateAliasProjectList();
+        projDescDetailValidator.validate(projDescDetail, result);
+        LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
+        if (!result.hasErrors()) {
+            isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
+        }
+        if (result.hasErrors() || !isProjectSaveSuccessful) {
+            model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+            return "BuildDescription";
+        } else {
+            if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+                status.setComplete();
+                Employee employee = new Employee();
+                employee.setEmployeeId(projDescDetail.getEmployeeId());
+                model.addAttribute("employee", employee);
+                model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
+                model.addAttribute("aliasProjectList", aliasProjectList);
+                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+                return "BuildDescription";
+            } else {
+                isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
+                String subProjId = null;
+                if (null != projDescDetail.getSubProjId()) {
+                    subProjId = projDescDetail.getSubProjId().toString();
+                }
+                projDescDetail = projectDescriptionService.getProjectDescDetail(projDescDetail.getProjDescId().toString(),
+                        subProjId,
+                        projDescDetail.getDescType());
+                projDescDetail.setIsUpdate("Y");
+                projDescDetail.setEmployeeId(projDescDetail.getEmployeeId());
+                aliasProjectList = new HashMap<String, String>();
+                aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
+                model.addAttribute("aliasProjectList", aliasProjectList);
+                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+                model.addAttribute("projDescForm", projDescDetail);
+                model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
+            }
+            return "BuildDescription";
+        }
+    }
 
-	@ModelAttribute("workTypeList")
-	public Map < String, String > populateWorkTypeList() {
-		Map < String, String > workType = new LinkedHashMap < String, String > ();
-		workType.put("Main Work", "Main Work");
-		workType.put("Electrical", "Electrical");
-		workType.put("Plumbing", "Plumbing");
-		return workType;
-	}
+    @RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
+    public void deleteProjectDescriptionDetail(HttpServletRequest request,
+                                               HttpServletResponse response) {
+        String projectDescriptionId = request.getParameter("projectDescriptionId");
+        String projectDescriptionType = request.getParameter("projectDescriptionType");
+        LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+        projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId, projectDescriptionType);
+    }
 
-	public List < ProjectDetail > getProjectDocumentList() {
-		List < ProjectDetail > projectDocumentList = projectService.getProjectDocumentList();
-		return projectDocumentList;
-	}
+    @RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String getSubAliasProject(HttpServletRequest request,
+                                     HttpServletResponse response) {
+        LOGGER.info("method = getSubAliasProject() , Sub Project Id : " + request.getParameter("subProjId"));
+        Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+        subAliasProjectList.put("0", "--Please Select--");
+        Gson gson = new Gson();
+        String subAliasProjectJson = gson.toJson(subAliasProjectList);
+        return subAliasProjectJson;
+    }
 
-	public List < SubProjectDetail > getSubProjectDocumentList(Integer projectId) {
-		List < SubProjectDetail > subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
-		return subProjectDocumentList;
-	}
+    @ModelAttribute("workTypeList")
+    public Map<String, String> populateWorkTypeList() {
+        Map<String, String> workType = new LinkedHashMap<String, String>();
+        workType.put("Main Work", "Main Work");
+        workType.put("Electrical", "Electrical");
+        workType.put("Plumbing", "Plumbing");
+        return workType;
+    }
 
-	private Map < String, String > fetchSubAliasProjectList(String aliasProjectName) {
-		Map < String, String > subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
-		subAliasProjectList.put("0", "--Please Select--");
-		return subAliasProjectList;
-	}
+    public List<ProjectDetail> getProjectDocumentList() {
+        List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
+        return projectDocumentList;
+    }
 
-	@RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
-	public String buildBaseProjDesc(@PathVariable String employeeId, 
-			@RequestParam(value = "team", required = true) String team, 
-			@RequestParam(value = "action", required = false) String action, 
-			@RequestParam(value = "desc", required = false) String descId,
-			Model model) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		if (null != action && "edit".equalsIgnoreCase(action)) {
-			projDescDetail = projectDescriptionService.getBaseDescription(descId);
-			projDescDetail.setIsUpdate("Y");
-			model.addAttribute("baseDescForm", projDescDetail);
-			return "BaseDescription";
-		}
+    public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+        List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
+        return subProjectDocumentList;
+    }
 
-		projDescDetail.setEmployeeId(employeeId);
-		projDescDetail.setQuantity("1");
-		model.addAttribute("baseDescForm", projDescDetail);
-		return "BaseDescription";
-	}
+    private Map<String, String> fetchSubAliasProjectList(String aliasProjectName) {
+        Map<String, String> subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
+        subAliasProjectList.put("0", "--Please Select--");
+        return subAliasProjectList;
+    }
 
-	@RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
-	public String saveBaseProjDesc(@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
-			BindingResult result, Model model, SessionStatus status) {
-		baseDescriptionValidator.validate(projDescDetail, result);
-		LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
-		if (result.hasErrors()) {
-			return "BaseDescription";
-		}
-		model.addAttribute("baseDescForm", projDescDetail);
-		if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
-			model.addAttribute("projDescCreationMessage",
-					"Base Description updated successfully");
-		} else {
-			model.addAttribute("projDescCreationMessage",
-					"Base Description creation successfully");
-		}
-		projectDescriptionService.saveBaseProjectDescription(projDescDetail);
-		return "BaseDescription";
-	}
+    @RequestMapping(value = "/emp/myview/buildBaseDesc/{employeeId}", method = RequestMethod.GET)
+    public String buildBaseProjDesc(@PathVariable String employeeId,
+                                    @RequestParam(value = "team", required = true) String team,
+                                    @RequestParam(value = "action", required = false) String action,
+                                    @RequestParam(value = "desc", required = false) String descId,
+                                    Model model) {
+        ProjDescDetail projDescDetail = new ProjDescDetail();
+        if (null != action && "edit".equalsIgnoreCase(action)) {
+            projDescDetail = projectDescriptionService.getBaseDescription(descId);
+            projDescDetail.setIsUpdate("Y");
+            model.addAttribute("baseDescForm", projDescDetail);
+            return "BaseDescription";
+        }
 
-	@RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
-	public void deleteGlobalProjectDescriptionDetail(
-			HttpServletRequest request, HttpServletResponse response) {
-		String projectDescriptionId = request.getParameter("baseDescriptionId");
-		LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-		projectDescriptionService.deleteBaseProjectDescription(projectDescriptionId);
-	}
+        projDescDetail.setEmployeeId(employeeId);
+        projDescDetail.setQuantity("1");
+        model.addAttribute("baseDescForm", projDescDetail);
+        return "BaseDescription";
+    }
+
+    @RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
+    public String saveBaseProjDesc(@ModelAttribute("baseDescForm") ProjDescDetail projDescDetail,
+                                   BindingResult result, Model model, SessionStatus status) {
+        baseDescriptionValidator.validate(projDescDetail, result);
+        LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
+        if (result.hasErrors()) {
+            return "BaseDescription";
+        }
+        model.addAttribute("baseDescForm", projDescDetail);
+        if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+            model.addAttribute("projDescCreationMessage",
+                    "Base Description updated successfully");
+        } else {
+            model.addAttribute("projDescCreationMessage",
+                    "Base Description creation successfully");
+        }
+        projectDescriptionService.saveBaseProjectDescription(projDescDetail);
+        return "BaseDescription";
+    }
+
+    @RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
+    public void deleteGlobalProjectDescriptionDetail(
+            HttpServletRequest request, HttpServletResponse response) {
+        String projectDescriptionId = request.getParameter("baseDescriptionId");
+        LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+        projectDescriptionService.deleteBaseProjectDescription(projectDescriptionId);
+    }
 
 
     @ModelAttribute("metricList")
     public List<String> metricList() {
-        List<String> metricList= Arrays.asList("CUM", "SQM", "NOS", "NO", "RM", "KG", "QTL", "MT");
-        Collections.sort(metricList);
-        return metricList;
+        List<String> metrics = projectService.getDropDownValuesFor(METRIC);
+        Collections.sort(metrics);
+        return metrics;
 
     }
 }
