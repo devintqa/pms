@@ -1,12 +1,16 @@
 package com.psk.pms.controller;
 
-import java.util.*;
+import static com.psk.pms.Constants.METRIC;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.psk.pms.Constants;
-import com.psk.pms.service.ProjectService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,11 +31,9 @@ import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.BaseDescriptionValidator;
 import com.psk.pms.validator.ProjDescDetailValidator;
-
-import static com.psk.pms.Constants.METRIC;
-import static java.util.Collections.sort;
 
 @Controller
 public class DescriptionController extends BaseController {

@@ -1,26 +1,34 @@
 package com.psk.pms.controller;
 
+import static com.psk.pms.Constants.DEPOSIT_DETAIL;
+import static com.psk.pms.Constants.DEPOSIT_STATUS;
+import static com.psk.pms.Constants.DEPOSIT_TYPE;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.support.SessionStatus;
+
 import com.google.gson.Gson;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.DepositDetailValidator;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import static com.psk.pms.Constants.*;
 
 @Controller
 public class DepositDetailController extends BaseController {

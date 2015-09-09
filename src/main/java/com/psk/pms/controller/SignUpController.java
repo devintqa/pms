@@ -1,10 +1,7 @@
 package com.psk.pms.controller;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.Employee;
-import com.psk.pms.service.EmployeeService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.validator.SignUpValidator;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 
-import java.util.List;
-import java.util.Map;
+import com.psk.pms.Constants;
+import com.psk.pms.model.Employee;
+import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.SignUpValidator;
 
 @Controller
 public class SignUpController {

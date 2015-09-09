@@ -1,25 +1,35 @@
 package com.psk.pms.controller;
 
-import com.google.gson.Gson;
-import com.psk.pms.Constants;
-import com.psk.pms.model.*;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
-import com.psk.pms.service.ItemService;
-import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.validator.ViewValidator;
+import static com.psk.pms.Constants.ITEM_TYPE;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
-
-import static com.psk.pms.Constants.ITEM_TYPE;
+import com.google.gson.Gson;
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.ProjDescComparisonDetail;
+import com.psk.pms.model.ProjectConfiguration;
+import com.psk.pms.model.ProjectConfiguration.ItemDetail;
+import com.psk.pms.model.ProjectItemDescription;
+import com.psk.pms.model.ViewDetail;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.ViewValidator;
 
 @Controller
 public class ViewController extends BaseController {

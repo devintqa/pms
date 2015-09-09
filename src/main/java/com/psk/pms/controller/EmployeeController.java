@@ -1,12 +1,13 @@
 package com.psk.pms.controller;
 
+import static com.psk.pms.Constants.TEAM;
+
 import java.io.IOException;
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.psk.pms.Constants;
 import com.psk.pms.factory.EmployeeTeam;
 import com.psk.pms.factory.EmployeeTeamFactory;
 import com.psk.pms.model.Employee;
@@ -40,9 +40,6 @@ import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.utils.JsonHelper;
 import com.psk.pms.validator.EmployeeValidator;
-
-import static com.psk.pms.Constants.PROJECT_TYPE;
-import static com.psk.pms.Constants.TEAM;
 
 @Controller
 @SessionAttributes("employeeObj")

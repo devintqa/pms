@@ -12,7 +12,8 @@ $(document).ready(function () {
 	
     $("#quantity").attr("readonly", "readonly");
     $("#totalCost").attr("readonly", "readonly");
-
+    $("#pricePerQuantity").attr("readonly", "readonly");
+    
     if($("#isUpdate").val()=='Y'){
         $("#aliasDescription").attr("readonly", "readonly");
     }
@@ -50,16 +51,6 @@ $(document).ready(function () {
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Base Description</legend>
 						<table>
-							<tr>
-								<td>Category  <span id="colon">:</span></td>
-								<td><form:radiobutton path="baseCategory" value="psk"
-										id="baseOnPsk" checked="true"/>PSK
-								<form:radiobutton path="baseCategory" value="government"
-										id="baseOnGovernment" />GOVERNMENT</td>
-							</tr>
-							
-							
-							
 							<tr>
 								<td>Work Type <span id="colon">:</span>
 								</td>

@@ -1,25 +1,29 @@
 package com.psk.pms.controller;
 
-import com.psk.pms.Constants;
+import static com.psk.pms.Constants.PROJECT_TYPE;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
+
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.SubProjectDetailValidator;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.support.SessionStatus;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static com.psk.pms.Constants.PROJECT_TYPE;
 
 @Controller
 public class SubProjectController extends BaseController {

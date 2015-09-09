@@ -110,7 +110,7 @@ public class PmsMasterQuery {
 
 	public static String SAVEITEMS = "INSERT INTO itemcodes (itemName, itemUnit ,itemType) VALUES (?, ?, ?)";
 
-    public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set Category = ?, WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
+    public static String UPDATEBASEDESCRIPTION ="UPDATE basedesc set WorkType = ?, Metric = ?, LastUpdatedBy = ?, LastUpdatedAt = ?, Description= ? where BaseDescription = ? ";
 
 	public static String DEACTIVATEEXISTINGPRICES = "UPDATE pskpricedetail SET active ='0' WHERE projectId = ? AND subProjectId = ?";
 
