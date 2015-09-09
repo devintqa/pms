@@ -388,7 +388,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 		for (ProjDescDetail projDescDetail: projDescDetails) {
 			try {
-				System.out.println("saveProjectDescriptionDetails: " + projDescDetails.size());
+				System.out.println("saveProjectDescriptionDetails:projDescDetails.size(): " + projDescDetails.size());
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
 					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getDescType(), projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {

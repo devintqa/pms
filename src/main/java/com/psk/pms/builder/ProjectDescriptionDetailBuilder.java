@@ -21,22 +21,19 @@ public class ProjectDescriptionDetailBuilder {
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionDetailBuilder.class);
 
-	public List < ProjDescDetail > buildDescDetailList(String saveDirectory, MultipartFile multipartFile, String sheetName) {
+	public List < ProjDescDetail > buildDescDetailList(String saveDirectory, MultipartFile multipartFile) {
 
-		System.out.println(sheetName);
 		List < ProjDescDetail > detailList = new ArrayList < ProjDescDetail > ();
-		String descType = sheetName.equalsIgnoreCase(Constants.PSK_SHEET)?Constants.PSK:Constants.GOVERNMENT;
 		try {
 			String path = saveDirectory + multipartFile.getOriginalFilename();
 			File file = new File(path);
 			FileInputStream fileInputStream = new FileInputStream(file);
 			XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream);
-			XSSFSheet sheet = workbook.getSheet(sheetName);
+			XSSFSheet sheet = workbook.getSheet(Constants.DESC_SHEET);
 			Iterator < Row > rowIterator = sheet.iterator();
 			while (rowIterator.hasNext()) {
 				Row row = rowIterator.next();
 				ProjDescDetail projDescDetail = new ProjDescDetail();
-				projDescDetail.setDescType(descType);
 				if (row.getRowNum() == 0) {
 					continue;
 				}

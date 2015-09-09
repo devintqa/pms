@@ -54,9 +54,8 @@ public class FileServiceImpl implements FileService {
 		ProjectDetail projectDetail = null;
 		SubProjectDetail subProjDetail = null;
 		List < MultipartFile > pmsFiles;
-		String sheetName = "";
+		
 		boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
-
 		projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
 		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 
@@ -68,26 +67,37 @@ public class FileServiceImpl implements FileService {
 		}
 
 		pmsFiles = fileUpload.getFiles();
+		
+		String descType = fileUpload.isGovernmentEst()?Constants.GOVERNMENT:Constants.PSK;
+		Integer projectId = projectDetail.getProjId();
+		Integer subProjectId = isSubProjectFileUpload?subProjDetail.getSubProjId():null;
+		
 		if (null != pmsFiles && pmsFiles.size() > 0) {
 			for (MultipartFile multipartFile: pmsFiles) {
 				if (validateExcelSheet(saveDirectory, excelDetail, multipartFile)) return excelDetail;
-				LOGGER.info("Processing Sheet Name" + sheetName);
-				List < ProjDescDetail > extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile, Constants.DESC_SHEET);
-				LOGGER.info("Description Details available: " + extractedProjDescDetails.size());
-				System.out.println("Description Details available: " + extractedProjDescDetails.size());
-				bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
-				populateProjectDetail(extractedProjDescDetails, projectDetail, fileUpload.getEmployeeId());
-
+				List < ProjDescDetail > descDetailList = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile);
+				System.out.println("Description Details available: " + descDetailList.size());
+				bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(descDetailList);
+				
+				for (ProjDescDetail description: descDetailList) {
+					description.setDescType(descType);
+					description.setProjId(projectId);
+					description.setSubProjId(subProjectId);
+					description.setLastUpdatedBy(fileUpload.getEmployeeId());
+				}
+				
 				if (isSubProjectFileUpload) {
 					projectDescriptionService.deleteAllTheDescriptionDetailsOfSubProject(subProjDetail.getSubProjId());
-					populateSubProjectId(extractedProjDescDetails, subProjDetail);
-					projectDescriptionService.saveSubProjectDescriptionDetails(extractedProjDescDetails);
+					populateSubProjectId(descDetailList, subProjDetail);
+					projectDescriptionService.saveSubProjectDescriptionDetails(descDetailList);
 				} else {
 					if (fileUpload.isGovernmentEst()) {
-						projectDescriptionService.saveProposalProjectDescriptionDetails(extractedProjDescDetails);
+						projectDescriptionService.saveProposalProjectDescriptionDetails(descDetailList);
+						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
+						projectDescriptionService.saveProjectDescriptionDetails(descDetailList);
 					} else {
 						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
-						projectDescriptionService.saveProjectDescriptionDetails(extractedProjDescDetails);
+						projectDescriptionService.saveProjectDescriptionDetails(descDetailList);
 					}
 				}
 			}
@@ -114,14 +124,6 @@ public class FileServiceImpl implements FileService {
 		}
 	}
 
-	private void populateProjectDetail(
-	List < ProjDescDetail > extractedProjDescDetails,
-	ProjectDetail projectDetail, String employeeId) {
-		for (ProjDescDetail extractedProjDescDetail: extractedProjDescDetails) {
-			extractedProjDescDetail.setProjId(projectDetail.getProjId());
-			extractedProjDescDetail.setLastUpdatedBy(employeeId);
-		}
-	}
 
 	private boolean isExcelType(String pathText) {
 		try {

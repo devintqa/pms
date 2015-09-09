@@ -163,6 +163,7 @@ public class ItemDAOImpl implements ItemDAO {
 
 	public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
 		String sql = "Select * from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
+		System.out.println("pull out call for base desc:"+sql);
 		List < DescItemDetail.ItemDetail > itemDetailList = new ArrayList < DescItemDetail.ItemDetail > ();
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
