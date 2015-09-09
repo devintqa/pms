@@ -111,6 +111,7 @@ public class ItemController {
                 if (fileUploadServiceUnsuccessful(item, model)) {
                     return "BuildItem";
                 } else {
+                    item.setBaseItem(false);
                     model.addAttribute("itemCreationMessage", "File Upload Successful.");
 
                     return "BuildItem";
@@ -132,6 +133,7 @@ public class ItemController {
                 }
             }
         }
+
         return "BuildItem";
     }
 

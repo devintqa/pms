@@ -59,13 +59,13 @@ public class BulkUploadDetailsValidator {
         Set<String> uniqueSerialNumbers = new HashSet<String>();
         Set<String> duplicateSerialNumbers = new HashSet<>();
         for (ProjDescDetail projDescDetail : projDescDetails) {
-           if(!uniqueSerialNumbers.add(projDescDetail.getSerialNumber())){
-            duplicateSerialNumbers.add(projDescDetail.getSerialNumber());
-           }
+            if (!uniqueSerialNumbers.add(projDescDetail.getSerialNumber())) {
+                duplicateSerialNumbers.add(projDescDetail.getSerialNumber());
+            }
         }
         StringBuilder duplicateValues = getDuplicateValues(duplicateSerialNumbers);
         if (sizeOfExtractedDetails > uniqueSerialNumbers.size()) {
-            throw new BulkUploadException(duplicateValues.toString()+ " are not unique");
+            throw new BulkUploadException(duplicateValues.toString() + " are not unique");
         }
     }
 
@@ -121,7 +121,7 @@ public class BulkUploadDetailsValidator {
     private void rejectIfItemNameExceedLimit(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
             if (itemRateDescription.getItemName().length() > 100) {
-                throw new BulkUploadException(PROJECT_ITEM_NAME_TOO_BIG);
+                throw new BulkUploadException("Item Name '"+itemRateDescription.getItemName() +"' should not exceed 100 ");
             }
         }
     }
@@ -129,11 +129,15 @@ public class BulkUploadDetailsValidator {
     private void rejectIfItemRateDescriptionIsDuplicated(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         int size = itemRateDescriptions.size();
         Set<ItemRateDescription> items = new HashSet<ItemRateDescription>();
+        Set<String> duplicateItems = new HashSet<>();
         for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
-            items.add(itemRateDescription);
+            if (!items.add(itemRateDescription)) {
+                duplicateItems.add(itemRateDescription.getItemName());
+            }
         }
+        StringBuilder duplicateValues = getDuplicateValues(duplicateItems);
         if (size > items.size()) {
-            throw new BulkUploadException(PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE);
+            throw new BulkUploadException(duplicateValues.toString() + " are not unique");
         }
     }
 }

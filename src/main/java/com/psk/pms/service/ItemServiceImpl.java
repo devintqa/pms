@@ -6,106 +6,109 @@ import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.Item;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ProjectItemDescription;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.psk.pms.Constants.LABOUR;
+import static com.psk.pms.Constants.OTHER;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
  */
 public class ItemServiceImpl implements ItemService {
 
-	@Autowired
-	ItemDAO itemDAO;
+    @Autowired
+    ItemDAO itemDAO;
 
-	@SuppressWarnings("unused")
-	private static final Logger LOGGER = Logger.getLogger(ItemService.class);
+    @SuppressWarnings("unused")
+    private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
-	public boolean createEditItem(Item item) {
-		boolean isInsertSuccessful = itemDAO.saveItem(item);
-		return isInsertSuccessful;
-	}
+    public boolean createEditItem(Item item) {
+        boolean isInsertSuccessful = itemDAO.saveItem(item);
+        return isInsertSuccessful;
+    }
 
-	public boolean isItemAlreadyExisting(String itemName) {
-		boolean isAvailable = false;
-		isAvailable = itemDAO.isItemAlreadyExisting(itemName);
-		return isAvailable;
-	}
+    public boolean isItemAlreadyExisting(String itemName) {
+        boolean isAvailable = false;
+        isAvailable = itemDAO.isItemAlreadyExisting(itemName);
+        return isAvailable;
+    }
 
-	@Override
-	public List<ItemDetail> searchItemName(String itemName, String itemType) {
-		List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName,
-				itemType);
-		return itemsDetail;
-	}
+    @Override
+    public List<ItemDetail> searchItemName(String itemName, String itemType) {
+        List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName,
+                itemType);
+        return itemsDetail;
+    }
 
-	@Override
-	public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
-		List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projectConfiguration,isEditSubProject);
-		List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
-		if (itemDetailList.size() > 0) {
-			Map<String, String> itemNames = itemDAO.fetchItemInfo();
-			for (Map.Entry<String, String> itemName : itemNames.entrySet()) {
-				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
-				Double itemQty = 0.0;
-				Double itemCost = 0.0;
-				for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
-					if (itemName.getKey().equalsIgnoreCase(
-							itemDetail.getItemName())) {
-						item.setItemName(itemDetail.getItemName());
-						item.setItemPrice(itemDetail.getItemPrice());
-						item.setItemUnit(itemDetail.getItemUnit());
-						item.setItemType(itemName.getValue());
-						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
-					}
-				}
-				if (item.getItemName() != null) {
-					item.setItemQty(String.valueOf(itemQty));
-					item.setItemCost(String.valueOf(itemCost));
-					finalItemDetailList.add(item);
-				}
-			}
-		}
-		return finalItemDetailList;
-	}
+    @Override
+    public List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject) {
+        List<DescItemDetail.ItemDetail> itemDetailList = itemDAO.getProjectData(projectConfiguration, isEditSubProject);
+        List<DescItemDetail.ItemDetail> finalItemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
+        if (itemDetailList.size() > 0) {
+            Map<String, String> itemNames = itemDAO.fetchItemInfo();
+            for (Map.Entry<String, String> itemName : itemNames.entrySet()) {
+                DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
+                Double itemQty = 0.0;
+                Double itemCost = 0.0;
+                for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
+                    if (itemName.getKey().equalsIgnoreCase(
+                            itemDetail.getItemName())) {
+                        item.setItemName(itemDetail.getItemName());
+                        item.setItemPrice(itemDetail.getItemPrice());
+                        item.setItemUnit(itemDetail.getItemUnit());
+                        item.setItemType(itemName.getValue());
+                        itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
+                        itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
+                    }
+                }
+                if (item.getItemName() != null) {
+                    item.setItemQty(String.valueOf(itemQty));
+                    item.setItemCost(String.valueOf(itemCost));
+                    finalItemDetailList.add(item);
+                }
+            }
+        }
+        return finalItemDetailList;
+    }
 
-	@Override
-	public Set<String> fetchItemNames() {
-		Set<String> itemNames = itemDAO.fetchItemNames();
-		return itemNames;
-	}
+    @Override
+    public Set<String> fetchItemNames() {
+        Set<String> itemNames = itemDAO.fetchItemNames();
+        return itemNames;
+    }
 
 
     @Override
     public List<String> getItemNames(String itemType, String projectId) {
-        return itemDAO.getItemNames(itemType,projectId);
+        return itemDAO.getItemNames(itemType, projectId);
     }
 
     public DescItemDetail getBaseDescription(final DescItemDetail descItemDetail) {
-		return itemDAO.getBaseDescription(descItemDetail);
-	}
+        return itemDAO.getBaseDescription(descItemDetail);
+    }
 
-	public boolean insertProjectDescriptionItems(DescItemDetail descItemDetail) {
-		boolean isInsertSuccessful = false;
-		if (descItemDetail.getItemDetail() != null) {
-			isInsertSuccessful = itemDAO.insertProjectDescriptionItems(descItemDetail);
-		}
-		return isInsertSuccessful;
-	}
-	
-	public boolean insertBaseDescriptionItems(DescItemDetail descItemDetail) {
-		boolean isInsertSuccessful = false;
-		if (descItemDetail.getItemDetail() != null) {
-			isInsertSuccessful = itemDAO.insertBaseDescriptionItems(descItemDetail);
-		}
-		return isInsertSuccessful;
-	}
+    public boolean insertProjectDescriptionItems(DescItemDetail descItemDetail) {
+        boolean isInsertSuccessful = false;
+        if (descItemDetail.getItemDetail() != null) {
+            isInsertSuccessful = itemDAO.insertProjectDescriptionItems(descItemDetail);
+        }
+        return isInsertSuccessful;
+    }
+
+    public boolean insertBaseDescriptionItems(DescItemDetail descItemDetail) {
+        boolean isInsertSuccessful = false;
+        if (descItemDetail.getItemDetail() != null) {
+            isInsertSuccessful = itemDAO.insertBaseDescriptionItems(descItemDetail);
+        }
+        return isInsertSuccessful;
+    }
 
     public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
         return itemDAO.getProjectDescriptionItems(descItemDetail);
@@ -153,9 +156,16 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
-        List<ItemDetail> itemsDetail = itemDAO.getBaseItemNames(request);
-        return itemsDetail;
+    public List<ItemDetail> getBaseItemNames(Map<String, Object> request, String itemType) {
+        List<ItemDetail> itemsDetails = itemDAO.getBaseItemNames(request);
+        for (ItemDetail itemDetail : itemsDetails) {
+            if (LABOUR.equalsIgnoreCase(itemType) || OTHER.equalsIgnoreCase(itemType)) {
+                String itemPrice = itemDetail.getItemPrice();
+                BigDecimal tenPercentOfAmount = new BigDecimal(itemPrice).multiply(new BigDecimal("0.1"));
+                itemDetail.setItemPrice(new BigDecimal(itemPrice).add(tenPercentOfAmount).toString());
+            }
+        }
+        return itemsDetails;
     }
 
     @Override
@@ -165,14 +175,14 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ProjectItemDescription> getProjectItemDescription(
-    		ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
+            ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName) {
         return itemDAO.getProjectItemDescription(projectConfiguration, isEditSubProject, itemName);
     }
 
-	@Override
-	public List<com.psk.pms.model.ProjectConfiguration.ItemDetail>getMissingProjectDescriptionItems(Integer projectId) {
-		List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
+    @Override
+    public List<com.psk.pms.model.ProjectConfiguration.ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
+        List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
         return itemsDetail;
-	}
+    }
 
 }
