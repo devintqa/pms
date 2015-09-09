@@ -1,16 +1,24 @@
 package com.psk.pms.validator;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.exception.BulkUploadException;
-import com.psk.pms.model.ItemRateDescription;
-import com.psk.pms.model.ProjDescDetail;
+import static com.psk.pms.Constants.ALIASDESCEMPTY;
+import static com.psk.pms.Constants.DESCEMPTY;
+import static com.psk.pms.Constants.ITEM_NAME_EMPTY;
+import static com.psk.pms.Constants.ITEM_RATE_EMPTY;
+import static com.psk.pms.Constants.ITEM_UNIT_EMPTY;
+import static com.psk.pms.Constants.PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE;
+import static com.psk.pms.Constants.PROJECT_ITEM_NAME_TOO_BIG;
+import static com.psk.pms.Constants.QUANTITYINFIGEMPTY;
+import static com.psk.pms.Constants.SERIALNUMBEREMPTY;
+import static com.psk.pms.Constants.WORKTYPEEMPTY;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.psk.pms.Constants.*;
+import com.mysql.jdbc.StringUtils;
+import com.psk.exception.BulkUploadException;
+import com.psk.pms.model.ItemRateDescription;
+import com.psk.pms.model.ProjDescDetail;
 
 /**
  * Created by prakashbhanu57 on 7/27/2015.
