@@ -67,18 +67,12 @@ public class FileServiceImpl implements FileService {
 			saveDirectory = "C:/PMS/" + projectDetail.getAliasName() + "/";
 		}
 
-		if (fileUpload.isGovernmentEst()) {
-			LOGGER.info("Is Government Copy" + fileUpload.isGovernmentEst());
-			sheetName = Constants.GOVERNMENT_PROJECT_DESCRIPTION;
-		} else {
-			sheetName = Constants.PSK_PROJECT_DESCRIPTION;
-		}
 		pmsFiles = fileUpload.getFiles();
 		if (null != pmsFiles && pmsFiles.size() > 0) {
 			for (MultipartFile multipartFile: pmsFiles) {
 				if (validateExcelSheet(saveDirectory, excelDetail, multipartFile)) return excelDetail;
 				LOGGER.info("Processing Sheet Name" + sheetName);
-				List < ProjDescDetail > extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile, sheetName);
+				List < ProjDescDetail > extractedProjDescDetails = projectDescriptionDetailBuilder.buildDescDetailList(saveDirectory, multipartFile, Constants.DESC_SHEET);
 				LOGGER.info("Description Details available: " + extractedProjDescDetails.size());
 				System.out.println("Description Details available: " + extractedProjDescDetails.size());
 				bulkUploadDetailsValidator.validateExtractedProjectDescriptionDetails(extractedProjDescDetails);
