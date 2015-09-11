@@ -5,8 +5,6 @@ import static com.psk.pms.Constants.DESCEMPTY;
 import static com.psk.pms.Constants.ITEM_NAME_EMPTY;
 import static com.psk.pms.Constants.ITEM_RATE_EMPTY;
 import static com.psk.pms.Constants.ITEM_UNIT_EMPTY;
-import static com.psk.pms.Constants.PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE;
-import static com.psk.pms.Constants.PROJECT_ITEM_NAME_TOO_BIG;
 import static com.psk.pms.Constants.QUANTITYINFIGEMPTY;
 import static com.psk.pms.Constants.SERIALNUMBEREMPTY;
 import static com.psk.pms.Constants.WORKTYPEEMPTY;

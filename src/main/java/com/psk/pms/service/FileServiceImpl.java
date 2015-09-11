@@ -85,7 +85,7 @@ public class FileServiceImpl implements FileService {
 					description.setSubProjId(subProjectId);
 					description.setLastUpdatedBy(fileUpload.getEmployeeId());
 				}
-				
+				System.out.println("encountered: " +descType);
 				if (isSubProjectFileUpload) {
 					projectDescriptionService.deleteAllTheDescriptionDetailsOfSubProject(subProjDetail.getSubProjId());
 					populateSubProjectId(descDetailList, subProjDetail);

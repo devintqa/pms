@@ -126,8 +126,7 @@ public class FileUploadController extends BaseController {
 			if (uploadForm.getFiles().size() == 0) {
 				map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
 			}
-			populateAliasProjectAndSubprojectAlias(map, aliasProjectList,
-			subAliasProjectList);
+			populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
 			return "UploadFile";
 		}
 		subAliasProjectList.put("0", "--Please Select--");

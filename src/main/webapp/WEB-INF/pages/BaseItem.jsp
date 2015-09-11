@@ -24,9 +24,13 @@ window.onunload = function() {
 					$.getJSON("/pms/emp/myview/searchBaseDescription/searchBaseItems.do", {
 								itemName: request.term,
 								itemType: $('#itemType').val(),
+								descType: $('#descType').val()
 		            	        }, response);
 				},
 				select: function(event, ui) { 
+					 if($('#descType').val() == 'psk'){
+						 ui.item.itemPrice = 0;
+					 }
 			         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
 			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
 			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);

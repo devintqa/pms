@@ -390,16 +390,17 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			try {
 				System.out.println("saveProjectDescriptionDetails:projDescDetails.size(): " + projDescDetails.size());
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
-					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getDescType(), projDescDetail.getBaseDescName());
+					ProjDescDetail baseDescDetail = this.getBaseDescription(Constants.PSK, projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
 						baseDescDetail.setSubProjId(0);
 					}
+					System.out.println("saveProjectDescriptionDetails:projDescDetails:baseDescDetail" + baseDescDetail.getBaseDescId());
 					DescItemDetail descItemDetail = new DescItemDetail();
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
-					descItemDetail.setDescType(projDescDetail.getDescType());
+					descItemDetail.setDescType(Constants.PSK);
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getDescType(), projDescDetail.getAliasDescription()));
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.PSK, projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
 					System.out.println("saveProjectDescriptionDetails:itemDetailList: " + itemDetailList.size());
@@ -460,7 +461,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		for (ProjDescDetail projDescDetail: projDescDetails) {
 			try {
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
-					ProjDescDetail baseDescDetail = this.getBaseDescription(projDescDetail.getDescType(), projDescDetail.getBaseDescName());
+					ProjDescDetail baseDescDetail = this.getBaseDescription(Constants.GOVERNMENT, projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
 						baseDescDetail.setSubProjId(0);
 					}
@@ -468,8 +469,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
 					descItemDetail.setSubProjId(baseDescDetail.getSubProjId());
-					descItemDetail.setDescType(projDescDetail.getDescType());
-					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(projDescDetail.getDescType(), projDescDetail.getAliasDescription()));
+					descItemDetail.setDescType(Constants.GOVERNMENT);
+					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.GOVERNMENT, projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
 					descItemDetail.setItemDetail(itemDetailList);

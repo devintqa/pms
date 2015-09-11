@@ -309,7 +309,11 @@ public class ItemDAOImpl implements ItemDAO {
 		String sql = null;
 		List < Map < String, Object >> rows = null;
 		if ("" != request.get("itemName")) {
-			sql = "select itemType, itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			if(Constants.GOVERNMENT.equalsIgnoreCase(request.get("descType").toString())){
+				sql = "select itemType, itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+			}else{
+				sql = "select itemName, itemUnit, itemNo, itemType from itemcodes where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%'";
+			}
 			rows = jdbcTemplate.queryForList(sql);
 		}
 		for (Map < String, Object > row: rows) {
@@ -318,7 +322,8 @@ public class ItemDAOImpl implements ItemDAO {
 			itemDetail.setItemName((String) row.get("itemName"));
 			itemDetail.setItemUnit((String) row.get("itemUnit"));
 			itemDetail.setItemType((String) row.get("itemType"));
-			itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
+			if(null!=row.get("itemPrice"))
+				itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
 			itemsDetail.add(itemDetail);
 		}
 		return itemsDetail;

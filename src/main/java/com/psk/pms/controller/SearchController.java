@@ -225,11 +225,13 @@ public class SearchController extends BaseController {
     @ResponseBody
     List<ItemDetail> searchBaseItem(
             @RequestParam("itemName") String itemName,
-            @RequestParam("itemType") String itemType) {
+            @RequestParam("itemType") String itemType, 
+            @RequestParam("descType") String descType) {
         LOGGER.info("method = getDescItem()");
         Map<String, Object> request = new Hashtable<String, Object>();
         request.put("itemName", itemName.toUpperCase());
         request.put("itemType", itemType.toUpperCase());
+        request.put("descType", itemType.toLowerCase());
         List<ItemDetail> itemsDetail = itemService.getBaseItemNames(request,itemType);
         return itemsDetail;
     }

@@ -423,7 +423,8 @@
 		<form:hidden path="projDescSerial" id="projDescSerial" />
 		<form:hidden path="employeeId" id="employeeId" />
 		<form:hidden path="descType" id="descType" />
-
+		
+		<p><font size="2" color="red">* - If the grid is empty, please configure the item price in project configuration via sync items </font></p>
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
 				<th>Item</th>
