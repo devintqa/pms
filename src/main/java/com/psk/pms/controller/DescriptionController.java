@@ -214,10 +214,10 @@ public class DescriptionController extends BaseController {
         model.addAttribute("baseDescForm", projDescDetail);
         if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
             model.addAttribute("projDescCreationMessage",
-                    "Base Description updated successfully");
+                    "Base Description Updated Successfully");
         } else {
             model.addAttribute("projDescCreationMessage",
-                    "Base Description creation successfully");
+                    "Base Description Created Successfully.");
         }
         projectDescriptionService.saveBaseProjectDescription(projDescDetail);
         return "BaseDescription";
