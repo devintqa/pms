@@ -168,8 +168,8 @@ public class FileServiceImpl implements FileService {
 					LOGGER.info("Failed to create multiple directories!");
 				}
 			}
-		} catch (Throwable e) {
-			LOGGER.info("Something went wrong!!");
+		} catch (Exception e) {
+			LOGGER.info("Something went wrong!!", e);
 		}
 	}
 

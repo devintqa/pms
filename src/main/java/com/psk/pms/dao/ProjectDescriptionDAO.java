@@ -49,7 +49,7 @@ public interface ProjectDescriptionDAO {
 
 	void deleteBaseProjectDescription(String serialNumber);
 
-    boolean isGlobalDescriptionAlreadyExisting(String descType, String baseDescription);
+    boolean isGlobalDescriptionAlreadyExisting(String baseDescription);
 
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 	

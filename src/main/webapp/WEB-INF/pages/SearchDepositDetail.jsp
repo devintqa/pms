@@ -116,7 +116,7 @@
 
 		<c:if test="${depositDetailsSize gt 0}">
 			<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName}
-				Deposit Detail Details</h1>
+				Deposit Details</h1>
 			<table id="depositDetails" class="gridView">
 				<thead>
 					<tr>
