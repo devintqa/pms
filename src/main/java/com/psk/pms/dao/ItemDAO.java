@@ -30,7 +30,7 @@ public interface ItemDAO {
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
 
-    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String descriptionType);
 
     void deleteItemByProjectId(Integer projectId);
 
@@ -48,7 +48,7 @@ public interface ItemDAO {
 
     List<String> getItemNames();
 
-	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
+	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, ViewDetail viewDetail);
 
 	DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 

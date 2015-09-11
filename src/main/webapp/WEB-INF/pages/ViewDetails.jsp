@@ -89,7 +89,31 @@
                     $('#itemFields').hide();
                 }
             });
+
+        $("#searchCategorygov").change(function () {
+              $('#viewProjectItemPrice').hide();
+              $('#showComparativeAnalysis').hide();
+              $('#projectItemDescriptionRow').hide();
+              $('input[type="checkbox"]').prop('checked', false);
+              $('#searchAggregateItemDetails').prop('checked', true);
+         });
+
+        $("#searchCategorypsk").change(function () {
+              $('#viewProjectItemPrice').show();
+              $('#showComparativeAnalysis').show();
+              $('#projectItemDescriptionRow').show();
+         });
+
+       $(function () {
+        if($("#searchCategorygov").is(':checked')){
+              $('#viewProjectItemPrice').hide();
+              $('#showComparativeAnalysis').hide();
+              $('#projectItemDescriptionRow').hide();
+              $('input[type="checkbox"]').prop('checked', false);
+         }
+
         });
+      });
     </script>
 </head>
 <body>
@@ -116,6 +140,15 @@
                                     placeholder="Enter Alias Project Name"
                                     cssClass="inputText"/></td>
                     <td><form:errors path="aliasProjectName" cssClass="error"/></td>
+                </tr>
+                <tr>
+                    <td>Category <span id="colon">:</span></td>
+                    <td><form:radiobutton path="descType" value="psk"
+                                          id="searchCategorypsk" checked="true"/>PSK
+                    </td>
+                    <td><form:radiobutton path="descType" value="government"
+                                          id="searchCategorygov"/>GOVERNMENT
+                    </td>
                 </tr>
                 <tr id="viewProjectItemPrice">
                     <td>View Project Item Price? <span id="colon">:</span></td>
@@ -152,8 +185,8 @@
 
 
                     <td>
-                        <div id="itemNameField"> Item Name<span id="colon">:</span>
-                            <form:select path="itemName" cssClass="inputText"
+                        <div id="itemNameField"> Item Name <span id="colon">:</span> </td>
+                         <td>   <form:select path="itemName" cssClass="inputText"
                                          id="itemName">
 
                                 <option value="${viewDetailsForm.itemName}"

@@ -1,10 +1,7 @@
 package com.psk.pms.service;
 
-import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectItemDescription;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +22,7 @@ public interface ItemService {
 
     Set<String> fetchItemNames();
 
-    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject);
+    List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String descType);
 
     boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
 
@@ -49,7 +46,7 @@ public interface ItemService {
 
     DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 
-    List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String itemName);
+	List<ProjectItemDescription> getProjectItemDescription(ProjectConfiguration projectConfiguration, ViewDetail viewDetail);
 
     List<String> getItemNames(String itemType, String projectId);
 

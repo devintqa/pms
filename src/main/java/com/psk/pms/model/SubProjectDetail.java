@@ -36,9 +36,8 @@ public class SubProjectDetail {
 	private String isUpdate;
 	private String lastUpdatedBy;
 	private Date lastUpdatedAt;
-	private String subPerformanceGuarantee;
 
-	public String getSubProjectName() {
+    public String getSubProjectName() {
 		return subProjectName;
 	}
 
@@ -271,15 +270,7 @@ public class SubProjectDetail {
 		this.subLessPercentage = subLessPercentage;
 	}
 
-	public String getSubPerformanceGuarantee() {
-		return subPerformanceGuarantee;
-	}
-
-	public void setSubPerformanceGuarantee(String subPerformanceGuarantee) {
-		this.subPerformanceGuarantee = subPerformanceGuarantee;
-	}
-
-	public Date getSubCompletionDateSqlForBonus() {
+    public Date getSubCompletionDateSqlForBonus() {
 		return subCompletionDateSqlForBonus;
 	}
 

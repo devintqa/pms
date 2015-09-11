@@ -35,7 +35,6 @@ public class ProjectDetail {
     private String projectStatus;
     private String lastUpdatedBy;
     private Date lastUpdatedAt;
-    private String performanceGuarantee;
 
     public String getProjectStatus() {
         return projectStatus;
@@ -259,14 +258,6 @@ public class ProjectDetail {
 
     public void setLessPercentage(String lessPercentage) {
         this.lessPercentage = lessPercentage;
-    }
-
-    public String getPerformanceGuarantee() {
-        return performanceGuarantee;
-    }
-
-    public void setPerformanceGuarantee(String performanceGuarantee) {
-        this.performanceGuarantee = performanceGuarantee;
     }
 
     public String getCompletionDateForBonus() {

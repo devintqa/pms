@@ -256,7 +256,6 @@ CREATE TABLE `project` (
   `CommencementDate` datetime DEFAULT NULL,
   `CompletedDate` datetime DEFAULT NULL,
   `AgreementPeriod` int(10) DEFAULT NULL,
-  `PerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   `ProjectType` varchar(30) NOT NULL,
   `CompletionDateForBonus` datetime DEFAULT NULL,
   PRIMARY KEY (`ProjId`),
@@ -343,7 +342,6 @@ CREATE TABLE `subproject` (
   `AgreementPeriod` int(10) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
-  `SubPerformanceGuarantee` decimal(15,2) DEFAULT NULL,
   `ProjId` int(10) NOT NULL,
   `SubProjectType` varchar(45) NOT NULL,
   `SubCompletionDateForBonus` datetime DEFAULT NULL,
@@ -528,6 +526,7 @@ INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
 ,('depositDetail','ASD')
 ,('depositDetail','WHA')
 ,('depositDetail','SD')
+,('depositDetail','PG')
 ,('depositStatus','Submitted')
 ,('depositStatus','Refunded')
 ,('metric','CUM')

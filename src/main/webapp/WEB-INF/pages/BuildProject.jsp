@@ -139,14 +139,6 @@ $(function(){
 										placeholder="Enter Less in Percentage" cssClass="inputText" /></td>
 								<td><form:errors path="lessPercentage" cssClass="error" /></td>
 							</tr>
-							<tr>
-								<td>Performance Guarantee <span id="colon">:</span>
-								</td>
-								<td><form:input path="performanceGuarantee"
-										placeholder="Enter performance Guarantee" cssClass="inputText" /></td>
-								<td><form:errors path="performanceGuarantee"
-										cssClass="error" /></td>
-							</tr>
                             <tr>
 								<td>Completion Date for Bonus<span id="colon">:</span>
 								</td>

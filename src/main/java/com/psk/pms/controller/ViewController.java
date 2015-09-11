@@ -82,13 +82,13 @@ public class ViewController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         LOGGER.info("method = viewProjectDetails()");
         viewValidator.validate(viewDetail, result);
-
+        String descType = viewDetail.getDescType();
         if (!result.hasErrors()) {
             ProjectConfiguration projectConfiguration = new ProjectConfiguration();
             projectConfiguration.setProjId(viewDetail.getProjId());
             projectConfiguration.setSubProjId(viewDetail.getSubProjId());
             if (viewDetail.isSearchAggregateItemDetails()) {
-                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject());
+                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject(),descType);
                 if (aggregateItemDetails.size() > 0) {
                     model.addAttribute("aggregateItemDetails", aggregateItemDetails);
                     model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
@@ -126,7 +126,7 @@ public class ViewController extends BaseController {
                             "No Project Comparison Data Found For The Project.");
                 }
             } else if (viewDetail.isProjectItemDescription()) {
-                List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(projectConfiguration, viewDetail.isEditSubProject(), viewDetail.getItemName());
+                List<ProjectItemDescription> projectItemDescription = itemService.getProjectItemDescription(projectConfiguration, viewDetail);
                 if (projectItemDescription.size() > 0) {
                     Double sumOfQuantity = getSumOfQuantity(projectItemDescription);
                     model.addAttribute("projectItemDescriptions", projectItemDescription);

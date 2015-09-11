@@ -56,9 +56,6 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectDetail.getExPercentage() == "") {
             projectDetail.setExPercentage(null);
         }
-        if (projectDetail.getPerformanceGuarantee() == "") {
-            projectDetail.setPerformanceGuarantee(null);
-        }
         boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
         return isInsertSuccessful;
     }

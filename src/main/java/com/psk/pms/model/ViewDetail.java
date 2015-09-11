@@ -10,7 +10,7 @@ public class ViewDetail {
 	private String searchUnder;
 	private boolean searchAggregateItemDetails;
 	private boolean searchComparisonData;
-
+    private String descType;
 	private Integer subProjId;
 	private boolean projectItemDescription;
 	private String itemType;
@@ -104,4 +104,11 @@ public class ViewDetail {
 		this.itemName = itemName;
 	}
 
+    public String getDescType() {
+        return descType;
+    }
+
+    public void setDescType(String descType) {
+        this.descType = descType;
+    }
 }

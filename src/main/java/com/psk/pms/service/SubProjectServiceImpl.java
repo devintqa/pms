@@ -46,9 +46,6 @@ public class SubProjectServiceImpl implements SubProjectService {
 		if (subProjectDetail.getSubExPercentage() == "") {
 			subProjectDetail.setSubExPercentage(null);
 		}
-		if (subProjectDetail.getSubPerformanceGuarantee() == "") {
-			subProjectDetail.setSubPerformanceGuarantee(null);
-		}
         String projectType = subProjectDAO.getProjectType(subProjectDetail.getProjId());
         subProjectDetail.setSubProjectType(projectType);
         boolean isInsertSuccessful = subProjectDAO
