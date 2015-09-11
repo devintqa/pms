@@ -1,16 +1,22 @@
 package com.psk.pms.validator;
 
+import static com.psk.pms.Constants.ALIASDESCEMPTY;
+import static com.psk.pms.Constants.DESCEMPTY;
+import static com.psk.pms.Constants.ITEM_NAME_EMPTY;
+import static com.psk.pms.Constants.ITEM_RATE_EMPTY;
+import static com.psk.pms.Constants.ITEM_UNIT_EMPTY;
+import static com.psk.pms.Constants.QUANTITYINFIGEMPTY;
+import static com.psk.pms.Constants.SERIALNUMBEREMPTY;
+import static com.psk.pms.Constants.WORKTYPEEMPTY;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.BulkUploadException;
-import com.psk.pms.Constants;
 import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.ProjDescDetail;
-
-import static com.psk.pms.Constants.*;
 
 /**
  * Created by prakashbhanu57 on 7/27/2015.
@@ -99,16 +105,13 @@ public class BulkUploadDetailsValidator {
     private void rejectIfFieldIsEmpty(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
             if (StringUtils.isNullOrEmpty(itemRateDescription.getItemName())) {
-                throw new BulkUploadException(ITEM_NAME_EMPTY +" in "+itemRateDescription.getWorkType()+" page");
+                throw new BulkUploadException(ITEM_NAME_EMPTY);
             }
             if (StringUtils.isNullOrEmpty(itemRateDescription.getItemUnit())) {
-                throw new BulkUploadException("'"+itemRateDescription.getItemName() +"'"+ ITEM_UNIT_EMPTY+" in "+itemRateDescription.getWorkType()+" page");
+                throw new BulkUploadException(ITEM_UNIT_EMPTY);
             }
             if (StringUtils.isNullOrEmpty(itemRateDescription.getItemRate())) {
-                throw new BulkUploadException("'"+itemRateDescription.getItemName()+"'"+ ITEM_RATE_EMPTY+" in "+itemRateDescription.getWorkType()+" page");
-            }
-            if(StringUtils.isNullOrEmpty(itemRateDescription.getScheduleItemNumber())){
-                throw new BulkUploadException("'"+itemRateDescription.getItemName()+"'"+ ITEM_SCHDEDULE_NUMBER_EMPTY+" in "+itemRateDescription.getWorkType()+" page");
+                throw new BulkUploadException(ITEM_RATE_EMPTY);
             }
         }
     }
