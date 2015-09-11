@@ -29,8 +29,10 @@ public interface Constants {
 	String PROJECT_ITEM_DESCRIPTION_NOT_UNIQUE = "Item types and Scheduled number are not unique";
 	String PROJECT_ITEM_NAME_TOO_BIG = "Item name should not exceed 100";
 	String ITEM_NAME_EMPTY = "Item name can't be Empty";
-	String ITEM_UNIT_EMPTY = "Item unit can't be Empty";
-	String ITEM_RATE_EMPTY = "Item rate can't be Empty";
+	String ITEM_UNIT_EMPTY = " unit can't be Empty";
+	String ITEM_RATE_EMPTY = " rate can't be Empty";
+	String ITEM_SCHDEDULE_NUMBER_EMPTY = " schedule number can't be Empty";
+	String CANT_BE_EMPTY = " can't be Empty";
 	String NOTEXIST = "NotExist";
 	String ALREADYEXIST = "AlreadyExist";
 	String SUCCESS = "Success";

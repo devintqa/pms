@@ -141,7 +141,7 @@ public class ItemController {
         ExcelDetail excelDetail;
         try {
             excelDetail = fileService.saveProjectItemDescription(item);
-        } catch (BulkUploadException e) {
+        } catch (Exception e) {
             model.addAttribute(
                     "uploadItemProjectDescriptionFailed",
                     String.format("%s%s", Constants.UPLOADFAILED, e.getMessage()));
