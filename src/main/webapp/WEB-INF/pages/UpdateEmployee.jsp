@@ -29,7 +29,7 @@ $(document).ready(function () {
             	<h2 style="text-align: cener; font-family: arial; color: #007399; font-size: 14px;">${message}</h2>
             </div>
 			    <form:form method="POST" commandName="updateEmpform" action="updateEmployeeRole.do">
-			        <center>
+			       
                         <fieldset style="margin: 1em; text-align: left;">
                         <legend>Update Employee</legend>
 					<table>
@@ -90,11 +90,9 @@ $(document).ready(function () {
                 	<td><input class="button" type="submit" value="update" /></td>
                 	<td></td>
                 </tr>
-                <center>
                 </table>
 			</form:form>
 		</div>
-	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
 	</footer>

@@ -47,7 +47,7 @@
 	}
 </script>
 </head>
-<body ng-app="sampleApp">
+<body>
 	<header>
 		<jsp:include page="Header.jsp" />
 	</header>
@@ -93,8 +93,9 @@
 									<strong> / </strong>
 									<a id="deleteRow"
 									    href="javascript:deleteProject('${projDoc.aliasName}','${projDoc.projId}');"
-									    style="color: red"> Delete</a></td>
+									    style="color: red"> Delete</a>
 									</c:if>
+									</td>
 							</tr>
 						</c:forEach>
 					</tbody>
