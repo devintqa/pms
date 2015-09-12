@@ -154,8 +154,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemDetail> getBaseItemNames(Map<String, Object> request, String itemType) {
+    public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
         List<ItemDetail> itemsDetails = itemDAO.getBaseItemNames(request);
+        String itemType = request.containsKey("itemType")?request.get("itemType").toString():null;
         for (ItemDetail itemDetail : itemsDetails) {
             if (LABOUR.equalsIgnoreCase(itemType) || OTHER.equalsIgnoreCase(itemType)) {
                 String itemPrice = itemDetail.getItemPrice();

@@ -42,7 +42,7 @@ public interface ItemService {
 
     List<String> getItemNames();
 
-    List<ItemDetail> getBaseItemNames(Map<String, Object> request, String itemType);
+    List<ItemDetail> getBaseItemNames(Map<String, Object> request);
 
     DescItemDetail getBaseDescription(DescItemDetail descItemDetail);
 

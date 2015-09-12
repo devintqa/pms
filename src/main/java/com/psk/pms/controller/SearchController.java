@@ -231,8 +231,8 @@ public class SearchController extends BaseController {
         Map<String, Object> request = new Hashtable<String, Object>();
         request.put("itemName", itemName.toUpperCase());
         request.put("itemType", itemType.toUpperCase());
-        request.put("descType", itemType.toLowerCase());
-        List<ItemDetail> itemsDetail = itemService.getBaseItemNames(request,itemType);
+        request.put("descType", descType.toLowerCase());
+        List<ItemDetail> itemsDetail = itemService.getBaseItemNames(request);
         return itemsDetail;
     }
 
