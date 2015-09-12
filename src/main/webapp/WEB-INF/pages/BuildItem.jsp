@@ -32,6 +32,12 @@
                 }
             });
         });
+        $(function(){
+            if($("#baseItem").is(':checked')){
+                $('.baseItem').show();
+                $('.item').hide();
+            }
+        });
 		
 	});
 </script>
