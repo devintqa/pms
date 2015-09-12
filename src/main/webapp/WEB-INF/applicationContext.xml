@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-        http://www.springframework.org/schema/beans     
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-        http://www.springframework.org/schema/context 
-        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <bean id="employeeDAO" class="com.psk.pms.dao.EmployeeDAOImpl">
     </bean>
@@ -15,6 +14,9 @@
         <property name="employeeDAO" ref="employeeDAO"/>
         <property name="mailClient" ref="mailClient"/>
     </bean>
+
+    <tx:annotation-driven proxy-target-class="true"
+                          transaction-manager="transactionManager" />
 
     <bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
     </bean>
@@ -85,6 +87,11 @@
             <ref bean="dataSource"/>
         </constructor-arg>
         <property name="fetchSize" value="400"/>
+    </bean>
+
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
     </bean>
 
 
