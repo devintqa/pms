@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -489,6 +490,7 @@ public class ItemDAOImpl implements ItemDAO {
 
 
 	@Override
+    @Transactional
 	public void saveItemRateDescriptions(final List < ItemRateDescription > itemRateDescriptions) {
 		jdbcTemplate.batchUpdate(PmsMasterQuery.INSERT_ITEM_RATE_DESCRIPTION, new BatchPreparedStatementSetter() {@Override
 			public void setValues(PreparedStatement ps, int i) throws SQLException {
