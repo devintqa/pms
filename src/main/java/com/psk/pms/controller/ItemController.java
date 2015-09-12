@@ -1,5 +1,7 @@
 package com.psk.pms.controller;
 
+import static com.psk.pms.Constants.ITEM_TYPE;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.psk.exception.BulkUploadException;
 import com.psk.pms.Constants;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
@@ -42,8 +43,6 @@ import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.FileUploadValidator;
 import com.psk.pms.validator.ItemValidator;
-
-import static com.psk.pms.Constants.ITEM_TYPE;
 
 @Controller
 public class ItemController {

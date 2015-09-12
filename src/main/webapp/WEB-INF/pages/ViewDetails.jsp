@@ -183,10 +183,9 @@
                     <td><form:select path="itemType" cssClass="inputText"
                                      id="itemType" items="${itemTypes}"/></td>
 
-
                     <td>
-                        <div id="itemNameField"> Item Name <span id="colon">:</span> </td>
-                         <td>   <form:select path="itemName" cssClass="inputText"
+                        <div id="itemNameField"> Item Name <span id="colon">:</span> 
+                          <form:select path="itemName" cssClass="inputText"
                                          id="itemName">
 
                                 <option value="${viewDetailsForm.itemName}"

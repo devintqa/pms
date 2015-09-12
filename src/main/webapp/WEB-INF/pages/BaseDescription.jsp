@@ -4,7 +4,7 @@
 <!doctype html>
 <html>
 <head>
-<title>PMS :: Create PWD Description</title>
+<title>PMS :: Base Description</title>
 <%@include file="Script.jsp" %>
 <script type="text/javascript">
 $(document).ready(function () {
