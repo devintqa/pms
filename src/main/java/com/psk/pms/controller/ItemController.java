@@ -108,6 +108,7 @@ public class ItemController {
         if (!result.hasErrors()) {
             if (files.size() != 0 && item.isBaseItem()) {
                 if (fileUploadServiceUnsuccessful(item, model)) {
+                    item.setBaseItem(true);
                     return "BuildItem";
                 } else {
                     item.setBaseItem(false);

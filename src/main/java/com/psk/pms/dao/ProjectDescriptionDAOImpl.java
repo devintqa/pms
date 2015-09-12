@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -359,6 +360,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		return projectDescriptionId;
 	}
 
+    @Transactional
 	public void saveProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
 
 		jdbcTemplate.batchUpdate(INSERTPROJECTDESCRIPTION,
