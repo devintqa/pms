@@ -2,6 +2,7 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.ITEM_TYPE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
 import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.Permission;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
@@ -56,6 +61,30 @@ public class ViewController extends BaseController {
 
         setModelAttribute(model, viewDetail);
         return "ViewDetails";
+    }
+    
+    @RequestMapping(value = "/emp/myview/grantAccess/{employeeId}", method = RequestMethod.GET)
+    public String grantRights(@PathVariable String employeeId, Model model) {
+    	
+    	List<Permission> permissionList = new ArrayList<Permission>();
+    	Permission permission = new Permission();
+    	permission.setLabel("akumar");
+    	permission.setValue(1);
+    	permission.setSelected(true);
+    	permissionList.add(permission);
+    	permission = new Permission();
+    	permission.setLabel("tkumar");
+    	permission.setValue(2);
+    	permissionList.add(permission);
+    	Gson gson = new Gson();
+    	JsonElement element = gson.toJsonTree(permissionList, new TypeToken<List<Permission>>() {
+    	}.getType());
+    	JsonArray jsonArray = element.getAsJsonArray();
+    	ViewDetail viewDetail = new ViewDetail();
+    	viewDetail.setItemType(jsonArray.toString());
+    	System.out.println(jsonArray.toString());
+    	model.addAttribute("authorize", viewDetail);
+    	return "Authorization";
     }
 
     @RequestMapping(value = "/emp/myview/viewDetails/searchProject.do", method = RequestMethod.GET)

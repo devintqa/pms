@@ -81,7 +81,10 @@
 								Profile</a></li>
 						<li><a id="logout"
 							href="${pageContext.request.contextPath}/logout">Logout</a></li>
-					</ul></li>
+						<li><a id="grant"
+							href="/pms/emp/myview/grantAccess/${employeeObj.employeeId}">Authorize</a></li>
+					</ul>
+					</li>
 	</c:when>
 
 	<c:when test="${employeeObj.employeeTeam eq 'Account'}">
