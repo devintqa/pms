@@ -82,7 +82,7 @@
 						<li><a id="logout"
 							href="${pageContext.request.contextPath}/logout">Logout</a></li>
 						<li><a id="grant"
-							href="/pms/emp/myview/grantAccess/${employeeObj.employeeId}">Authorize</a></li>
+							href="/pms/emp/myview/manageAccess/${employeeObj.employeeId}">Authorize</a></li>
 					</ul>
 					</li>
 	</c:when>

@@ -24,6 +24,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.psk.pms.model.Authorize;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Permission;
 import com.psk.pms.model.ProjDescComparisonDetail;
@@ -63,9 +64,22 @@ public class ViewController extends BaseController {
         return "ViewDetails";
     }
     
-    @RequestMapping(value = "/emp/myview/grantAccess/{employeeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/emp/myview/manageAccess/{employeeId}", method = RequestMethod.GET)
     public String grantRights(@PathVariable String employeeId, Model model) {
     	
+    	
+    	Authorize authorize = new Authorize();
+    	authorize.setEmployeeId(employeeId);
+    	authorize.setPrivilegeDetails(null);
+    	model.addAttribute("authorize", authorize);
+    	return "Authorization";
+    }
+    
+    @RequestMapping(value = "/emp/myview/manageAccess/getProjectUserPrivilege.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String getProjectUserPrivilege(@RequestParam(value = "employeeId") String employeeId, 
+    									@RequestParam(value = "projectId") String projectId, 
+    									Model model) {
     	List<Permission> permissionList = new ArrayList<Permission>();
     	Permission permission = new Permission();
     	permission.setLabel("akumar");
@@ -80,11 +94,26 @@ public class ViewController extends BaseController {
     	JsonElement element = gson.toJsonTree(permissionList, new TypeToken<List<Permission>>() {
     	}.getType());
     	JsonArray jsonArray = element.getAsJsonArray();
-    	ViewDetail viewDetail = new ViewDetail();
-    	viewDetail.setItemType(jsonArray.toString());
-    	System.out.println(jsonArray.toString());
-    	model.addAttribute("authorize", viewDetail);
-    	return "Authorization";
+    	Authorize authorize = new Authorize();
+    	authorize.setEmployeeId(employeeId);
+    	authorize.setPrivilegeDetails(jsonArray.toString());
+    	model.addAttribute("authorize", authorize);
+    	return jsonArray.toString();
+    }
+    
+    @RequestMapping(value = "/emp/myview/manageAccess/saveProjectUserPrivilege.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveProjectUserPrivilege(@RequestParam(value = "employeeId") String employeeId, Model model) {
+    	List<Permission> permissionList = new ArrayList<Permission>();
+    	Gson gson = new Gson();
+    	JsonElement element = gson.toJsonTree(permissionList, new TypeToken<List<Permission>>() {
+    	}.getType());
+    	JsonArray jsonArray = element.getAsJsonArray();
+    	Authorize authorize = new Authorize();
+    	authorize.setEmployeeId(employeeId);
+    	authorize.setPrivilegeDetails(jsonArray.toString());
+    	model.addAttribute("authorize", authorize);
+    	return jsonArray.toString();
     }
 
     @RequestMapping(value = "/emp/myview/viewDetails/searchProject.do", method = RequestMethod.GET)

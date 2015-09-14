@@ -11,21 +11,34 @@
 <script src="<c:url value="/resources/js/jquery-picklist.js" />"></script>
 <script>
 	$(function() {
+		$("#user").pickList();
 		$('#project').change(function() {
 
 			$('.pickList_sourceList li').remove();
 			$('.pickList_targetList li').remove();
-			var data = document.getElementById("itemType").value;
-			data = $.parseJSON(data);
-			$("#user").pickList();
+			var data = document.getElementById("privilegeDetails").value;
+			var project  = $('#project').val();
+			var employee  = $('#employee').val();
 			
-			$.each(data, function(i, item) {
-				$("#user").pickList("insert", {
-					value : item.value,
-					label : item.label,
-					selected : item.selected
-				});
+			$.ajax({
+				type : "GET",
+				url : "getProjectUserPrivilege.do",
+				cache : false,
+				data: "employeeId="+employee+"&projectId="+project,
+				success : function(response) {
+					var data = $.parseJSON(response);
+					$("#user").pickList();
+					$.each(data, function(i, item) {
+						$("#user").pickList("insert", {
+							value : item.value,
+							label : item.label,
+							selected : item.selected
+						});
+					});
+				}
 			});
+			
+			
 
 		});
 
@@ -33,11 +46,19 @@
 
 	function updateConsole() {
 		$("#console").text($("#user").serialize());
-	}
+		$("#user").serialize();
+		$.ajax({
+				type : "POST",
+				url : "saveProjectUserPrivilege.do",
+				cache : false,
+				data: "employeeId="+employee,
+				success : function(response) {
+					
+				}
+			});
+		}
 </script>
 <style>
-body { margin: 0.5em; }
-
 .pickList_sourceListContainer, .pickList_controlsContainer, .pickList_targetListContainer { float: left; margin: 0.25em; }
 .pickList_controlsContainer { text-align: center; }
 .pickList_controlsContainer button { display: block; width: 100%; text-align: center; }
@@ -89,7 +110,9 @@ body { margin: 0.5em; }
 				</table>
 				 <label for="console">Form content:</label>
    						<div><textarea id="console"></textarea></div>
-   							<form:hidden path="itemType" id="itemType" />
+   							<form:hidden path="privilegeDetails" id="privilegeDetails" />
+   							<form:hidden path="employeeId" id="employee" />
+   							
 			</form:form>
 		</div>
 
