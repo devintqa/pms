@@ -37,26 +37,29 @@
 					});
 				}
 			});
-			
-			
-
 		});
-
 	});
 
+	
 	function updateConsole() {
-		$("#console").text($("#user").serialize());
-		$("#user").serialize();
+		var users = [];
+		var employee  = $('#employee').val();
+		var selectedUsers = $('.pickList_targetList li');
+		$.each(selectedUsers, function() {
+			users.push($(this).attr("label"));
+		});
+		console.log(users);
+
 		$.ajax({
-				type : "POST",
-				url : "saveProjectUserPrivilege.do",
-				cache : false,
-				data: "employeeId="+employee,
-				success : function(response) {
-					
-				}
-			});
-		}
+			type : "POST",
+			url : "saveProjectUserPrivilege.do",
+			cache : false,
+			data : "employeeId="+employee+"&toAuthorize="+users,
+			success : function(response) {
+
+			}
+		});
+	}
 </script>
 <style>
 .pickList_sourceListContainer, .pickList_controlsContainer, .pickList_targetListContainer { float: left; margin: 0.25em; }
