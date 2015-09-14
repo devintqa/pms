@@ -273,18 +273,21 @@ table.dataTable td {
  * Control feature layout
  */
 .dataTables_wrapper {
-  position: relative;
-  clear: both;
-  *zoom: 1;
-  zoom: 1;
+	position: relative;
+	clear: both;
+	*zoom: 1;
+	zoom: 1;
 }
+
 .dataTables_wrapper .dataTables_length {
   float: left;
 }
 .dataTables_wrapper .dataTables_filter {
-  float: right;
-  text-align: right;
+	font-weight: bold;
+	float: right;
+	text-align: right;
 }
+
 .dataTables_wrapper .dataTables_filter input {
   margin-left: 0.5em;
 }

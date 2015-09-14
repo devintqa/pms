@@ -11,9 +11,7 @@
 <%@include file="Utility.jsp"%>
 <script>
 	function deleteProject(projectAlias, projectId) {
-		$("#dialog-confirm").html(
-				projectAlias
-						+ " : Deletion Operation!, Please confirm to proceed");
+		$("#dialog-confirm").html(projectAlias + " : Deletion Operation!, Please confirm to proceed");
 		$("#dialog-confirm").dialog({
 			resizable : false,
 			modal : true,
@@ -60,7 +58,7 @@
 			<c:if test="${not empty projectDocumentList}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">Project
 					Documents</h1>
-				<table id="projectDocumentList" class="gridView">
+				<table id="projectDocumentList" class="display" width="100%">
 					<thead>
 						<tr>
 							<th>Name</th>
@@ -73,6 +71,7 @@
 							<th>Action</th>
 						</tr>
 					</thead>
+
 					<tbody>
 						<c:forEach var="projDoc" items="${projectDocumentList}">
 							<tr>
