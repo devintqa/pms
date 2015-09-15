@@ -48,27 +48,17 @@ public class FileUploadController extends BaseController {
 	@RequestMapping(value = "/emp/myview/uploadFile/{employeeId}", method = RequestMethod.GET)
 	public String pmsDisplayForm(@PathVariable String employeeId, Model model) {
 		LOGGER.info("Into File Upload");
-		FileUpload fileUpload = new FileUpload();
-		fileUpload.setEmployeeId(employeeId);
-		model.addAttribute("uploadForm", fileUpload);
-		Map < String, String > aliasProjectList = populateAliasProjectList();
-		if (aliasProjectList.size() == 0) {
-			model.addAttribute("noProjectCreated",
-				"No Project Found To Be Created. Please Create a Project.");
-			return "Welcome";
-		} else {
-			model.addAttribute("aliasProjectList", aliasProjectList);
-		}
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
-		model.addAttribute("employee", employee);
-		return "UploadFile";
+		return buildUploadPage(employeeId, model, "UploadFile");
 	}
 
 	@RequestMapping(value = "/emp/myview/uploadExcel/{employeeId}", method = RequestMethod.GET)
 	public String pmsExcelUploadForm(@PathVariable String employeeId,
 	Model model) {
 		LOGGER.info("Into Excel Upload");
+		return buildUploadPage(employeeId, model, "UploadExcel");
+	}
+	
+	private String buildUploadPage(String employeeId, Model model, String fileName){
 		FileUpload fileUpload = new FileUpload();
 		fileUpload.setEmployeeId(employeeId);
 		model.addAttribute("uploadForm", fileUpload);
@@ -83,7 +73,7 @@ public class FileUploadController extends BaseController {
 		Employee employee = new Employee();
 		employee.setEmployeeId(employeeId);
 		model.addAttribute("employee", employee);
-		return "UploadExcel";
+		return fileName;
 	}
 
 	@RequestMapping(value = "/emp/myview/uploadFile/getSubAliasProject.do", method = RequestMethod.GET)@ResponseBody
