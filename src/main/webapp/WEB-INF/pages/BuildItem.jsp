@@ -24,8 +24,42 @@
 		$(function () {
             $('input[type="checkbox"]').on('change', function () {
                 if(this.checked==true){
-                	$('.baseItem').show();
-                	$('.item').hide();
+
+                    $.ajax({
+                        type: 'GET',
+                        url: 'ItemPresent.do',
+                        success: function (response){
+                            if(response){
+                                $("#dialog-confirm")
+                                        .html("Description Already Exist for Selected Alias Project/SubProjecct Name, Do you want to Overwrite ??");
+                                $("#dialog-confirm").dialog({
+                                    resizable: false,
+                                    modal: true,
+                                    title: "Warning!",
+                                    height: 200,
+                                    width: 350,
+                                    buttons: {
+                                        "Yes": function(){
+                                            $('.baseItem').show();
+                                            $('.item').hide();
+                                            $(this).dialog('close');
+                                        },
+                                        "No" :function () {
+                                            $(this).dialog('close');
+                                            $('#baseItem').prop('checked', false);
+                                            $('.baseItem').hide();
+                                            $('.item').show();
+                                        }
+
+                                    }
+                                })
+
+                            }else{
+                                $('.baseItem').show();
+                                $('.item').hide();
+                            }
+                        }
+                    })
                 }else{
                 	$('.baseItem').hide();
                 	$('.item').show();
@@ -36,6 +70,7 @@
             if($("#baseItem").is(':checked')){
                 $('.baseItem').show();
                 $('.item').hide();
+
             }
         });
 		
@@ -117,7 +152,7 @@
 			</form:form>
 
 		</div>
-
+        <div id="dialog-confirm"></div>
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />

@@ -241,6 +241,7 @@ public class FileServiceImpl implements FileService {
 			if (validateExcelSheet(directory, excelDetail, file)) return excelDetail;
 			List < ItemRateDescription > itemRateDescriptions = itemRateDescriptionBuilder.buildItemRateDescription(directory, file);
 			bulkUploadDetailsValidator.validateFields(itemRateDescriptions);
+            itemDAO.deleteItemDescription();
 			itemDAO.saveItemRateDescriptions(itemRateDescriptions);
 		}
 		return excelDetail;

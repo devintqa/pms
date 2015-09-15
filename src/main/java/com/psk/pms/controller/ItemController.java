@@ -44,6 +44,8 @@ import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.FileUploadValidator;
 import com.psk.pms.validator.ItemValidator;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 public class ItemController {
 
@@ -92,6 +94,14 @@ public class ItemController {
             }
         }
         return result;
+    }
+
+
+    @RequestMapping(value = "/emp/myview/buildItem/ItemPresent.do", method = RequestMethod.GET)
+    public
+    @ResponseBody
+    boolean isItemPresent(HttpServletRequest request){
+        return itemService.isItemDescriptionPresent();
     }
 
     @RequestMapping(value = "/emp/myview/buildItem/createItem.do", method = RequestMethod.POST)

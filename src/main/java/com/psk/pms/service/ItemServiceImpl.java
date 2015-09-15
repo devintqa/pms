@@ -184,4 +184,8 @@ public class ItemServiceImpl implements ItemService {
         return itemsDetail;
     }
 
+    @Override
+    public boolean isItemDescriptionPresent() {
+       return itemDAO.isItemPresent();
+    }
 }
