@@ -71,7 +71,7 @@ CREATE TABLE `depositdetail` (
   `DepositStartDate` datetime NOT NULL,
   `DepositEndDate` datetime NOT NULL,
   `DepositType` varchar(20) NOT NULL,
-  `BGNumber` varchar(20) NOT NULL,
+  `depositTypeNumber` varchar(20) NOT NULL,
   `DepositStatus` varchar(20) NOT NULL,
   `DepositPeriod` int(10) NOT NULL,
   `DepositExtensionDate` datetime,

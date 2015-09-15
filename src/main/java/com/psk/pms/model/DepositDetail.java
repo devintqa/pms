@@ -12,8 +12,8 @@ public class DepositDetail {
     private String depositEndDate;
     private Date sqlDepositEndDate;
     private String depositType;
-    private String bgNumber;
-    private int depositPeriod;
+    private String depositTypeNumber;
+	private int depositPeriod;
     private String depositExtensionDate;
     private Date sqlDepositRecievedDate;
     private String depositRecievedDate;
@@ -105,13 +105,13 @@ public class DepositDetail {
         this.depositType = depositType;
     }
 
-    public String getBgNumber() {
-        return bgNumber;
-    }
+    public String getDepositTypeNumber() {
+		return depositTypeNumber;
+	}
 
-    public void setBgNumber(String bgNumber) {
-        this.bgNumber = bgNumber;
-    }
+	public void setDepositTypeNumber(String depositTypeNumber) {
+		this.depositTypeNumber = depositTypeNumber;
+	}
 
     public int getDepositPeriod() {
         return depositPeriod;

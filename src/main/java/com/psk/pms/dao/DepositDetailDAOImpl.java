@@ -31,7 +31,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         if (!"Y".equalsIgnoreCase(depositDetail.getIsUpdate())) {
             jdbcTemplate.update(CREATE_DEPOSIT_DETAIL, new Object[]{
                     depositDetail.getAliasProjectName(), depositDetail.getAliasSubProjectName(), depositDetail.getDepositAmount(), depositDetail.getSqlDepositStartDate(),
-                    depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getBgNumber(), depositDetail.getDepositPeriod(),
+                    depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getDepositTypeNumber(), depositDetail.getDepositPeriod(),
                     depositDetail.getDepositExtensionSqlDate(), depositDetail.getDepositLedgerNumber(),
                     depositDetail.getLastUpdatedBy(), depositDetail.getLastUpdatedAt(), depositDetail.getDepositDetailSubmitter(), depositDetail.getDepDetail(), depositDetail.getDepositStatus()
                     , depositDetail.getSqlDepositRecievedDate(), depositDetail.getDepositRecievedComments()
@@ -39,7 +39,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         } else {
             jdbcTemplate.update(UPDATE_DEPOSIT_DETAIL, new Object[]
                     {depositDetail.getProjId(), depositDetail.getSubProjId(), depositDetail.getDepositAmount(), depositDetail.getSqlDepositStartDate(),
-                            depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getBgNumber(), depositDetail.getDepositPeriod(),
+                            depositDetail.getSqlDepositEndDate(), depositDetail.getDepositType(), depositDetail.getDepositTypeNumber(), depositDetail.getDepositPeriod(),
                             depositDetail.getDepositExtensionSqlDate(), depositDetail.getDepositLedgerNumber(),
                             depositDetail.getLastUpdatedBy(), depositDetail.getLastUpdatedAt(), depositDetail.getDepositDetailSubmitter(), depositDetail.getDepDetail(),
                             depositDetail.getDepositStatus(), depositDetail.getSqlDepositRecievedDate(), depositDetail.getDepositRecievedComments(), depositDetail.getDepositId()
@@ -76,7 +76,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
             depositDetail.setDepositAmount(rs.getString("DepositAmount"));
             depositDetail.setDepositType(rs.getString("DepositType"));
             depositDetail.setDepDetail(rs.getString("DepositDetail"));
-            depositDetail.setBgNumber(rs.getString("BGNumber"));
+            depositDetail.setDepositTypeNumber(rs.getString("depositTypeNumber"));
             depositDetail.setDepositPeriod(rs.getInt("DepositPeriod"));
             depositDetail.setDepositLedgerNumber(rs.getString("DepositLedgerNumber"));
             depositDetail.setDepositDetailSubmitter(rs.getString("DepositSubmitter"));

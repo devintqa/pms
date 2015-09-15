@@ -13,7 +13,6 @@ import java.util.regex.Pattern;
 
 public class DepositDetailValidator extends BaseValidator implements Validator {
 
-    public static final String BANK_GUARANTEE = "Bank Guarantee";
     private Pattern pattern;
     private Matcher matcher;
 
@@ -40,15 +39,11 @@ public class DepositDetailValidator extends BaseValidator implements Validator {
                 "required.depositAmount", "Enter Deposit Amount");
         ValidationUtils.rejectIfEmpty(errors, "depositLedgerNumber",
                 "required.depositLedgerNumber", "Enter Deposit Ledger Number");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositTypeNumber",
+                "required.depositTypeNumber", "Enter Deposit Type Number.");
 
         DepositDetail depositDetail = (DepositDetail) target;
 
-        if (BANK_GUARANTEE.equalsIgnoreCase(depositDetail.getDepositType())) {
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositExtensionDate",
-                    "required.depositExtensionDate", "Select Deposit Extension Date.");
-            ValidationUtils.rejectIfEmptyOrWhitespace(errors, "bgNumber",
-                    "required.bgNumber", "Enter Deposit Guarantee Number");
-        }
         if ("Refunded".equalsIgnoreCase(depositDetail.getDepositStatus())) {
             ValidationUtils.rejectIfEmptyOrWhitespace(errors, "depositRecievedDate",
                     "required.depositRecievedDate", "Select Deposit Recieved Date.");
