@@ -192,11 +192,11 @@
                             <td><form:errors path="depositDetailSubmitter" cssClass="error"/></td>
                         </tr>
                         <tr>
-                            <td>Deposit Guarantee Number<span id="colon">:</span>
+                            <td>Deposit Type Number<span id="colon">:</span>
                             </td>
-                            <td><form:input path="bgNumber"
-                                            placeholder="Enter Bank Guarantee Number" cssClass="inputText"/></td>
-                            <td><form:errors path="bgNumber" cssClass="error"/></td>
+                            <td><form:input path="depositTypeNumber"
+                                            placeholder="Enter Deposit Type Number" cssClass="inputText"/></td>
+                            <td><form:errors path="depositTypeNumber" cssClass="error"/></td>
                         </tr>
                         <tr>
                             <td>Deposit Start Date<span id="colon">:</span>

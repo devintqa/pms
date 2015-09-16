@@ -29,6 +29,32 @@ public class MailClient {
 				+ "</b>"
 				+ ". You will be able to login to application once our admin approves your request.You will be receiving a notification mail on same."
 				+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
+		sendMail(to,userName,message,msg);
+	}
+
+	public void sendAccessMail(String to, String userName, String action) {
+		MimeMessage message = mailSender.createMimeMessage();
+		String msg = "";
+		if ("1".equalsIgnoreCase(action)) {
+			msg = "Dear User,"
+					+ "<br><br>"
+					+ "Your account has been "
+					+ "<b>"
+					+ "ENABLED"
+					+ "</b>"
+					+ " by the Admin."
+					+ "<br>"
+					+ "Now you can start using PMS Application to log into the system."
+					+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
+		} else if ("2".equalsIgnoreCase(action)) {
+			msg = "Dear User," + "<br><br>" + "Sorry !! Your account has been "
+					+ "<b>" + "DENIED" + "</b>" + " by the Admin." + "<br><br>"
+					+ "Regards," + "<br>" + "PSK Team.";
+		}
+		sendMail(to,userName,message,msg);
+	}
+	
+	private void sendMail(String to, String userName, MimeMessage message,String msg){
 		try {
 			message.setSubject("PSK - Your Account Details");
 			MimeMessageHelper helper;
@@ -40,39 +66,6 @@ public class MailClient {
 		} catch (MessagingException e) {
 			LOGGER.error("Error in sending mail to the user :" + userName);
 			LOGGER.error("Error :" + e.getMessage());
-		}
-	}
-
-	public void sendAccessMail(String to, String userName, String action) {
-		MimeMessage message = mailSender.createMimeMessage();
-		String msg = "";
-		if (action.equalsIgnoreCase("1")) {
-			msg = "Dear User,"
-					+ "<br><br>"
-					+ "Your account has been "
-					+ "<b>"
-					+ "ENABLED"
-					+ "</b>"
-					+ " by the Admin."
-					+ "<br>"
-					+ "Now you can start using PMS Application to log into the system."
-					+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
-		} else if (action.equalsIgnoreCase("2")) {
-			msg = "Dear User," + "<br><br>" + "Sorry !! Your account has been "
-					+ "<b>" + "DENIED" + "</b>" + " by the Admin." + "<br><br>"
-					+ "Regards," + "<br>" + "PSK Team.";
-		}
-		try {
-			message.setSubject("PSK - Your Access Details");
-			MimeMessageHelper helper;
-			helper = new MimeMessageHelper(message, true);
-			helper.setFrom("pskconstructionsgroup@gmail.com");
-			helper.setTo(to);
-			helper.setText(msg, true);
-			mailSender.send(message);
-		} catch (MessagingException e) {
-			LOGGER.error("Error in sending mail to the user :" + userName);
-			LOGGER.error("error :" + e.getMessage());
 		}
 	}
 

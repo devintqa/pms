@@ -65,7 +65,6 @@ public class ProjectController {
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         model.addAttribute("employee", employee);
-
         ProjectDetail projectDetail = new ProjectDetail();
         projectDetail = projectService.getProjectDocument(project);
         projectDetail.setIsUpdate("Y");
@@ -78,30 +77,19 @@ public class ProjectController {
     public String saveProjectAction(
             @ModelAttribute("projectForm") ProjectDetail projectDetail,
             BindingResult result, Model model, SessionStatus status) {
-        boolean isProjectSaveSuccessful = false;
-        projectDetailValidator.validate(projectDetail, result);
-        if (!result.hasErrors()) {
-            isProjectSaveSuccessful = projectService
-                    .createEditProject(projectDetail);
-        }
-        if (result.hasErrors() || !isProjectSaveSuccessful) {
-            return "BuildProject";
-        } else {
-            status.setComplete();
-            Employee employee = new Employee();
-            employee.setEmployeeId(projectDetail.getEmployeeId());
-            model.addAttribute("employee", employee);
-            model.addAttribute("projectCreationMessage",
-                    "Project Creation Successful.");
-            return "BuildProject";
-        }
+    	return createEditProject(projectDetail, result, model, status, "Project Creation Successful.");
     }
 
     @RequestMapping(value = "/emp/myview/updateProject/createProject.do", method = RequestMethod.POST)
     public String updateProjectAction(
             @ModelAttribute("projectForm") ProjectDetail projectDetail,
             BindingResult result, Model model, SessionStatus status) {
-        boolean isProjectSaveSuccessful = false;
+        return createEditProject(projectDetail, result, model, status, "Project Updated Successfully.");
+    }
+    
+    private String createEditProject(ProjectDetail projectDetail,
+            BindingResult result, Model model, SessionStatus status, String message){
+    	boolean isProjectSaveSuccessful = false;
         projectDetailValidator.validate(projectDetail, result);
         if (!result.hasErrors()) {
             isProjectSaveSuccessful = projectService
@@ -114,10 +102,7 @@ public class ProjectController {
             Employee employee = new Employee();
             employee.setEmployeeId(projectDetail.getEmployeeId());
             model.addAttribute("employee", employee);
-            isProjectSaveSuccessful = projectService
-                    .createEditProject(projectDetail);
-            model.addAttribute("projectUpdationMessage",
-                    "Project Updated Successfully.");
+            model.addAttribute("projectCreationMessage", message);
             return "BuildProject";
         }
     }

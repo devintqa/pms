@@ -51,4 +51,6 @@ public interface ItemService {
     List<String> getItemNames(String itemType, String projectId);
 
     List<com.psk.pms.model.ProjectConfiguration.ItemDetail> getMissingProjectDescriptionItems(Integer projectId);
+
+    boolean isItemDescriptionPresent();
 }
