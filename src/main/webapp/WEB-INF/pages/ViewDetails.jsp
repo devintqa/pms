@@ -96,6 +96,7 @@
               $('#projectItemDescriptionRow').hide();
               $('input[type="checkbox"]').prop('checked', false);
               $('#searchAggregateItemDetails').prop('checked', true);
+              $('#itemFields').hide();
          });
 
         $("#searchCategorypsk").change(function () {
@@ -184,7 +185,7 @@
                                      id="itemType" items="${itemTypes}"/></td>
 
                     <td>
-                        <div id="itemNameField"> Item Name <span id="colon">:</span> 
+                        <div id="itemNameField"> Item Name
                           <form:select path="itemName" cssClass="inputText"
                                          id="itemName">
 
