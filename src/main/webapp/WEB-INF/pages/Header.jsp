@@ -81,8 +81,6 @@
 								Profile</a></li>
 						<li><a id="logout"
 							href="${pageContext.request.contextPath}/logout">Logout</a></li>
-						<li><a id="grant"
-							href="/pms/emp/myview/manageAccess/${employeeObj.employeeId}">Authorize</a></li>
 					</ul>
 					</li>
 	</c:when>
@@ -176,13 +174,15 @@
 		</li>
 		<li> <a href="#">User</a>
 		        <ul>
-		            <li> <a id="logout"
-                    		href="${pageContext.request.contextPath}/logout">
-                    		Logout</a></li>
+                    <li><a id="grant"
+                           href="/pms/emp/myview/manageAccess/${employeeObj.employeeId}">Authorize</a></li>
                     <li> <a id="profile"
                     	    href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">
                     	    Update Profile</a></li>
-		        </ul>
+                    <li> <a id="logout"
+                            href="${pageContext.request.contextPath}/logout">
+                        Logout</a></li>
+                </ul>
 		</li>
 	</c:when> 
 

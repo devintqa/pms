@@ -135,6 +135,8 @@ public class PmsMasterQuery {
 
     public static final String GET_ALL_EMPLOYEE = "SELECT * FROM employee where empTeam != 'Admin'";
 
+    public static final String GET_EMPLOYEES_FOR_TEAM = "SELECT * FROM employee where empTeam = ? and enabled =1";
+
     public static final String DELETE_EMPLOYEE = "DELETE FROM employee WHERE empId = ? ";
 
 
@@ -143,5 +145,7 @@ public class PmsMasterQuery {
 
     public static final String GET_DROP_DOWN_VALUES = "select Value from pmsmastertable where Type = ?";
 
+    public static final String INSERT_INTO_AUTHORISE_PROJECT = "INSERT INTO authoriseProject (projectId, empId) "
+            + "VALUES (?, ?)";
 
 }

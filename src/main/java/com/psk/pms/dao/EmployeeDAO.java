@@ -42,5 +42,9 @@ public interface EmployeeDAO {
 
     List<Employee> getAllEmployeeDetails();
 
+    List<Employee> getEmployeesOfTeam(String teamName);
+
     void deleteEmployee(String employeeId);
+
+    void saveProjectUserPrivelage(String projectId, List<String> users);
 }

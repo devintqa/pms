@@ -2,7 +2,7 @@ package com.psk.pms.model;
 
 public class Permission {
     private String label;
-    private int value;
+    private String value;
     private boolean selected;
 
     public String getLabel() {
@@ -13,11 +13,11 @@ public class Permission {
         this.label = label;
     }
 
-    public int getValue() {
+    public String getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(String value) {
         this.value = value;
     }
 

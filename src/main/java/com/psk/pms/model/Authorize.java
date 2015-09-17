@@ -5,6 +5,8 @@ public class Authorize {
     private String employeeId;
     private Integer projectId;
     private String privilegeDetails;
+    private String projectName;
+    private String teamName;
 
     public String getEmployeeId() {
         return employeeId;
@@ -30,4 +32,19 @@ public class Authorize {
         this.privilegeDetails = privilegeDetails;
     }
 
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
+    }
 }

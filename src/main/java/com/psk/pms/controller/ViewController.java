@@ -59,61 +59,8 @@ public class ViewController extends BaseController {
         LOGGER.info("View Controller : viewDetails()");
         ViewDetail viewDetail = new ViewDetail();
         viewDetail.setViewProjectItemPrice(true);
-
         setModelAttribute(model, viewDetail);
         return "ViewDetails";
-    }
-    
-    @RequestMapping(value = "/emp/myview/manageAccess/{employeeId}", method = RequestMethod.GET)
-    public String grantRights(@PathVariable String employeeId, Model model) {
-    	
-    	
-    	Authorize authorize = new Authorize();
-    	authorize.setEmployeeId(employeeId);
-    	authorize.setPrivilegeDetails(null);
-    	model.addAttribute("authorize", authorize);
-    	return "Authorization";
-    }
-    
-    @RequestMapping(value = "/emp/myview/manageAccess/getProjectUserPrivilege.do", method = RequestMethod.GET)
-    @ResponseBody
-    public String getProjectUserPrivilege(@RequestParam(value = "employeeId") String employeeId, 
-    									@RequestParam(value = "projectId") String projectId, 
-    									Model model) {
-    	List<Permission> permissionList = new ArrayList<Permission>();
-    	Permission permission = new Permission();
-    	permission.setLabel("akumar");
-    	permission.setValue(1);
-    	permission.setSelected(true);
-    	permissionList.add(permission);
-    	permission = new Permission();
-    	permission.setLabel("tkumar");
-    	permission.setValue(2);
-    	permissionList.add(permission);
-    	Gson gson = new Gson();
-    	JsonElement element = gson.toJsonTree(permissionList, new TypeToken<List<Permission>>() {
-    	}.getType());
-    	JsonArray jsonArray = element.getAsJsonArray();
-    	Authorize authorize = new Authorize();
-    	authorize.setEmployeeId(employeeId);
-    	authorize.setPrivilegeDetails(jsonArray.toString());
-    	model.addAttribute("authorize", authorize);
-    	return jsonArray.toString();
-    }
-    
-    @RequestMapping(value = "/emp/myview/manageAccess/saveProjectUserPrivilege.do", method = RequestMethod.POST)
-    @ResponseBody
-    public String saveProjectUserPrivilege(@RequestParam(value = "employeeId") String employeeId, Model model) {
-    	List<Permission> permissionList = new ArrayList<Permission>();
-    	Gson gson = new Gson();
-    	JsonElement element = gson.toJsonTree(permissionList, new TypeToken<List<Permission>>() {
-    	}.getType());
-    	JsonArray jsonArray = element.getAsJsonArray();
-    	Authorize authorize = new Authorize();
-    	authorize.setEmployeeId(employeeId);
-    	authorize.setPrivilegeDetails(jsonArray.toString());
-    	model.addAttribute("authorize", authorize);
-    	return jsonArray.toString();
     }
 
     @RequestMapping(value = "/emp/myview/viewDetails/searchProject.do", method = RequestMethod.GET)

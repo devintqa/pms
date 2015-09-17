@@ -1,10 +1,7 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.DELETE_EMPLOYEE;
-import static com.psk.pms.dao.PmsMasterQuery.GET_ALL_EMPLOYEE;
-import static com.psk.pms.dao.PmsMasterQuery.GET_ROLES;
-import static com.psk.pms.dao.PmsMasterQuery.SAVE_ROLES;
-
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,11 +9,14 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Team;
+
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
@@ -203,6 +203,12 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return buildEmployeeDetail(jdbcTemplate.queryForList(GET_ALL_EMPLOYEE));
     }
 
+
+    @Override
+    public List<Employee> getEmployeesOfTeam(String teamName) {
+        return buildEmployeeDetail(jdbcTemplate.queryForList(GET_EMPLOYEES_FOR_TEAM, new Object[]{teamName}));
+    }
+
     @Override
     public void deleteEmployee(String employeeId) {
         jdbcTemplate.update(
@@ -214,5 +220,22 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public List<String> getRolesForTeam(String teamName) {
         List<String> roles = jdbcTemplate.queryForList(GET_ROLES, new Object[]{teamName}, String.class);
         return roles;
+    }
+
+    @Override
+    public void saveProjectUserPrivelage(final String projectId, final List<String> users) {
+        jdbcTemplate.batchUpdate(INSERT_INTO_AUTHORISE_PROJECT,new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                String empId = users.get(i);
+                ps.setString(1,projectId);
+                ps.setString(2,empId);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return users.size();
+            }
+        });
     }
 }

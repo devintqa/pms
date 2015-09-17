@@ -479,6 +479,21 @@ CREATE TABLE `teamRole` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `authoriseProject`
+--
+
+DROP TABLE IF EXISTS `authoriseProject`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `authoriseProject` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `projectId` varchar(100) NOT NULL,
+  `empId` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 
