@@ -8,7 +8,7 @@ import java.util.List;
  * Created by Sony on 16-09-2015.
  */
 public interface AuthorisationService {
-    List<Permission> getPermissionList(String teamName);
+    List<Permission> getPermissionList(String teamName, String projectId);
 
-    List<Permission> saveProjectUserPrivilage(String projectId, List<String> users);
+    List<Permission> saveProjectUserPrivilege(String projectId, List<String> users, String teamName, List<String> availableUsers);
 }

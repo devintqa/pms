@@ -64,7 +64,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 employee.getEmployeeLName(), employee.getEmployeeTeam(),
                 employee.getEmployeeAddress(), employee.getEmployeeGender(),
                 employee.getEmployeeMobile(), employee.getEmployeeMail(),
-                employee.getEmployeeMotherMaidenName(), employee.getEnabled(),employee.getEmployeeRole()
+                employee.getEmployeeMotherMaidenName(), employee.getEnabled(), employee.getEmployeeRole()
         });
 
         String sql2 = "INSERT INTO userroles" +
@@ -79,7 +79,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         String sql = "UPDATE employee set empAddress  = ?, empMobNum = ?, empMail = ? , empRole = ? WHERE empId = ?";
         jdbcTemplate.update(sql, new Object[]{
                 employee.getEmployeeAddress(), employee.getEmployeeMobile(),
-                employee.getEmployeeMail(), employee.getEmployeeRole(),employee.getEmployeeId()
+                employee.getEmployeeMail(), employee.getEmployeeRole(), employee.getEmployeeId()
         });
         return true;
     }
@@ -181,7 +181,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     public boolean isRoleExists(String roleName, String teamName) {
         String sql = "SELECT COUNT(*) FROM teamRole where roleName = ? and teamName=?";
         int total = jdbcTemplate.queryForObject(sql, Integer.class,
-                new Object[]{roleName,teamName});
+                new Object[]{roleName, teamName});
         if (total == 0) {
             return false;
         }
@@ -205,8 +205,8 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
 
     @Override
-    public List<Employee> getEmployeesOfTeam(String teamName) {
-        return buildEmployeeDetail(jdbcTemplate.queryForList(GET_EMPLOYEES_FOR_TEAM, new Object[]{teamName}));
+    public List<String> getAvailableEmployees(String teamName, String projectId) {
+        return jdbcTemplate.queryForList(GET_AVAILABLE_EMPLOYEES, String.class,new Object[]{teamName,projectId,teamName});
     }
 
     @Override
@@ -223,13 +223,37 @@ public class EmployeeDAOImpl implements EmployeeDAO {
     }
 
     @Override
-    public void saveProjectUserPrivelage(final String projectId, final List<String> users) {
-        jdbcTemplate.batchUpdate(INSERT_INTO_AUTHORISE_PROJECT,new BatchPreparedStatementSetter() {
+    public void saveProjectUserPrivilege(final String projectId, final List<String> users, final String teamName) {
+        jdbcTemplate.batchUpdate(INSERT_INTO_AUTHORISE_PROJECT, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 String empId = users.get(i);
-                ps.setString(1,projectId);
-                ps.setString(2,empId);
+                ps.setString(1, projectId);
+                ps.setString(2, empId);
+                ps.setString(3, teamName);
+            }
+
+            @Override
+            public int getBatchSize() {
+                return users.size();
+            }
+        });
+    }
+
+    @Override
+    public List<String> getSelectedEmployees(String teamName, String projectId) {
+        return jdbcTemplate.queryForList(GET_SELECTED_EMPLOYEES, String.class,new Object[]{teamName,projectId});
+    }
+
+    @Override
+    public void deleteProjectUserPrivilege(final String projectId, final List<String> users, final String teamName) {
+        jdbcTemplate.batchUpdate(DELETE_AUTHORIZE_PROJECT, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                String empId = users.get(i);
+                ps.setString(1, teamName);
+                ps.setString(2, empId);
+                ps.setString(3, projectId);
             }
 
             @Override

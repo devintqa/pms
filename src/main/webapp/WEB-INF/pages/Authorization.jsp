@@ -12,6 +12,11 @@
     <script>
         $(function () {
             $("#user").pickList();
+            $('#projectId').change(function () {
+                $("#teamName").prop('selectedIndex', 0);
+                $('.pickList_sourceList li').remove();
+                $('.pickList_targetList li').remove();
+            });
             $('#teamName').change(function () {
 
                 $('.pickList_sourceList li').remove();
@@ -60,20 +65,27 @@
 
 
         function updateConsole() {
-            var users = [];
+            var susers = [];
+            var ausers = [];
             var employee = $('#employee').val();
             var projectId = $('#projectId').val();
+            var teamName = $('#teamName').val();
             var selectedUsers = $('.pickList_targetList li');
             $.each(selectedUsers, function () {
-                users.push($(this).attr("label"));
+                susers.push($(this).attr("label"));
             });
-            console.log(users);
+            var availableUsers = $('.pickList_sourceList li');
+            $.each(availableUsers, function () {
+                ausers.push($(this).attr("label"));
+            });
+            console.log(susers);
 
             $.ajax({
                 type: "POST",
                 url: "saveProjectUserPrivilege.do",
                 cache: false,
-                data: "employeeId=" + employee + "&toAuthorize=" + users + "&projectId=" + projectId,
+                data: "employeeId=" + employee + "&toAuthorize=" + susers + "&projectId=" + projectId
+                        + "&teamName=" + teamName + "&toDeAuthorize=" + ausers,
                 success: function (response) {
                     if (response.success) {
                         $("#dialog-confirm").html("Saved successfully");

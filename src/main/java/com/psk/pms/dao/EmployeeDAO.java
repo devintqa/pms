@@ -42,9 +42,13 @@ public interface EmployeeDAO {
 
     List<Employee> getAllEmployeeDetails();
 
-    List<Employee> getEmployeesOfTeam(String teamName);
+    List<String> getAvailableEmployees(String teamName, String projectId);
 
     void deleteEmployee(String employeeId);
 
-    void saveProjectUserPrivelage(String projectId, List<String> users);
+    void saveProjectUserPrivilege(String projectId, List<String> users, String teamName);
+
+    List<String> getSelectedEmployees(String teamName, String projectId);
+
+    void deleteProjectUserPrivilege(String projectId, List<String> availableUsers, String teamName);
 }

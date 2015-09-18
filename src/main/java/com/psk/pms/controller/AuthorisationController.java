@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.Constants;
 import com.psk.pms.model.Authorize;
 import com.psk.pms.model.JsonData;
 import com.psk.pms.model.Permission;
@@ -15,15 +13,12 @@ import com.psk.pms.validator.AuthorisationValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
-import static com.psk.pms.Constants.DEPOSIT_TYPE;
 import static com.psk.pms.Constants.TEAM;
 
 @Controller
@@ -64,7 +59,7 @@ public class AuthorisationController {
         if (!isNullOrEmpty(jsonData.getData())) {
             return jsonData;
         }
-        List<Permission> permissions = authorisationService.getPermissionList(teamName);
+        List<Permission> permissions = authorisationService.getPermissionList(teamName, projectId);
         if (permissions.isEmpty()) {
             jsonData.setData("No Employees present.Please select another Team");
             return jsonData;
@@ -87,24 +82,30 @@ public class AuthorisationController {
     @ResponseBody
     public JsonData saveProjectUserPrivilege(@RequestParam(value = "employeeId") String employeeId,
                                              @RequestParam(value = "projectId") String projectId,
-                                             @RequestParam(value = "toAuthorize") List<String> users,
+                                             @RequestParam(value = "teamName") String teamName,
+                                             @RequestParam(value = "toAuthorize") List<String> selectedUsers,
+                                             @RequestParam(value = "toDeAuthorize") List<String> availableUsers,
                                              Model model) {
-        Gson gson = new Gson();
         JsonData jsonData = new JsonData();
-        authorisationValidator.validate(users, projectId, jsonData);
-        if (!isNullOrEmpty(jsonData.getData())) {
-            return jsonData;
+        try {
+            Gson gson = new Gson();
+            authorisationValidator.validate(selectedUsers, projectId, jsonData,availableUsers,teamName);
+            if (!isNullOrEmpty(jsonData.getData())) {
+                return jsonData;
+            }
+            List<Permission> permissions = authorisationService.saveProjectUserPrivilege(projectId, selectedUsers, teamName, availableUsers);
+            JsonElement element = gson.toJsonTree(permissions, new TypeToken<List<Permission>>() {
+            }.getType());
+            JsonArray jsonArray = element.getAsJsonArray();
+            Authorize authorize = new Authorize();
+            authorize.setEmployeeId(employeeId);
+            authorize.setPrivilegeDetails(jsonArray.toString());
+            model.addAttribute("authorize", authorize);
+            jsonData.setData(jsonArray.toString());
+            jsonData.setSuccess(true);
+        } catch (Exception e) {
+            jsonData.setData(e.getMessage());
         }
-        List<Permission> permissions = authorisationService.saveProjectUserPrivilage(projectId, users);
-        JsonElement element = gson.toJsonTree(permissions, new TypeToken<List<Permission>>() {
-        }.getType());
-        JsonArray jsonArray = element.getAsJsonArray();
-        Authorize authorize = new Authorize();
-        authorize.setEmployeeId(employeeId);
-        authorize.setPrivilegeDetails(jsonArray.toString());
-        model.addAttribute("authorize", authorize);
-        jsonData.setData(jsonArray.toString());
-        jsonData.setSuccess(true);
         return jsonData;
     }
 

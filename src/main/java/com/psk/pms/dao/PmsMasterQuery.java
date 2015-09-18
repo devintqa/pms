@@ -135,7 +135,12 @@ public class PmsMasterQuery {
 
     public static final String GET_ALL_EMPLOYEE = "SELECT * FROM employee where empTeam != 'Admin'";
 
-    public static final String GET_EMPLOYEES_FOR_TEAM = "SELECT * FROM employee where empTeam = ? and enabled =1";
+    public static final String GET_SELECTED_EMPLOYEES = "SELECT distinct(a.empId) FROM employee e,authoriseproject a where e.empTeam = ? and e.enabled =1\n" +
+            " and a.projectId=? and a.teamName=e.empTeam";
+
+    public static final String GET_AVAILABLE_EMPLOYEES = "select empId from employee where empId not in (\n" +
+            "SELECT distinct(a.empId) FROM employee e,authoriseproject a where e.empTeam = ? and e.enabled =1\n" +
+            " and a.projectId=? and a.teamName=e.empTeam) and empTeam =? and enabled=1";
 
     public static final String DELETE_EMPLOYEE = "DELETE FROM employee WHERE empId = ? ";
 
@@ -145,7 +150,9 @@ public class PmsMasterQuery {
 
     public static final String GET_DROP_DOWN_VALUES = "select Value from pmsmastertable where Type = ?";
 
-    public static final String INSERT_INTO_AUTHORISE_PROJECT = "INSERT INTO authoriseProject (projectId, empId) "
-            + "VALUES (?, ?)";
+    public static final String INSERT_INTO_AUTHORISE_PROJECT = "INSERT INTO authoriseProject (projectId, empId,teamName) "
+            + "VALUES (?, ?,?)";
+
+    public static final String DELETE_AUTHORIZE_PROJECT= "delete from authoriseproject where teamName=? and empId =? and projectId = ?";
 
 }

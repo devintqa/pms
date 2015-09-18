@@ -489,6 +489,7 @@ DROP TABLE IF EXISTS `authoriseProject`;
 CREATE TABLE `authoriseProject` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `projectId` varchar(100) NOT NULL,
+  `teamName` varchar(100) NOT NULL,
   `empId` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
