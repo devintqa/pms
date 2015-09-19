@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.DepositDetailDAO;
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.dao.ProjectDAO;
@@ -7,6 +8,7 @@ import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.dao.SubProjectDAO;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.utils.DateFormatter;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -133,7 +135,7 @@ public class ProjectServiceImpl implements ProjectService {
     public void deleteProject(Integer projectId) {
         itemDAO.deleteItemByProjectId(projectId);
         depositDetailDAO.deleteDepositDetailByProjectId(projectId);
-        projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
+        projectDescriptionDAO.deleteProjectDescriptionByProjectId(Constants.ALL_DESCRIPTION_TYPE, projectId);
         subProjectDAO.deleteSubProjectByProjectId(projectId);
         projectDAO.deleteProject(projectId);
     }

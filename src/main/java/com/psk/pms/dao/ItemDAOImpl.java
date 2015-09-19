@@ -551,6 +551,6 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public void deleteItemDescription() {
-        int update = jdbcTemplate.update("delete  from govpricedetail ");
+       jdbcTemplate.update("delete  from govpricedetail ");
     }
 }

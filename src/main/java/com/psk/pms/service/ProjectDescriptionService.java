@@ -39,11 +39,11 @@ public interface ProjectDescriptionService {
 
 	boolean isProjectDescriptionDetailsExistsForSubProject(int subProjectId, String governmentEst);
 
-	void deleteAllTheDescriptionDetailsOfProject(int projectId);
+	void deleteAllTheDescriptionDetailsOfProject(String descType, int projectId);
 
 	void deleteAllTheDescriptionDetailsOfSubProject(int subProjectId);
 
-	void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	void saveGovProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
 	void saveBaseProjectDescription(ProjDescDetail projDescDetail);
 

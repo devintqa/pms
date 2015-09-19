@@ -49,12 +49,23 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public void deleteProjectDescriptionByProjectId(Integer projectId) {
-
-		int noOfRows = jdbcTemplate.update(DELETEPROJECTDESCRIPTIONBYPROJECTID,
-		new Object[] {
-			projectId
-		});
+	public void deleteProjectDescriptionByProjectId(String descType, Integer projectId) {
+		int noOfRows = 0;
+		if(descType.equalsIgnoreCase(Constants.ALL_DESCRIPTION_TYPE)){
+			noOfRows = jdbcTemplate.update("DELETE FROM "+DescriptionType.getDescriptionTableName(Constants.PSK)+" WHERE ProjId = ?",
+					new Object[] {
+						projectId
+					});
+			noOfRows = jdbcTemplate.update("DELETE FROM "+DescriptionType.getDescriptionTableName(Constants.GOVERNMENT)+" WHERE ProjId = ?",
+					new Object[] {
+						projectId
+					});
+		}else{
+			noOfRows = jdbcTemplate.update("DELETE FROM "+DescriptionType.getDescriptionTableName(descType)+" WHERE ProjId = ?",
+					new Object[] {
+				projectId
+			});
+		}
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
 
@@ -431,7 +442,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 			return baseDescDetail;
 	}
 
-	public void saveProposalProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
+	public void saveGovProjectDescriptionDetails(final List < ProjDescDetail > projDescDetails) {
 
 		if(projDescDetails.size() > 0)
 			deleteGovProjectDescriptionByProjectId(projDescDetails.get(0).getProjId());

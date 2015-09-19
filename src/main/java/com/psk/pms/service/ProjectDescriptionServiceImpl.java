@@ -125,8 +125,8 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		projectDescriptionDAO.saveProjectDescriptionDetails(projDescDetails);
 	}
 
-	public void saveProposalProjectDescriptionDetails(List < ProjDescDetail > projDescDetails) {
-		projectDescriptionDAO.saveProposalProjectDescriptionDetails(projDescDetails);
+	public void saveGovProjectDescriptionDetails(List < ProjDescDetail > projDescDetails) {
+		projectDescriptionDAO.saveGovProjectDescriptionDetails(projDescDetails);
 	}
 
 	public void saveSubProjectDescriptionDetails(
@@ -146,9 +146,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public void deleteAllTheDescriptionDetailsOfProject(int projectId) {
+	public void deleteAllTheDescriptionDetailsOfProject(String descType, int projectId) {
 		LOGGER.info("Deleting all the project description items for project Id: " + projectId);
-		projectDescriptionDAO.deleteProjectDescriptionByProjectId(projectId);
+		projectDescriptionDAO.deleteProjectDescriptionByProjectId(descType, projectId);
 	}
 
 	@Override

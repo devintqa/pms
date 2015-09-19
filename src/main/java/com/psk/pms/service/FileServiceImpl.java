@@ -92,11 +92,10 @@ public class FileServiceImpl implements FileService {
 					projectDescriptionService.saveSubProjectDescriptionDetails(descDetailList);
 				} else {
 					if (fileUpload.isGovernmentEst()) {
-						projectDescriptionService.saveProposalProjectDescriptionDetails(descDetailList);
-						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
-						projectDescriptionService.saveProjectDescriptionDetails(descDetailList);
+						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(descType, projectDetail.getProjId());
+						projectDescriptionService.saveGovProjectDescriptionDetails(descDetailList);
 					} else {
-						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(projectDetail.getProjId());
+						projectDescriptionService.deleteAllTheDescriptionDetailsOfProject(descType, projectDetail.getProjId());
 						projectDescriptionService.saveProjectDescriptionDetails(descDetailList);
 					}
 				}

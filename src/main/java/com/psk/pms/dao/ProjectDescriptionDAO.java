@@ -13,7 +13,7 @@ public interface ProjectDescriptionDAO {
 
 	boolean saveProjDesc(ProjDescDetail projDescDetail);
 
-	void deleteProjectDescriptionByProjectId(Integer projectId);
+	void deleteProjectDescriptionByProjectId(String descType, Integer projectId);
 
 	void deleteProjectDescriptionBySubProjectId(Integer subProjectId);
 
@@ -35,7 +35,7 @@ public interface ProjectDescriptionDAO {
 
 	void saveProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
-	void saveProposalProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
+	void saveGovProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
 	void saveSubProjectDescriptionDetails(List<ProjDescDetail> projDescDetails);
 
