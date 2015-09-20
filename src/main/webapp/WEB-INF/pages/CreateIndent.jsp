@@ -22,9 +22,10 @@ $(document).ready(function () {
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-		
+
 		<div>
-			
+			<form:form id="indentForm" commandName="indentForm">
+			</form:form>
 
 		</div>
 

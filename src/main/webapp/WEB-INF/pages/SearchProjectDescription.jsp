@@ -58,15 +58,7 @@
                 
             });
                 
-                $.ajax({
-					type : "GET",
-					url : "/pms/emp/myview/indent/create.do",
-					cache : false,
-					data:"projId="+projId+"&subProjId="+subProjId+"&employeeId="+employeeId+"&projDescs="+projDescs,
-					success : function(response) {
-						
-					}
-				});
+                window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs;
 
            
         });
