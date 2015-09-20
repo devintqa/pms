@@ -2,7 +2,6 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.ITEM_TYPE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,12 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.psk.pms.model.Authorize;
 import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.Permission;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
