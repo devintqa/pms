@@ -563,6 +563,31 @@ INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
 ,('itemType','Machinery')
 ,('itemType','Other');
 
+     -- -- -- --
+-- Table structure for table `projectLeadDetail`
+--
+DROP TABLE IF EXISTS `projectLeadDetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projectLeadDetail` (
+  `projectId` int(11) NOT NULL default '0',
+  `subProjectId` int(11) NOT NULL default '0',
+  `leadDetailId` int(10) NOT NULL AUTO_INCREMENT,
+  `material` varchar(100) NOT NULL,
+  `sourceOfSupply` varchar(100) NOT NULL,
+  `distance` decimal(15,2) default '0.0',
+  `cost` decimal(15,2) default '0.0',
+  `ic` decimal(15,2) default '0.0',
+  `leadCharges` decimal(15,2) default '0.0',
+  `loadingUnloadingCharges` decimal(15,2) default '0.0',
+  `total` decimal(15,2) default '0.0',
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `active` int(1) DEFAULT '1',
+  primary key (`leadDetailId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
 
 /*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
 UNLOCK TABLES;

@@ -1,12 +1,14 @@
 package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.ITEM_TYPE;
+import static com.psk.pms.model.LeadDetailConfiguration.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -30,13 +32,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.psk.pms.Constants;
-import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.ExcelDetail;
-import com.psk.pms.model.Item;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.service.FileService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
@@ -306,5 +302,27 @@ public class ItemController {
         return projectService.getDropDownValuesFor(ITEM_TYPE);
     }
 
+
+    @RequestMapping("emp/myview/configureLead/{employeeId}")
+    public String  configureLead(@PathVariable String employeeId,@RequestParam String project,@RequestParam String subProject,Model model) {
+        Gson gson = new Gson();
+        LeadDetailConfiguration leadDetailConfiguration = itemService.getLeadDetails(project, subProject);
+        leadDetailConfiguration.setEmployeeId(employeeId);
+        JsonElement element = gson.toJsonTree(leadDetailConfiguration.getLeadDetails(), new TypeToken<List<LeadDetailConfiguration.LeadDetail>>() {}.getType());
+        JsonArray jsonArray = element.getAsJsonArray();
+        leadDetailConfiguration.setLeadConfiguration(jsonArray.toString());
+        model.addAttribute("leadDetailForm", leadDetailConfiguration);
+        return "ConfigureLeadDetails";
+    }
+
+    @RequestMapping(value = "emp/myview/configureLead/createLead.do", method = RequestMethod.POST , consumes = "application/json")
+    public @ResponseBody void createOrUpdateLeadDetail(@RequestBody LeadDetailConfiguration leadDetailConfiguration) throws IOException {
+        LOGGER.info("method = createOrUpdateLeadDetail()");
+        ObjectMapper mapper = new ObjectMapper();
+        List<LeadDetail> leadDetailList = mapper.readValue(leadDetailConfiguration.getLeadConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, LeadDetail.class));
+        leadDetailConfiguration.setLeadDetails(leadDetailList);
+        itemService.saveLeadDetails(leadDetailConfiguration);
+        LOGGER.info("Save Lead detail success");
+    }
 
 }

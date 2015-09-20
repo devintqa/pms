@@ -188,4 +188,19 @@ public class ItemServiceImpl implements ItemService {
     public boolean isItemDescriptionPresent() {
        return itemDAO.isItemPresent();
     }
+
+
+    @Override
+    public LeadDetailConfiguration getLeadDetails(String projectId, String subProjectId) {
+        LeadDetailConfiguration leadDetailConfiguration = new LeadDetailConfiguration();
+        leadDetailConfiguration.setProjectId(Integer.valueOf(projectId));
+        leadDetailConfiguration.setSubProjectId(Integer.valueOf(subProjectId));
+        leadDetailConfiguration.setLeadDetails(itemDAO.getLeadDetails(projectId,subProjectId));
+        return leadDetailConfiguration;
+    }
+
+    public void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration){
+        itemDAO.saveLeadDetails(leadDetailConfiguration);
+    }
+
 }

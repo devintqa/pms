@@ -553,4 +553,84 @@ public class ItemDAOImpl implements ItemDAO {
     public void deleteItemDescription() {
        jdbcTemplate.update("delete  from govpricedetail ");
     }
+
+
+    @Override
+    public List<LeadDetailConfiguration.LeadDetail> getLeadDetails(String projectId, String subProjectId) {
+        LOGGER.info("Getting lead details for projectId:" + projectId + ", subProjectId:" + subProjectId);
+        List<LeadDetailConfiguration.LeadDetail> leadDetails = new ArrayList<LeadDetailConfiguration.LeadDetail>();
+        try {
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_LEAD_DETAILS, projectId, subProjectId);
+            for (Map<String, Object> row : rows) {
+                leadDetails.add(buildLeadDetail(row));
+            }
+        } catch (Exception e) {
+            LOGGER.error("Error occurred while getting lead detail " + e);
+        }
+        return leadDetails;
+    }
+
+    @Override
+    public void saveLeadDetails(final LeadDetailConfiguration leadDetailConfiguration) {
+        LOGGER.info("Saving lead Details for, ProjectId:" + leadDetailConfiguration.getProjectId() + " ,subProjectId:" + leadDetailConfiguration.getSubProjectId());
+        try {
+            deactivateLeadDetails(leadDetailConfiguration.getProjectId(),leadDetailConfiguration.getSubProjectId());
+            jdbcTemplate.batchUpdate(CREATE_LEAD_DETAILS,
+                    new BatchPreparedStatementSetter() {
+                        @Override
+                        public void setValues(PreparedStatement ps, int i)
+                                throws SQLException {
+                            LeadDetailConfiguration.LeadDetail leadDetail = leadDetailConfiguration.getLeadDetails().get(i);
+                            ps.setInt(1, leadDetailConfiguration.getProjectId());
+                            ps.setInt(2, leadDetailConfiguration.getSubProjectId());
+                            ps.setString(3, leadDetail.getMaterial());
+                            ps.setString(4, leadDetail.getSourceOfSupply());
+                            ps.setString(5, leadDetail.getDistance());
+                            ps.setString(6, leadDetail.getCost());
+                            ps.setString(7, leadDetail.getIc());
+                            ps.setString(8, leadDetail.getLeadCharges());
+                            ps.setString(9, leadDetail.getLoadingUnloading());
+                            ps.setString(10, leadDetail.getTotal());
+                            ps.setString(11, leadDetailConfiguration.getEmployeeId());
+                            ps.setDate(12, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                        }
+
+                        @Override
+                        public int getBatchSize() {
+                            return leadDetailConfiguration.getLeadDetails().size();
+                        }
+                    });
+        } catch (Exception e) {
+            LOGGER.error("Error occurred while saving lead details " + e);
+        }
+    }
+
+    private void deactivateLeadDetails(int projectId, int subProjectId) {
+        LOGGER.info("Deactivating leadDetails fr projectId:"+projectId +" subProjectId:"+subProjectId);
+        jdbcTemplate.update(DEACTIVATE_EXISTING_LEAD_DETAILS, projectId, subProjectId);
+    }
+
+
+    private LeadDetailConfiguration.LeadDetail buildLeadDetail(Map<String, Object> row) {
+        LeadDetailConfiguration.LeadDetail leadDetail = new LeadDetailConfiguration.LeadDetail();
+        Integer leadDetailId = (Integer) row.get("leadDetailId");
+        leadDetail.setLeadDetailId(leadDetailId.toString());
+        String material = (String) row.get("material");
+        leadDetail.setMaterial(material);
+        String sourceOfSupply = (String) row.get("material");
+        leadDetail.setSourceOfSupply(sourceOfSupply);
+        BigDecimal distance = (BigDecimal) row.get("distance");
+        leadDetail.setDistance(String.valueOf(distance));
+        BigDecimal cost = (BigDecimal) row.get("cost");
+        leadDetail.setCost(String.valueOf(cost));
+        BigDecimal ic = (BigDecimal) row.get("ic");
+        leadDetail.setIc(String.valueOf(ic));
+        BigDecimal leadCharges = (BigDecimal) row.get("leadCharges");
+        leadDetail.setLeadCharges(String.valueOf(leadCharges));
+        BigDecimal loadingUnloadingCharges = (BigDecimal) row.get("loadingUnloadingCharges");
+        leadDetail.setLoadingUnloading(String.valueOf(loadingUnloadingCharges));
+        BigDecimal total = (BigDecimal) row.get("total");
+        leadDetail.setTotal(String.valueOf(total));
+        return leadDetail;
+    }
 }

@@ -63,4 +63,9 @@ public interface ItemDAO {
     boolean isItemPresent();
 
     void deleteItemDescription();
+
+    List<LeadDetailConfiguration.LeadDetail> getLeadDetails(String projectId,String subProjectId);
+
+    void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration);
+
 }

@@ -88,6 +88,9 @@
 									</a> <strong> / </strong> <a
 									href="/pms/emp/myview/configureItems/${employeeObj.employeeId}?project=${projDoc.projId}&subProject=0"
 									class="userAction"> Configure</a>
+                                    <strong> / </strong> <a
+									href="/pms/emp/myview/configureLead/${employeeObj.employeeId}?project=${projDoc.projId}&subProject=0"
+									class="userAction"> Configure Lead </a>
 									<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 									<strong> / </strong>
 									<a id="deleteRow"
