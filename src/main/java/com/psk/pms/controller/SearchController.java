@@ -1,33 +1,26 @@
 package com.psk.pms.controller;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.psk.pms.model.*;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.SearchValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SearchController extends BaseController {
@@ -53,10 +46,9 @@ public class SearchController extends BaseController {
     @RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
     public String searchProject(@PathVariable String employeeId, Model model) {
         LOGGER.info("Search Controller : searchProject()");
-        List<ProjectDetail> projectDocumentList = projectService
-                .getProjectDocumentList();
-        if (!projectDocumentList.isEmpty()) {
-            model.addAttribute("projectDocumentList", projectDocumentList);
+        List<ProjectDetail> projectDetails = fetchProjectDocumentList(employeeId);
+        if (!projectDetails.isEmpty()) {
+            model.addAttribute("projectDocumentList", projectDetails);
         } else {
             model.addAttribute("noDetailsFound",
                     "No Projects Found For The Selection.");
@@ -68,49 +60,53 @@ public class SearchController extends BaseController {
     public String searchSubProject(@PathVariable String employeeId, Model model) {
         LOGGER.info("Search Controller : searchSubProject()");
         SearchDetail searchDetail = new SearchDetail();
-        searchDetail.setEditSubProject(true);
+       // searchDetail.setEditSubProject(true);
+        searchDetail.setEmployeeId(employeeId);
         model.addAttribute("searchSubForm", searchDetail);
         return "SearchSubProject";
     }
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/{employeeId}", method = RequestMethod.GET)
-    public String searchProjectDescription(@PathVariable String employeeId,@RequestParam("team") String team,
+    public String searchProjectDescription(@PathVariable String employeeId, @RequestParam("team") String team,
                                            Model model) {
         LOGGER.info("Search Controller : searchProjectDescription()");
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         SearchDetail searchDetail = new SearchDetail();
+        searchDetail.setEmployeeId(employeeId);
         model.addAttribute("searchProjDescForm", searchDetail);
         model.addAttribute("employeeObj", employee);
         return "SearchProjectDescription";
     }
 
-    @RequestMapping(value = "/emp/myview/searchSubProject/searchProject.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/emp/myview/searchSubProject/searchSubProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getProjectList(
-            @RequestParam("term") String name) {
+            @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getProjectList()");
-        return fetchProjectsInfo(name);
+        return fetchSubProjectsInfo(name, empId);
     }
+
+
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/searchProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getProjects(
-            @RequestParam("term") String name) {
+            @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getProjectList()");
-        return fetchProjectsInfo(name);
+       return fetchProjectInfo(name,empId);
     }
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/searchSubProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getSubProjectList(
-            @RequestParam("term") String name) {
+            @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getSubProjectList()");
-        return fetchSubProjectsInfo(name);
+        return fetchSubProjectsInfo(name, empId);
     }
 
     @RequestMapping(value = "/emp/myview/searchSubProject/searchSubProjectDetails.do", method = RequestMethod.POST)
@@ -171,7 +167,7 @@ public class SearchController extends BaseController {
                     + searchDetail.getProjId());
             String searchUnder = searchDetail.getSearchUnder();
             if ("Global".equalsIgnoreCase(searchUnder)) {
-                depositDetails = depositDetailService.getDepositDetails();
+                depositDetails = fetchDepositDetails(searchDetail.getEmployeeId());
             } else {
                 boolean searchUnderProject = "project"
                         .equalsIgnoreCase(searchUnder);
@@ -225,7 +221,7 @@ public class SearchController extends BaseController {
     @ResponseBody
     List<ItemDetail> searchBaseItem(
             @RequestParam("itemName") String itemName,
-            @RequestParam("itemType") String itemType, 
+            @RequestParam("itemType") String itemType,
             @RequestParam("descType") String descType) {
         LOGGER.info("method = getDescItem()");
         Map<String, Object> request = new Hashtable<String, Object>();
@@ -272,12 +268,13 @@ public class SearchController extends BaseController {
     public String searchDepositDetail(@PathVariable String employeeId, Model model) {
         LOGGER.info("Search Controller : searchDepositDetail()");
         SearchDetail searchDetail = new SearchDetail();
+        searchDetail.setEmployeeId(employeeId);
         model.addAttribute("searchDepositForm", searchDetail);
         return "SearchDepositDetail";
     }
 
-    public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-        List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
+    public List<SubProjectDetail> getSubProjectDocumentList(Integer subProjectId) {
+        List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(subProjectId);
         return subProjectDocumentList;
     }
 

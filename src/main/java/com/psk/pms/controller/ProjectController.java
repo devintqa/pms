@@ -66,7 +66,7 @@ public class ProjectController {
         employee.setEmployeeTeam(team);
         model.addAttribute("employee", employee);
         ProjectDetail projectDetail = new ProjectDetail();
-        projectDetail = projectService.getProjectDocument(project);
+        projectDetail = projectService.getProjectDocument(project,employeeId);
         projectDetail.setIsUpdate("Y");
         projectDetail.setEmployeeId(employeeId);
         model.addAttribute("projectForm", projectDetail);
@@ -105,12 +105,6 @@ public class ProjectController {
             model.addAttribute("projectCreationMessage", message);
             return "BuildProject";
         }
-    }
-
-    public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-        List<SubProjectDetail> subProjectDocumentList = subProjectService
-                .getSubProjectDocumentList(projectId);
-        return subProjectDocumentList;
     }
 
     @ModelAttribute("projectTypeList")

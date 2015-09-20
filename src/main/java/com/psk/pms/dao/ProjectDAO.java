@@ -1,24 +1,29 @@
 package com.psk.pms.dao;
 
 import com.psk.pms.model.ProjectDetail;
+
 import java.util.List;
 import java.util.Map;
 
 public interface ProjectDAO {
 
-	boolean saveProject(ProjectDetail projectDetail);
+    boolean saveProject(ProjectDetail projectDetail);
 
-	Map<String, String> getAliasProjectNames();
+    Map<String, String> getAliasProjectNames(String empId);
 
-	ProjectDetail getProjectDocument(String projectId);
+    ProjectDetail getProjectDocument(String projectId, String employeeId);
 
-	List<ProjectDetail> getProjectDocumentList();
+    List<ProjectDetail> getProjectDocumentList(String employeeId);
 
-	boolean isAliasProjectAlreadyExisting(String aliasName);
+    List<ProjectDetail> getProjectDocumentList();
 
-	void deleteProject(Integer projectId);
+    boolean isAliasProjectAlreadyExisting(String aliasName);
 
-    List<String>getDropDownValues(String type);
+    void deleteProject(Integer projectId);
+
+    List<String> getDropDownValues(String type);
+
+    Map<String, String> getAliasProjectNames();
 
 
 }

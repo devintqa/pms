@@ -18,11 +18,13 @@
 								.autocomplete(
 										{
 											source : function(request, response) {
+                                                var empId = $('#employeeId').val();
 												$
 														.getJSON(
-																"/pms/emp/myview/searchSubProject/searchProject.do",
+																"/pms/emp/myview/searchSubProject/searchSubProject.do",
 																{
-																	term : request.term
+																	term : request.term,
+                                                                    employeeId : empId
 																}, response);
 											}
 										});
@@ -98,6 +100,7 @@
 							</tr>
 							<tr></tr>
 						</table>
+                        <form:hidden path="employeeId" />
 					</fieldset>
 					<table>
 						<tr>

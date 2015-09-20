@@ -17,11 +17,12 @@
                 var itemType = $('#itemType').val();
                 var aliasProjName = $('#aliasProjectName').val();
                 var searchUnderProject = $('#searchUnderProject').val();
+                var employeeId = $('#employeeId').val();
                 $.ajax({
                     type: "GET",
                     url: "getItemNames.do",
                     cache: false,
-                    data: "itemType=" + itemType + "&aliasProjName=" + aliasProjName,
+                    data: "itemType=" + itemType + "&aliasProjName=" + aliasProjName +"&employeeId=" +employeeId,
                     success: function (response) {
                         if (response == "") {
                             $("#itemNameField").hide();
@@ -63,13 +64,16 @@
             });
             $("#aliasProjectName").autocomplete({
                 source: function (request, response) {
+                    var empId = $('#employeeId').val();
                     if ($("#viewUnderSubProject").is(':checked')) {
                         $.getJSON("/pms/emp/myview/viewDetails/searchSubProject.do", {
-                            term: request.term
+                            term: request.term,
+                            employeeId : empId
                         }, response);
                     } else {
                         $.getJSON("/pms/emp/myview/viewDetails/searchProject.do", {
-                            term: request.term
+                            term: request.term,
+                            employeeId : empId
                         }, response);
                     }
                 }
@@ -207,7 +211,7 @@
                 </tr>
                 <tr></tr>
             </table>
-
+            <form:hidden path="employeeId" />
         </fieldset>
         <table>
             <tr>

@@ -21,7 +21,7 @@ public interface SubProjectDAO {
 	boolean isAliasSubProjectAlreadyExisting(String subAliasName,
 			Integer projectId);
 
-	Map<String, String> getSubAliasProjectNames(String projectId);
+	Map<String, String> getSubAliasProjectNames(String projectId, String employeeId);
 
 	boolean saveSubProject(SubProjectDetail subProjectDetail);
 

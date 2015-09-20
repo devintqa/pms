@@ -47,7 +47,7 @@ public class FileServiceImpl implements FileService {
 	private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class);
 
 	@Override
-	public ExcelDetail saveProjectDescription(FileUpload fileUpload)
+	public ExcelDetail saveProjectDescription(FileUpload fileUpload, String employeeId)
 	throws IOException, BulkUploadException {
 		String saveDirectory;
 		ExcelDetail excelDetail = new ExcelDetail();
@@ -56,7 +56,7 @@ public class FileServiceImpl implements FileService {
 		List < MultipartFile > pmsFiles;
 		
 		boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
-		projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+		projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName(), employeeId);
 		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 
 		if (isSubProjectFileUpload) {
@@ -140,10 +140,10 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void uploadFiles(FileUpload fileUpload) throws IOException {
+	public void uploadFiles(FileUpload fileUpload, String employeeId) throws IOException {
 		File files;
 		String saveDirectory;
-		ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName());
+		ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName(), employeeId);
 		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 		if (fileUpload.isSubProjectUpload()) {
 			SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
@@ -187,11 +187,11 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public List < FileUpload > downloadFiles(FileUpload downloadForm) {
+	public List < FileUpload > downloadFiles(FileUpload downloadForm, String employeeId) {
 		String path = null;
 		String fileName;
 		List < FileUpload > projectFileList = new ArrayList < FileUpload > ();
-		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName());
+		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName(), employeeId);
 		LOGGER.info("method = downloadFile(), Alias Project Name :" + projectDetail.getAliasName());
 
 		if (downloadForm.isSubProjectUpload()) {

@@ -15,6 +15,7 @@ public class ViewDetail {
 	private boolean projectItemDescription;
 	private String itemType;
 	private String itemName;
+    private String employeeId;
 
 	public boolean isSearchComparisonData() {
 		return searchComparisonData;
@@ -110,5 +111,13 @@ public class ViewDetail {
 
     public void setDescType(String descType) {
         this.descType = descType;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
     }
 }

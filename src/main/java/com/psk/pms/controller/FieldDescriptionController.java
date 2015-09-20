@@ -52,7 +52,7 @@ public class FieldDescriptionController extends BaseController {
                                         Model model) {
         LOGGER.info("Opening buildFieldDescription ");
         ProjDescDetail projDescDetail = new ProjDescDetail();
-        model.addAttribute("aliasProjectList", populateAliasProjectList());
+        model.addAttribute("aliasProjectList", populateAliasProjectList(employeeId));
         model.addAttribute("projDescForm", projDescDetail);
         return "BuildFieldDescription";
     }
@@ -96,7 +96,7 @@ public class FieldDescriptionController extends BaseController {
     public String getSubAliasProject(HttpServletRequest request,
                                      HttpServletResponse response) {
         LOGGER.info("method = getSubAliasProject() , Sub Project Id : " + request.getParameter("subProjId"));
-        Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
+        Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"), request.getParameter("empId"));
         subAliasProjectList.put("0", "--Please Select--");
         Gson gson = new Gson();
         return gson.toJson(subAliasProjectList);

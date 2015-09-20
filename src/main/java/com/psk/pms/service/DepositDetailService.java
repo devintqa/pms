@@ -8,7 +8,7 @@ public interface DepositDetailService {
 
 	boolean createEditDeposit(DepositDetail depositDetail);
 
-	List<DepositDetail> getDepositDetails();
+	List<DepositDetail> getDepositDetails(String employeeId);
 
 	DepositDetail getDepositDetailsById(String depositId);
 

@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.psk.pms.model.Employee;
 
-@SuppressWarnings("rawtypes")
 public class EmployeeRowMapper implements RowMapper {
 
 	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {

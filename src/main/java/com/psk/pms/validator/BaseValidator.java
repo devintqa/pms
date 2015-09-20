@@ -25,9 +25,9 @@ public class BaseValidator {
 	String ID_PATTERN = "[0-9]+";
 	String AMOUNT_PATTERN = "\\d+(?:\\.\\d+)?$";
 
-	public String fetchProjectId(String aliasProjectName) {
+	public String fetchProjectId(String aliasProjectName, String employeeId) {
 		LOGGER.info("method = fetchProjectId()");
-		Map<String, String> aliasProjectList = populateAliasProjectList();
+		Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
 		for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
 			if (entry.getValue().equalsIgnoreCase(aliasProjectName)) {
 				return entry.getKey();
@@ -36,9 +36,9 @@ public class BaseValidator {
 		return null;
 	}
 
-	public String fetchSubProjectId(String aliasSubProjName) {
+	public String fetchSubProjectId(String aliasSubProjName, String employeeId) {
 		LOGGER.info("method = fetchSubProjectId()");
-		Map<String, String> aliasSubProjectList = populateAliasSubProjectList();
+		Map<String, String> aliasSubProjectList = populateAliasSubProjectList(employeeId);
 		for (Map.Entry<String, String> entry : aliasSubProjectList.entrySet()) {
 			if (entry.getValue().equalsIgnoreCase(aliasSubProjName)) {
 				return entry.getKey();
@@ -47,15 +47,15 @@ public class BaseValidator {
 		return null;
 	}
 
-	public Map<String, String> populateAliasProjectList() {
+	public Map<String, String> populateAliasProjectList(String employeeId) {
 		Map<String, String> aliasProjectName = projectService
-				.getAliasProjectNames();
+				.getAliasProjectNames(employeeId);
 		return aliasProjectName;
 	}
 
-	public Map<String, String> populateAliasSubProjectList() {
+	public Map<String, String> populateAliasSubProjectList(String employeeId) {
 		Map<String, String> subAliasProjectNames = subProjectService
-				.getSubAliasProjectNames("");
+				.getSubAliasProjectNames("", employeeId);
 		return subAliasProjectNames;
 	}
 

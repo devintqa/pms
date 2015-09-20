@@ -76,7 +76,7 @@ public class EmployeeController {
         model.addAttribute("employeeObj", employee);
         model.addAttribute("action", action);
         EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
-        employeeTeam.performTeamActivity(model);
+        employeeTeam.performTeamActivity(model,empId);
         return "Welcome";
     }
 

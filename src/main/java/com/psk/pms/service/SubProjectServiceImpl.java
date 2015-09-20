@@ -83,9 +83,9 @@ public class SubProjectServiceImpl implements SubProjectService {
 		return isAvailable;
 	}
 
-	public Map<String, String> getSubAliasProjectNames(String projectId) {
+	public Map<String, String> getSubAliasProjectNames(String projectId, String employeeId) {
 		Map<String, String> aliasSubProjectList = subProjectDAO
-				.getSubAliasProjectNames(projectId);
+				.getSubAliasProjectNames(projectId,employeeId);
 		return aliasSubProjectList;
 	}
 
@@ -108,9 +108,9 @@ public class SubProjectServiceImpl implements SubProjectService {
 	}
 
 	@Override
-	public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
+	public List<SubProjectDetail> getSubProjectDocumentList(Integer subProjectId) {
 		List<SubProjectDetail> subProjectDocumentList = subProjectDAO
-				.getSubProjectDocumentList(projectId);
+				.getSubProjectDocumentList(subProjectId);
 		return subProjectDocumentList;
 	}
 

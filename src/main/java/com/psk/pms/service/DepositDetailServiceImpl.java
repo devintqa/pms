@@ -47,9 +47,9 @@ public class DepositDetailServiceImpl implements DepositDetailService {
     }
 
     @Override
-    public List<DepositDetail> getDepositDetails() {
+    public List<DepositDetail> getDepositDetails(String employeeId) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        List<DepositDetail> depositDetails = depositDetailDAO.getDepositDetails();
+        List<DepositDetail> depositDetails = depositDetailDAO.getDepositDetails(employeeId);
         List<DepositDetail> depositFinalList = new ArrayList<DepositDetail>();
         for (DepositDetail depositDetail : depositDetails) {
             depositDetail.setDepositStartDate(DateFormatter.getStringDate(

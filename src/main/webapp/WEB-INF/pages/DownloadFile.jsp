@@ -138,6 +138,7 @@ $(document).ready(
 						</form:select></td>
 					<td><form:errors path="aliasSubProjectName" cssClass="error" /></td>
 				</tr>
+                <form:hidden path="employeeId" />
 			</table>
 			<br />
 			<input class="button" type="submit" value="Show Files" />

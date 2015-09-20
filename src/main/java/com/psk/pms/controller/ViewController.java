@@ -1,35 +1,24 @@
 package com.psk.pms.controller;
 
-import static com.psk.pms.Constants.ITEM_TYPE;
-
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.google.gson.Gson;
+import com.psk.pms.model.*;
+import com.psk.pms.model.ProjectConfiguration.ItemDetail;
+import com.psk.pms.service.ItemService;
+import com.psk.pms.service.ProjectDescriptionService;
+import com.psk.pms.service.ProjectService;
+import com.psk.pms.validator.ViewValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.google.gson.Gson;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
-import com.psk.pms.model.ProjectItemDescription;
-import com.psk.pms.model.ViewDetail;
-import com.psk.pms.service.ItemService;
-import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.ProjectService;
-import com.psk.pms.validator.ViewValidator;
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
+import static com.psk.pms.Constants.ITEM_TYPE;
 
 @Controller
 public class ViewController extends BaseController {
@@ -53,6 +42,7 @@ public class ViewController extends BaseController {
         LOGGER.info("View Controller : viewDetails()");
         ViewDetail viewDetail = new ViewDetail();
         viewDetail.setViewProjectItemPrice(true);
+        viewDetail.setEmployeeId(employeeId);
         setModelAttribute(model, viewDetail);
         return "ViewDetails";
     }
@@ -61,18 +51,18 @@ public class ViewController extends BaseController {
     public
     @ResponseBody
     List<String> getProjects(
-            @RequestParam("term") String name) {
+            @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getProjectList()");
-        return fetchProjectsInfo(name);
+        return fetchProjectInfo(name, empId);
     }
 
     @RequestMapping(value = "/emp/myview/viewDetails/searchSubProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
     List<String> getSubProjectList(
-            @RequestParam("term") String name) {
+            @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getSubProjectList()");
-        return fetchSubProjectsInfo(name);
+        return fetchSubProjectsInfo(name, empId);
     }
 
     @RequestMapping(value = "/emp/myview/viewDetails/viewDetails.do", method = RequestMethod.POST)
@@ -87,7 +77,7 @@ public class ViewController extends BaseController {
             projectConfiguration.setProjId(viewDetail.getProjId());
             projectConfiguration.setSubProjId(viewDetail.getSubProjId());
             if (viewDetail.isSearchAggregateItemDetails()) {
-                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject(),descType);
+                List<DescItemDetail.ItemDetail> aggregateItemDetails = itemService.getProjectData(projectConfiguration, viewDetail.isEditSubProject(), descType);
                 if (aggregateItemDetails.size() > 0) {
                     model.addAttribute("aggregateItemDetails", aggregateItemDetails);
                     model.addAttribute("aggregateItemDetailsSize", aggregateItemDetails.size());
@@ -148,7 +138,8 @@ public class ViewController extends BaseController {
         String json = null;
         String itemType = httpServletRequest.getParameter("itemType");
         String aliasProjName = httpServletRequest.getParameter("aliasProjName");
-        String projectId = viewValidator.fetchProjectId(aliasProjName);
+        String employeeId = httpServletRequest.getParameter("employeeId");
+        String projectId = viewValidator.fetchProjectId(aliasProjName, employeeId);
         List<String> itemNames = itemService.getItemNames(itemType, projectId);
         if (!itemNames.isEmpty()) {
             Gson gson = new Gson();

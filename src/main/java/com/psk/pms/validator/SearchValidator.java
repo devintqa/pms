@@ -30,7 +30,7 @@ public class SearchValidator extends BaseValidator implements Validator {
             if ((searchDetail.isEditSubProject())
                     && !StringUtils.isNullOrEmpty(searchDetail
                     .getAliasProjectName())) {
-                String projId = fetchProjectId(searchDetail.getAliasProjectName());
+                String projId = fetchProjectId(searchDetail.getAliasProjectName(),searchDetail.getEmployeeId());
                 if (projId == null) {
                     errors.rejectValue("aliasProjectName",
                             "invalid.aliasProjectName",
@@ -44,9 +44,9 @@ public class SearchValidator extends BaseValidator implements Validator {
                     .getAliasProjectName())) {
                 String projId;
                 if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
-                    projId = fetchProjectId(searchDetail.getAliasProjectName());
+                    projId = fetchProjectId(searchDetail.getAliasProjectName(), searchDetail.getEmployeeId());
                 } else {
-                    projId = fetchSubProjectId(searchDetail.getAliasProjectName());
+                    projId = fetchSubProjectId(searchDetail.getAliasProjectName(),searchDetail.getEmployeeId());
                 }
 
                 if (projId == null) {

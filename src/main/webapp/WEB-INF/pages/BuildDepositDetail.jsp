@@ -16,13 +16,13 @@
             if ($('#depositStatus').val() == 'Refunded') {
                 $('#showDepositRecievedDate').show();
                 $('#showDepositRecievedcomments').show();
-            }else{
+            } else {
                 $('#showDepositRecievedDate').hide();
                 $('#showDepositRecievedcomments').hide();
             }
             $("#showSubProject").hide();
             $('#showDepositStatus').hide();
-           ;
+            ;
 
 
             $("#showCompetitorName").hide();
@@ -44,11 +44,12 @@
             $('#subProjectDepositDetail').change(function () {
                 if ($(this).is(":checked")) {
                     var aliasProjectName = $('#projId').val();
+                    var empId = $('#employeeId').val();
                     $.ajax({
                         type: "GET",
                         url: "getSubAliasProject.do",
                         cache: false,
-                        data: "aliasProjectName=" + aliasProjectName,
+                        data: "aliasProjectName=" + aliasProjectName + "&empId=" + empId,
                         success: function (response) {
                             var options = '';
                             if (response != null) {
@@ -95,7 +96,7 @@
                 if (status == 'Refunded') {
                     $('#showDepositRecievedDate').show();
                     $('#showDepositRecievedcomments').show();
-                }else{
+                } else {
                     $('#showDepositRecievedDate').hide();
                     $('#showDepositRecievedcomments').hide();
                 }

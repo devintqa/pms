@@ -19,7 +19,7 @@ public interface SubProjectService {
 
 	SubProjectDetail getSubProjectDocument(String subProject);
 
-	Map<String, String> getSubAliasProjectNames(String projectId);
+	Map<String, String> getSubAliasProjectNames(String projectId, String employeeId);
 
 	boolean createEditSubProject(SubProjectDetail subProjectDetail);
 }
