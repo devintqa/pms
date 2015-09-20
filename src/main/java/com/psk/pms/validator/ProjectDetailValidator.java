@@ -54,6 +54,17 @@ public class ProjectDetailValidator extends BaseValidator implements Validator {
 				"required.tenderDate", "Select Tender Date.");
 
 		ProjectDetail projectDetail = (ProjectDetail) target;
+		
+		if(projectDetail.isSubProject()){
+			if (projectDetail.getAliasProjectNameForSubProj() == 0) {
+				errors.rejectValue("aliasProjectNameForSubProj", "aliasProjectNameForSubProj.incorrect",
+						"Please select a valid project");
+			}
+		}
+		
+		if(!projectDetail.isSubProject()){
+			projectDetail.setAliasProjectNameForSubProj(0);
+		}
 
 		if (!StringUtils.isNullOrEmpty(projectDetail.getAmount())) {
 			pattern = Pattern.compile(AMOUNT_PATTERN);

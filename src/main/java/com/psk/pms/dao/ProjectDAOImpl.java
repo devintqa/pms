@@ -24,11 +24,11 @@ public class ProjectDAOImpl implements ProjectDAO {
     private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
 
     public boolean saveProject(final ProjectDetail projectDetail) {
-        String createSql = "INSERT INTO project (ProjName, AliasProjName,ProjectType,AgreementNum, CERNum, Amount, "
+        String createSql = "INSERT INTO project (ProjName, MainProjId, AliasProjName,ProjectType,AgreementNum, CERNum, Amount, "
                 + "ContractorName, ContractorAliasName , ContractorAdd, AgreementValue, TenderValue, " +
                 "ExcessInAmount, ExcessInPercentage, LessInPercentage ,CompletionDateForBonus , TenderDate, "
                 + "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         String updateSql = "UPDATE project set ProjectType = ? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
                 "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
@@ -38,7 +38,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         if (!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
             jdbcTemplate.update(createSql, new Object[]{projectDetail.getProjectName(),
                     projectDetail.getAliasName(),
-                    projectDetail.getProjectType(),
+                    projectDetail.getAliasProjectNameForSubProj(),
                     projectDetail.getAgreementNo(),
                     projectDetail.getCerNo(),
                     projectDetail.getAmount(),

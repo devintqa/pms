@@ -17,6 +17,42 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
+	  
+	  if ($(subProject).is(":checked")) {
+	  		$("#showProjectNames").show();
+	  } else{
+		    $("#showProjectNames").hide(); 
+	  }
+	  
+	  $('#subProject').change(function () {
+          if ($(this).is(":checked")) {
+        	  var empId = $('#employeeId').val();
+              $.ajax({
+                  type: "GET",
+                  url: "getAliasProjects.do",
+                  cache: false,
+                  data: "empId=" + empId,
+                  success: function (response) {
+                      var options = '';
+                      if (response != null) {
+                          var obj = jQuery.parseJSON(response);
+                          var options = '';
+                          for (var key in obj) {
+                              var attrName = key;
+                              var attrValue = obj[key];
+                              options = options + '<option value=' + attrName + '>'
+                                      + attrValue + '</option>';
+                          }
+                          $('#aliasProjectNameForSubProj').html(options);
+                      }
+                  }
+              });
+              $("#showProjectNames").show();
+          } else {
+              $("#showProjectNames").hide();
+          }
+      });
+	  
 });
 $(function(){
     if($('#isUpdate').val()=='Y') {
@@ -59,6 +95,20 @@ $(function(){
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasName" cssClass="error" /></td>
 							</tr>
+							<tr id="isSubProject">
+	                            <td>Sub Project Creation? :</td>
+	                            <td><form:checkbox path="subProject" id="subProject"/></td>
+	                            <td><form:errors path="subProject" cssClass="error"/></td>
+                        	</tr>
+	                        <tr id="showProjectNames">
+	                            <td>Alias Project Name <span id="colon">:</span>
+	                            </td>
+	                            <td><form:select path="aliasProjectNameForSubProj"
+	                                             id="aliasProjectNameForSubProj" cssClass="inputText"
+	                                             items="${aliasProjectList}"></form:select></td>	                            
+	                            <td><form:errors path="aliasProjectNameForSubProj"
+	                                             cssClass="error"/></td>
+	                        </tr>
                             <tr>
 								<td>Project Type<span id="colon">:</span>
 								</td>

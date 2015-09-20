@@ -5,7 +5,8 @@ import java.util.Date;
 public class ProjectDetail {
 
     private int projId;
-    private String projectName;
+    private boolean subProject;
+	private String projectName;
     private String projectType;
     private String aliasName;
     private String agreementNo;
@@ -35,8 +36,17 @@ public class ProjectDetail {
     private String projectStatus;
     private String lastUpdatedBy;
     private Date lastUpdatedAt;
+    private Integer aliasProjectNameForSubProj;
 
-    public String getProjectStatus() {
+	public Integer getAliasProjectNameForSubProj() {
+		return aliasProjectNameForSubProj;
+	}
+
+	public void setAliasProjectNameForSubProj(Integer aliasProjectNameForSubProj) {
+		this.aliasProjectNameForSubProj = aliasProjectNameForSubProj;
+	}
+
+	public String getProjectStatus() {
         return projectStatus;
     }
 
@@ -283,4 +293,11 @@ public class ProjectDetail {
     public void setProjectType(String projectType) {
         this.projectType = projectType;
     }
+    public boolean isSubProject() {
+		return subProject;
+	}
+
+	public void setSubProject(boolean subProject) {
+		this.subProject = subProject;
+	}
 }

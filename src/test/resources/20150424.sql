@@ -237,6 +237,7 @@ DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `ProjId` int(10) NOT NULL AUTO_INCREMENT,
   `ProjName` text NOT NULL,
+  `MainProjId` int(10) DEFAULT 0,
   `AliasProjName` varchar(50) NOT NULL,
   `AgreementNum` varchar(50) DEFAULT NULL,
   `CERNum` varchar(30) DEFAULT NULL,

@@ -3,7 +3,10 @@ package com.psk.pms.controller;
 import static com.psk.pms.Constants.PROJECT_TYPE;
 
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-
+import org.springframework.web.bind.annotation.ResponseBody;
+import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SubProjectDetail;
@@ -24,7 +28,7 @@ import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
 
 @Controller
-public class ProjectController {
+public class ProjectController extends BaseController {
 
     @Autowired
     ProjectDetailValidator projectDetailValidator;
@@ -90,18 +94,21 @@ public class ProjectController {
     private String createEditProject(ProjectDetail projectDetail,
             BindingResult result, Model model, SessionStatus status, String message){
     	boolean isProjectSaveSuccessful = false;
+    	Map<String, String> aliasProjectList = populateAliasProjectList(projectDetail.getEmployeeId());
         projectDetailValidator.validate(projectDetail, result);
         if (!result.hasErrors()) {
             isProjectSaveSuccessful = projectService
                     .createEditProject(projectDetail);
         }
         if (result.hasErrors() || !isProjectSaveSuccessful) {
+        	model.addAttribute("aliasProjectList", aliasProjectList);
             return "BuildProject";
         } else {
             status.setComplete();
             Employee employee = new Employee();
             employee.setEmployeeId(projectDetail.getEmployeeId());
             model.addAttribute("employee", employee);
+            model.addAttribute("aliasProjectList", aliasProjectList);
             model.addAttribute("projectCreationMessage", message);
             return "BuildProject";
         }
@@ -114,4 +121,16 @@ public class ProjectController {
         LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
         return projectTypeNames;
     }
+    
+    @RequestMapping(value = "/emp/myview/buildProject/getAliasProjects.do", method = RequestMethod.GET)
+    @ResponseBody
+    public String getAliasProjects(HttpServletRequest request,
+                                     HttpServletResponse response) {
+    	Map<String, String> aliasProjectList = populateAliasProjectList(request.getParameter("empId"));
+    	aliasProjectList.put("0", "--Please Select--");
+        Gson gson = new Gson();
+        String aliasProjectJson = gson.toJson(aliasProjectList);
+        return aliasProjectJson;
+    }
+    
 }

@@ -26,7 +26,7 @@ public class AuthorisationServiceImpl implements AuthorisationService {
     }
 
     private List<Permission> getAvailableEmployees(String teamName, String projectId) {
-        List<Permission> permissions = new ArrayList<>();
+        List<Permission> permissions = new ArrayList<Permission>();
         List<String> employeesOfTeam = employeeDAO.getAvailableEmployees(teamName, projectId);
         for (String empId : employeesOfTeam) {
             Permission permission = new Permission();
@@ -39,7 +39,7 @@ public class AuthorisationServiceImpl implements AuthorisationService {
     }
 
     private List<Permission> getSelectedEmployees(String teamName, String projectId) {
-        List<Permission> permissions = new ArrayList<>();
+        List<Permission> permissions = new ArrayList<Permission>();
         List<String> employeesOfTeam = employeeDAO.getSelectedEmployees(teamName, projectId);
         for (String empId : employeesOfTeam) {
             Permission permission = new Permission();
@@ -57,7 +57,7 @@ public class AuthorisationServiceImpl implements AuthorisationService {
         employeeDAO.deleteProjectUserPrivilege(projectId, availableUsers, teamName);
         employeeDAO.deleteProjectUserPrivilege(projectId, selectedUsers, teamName);
         employeeDAO.saveProjectUserPrivilege(projectId, selectedUsers, teamName);
-        List<Permission> permissions = new ArrayList<>();
+        List<Permission> permissions = new ArrayList<Permission>();
         for (String user : selectedUsers) {
             Permission permission = new Permission();
             permission.setLabel(user);
