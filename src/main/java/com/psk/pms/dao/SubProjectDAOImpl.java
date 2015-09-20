@@ -66,7 +66,7 @@ public class SubProjectDAOImpl implements SubProjectDAO {
 
     public List<SubProjectDetail> getSubProjectDocumentList(Integer subProjectId) {
         String sql = subProjQuery + " where SubProjId = " + subProjectId;
-        List<SubProjectDetail> subProjDocList = new ArrayList<>();
+        List<SubProjectDetail> subProjDocList = new ArrayList<SubProjectDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {

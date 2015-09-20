@@ -160,7 +160,7 @@ public class SearchController extends BaseController {
     public String searchProjectDepositDetails(
             @ModelAttribute("searchDepositForm") SearchDetail searchDetail,
             BindingResult result, Model model, SessionStatus status) {
-        List<DepositDetail> depositDetails = new ArrayList<>();
+        List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
         searchValidator.validate(searchDetail, result);
         if (!result.hasErrors()) {
             LOGGER.info("method = searchProjectDepositDetails()"

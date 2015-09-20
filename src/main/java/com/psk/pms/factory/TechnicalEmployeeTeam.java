@@ -76,7 +76,7 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
 
     @Override
     public List<String> fetchSubProjectInfo(String subaliasProjectName, String empId) {
-        List<String> result = new ArrayList<>();
+        List<String> result = new ArrayList<String>();
         Map<String, String> subAliasProjectNames = subProjectService.getSubAliasProjectNames("", empId);
         for (Map.Entry<String, String> entry : subAliasProjectNames.entrySet()) {
             if (entry.getValue().toUpperCase().contains(subaliasProjectName.toUpperCase())) {

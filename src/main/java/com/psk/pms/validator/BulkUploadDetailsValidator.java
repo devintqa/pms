@@ -49,7 +49,7 @@ public class BulkUploadDetailsValidator {
             List<ProjDescDetail> projDescDetails) throws BulkUploadException {
         int sizeOfExtractedDetails = projDescDetails.size();
         Set<String> uniqueSerialNumbers = new HashSet<String>();
-        Set<String> duplicateSerialNumbers = new HashSet<>();
+        Set<String> duplicateSerialNumbers = new HashSet<String>();
         for (ProjDescDetail projDescDetail : projDescDetails) {
             if (!uniqueSerialNumbers.add(projDescDetail.getSerialNumber())) {
                 duplicateSerialNumbers.add(projDescDetail.getSerialNumber());
@@ -65,7 +65,7 @@ public class BulkUploadDetailsValidator {
             List<ProjDescDetail> projDescDetails) throws BulkUploadException {
         int sizeOfExtractedDetails = projDescDetails.size();
         Set<String> uniqueAliasDescription = new HashSet<String>();
-        Set<String> duplicateAliasDescription = new HashSet<>();
+        Set<String> duplicateAliasDescription = new HashSet<String>();
         for (ProjDescDetail projDescDetail : projDescDetails) {
             if (!uniqueAliasDescription.add(projDescDetail.getAliasDescription())) {
                 duplicateAliasDescription.add(projDescDetail.getAliasDescription());
@@ -124,7 +124,7 @@ public class BulkUploadDetailsValidator {
     private void rejectIfItemRateDescriptionIsDuplicated(List<ItemRateDescription> itemRateDescriptions) throws BulkUploadException {
         int size = itemRateDescriptions.size();
         Set<ItemRateDescription> items = new HashSet<ItemRateDescription>();
-        Set<String> duplicateItems = new HashSet<>();
+        Set<String> duplicateItems = new HashSet<String>();
         for (ItemRateDescription itemRateDescription : itemRateDescriptions) {
             if (!items.add(itemRateDescription)) {
                 duplicateItems.add(itemRateDescription.getItemName());
