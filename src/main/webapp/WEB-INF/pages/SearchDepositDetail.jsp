@@ -14,13 +14,16 @@
   $(document).ready(function () {
 		$("#aliasProjectName").autocomplete({
 			source: function (request, response) {
+                var empId = $('#employeeId').val();
 			if($("#searchUnderSubProject").is(':checked'))	{
 				$.getJSON("/pms/emp/myview/searchProjectDescription/searchSubProject.do", {
-                	                term: request.term
+                	                term: request.term,
+                                    employeeId : empId
                 	            }, response);
 			}else{
 				$.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do", {
-                	                term: request.term
+                	                term: request.term,
+                                    employeeId : empId
                 	            }, response);
 				}
 	        }
@@ -111,7 +114,7 @@
 			</center>
 			<br>
 			<br>
-
+            <form:hidden path="employeeId"/>
 		</form:form>
 
 		<c:if test="${depositDetailsSize gt 0}">

@@ -10,12 +10,12 @@ import java.util.List;
 
 public interface FileService {
 
-	void uploadFiles(FileUpload fileUpload) throws IOException;
+	void uploadFiles(FileUpload fileUpload, String employeeId) throws IOException;
 
-	ExcelDetail saveProjectDescription(FileUpload fileUpload)
+	ExcelDetail saveProjectDescription(FileUpload fileUpload, String employeeId)
 			throws IOException, BulkUploadException;
 
-	List<FileUpload> downloadFiles(FileUpload fileUpload);
+	List<FileUpload> downloadFiles(FileUpload fileUpload, String employeeId);
 
 	void deleteFile(String filePath);
 

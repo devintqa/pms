@@ -17,21 +17,24 @@
         }
     }
 
-    $(document).ready(function() {
-        $("#showSearchProjectDesc").hide();
-        $("#aliasProjectName").autocomplete({
-            source: function(request, response) {
-                if ($("#searchUnderSubProject").is(':checked')) {
-                    $.getJSON("/pms/emp/myview/searchProjectDescription/searchSubProject.do", {
-                        term: request.term
-                    }, response);
-                } else {
-                    $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do", {
-                        term: request.term
-                    }, response);
+        $(document).ready(function () {
+            $("#showSearchProjectDesc").hide();
+            $("#aliasProjectName").autocomplete({
+                source: function (request, response) {
+                    var empId = $('#employeeId').val();
+                    if($("#searchUnderSubProject").is(':checked'))	{
+                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchSubProject.do", {
+                            term: request.term,
+                            employeeId : empId
+                        }, response);
+                    }else{
+                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do", {
+                            term: request.term,
+                            employeeId : empId
+                        }, response);
+                    }
                 }
-            }
-        });
+            });
 
         $("#doIndent").click(function() {
             console.log($('input[name="indentDescription"]:checked'));

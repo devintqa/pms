@@ -8,6 +8,7 @@ public class SearchDetail {
 	private boolean searchProjectDescription;
 	private String searchOn;
 	private String searchUnder;
+    private String employeeId;
 
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -56,4 +57,12 @@ public class SearchDetail {
 	public void setSearchOn(String searchOn) {
 		this.searchOn = searchOn;
 	}
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 }

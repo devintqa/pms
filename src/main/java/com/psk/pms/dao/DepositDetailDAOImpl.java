@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.StringUtils;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
 
@@ -50,10 +51,17 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
     }
 
     @Override
-    public List<DepositDetail> getDepositDetails() {
+    public List<DepositDetail> getDepositDetails(String employeeId) {
         LOGGER.info("Fetch EMD Details Start");
         List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(FETCH_DEPOSIT_DETAILS);
+        List<Map<String, Object>> rows;
+        if (StringUtils.isEmpty(employeeId)) {
+            rows = jdbcTemplate.queryForList(FETCH_DEPOSIT_DETAILS);
+        }else {
+            rows = jdbcTemplate.queryForList((FETCH_DEPOSIT_DETAILS
+                    + " where p.projId in (select projectId from authoriseproject where empId = ? )"),employeeId);
+        }
+
         for (Map<String, Object> row : rows) {
             getDepositDetails(depositDetails, row);
         }

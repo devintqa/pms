@@ -9,15 +9,20 @@ public interface ProjectService {
 
 	boolean createEditProject(ProjectDetail projectDetail);
 
-	Map<String, String> getAliasProjectNames();
+	Map<String, String> getAliasProjectNames(String empId);
 
-	List<ProjectDetail> getProjectDocumentList();
+	List<ProjectDetail> getProjectDocumentList(String employeeId);
 
-	ProjectDetail getProjectDocument(String projectId);
+	ProjectDetail getProjectDocument(String projectId, String employeeId);
 
 	boolean isAliasProjectAlreadyExisting(String aliasName);
 
 	void deleteProject(Integer projectId);
 
     List<String> getDropDownValuesFor(String type);
+
+
+    Map<String,String> getAliasProjectNames();
+
+    List<ProjectDetail> getProjectDocumentList();
 }

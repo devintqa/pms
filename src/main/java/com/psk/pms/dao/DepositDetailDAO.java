@@ -8,7 +8,7 @@ public interface DepositDetailDAO {
 
     boolean saveDepositDetail(DepositDetail depositDetail);
 
-    List<DepositDetail> getDepositDetails();
+    List<DepositDetail> getDepositDetails(String employeeId);
 
     DepositDetail getDepositDetailsById(String depositId);
 

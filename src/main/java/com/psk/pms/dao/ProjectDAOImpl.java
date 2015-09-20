@@ -5,12 +5,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
 import static com.psk.pms.dao.PmsMasterQuery.GET_DROP_DOWN_VALUES;
+import static org.springframework.util.StringUtils.isEmpty;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -97,21 +99,48 @@ public class ProjectDAOImpl implements ProjectDAO {
         return aliasProjects;
     }
 
+    public Map<String, String> getAliasProjectNames(String empId) {
+        Map<String, String> aliasProjects = new LinkedHashMap<String, String>();
+        String sql;
+        List<Map<String, Object>> rows;
+        if (!isEmpty(empId)) {
+            sql = "select ProjId, AliasProjName from project where ProjId in (select projectId from authoriseproject where empId = ?)";
+            rows = jdbcTemplate.queryForList(sql, empId);
+        } else {
+            sql = "select ProjId, AliasProjName from project";
+            rows = jdbcTemplate.queryForList(sql);
+        }
+        aliasProjects.put("0", "--Please Select--");
+        for (Map<String, Object> row : rows) {
+            aliasProjects.put(String.valueOf(row.get("ProjId")), (String) row.get("AliasProjName"));
+        }
+        return aliasProjects;
+    }
 
-    public List<ProjectDetail> getProjectDocumentList() {
+
+    public List<ProjectDetail> getProjectDocumentList(String employeeId) {
         List<ProjectDetail> projDocList = new ArrayList<ProjectDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(projQuery);
-
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList((projQuery + " where ProjId in(select projectId from authoriseproject where empId = ?)"), employeeId);
         for (Map<String, Object> row : rows) {
             projDocList.add(buildProjectDetail(row));
         }
         return projDocList;
     }
 
-    public ProjectDetail getProjectDocument(String projectId) {
-        String sql = projQuery + " where ProjId =" + projectId;
+    @Override
+    public List<ProjectDetail> getProjectDocumentList() {
+        List<ProjectDetail> projDocList = new ArrayList<ProjectDetail>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(projQuery);
+        for (Map<String, Object> row : rows) {
+            projDocList.add(buildProjectDetail(row));
+        }
+        return projDocList;
+    }
+
+    public ProjectDetail getProjectDocument(String projectId, String employeeId) {
+        String sql = projQuery + " where ProjId in(select projectId from authoriseproject where empId = ?) and ProjId =" + projectId;
         ProjectDetail projDoc = null;
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, employeeId);
 
         for (Map<String, Object> row : rows) {
             projDoc = buildProjectDetail(row);
@@ -192,7 +221,7 @@ public class ProjectDAOImpl implements ProjectDAO {
 
     @Override
     public List<String> getDropDownValues(String type) {
-        LOGGER.info("method = getDropDownValues for type "+type);
+        LOGGER.info("method = getDropDownValues for type " + type);
         List<String> values = new ArrayList<String>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DROP_DOWN_VALUES, new Object[]{type});
         for (Map<String, Object> row : rows) {

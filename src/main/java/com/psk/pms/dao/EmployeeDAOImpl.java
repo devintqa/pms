@@ -40,11 +40,9 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return role;
     }
 
-    @SuppressWarnings("unchecked")
     public Employee getEmployeeDetails(String empId) {
         String sql = "SELECT * FROM employee where empId = ?";
-        Employee employee = (Employee) jdbcTemplate.queryForObject(sql, new Object[]{empId}, new EmployeeRowMapper());
-        return employee;
+        return (Employee) jdbcTemplate.queryForObject(sql, new Object[]{empId}, new EmployeeRowMapper());
     }
 
     public int isEmployeeExisting(String userName) {

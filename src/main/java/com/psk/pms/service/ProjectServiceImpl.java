@@ -73,14 +73,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public boolean isAliasProjectAlreadyExisting(String aliasName) {
-        boolean isAvailable = false;
+        boolean isAvailable;
         isAvailable = projectDAO.isAliasProjectAlreadyExisting(aliasName);
         return isAvailable;
     }
 
+    public Map<String, String> getAliasProjectNames(String empId) {
+        return projectDAO.getAliasProjectNames(empId);
+    }
+
+    @Override
     public Map<String, String> getAliasProjectNames() {
-        Map<String, String> aliasProjects = projectDAO.getAliasProjectNames();
-        return aliasProjects;
+        return projectDAO.getAliasProjectNames();
     }
 
     public void setProjectDAO(ProjectDAO projectDAO) {
@@ -91,7 +95,7 @@ public class ProjectServiceImpl implements ProjectService {
         Date date = null;
         try {
             if (null != dateToBeFormatted) {
-                date = (Date) formatter.parse(dateToBeFormatted);
+                date = formatter.parse(dateToBeFormatted);
             }
         } catch (ParseException e) {
             LOGGER.error("Error in parsing the date");
@@ -99,9 +103,14 @@ public class ProjectServiceImpl implements ProjectService {
         return date;
     }
 
-    public List<ProjectDetail> getProjectDocumentList() {
+    public List<ProjectDetail> getProjectDocumentList(String employeeId) {
         List<ProjectDetail> projectDocumentList = projectDAO
-                .getProjectDocumentList();
+                .getProjectDocumentList(employeeId);
+        buildProjectDetails(projectDocumentList);
+        return projectDocumentList;
+    }
+
+    private void buildProjectDetails(List<ProjectDetail> projectDocumentList) {
         for (ProjectDetail projectDetail : projectDocumentList) {
             if (projectDetail.getCompletionSqlDate() != null) {
                 projectDetail.setProjectStatus("Completed");
@@ -111,13 +120,19 @@ public class ProjectServiceImpl implements ProjectService {
                 projectDetail.setProjectStatus("Tendered");
             }
         }
+    }
+
+    @Override
+    public List<ProjectDetail> getProjectDocumentList() {
+        List<ProjectDetail> projectDocumentList = projectDAO.getProjectDocumentList();
+        buildProjectDetails(projectDocumentList);
         return projectDocumentList;
     }
 
     @Override
-    public ProjectDetail getProjectDocument(String projectId) {
+    public ProjectDetail getProjectDocument(String projectId, String employeeId) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId);
+        ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId, employeeId);
         projectDetail.setCompletionDateForBonus(DateFormatter.getStringDate(
                 projectDetail.getCompletionDateSqlForBonus(), formatter));
         projectDetail.setTenderDate(DateFormatter.getStringDate(

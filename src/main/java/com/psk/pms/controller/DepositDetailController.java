@@ -1,34 +1,25 @@
 package com.psk.pms.controller;
 
-import static com.psk.pms.Constants.DEPOSIT_DETAIL;
-import static com.psk.pms.Constants.DEPOSIT_STATUS;
-import static com.psk.pms.Constants.DEPOSIT_TYPE;
-
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.SessionStatus;
-
 import com.google.gson.Gson;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.DepositDetailValidator;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Map;
+
+import static com.psk.pms.Constants.*;
 
 @Controller
 public class DepositDetailController extends BaseController {
@@ -66,7 +57,7 @@ public class DepositDetailController extends BaseController {
         } else {
             depositDetail.setEmployeeId(employeeId);
             model.addAttribute("depositDetailForm", depositDetail);
-            Map<String, String> aliasProjectList = populateAliasProjectList();
+            Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
             if (aliasProjectList.size() == 0) {
                 model.addAttribute("noProjectCreated",
                         "No Project Found To Be Created. Please Create a Project.");
@@ -87,7 +78,7 @@ public class DepositDetailController extends BaseController {
                                      HttpServletResponse response) {
         LOGGER.info("Sub Proj Id : " + request.getParameter("subProjId"));
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(request
-                .getParameter("aliasProjectName"));
+                .getParameter("aliasProjectName"), request.getParameter("empId"));
         subAliasProjectList.put("0", "--Please Select--");
         Gson gson = new Gson();
         String subAliasProjectJson = gson.toJson(subAliasProjectList);
@@ -97,9 +88,9 @@ public class DepositDetailController extends BaseController {
     @RequestMapping(value = "/emp/myview/buildDepositDetail/createDepositDetail.do", method = RequestMethod.POST)
     public String saveDepositAction(@ModelAttribute("depositDetailForm") DepositDetail depositDetail,
                                     BindingResult result, Model model, SessionStatus status) {
-        Map<String, String> aliasProjectList = populateAliasProjectList();
+        Map<String, String> aliasProjectList = populateAliasProjectList(depositDetail.getEmployeeId());
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(depositDetail
-                .getAliasProjectName());
+                .getAliasProjectName(), depositDetail.getEmployeeId());
         boolean isDepositDetailSaveSuccessful = false;
 
         if (new Integer("0").equals(depositDetail.getSubProjId())) {
@@ -145,11 +136,13 @@ public class DepositDetailController extends BaseController {
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         model.addAttribute("employee", employee);
-        List<DepositDetail> depositDetails = depositDetailService.getDepositDetails();
+        List<DepositDetail> depositDetails = fetchDepositDetails(employeeId);
         model.addAttribute("depositDetailsSize", depositDetails.size());
         model.addAttribute("depositDetails", depositDetails);
         return "updateDepositDetail";
     }
+
+
 
     @RequestMapping(value = "/emp/myview/searchDepositDetail/deleteDeposit.do", method = RequestMethod.POST)
     public void deleteDeposit(HttpServletRequest request,

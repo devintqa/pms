@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.psk.pms.factory.EmployeeTeam;
+import com.psk.pms.factory.EmployeeTeamFactory;
+import com.psk.pms.model.DepositDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -14,50 +20,58 @@ import com.psk.pms.service.SubProjectService;
 @Controller
 public class BaseController {
 
-	@Autowired
-	protected ProjectService projectService;
+    @Autowired
+    protected ProjectService projectService;
 
-	@Autowired
-	protected SubProjectService subProjectService;
+    @Autowired
+    protected SubProjectService subProjectService;
 
-	@Autowired
-	ItemService itemService;
 
-	public Map<String, String> populateAliasProjectList() {
-		Map<String, String> aliasProjectName = projectService
-				.getAliasProjectNames();
-		return aliasProjectName;
-	}
+    @Autowired
+    EmployeeTeamFactory employeeTeamFactory;
 
-	public Map<String, String> populateSubAliasProjectList(String projectId) {
-		Map<String, String> subAliasProjectNames = subProjectService
-				.getSubAliasProjectNames(projectId);
-		return subAliasProjectNames;
-	}
-	
-    public List<String> fetchProjectsInfo(String aliasProjectName) {
-        List<String> result = new ArrayList<String>();
-        Map<String, String> aliasProjectList = populateAliasProjectList();
-        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-            if (entry.getValue().toUpperCase()
-                    .indexOf(aliasProjectName.toUpperCase()) != -1) {
-                result.add(entry.getValue());
-            }
-        }
-        return result;
+    @Autowired
+    EmployeeService employeeService;
+
+    @Autowired
+    ItemService itemService;
+
+    public Map<String, String> populateAliasProjectList(String empId) {
+        Employee employee = employeeService.getEmployeeDetails(empId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        Map<String, String> aliasProjectList = employeeTeam.fetchProjects(employee.getEmployeeId());
+        return aliasProjectList;
     }
 
-    public List<String> fetchSubProjectsInfo(String subaliasProjectName) {
-        List<String> result = new ArrayList<String>();
-        // intentionally passing empty to get all sub projectNames
-        Map<String, String> aliasProjectList = populateSubAliasProjectList("");
-        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
-            if (entry.getValue().toUpperCase()
-                    .indexOf(subaliasProjectName.toUpperCase()) != -1) {
-                result.add(entry.getValue());
-            }
-        }
-        return result;
+    public Map<String, String> populateSubAliasProjectList(String projectId, String empId) {
+        Employee employee = employeeService.getEmployeeDetails(empId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.fetchSubProjects(projectId, employee.getEmployeeId());
     }
+
+    List<String> fetchProjectInfo(String name, String empId) {
+        Employee employee = employeeService.getEmployeeDetails(empId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.fetchProjects(name, empId);
+    }
+
+    public List<ProjectDetail> fetchProjectDocumentList(String employeeId) {
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.getProjectDocumentList(employeeId);
+    }
+
+    public List<String> fetchSubProjectsInfo(String subaliasProjectName, String empId) {
+        Employee employee = employeeService.getEmployeeDetails(empId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.fetchSubProjectInfo(subaliasProjectName, empId);
+    }
+
+    public List<DepositDetail>  fetchDepositDetails(String employeeId) {
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+       return employeeTeam.fetchDepositDetails(employee.getEmployeeId());
+    }
+
 
 }

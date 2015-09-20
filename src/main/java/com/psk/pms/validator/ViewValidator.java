@@ -34,13 +34,13 @@ public class ViewValidator extends BaseValidator implements Validator {
 				 || viewDetail.isProjectItemDescription() || viewDetail.isSearchComparisonData()) && !StringUtils.isNullOrEmpty(viewDetail.getAliasProjectName())) {
 			String projId;
 			if ("project".equalsIgnoreCase(viewDetail.getSearchUnder())) {
-				projId = fetchProjectId(viewDetail.getAliasProjectName());
+				projId = fetchProjectId(viewDetail.getAliasProjectName(), viewDetail.getEmployeeId());
 				if(projId != null){
 					viewDetail.setProjId(Integer.valueOf(projId));
 					viewDetail.setSubProjId(0);
 				}
 			} else {			
-				projId = fetchSubProjectId(viewDetail.getAliasProjectName());			
+				projId = fetchSubProjectId(viewDetail.getAliasProjectName(), viewDetail.getEmployeeId());
 				if(projId != null){
 					viewDetail.setEditSubProject(true);
 					viewDetail.setSubProjId(Integer.valueOf(projId));

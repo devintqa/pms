@@ -27,8 +27,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
@@ -95,7 +93,7 @@ public class DescriptionController extends BaseController {
     @RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
     public String saveProjDescAction(@ModelAttribute("projDescForm") ProjDescDetail projDescDetail, BindingResult result, Model model, SessionStatus status) {
         boolean isProjectSaveSuccessful = false;
-        Map<String, String> aliasProjectList = populateAliasProjectList();
+        Map<String, String> aliasProjectList = populateAliasProjectList(projDescDetail.getEmployeeId());
         projDescDetailValidator.validate(projDescDetail, result);
         LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
         if (!result.hasErrors()) {
@@ -103,7 +101,7 @@ public class DescriptionController extends BaseController {
         }
         if (result.hasErrors() || !isProjectSaveSuccessful) {
             model.addAttribute("aliasProjectList", aliasProjectList);
-            model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+            model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(),projDescDetail.getEmployeeId()));
             return "BuildDescription";
         } else {
             if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
@@ -113,7 +111,7 @@ public class DescriptionController extends BaseController {
                 model.addAttribute("employee", employee);
                 model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
                 model.addAttribute("aliasProjectList", aliasProjectList);
-                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(), projDescDetail.getEmployeeId()));
                 return "BuildDescription";
             } else {
                 isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
@@ -129,7 +127,7 @@ public class DescriptionController extends BaseController {
                 aliasProjectList = new HashMap<String, String>();
                 aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
                 model.addAttribute("aliasProjectList", aliasProjectList);
-                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName()));
+                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(), projDescDetail.getEmployeeId()));
                 model.addAttribute("projDescForm", projDescDetail);
                 model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
             }
@@ -151,8 +149,7 @@ public class DescriptionController extends BaseController {
     public String getSubAliasProject(HttpServletRequest request,
                                      HttpServletResponse response) {
         LOGGER.info("method = getSubAliasProject() , Sub Project Id : " + request.getParameter("subProjId"));
-        Map<String, String> subAliasProjectList = populateSubAliasProjectList(request.getParameter("aliasProjectName"));
-        subAliasProjectList.put("0", "--Please Select--");
+        Map<String, String> subAliasProjectList = fetchSubAliasProjectList(request.getParameter("aliasProjectName"), request.getParameter("empId"));
         Gson gson = new Gson();
         String subAliasProjectJson = gson.toJson(subAliasProjectList);
         return subAliasProjectJson;
@@ -167,18 +164,8 @@ public class DescriptionController extends BaseController {
         return workType;
     }
 
-    public List<ProjectDetail> getProjectDocumentList() {
-        List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList();
-        return projectDocumentList;
-    }
-
-    public List<SubProjectDetail> getSubProjectDocumentList(Integer projectId) {
-        List<SubProjectDetail> subProjectDocumentList = subProjectService.getSubProjectDocumentList(projectId);
-        return subProjectDocumentList;
-    }
-
-    private Map<String, String> fetchSubAliasProjectList(String aliasProjectName) {
-        Map<String, String> subAliasProjectList = populateSubAliasProjectList(aliasProjectName);
+    private Map<String, String> fetchSubAliasProjectList(String aliasProjectName, String employeeId) {
+        Map<String, String> subAliasProjectList = populateSubAliasProjectList(aliasProjectName, employeeId);
         subAliasProjectList.put("0", "--Please Select--");
         return subAliasProjectList;
     }

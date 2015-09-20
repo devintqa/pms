@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.psk.pms.factory.EmployeeTeam;
+import com.psk.pms.factory.EmployeeTeamFactory;
+import com.psk.pms.service.EmployeeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +54,7 @@ public class SubProjectController extends BaseController {
         SubProjectDetail subProjectDetail = new SubProjectDetail();
         subProjectDetail.setEmployeeId(employeeId);
         model.addAttribute("subProjectForm", subProjectDetail);
-        Map<String, String> aliasProjectList = populateAliasProjectList();
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         LOGGER.info("Alias project list :" + aliasProjectList);
         if (aliasProjectList.size() == 0) {
             model.addAttribute("noProjectCreated",
@@ -107,7 +110,7 @@ public class SubProjectController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         boolean isProjectSaveSuccessful = false;
         subProjectDetailValidator.validate(subProjectDetail, result);
-        Map<String, String> aliasProjectList = populateAliasProjectList();
+        Map<String, String> aliasProjectList = populateAliasProjectList(subProjectDetail.getEmployeeId());
 
         if (!result.hasErrors()) {
             isProjectSaveSuccessful = subProjectService
@@ -134,7 +137,7 @@ public class SubProjectController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         boolean isProjectSaveSuccessful = false;
         subProjectDetailValidator.validate(subProjectDetail, result);
-        Map<String, String> aliasProjectList = populateAliasProjectList();
+        Map<String, String> aliasProjectList = populateAliasProjectList(subProjectDetail.getEmployeeId());
 
         if (!result.hasErrors()) {
             isProjectSaveSuccessful = subProjectService
