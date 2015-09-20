@@ -1,10 +1,7 @@
 package com.psk.pms.validator;
 
-import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.JsonData;
-
 import java.util.List;
-
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 
 /**

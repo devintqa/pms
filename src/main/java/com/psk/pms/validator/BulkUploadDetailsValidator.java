@@ -6,7 +6,6 @@ import java.util.Set;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.BulkUploadException;
-import com.psk.pms.Constants;
 import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.ProjDescDetail;
 

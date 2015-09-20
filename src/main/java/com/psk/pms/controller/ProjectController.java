@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.validator.ProjectDetailValidator;
