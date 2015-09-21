@@ -215,9 +215,7 @@
                     <td><input class="button" value="Grant Access" onclick="updateConsole()"/></td>
                 </tr>
             </table>
-            <label for="console">Form content:</label>
-
-            <div><textarea id="console"></textarea></div>
+           
             <form:hidden path="privilegeDetails" id="privilegeDetails"/>
             <form:hidden path="employeeId" id="employee"/>
 
