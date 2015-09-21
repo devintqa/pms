@@ -213,9 +213,9 @@ public class DescriptionController extends BaseController {
     @RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
     public void deleteGlobalProjectDescriptionDetail(
             HttpServletRequest request, HttpServletResponse response) {
-        String projectDescriptionId = request.getParameter("baseDescriptionId");
-        LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-        projectDescriptionService.deleteBaseProjectDescription(projectDescriptionId);
+        String aliasBaseDescription = request.getParameter("aliasDescription");
+        LOGGER.info("Deleting project description ,projectDescriptionId : " + aliasBaseDescription);
+        projectDescriptionService.deleteBaseProjectDescription(aliasBaseDescription);
     }
 
 
