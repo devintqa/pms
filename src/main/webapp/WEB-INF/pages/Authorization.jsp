@@ -177,7 +177,7 @@
                     style="text-align: left; font-family: arial; color: #FF0000; font-size: 14px;">${authoriseMessage}</h2>
             <br>
         </div>
-        <h1 style="text-align: center; color: #007399; font-size: 24px;">Control Authorization</h1>
+        <h1 style="text-align: center; color: #007399; font-size: 24px;">Project Authorization</h1>
         <br>
 
 
@@ -185,7 +185,8 @@
             <table align="center">
                 <tr>
                     <td>Project<span id="colon">:</span></td>
-                    <td><form:select id="projectId" name="project" items="${projectList}" path="projectName">
+                    <td><form:select id="projectId" name="project" items="${projectList}" path="projectName"
+                                     cssClass="inputText">
                     </form:select>
                     </td>
                     <td><form:errors path="projectName" cssClass="error"/></td>
@@ -212,7 +213,7 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input class="button" value="Grant Access" onclick="updateConsole()"/></td>
+                    <td><input class="button" value="Authorize" onclick="updateConsole()"/></td>
                 </tr>
             </table>
             <label for="console">Form content:</label>
