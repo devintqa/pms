@@ -28,7 +28,7 @@
                             employeeId : empId
                         }, response);
                     }else{
-                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do", {
+                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do",{
                             term: request.term,
                             employeeId : empId
                         }, response);
@@ -200,6 +200,7 @@
 					<h2
 						style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 				</div>
+                <form:hidden path="employeeId"/>
 			</form:form>
 			<input id="searchOn" type="hidden"
 				value="${searchProjDescForm.searchOn}" />
