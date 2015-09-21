@@ -1,12 +1,47 @@
 package com.psk.pms.model;
 
-public class Indent {
+import java.util.Date;
+import java.util.List;
 
+public class Indent {
+	
+	private String metric;
 	private String projId;
 	private String subProjId;
 	private String projDescId;
+	private String aliasProjDesc;
 	private String employeeId;
+	private String indentId;
+	private Date startDate;
+	private Date endDate;
+	private Double area;
 	
+	private List<ItemDetail> itemDetails;
+
+	public String getIndentId() {
+		return indentId;
+	}
+	public void setIndentId(String indentId) {
+		this.indentId = indentId;
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public List<ItemDetail> getItemDetails() {
+		return itemDetails;
+	}
+	public void setItemDetails(List<ItemDetail> itemDetails) {
+		this.itemDetails = itemDetails;
+	}
 	public String getProjId() {
 		return projId;
 	}
@@ -31,5 +66,87 @@ public class Indent {
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
 	}
-	
+
+	public Double getArea() {
+		return area;
+	}
+	public void setArea(Double area) {
+		this.area = area;
+	}
+
+	public String getMetric() {
+		return metric;
+	}
+	public void setMetric(String metric) {
+		this.metric = metric;
+	}
+
+	public String getAliasProjDesc() {
+		return aliasProjDesc;
+	}
+	public void setAliasProjDesc(String aliasProjDesc) {
+		this.aliasProjDesc = aliasProjDesc;
+	}
+
+	public static class ItemDetail {
+
+		public ItemDetail() {
+
+		}
+
+		public ItemDetail(String itemType, String itemName, String itemQty, String itemUnit, String itemPrice) {
+			this.itemType = itemType;
+			this.itemName = itemName;
+			this.itemQty = itemQty;
+			this.itemUnit = itemUnit;
+			this.itemPrice = itemPrice;
+		}
+
+		private String itemType;
+		private String itemName;
+		private String itemUnit;
+		private String itemQty;
+		private String itemPrice;
+
+		public String getItemName() {
+			return itemName;
+		}
+
+		public void setItemName(String itemName) {
+			this.itemName = itemName;
+		}
+
+		public String getItemUnit() {
+			return itemUnit;
+		}
+
+		public void setItemUnit(String itemUnit) {
+			this.itemUnit = itemUnit;
+		}
+
+		public String getItemQty() {
+			return itemQty;
+		}
+
+		public void setItemQty(String itemQty) {
+			this.itemQty = itemQty;
+		}
+
+		public String getItemPrice() {
+			return itemPrice;
+		}
+
+		public void setItemPrice(String itemPrice) {
+			this.itemPrice = itemPrice;
+		}
+
+		public String getItemType() {
+			return itemType;
+		}
+
+		public void setItemType(String itemType) {
+			this.itemType = itemType;
+		}
+	}
+
 }

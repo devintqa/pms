@@ -1,23 +1,34 @@
 package com.psk.pms.controller;
 
-import com.google.gson.Gson;
-import com.psk.pms.model.Indent;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.service.FieldDescriptionService;
-import com.psk.pms.service.ProjectDescriptionService;
+import static com.psk.pms.Constants.ALREADYEXIST;
+import static com.psk.pms.Constants.NOTEXIST;
+import static com.psk.pms.Constants.NULL_STRING;
+import static com.psk.pms.Constants.SUCCESS;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.Map;
-
-import static com.psk.pms.Constants.*;
+import com.google.gson.Gson;
+import com.psk.pms.Constants;
+import com.psk.pms.model.Indent;
+import com.psk.pms.model.Indent.ItemDetail;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.FieldDescriptionService;
+import com.psk.pms.service.ProjectDescriptionService;
 
 /**
  * Created by prakashbhanu57 on 8/18/2015.
@@ -33,15 +44,55 @@ public class FieldDescriptionController extends BaseController {
 
     private static final Logger LOGGER = Logger.getLogger(FieldDescriptionController.class);
 
+    //http://localhost:8080/pms/emp/myview/indent/createIndent?employeeId=akumar&projectId=2&subProjectId=&projDescs=2
     @RequestMapping(value = "/emp/myview/indent/createIndent", method = RequestMethod.GET)
-	public String createIndent(//@PathVariable String employeeId,
+	public String createIndent(
 			@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "projectId") String projectId, 
 			@RequestParam(value = "subProjectId") String subProjectId,
 			@RequestParam(value = "projDescs") String projDescs,
 			Model model) {
-    	System.out.println("CreateIndent");
+    	
+    	List<ItemDetail> itemList = new ArrayList<ItemDetail>();
+    	ItemDetail  itemDetail = new ItemDetail();
+    	itemDetail.setItemName("CEMENT");
+    	itemDetail.setItemType("MATERIAL");
+    	itemDetail.setItemQty("1");
+    	itemDetail.setItemUnit("KG");
+    	itemList.add(itemDetail);
+    	
+    	itemDetail = new ItemDetail();
+     	itemDetail.setItemName("SAND");
+     	itemDetail.setItemType("MATERIAL");
+     	itemDetail.setItemQty("1");
+     	itemDetail.setItemUnit("CFT");
+     	itemList.add(itemDetail);
+     	
+     	String[] projDescId = projDescs.split(",");
+    	List<Indent> indentList = new ArrayList<Indent>();
+    	for(int i=0; i<projDescId.length; i++){
+    		ProjDescDetail descDetail = projectDescriptionService.getProjectDescDetail(projDescId[i], null, Constants.PSK);
+    		Indent indent = new Indent();
+    		indent.setAliasProjDesc(descDetail.getAliasDescription());
+    		indent.setEmployeeId(employeeId);
+    		try {
+    			indent.setStartDate(null);
+				indent.setEndDate(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    		indent.setArea(0.0);
+    		indent.setMetric("CFT");
+    		indent.setProjDescId(descDetail.getProjDescId().toString());
+    		indent.setProjId(descDetail.getProjId().toString());
+    		indent.setSubProjId(null);
+    		indent.setIndentId(null);
+    		indent.setItemDetails(itemList);
+    		indentList.add(indent);
+    	}
+    	model.addAttribute("indentList",indentList);
     	model.addAttribute("indentForm", new Indent());
+    	
 		return "CreateIndent";
 	}
     

@@ -596,10 +596,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	@Override
-	public void deleteBaseProjectDescription(String projectDescId) {
+	public void deleteBaseProjectDescription(String aliasBaseDescription) {
 		int noOfRows = jdbcTemplate.update(DELETEBASEDESCRIPTION,
 		new Object[] {
-			Integer.parseInt(projectDescId)
+				aliasBaseDescription
 		});
 		LOGGER.info("No of base descriptions deleted =" + noOfRows);
 	}

@@ -121,7 +121,7 @@ public class PmsMasterQuery {
 
 	public static final String FETCHBASEDESCRIPTIONS = "SELECT * FROM basedesc";
 
-	public static final String DELETEBASEDESCRIPTION = "DELETE FROM basedesc WHERE BaseDescId = ?";
+	public static final String DELETEBASEDESCRIPTION = "DELETE FROM basedesc WHERE BaseDescription = ?";
 
     public static final String ISBASEDESCEXISTS = "SELECT * FROM basedesc WHERE BaseDescription = ?";
 

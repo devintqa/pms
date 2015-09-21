@@ -172,9 +172,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 	}
 
 	@Override
-	public void deleteBaseProjectDescription(String projectDescId) {
+	public void deleteBaseProjectDescription(String aliasBaseDescription) {
 		LOGGER.info("method = deleteBaseProjectDescription()");
-		projectDescriptionDAO.deleteBaseProjectDescription(projectDescId);
+		projectDescriptionDAO.deleteBaseProjectDescription(aliasBaseDescription);
 	}
 
 	@Override

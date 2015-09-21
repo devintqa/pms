@@ -35,7 +35,7 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 				$.ajax({
 					type : 'POST',
 					url : 'deleteGlobalProjectDescription.do',
-					data : "baseDescriptionId=" + baseDescriptionId,
+					data : "aliasDescription=" + aliasDescription,
 					success : function(response) {
 						location.reload();
 						console.log("Successfully deleted row ");
