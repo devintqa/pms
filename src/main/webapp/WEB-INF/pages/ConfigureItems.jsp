@@ -8,7 +8,7 @@
 <%@include file="Script.jsp" %>
 
 <script>
-	
+
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
 		fillItemPrice();		

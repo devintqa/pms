@@ -158,8 +158,8 @@ public class PmsMasterQuery {
     public static final String GET_LEAD_DETAILS = "select * from projectLeadDetail where projectId = ? and subProjectId = ? and active = 1";
 
     public static final String CREATE_LEAD_DETAILS = "INSERT INTO projectLeadDetail " +
-            "(projectId, subProjectId, material, sourceOfSupply, distance, cost, ic, leadCharges, loadingUnloadingCharges, total, LastUpdatedBy, LastUpdatedAt) " +
-            " values (?, ?, ? ,?, ? ,?, ? ,?, ?, ?, ?, ?)";
+            "(projectId, subProjectId, material, sourceOfSupply, distance, unit, cost, ic, leadCharges, loadingUnloadingCharges, total, LastUpdatedBy, LastUpdatedAt) " +
+            " values (?, ?, ? ,?, ? ,?, ? ,?, ?, ?, ?, ?, ?)";
 
     public static final String DEACTIVATE_EXISTING_LEAD_DETAILS = "update projectLeadDetail set active = 0 where projectId = ? and subProjectId = ?";
 }
