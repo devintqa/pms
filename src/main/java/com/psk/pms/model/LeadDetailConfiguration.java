@@ -60,12 +60,13 @@ public class LeadDetailConfiguration {
         public LeadDetail() {
         }
 
-        public LeadDetail(String leadDetailId, String material, String sourceOfSupply, String distance, String cost,
+        public LeadDetail(String leadDetailId, String material, String sourceOfSupply, String distance,String unit, String cost,
                           String ic, String leadCharges, String loadingUnloading, String total, String lastUpdatedBy) {
             this.leadDetailId = leadDetailId;
             this.material = material;
             this.sourceOfSupply = sourceOfSupply;
             this.distance = distance;
+            this.unit = unit;
             this.cost = cost;
             this.ic = ic;
             this.leadCharges = leadCharges;
@@ -78,6 +79,7 @@ public class LeadDetailConfiguration {
         private String material;
         private String sourceOfSupply;
         private String distance;
+        private String unit;
         private String cost;
         private String ic;
         private String leadCharges;
@@ -165,5 +167,12 @@ public class LeadDetailConfiguration {
             this.lastUpdatedBy = lastUpdatedBy;
         }
 
+        public String getUnit() {
+            return unit;
+        }
+
+        public void setUnit(String unit) {
+            this.unit = unit;
+        }
     }
 }

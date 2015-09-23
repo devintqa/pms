@@ -564,6 +564,8 @@ INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
 ,('itemType','Machinery')
 ,('itemType','Other');
 
+/*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
+UNLOCK TABLES;
      -- -- -- --
 -- Table structure for table `projectLeadDetail`
 --
@@ -577,6 +579,7 @@ CREATE TABLE `projectLeadDetail` (
   `material` varchar(100) NOT NULL,
   `sourceOfSupply` varchar(100) NOT NULL,
   `distance` decimal(15,2) default '0.0',
+  `unit` varchar(30) NOT NULL,
   `cost` decimal(15,2) default '0.0',
   `ic` decimal(15,2) default '0.0',
   `leadCharges` decimal(15,2) default '0.0',
@@ -590,8 +593,6 @@ CREATE TABLE `projectLeadDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-/*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
-UNLOCK TABLES;
 
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;
 DELIMITER $$

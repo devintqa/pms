@@ -8,7 +8,26 @@
 <%@include file="Script.jsp" %>
 
 <script>
-		function deleteLeadDetailRow(row) {
+
+	    $(document).on("keyup","input[name^= 'price_']",function(){
+    			 var valid = /^\d+(\.\d{0,2})?$/.test(this.value);
+                    val = this.value;
+    		    if(valid){
+                    var cost = parseInt($(this).parents('tr:first').find('td:nth-child(5) input').val()) || 0;
+                    var ic = parseInt($(this).parents('tr:first').find('td:nth-child(6) input').val()) || 0;
+                    var leadCharges = parseInt($(this).parents('tr:first').find('td:nth-child(7) input').val()) || 0;
+                    var loadingUnloading = parseInt($(this).parents('tr:first').find('td:nth-child(8) input').val()) || 0;
+    		        var total = cost + ic + leadCharges + loadingUnloading;
+                    $(this).parents('tr:first').find('td:nth-child(9) input').val(total.toFixed(2));
+    		    }
+    		    else
+    		    {
+    		        console.log("Invalid input!");
+    		        this.value = val.substring(0, val.length - 1);
+    		    }
+        });
+
+    	function deleteLeadDetailRow(row) {
 			var leadDetailTable = document.getElementById('leadDetailTable');
 			var noOfRow = document.getElementById('leadDetailTable').rows.length;
 			if (noOfRow > 2) {
@@ -17,12 +36,13 @@
 			} else{
 				document.getElementById('leadDetailTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
 				document.getElementById('leadDetailTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
-				document.getElementById('leadDetailTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
+				document.getElementById('leadDetailTable').rows[1].cells[2].getElementsByTagName('input')[0].value = 0;
 				document.getElementById('leadDetailTable').rows[1].cells[3].getElementsByTagName('input')[0].value = '';
-				document.getElementById('leadDetailTable').rows[1].cells[4].getElementsByTagName('input')[0].value = '';
-				document.getElementById('leadDetailTable').rows[1].cells[5].getElementsByTagName('input')[0].value = '';
-				document.getElementById('leadDetailTable').rows[1].cells[6].getElementsByTagName('input')[0].value = '';
-				document.getElementById('leadDetailTable').rows[1].cells[7].getElementsByTagName('input')[0].value = '';
+				document.getElementById('leadDetailTable').rows[1].cells[4].getElementsByTagName('input')[0].value = 0;
+				document.getElementById('leadDetailTable').rows[1].cells[5].getElementsByTagName('input')[0].value = 0;
+				document.getElementById('leadDetailTable').rows[1].cells[6].getElementsByTagName('input')[0].value = 0;
+				document.getElementById('leadDetailTable').rows[1].cells[7].getElementsByTagName('input')[0].value = 0;
+				document.getElementById('leadDetailTable').rows[1].cells[8].getElementsByTagName('input')[0].value = 0;
 			}
 		}
 
@@ -39,37 +59,42 @@
 			sourceOfSupply.id += len;
 			sourceOfSupply.value = '';
 
-			var distance = new_row.cells[2].getElementsByTagName('input')[0];
+            var distance = new_row.cells[2].getElementsByTagName('input')[0];
 			distance.id += len;
-			distance.value = '';
+			distance.value = 0;
 
-			var cost = new_row.cells[3].getElementsByTagName('input')[0];
+			var unit = new_row.cells[3].getElementsByTagName('input')[0];
+			unit.id += len;
+			unit.value = '';
+
+			var cost = new_row.cells[4].getElementsByTagName('input')[0];
 			cost.id += len;
-			cost.value = '';
+			cost.value = 0.0;
 
-            var ic = new_row.cells[4].getElementsByTagName('input')[0];
+            var ic = new_row.cells[5].getElementsByTagName('input')[0];
 			ic.id += len;
-			ic.value = '';
+			ic.value = 0.0;
 
-            var leadCharges = new_row.cells[5].getElementsByTagName('input')[0];
+            var leadCharges = new_row.cells[6].getElementsByTagName('input')[0];
             leadCharges.id += len;
-            leadCharges.value = '';
+            leadCharges.value = 0.0;
 
-            var loadingUnloading = new_row.cells[6].getElementsByTagName('input')[0];
+            var loadingUnloading = new_row.cells[7].getElementsByTagName('input')[0];
 			loadingUnloading.id += len;
-			loadingUnloading.value = '';
+			loadingUnloading.value = 0.0;
 
-            var total = new_row.cells[7].getElementsByTagName('input')[0];
+            var total = new_row.cells[8].getElementsByTagName('input')[0];
 			total.id += len;
-			total.value = '';
+			total.value = 0.0;
 			leadDetailTable.appendChild(new_row);
 		}
 
-		function LeadDetail(material, sourceOfSupply, distance, cost, ic, leadCharges, loadingUnloading, total) {
+		function LeadDetail(material, sourceOfSupply, distance, unit, cost, ic, leadCharges, loadingUnloading, total) {
 		    this.leadDetailId = '';
 			this.material = material;
 			this.sourceOfSupply = sourceOfSupply;
 			this.distance = distance;
+			this.unit = unit;
 			this.cost = cost;
             this.ic = ic;
 			this.leadCharges = leadCharges;
@@ -82,19 +107,25 @@
 			var leadDetailArray = [];
 			var leadDetailForm = {};
 			var len = leadDetailTable.rows.length;
-			var err = null;
+			var error = null;
 			for (i = 1; i <= len - 1; i++) {
 				var material = leadDetailTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
 				var sourceOfSupply = leadDetailTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
 				var distance = leadDetailTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-				var cost = leadDetailTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
-				var ic = leadDetailTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
-				var leadCharges = leadDetailTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
-				var loadingUnloading = leadDetailTable.rows[i].cells[6].getElementsByTagName('input')[0].value;
-				var total = leadDetailTable.rows[i].cells[7].getElementsByTagName('input')[0].value;
+				var unit = leadDetailTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
+				var cost = leadDetailTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
+				var ic = leadDetailTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
+				var leadCharges = leadDetailTable.rows[i].cells[6].getElementsByTagName('input')[0].value;
+				var loadingUnloading = leadDetailTable.rows[i].cells[7].getElementsByTagName('input')[0].value;
+				var total = leadDetailTable.rows[i].cells[8].getElementsByTagName('input')[0].value;
 
-				var obj = new LeadDetail(material, sourceOfSupply, distance, cost, ic, leadCharges, loadingUnloading, total);
-					leadDetailArray.push(obj);
+                var obj = new LeadDetail(material, sourceOfSupply, distance, unit, cost, ic, leadCharges, loadingUnloading, total);
+
+                if(material && sourceOfSupply && unit && cost){
+                	leadDetailArray.push(obj);
+                }else{
+                    error = true;
+                }
 			}
 			leadDetailForm["employeeId"] = document.getElementById('employeeId').value;
 			leadDetailForm["projectId"] = document.getElementById('projectId').value;
@@ -102,8 +133,20 @@
 			leadDetailForm["leadConfiguration"] = JSON.stringify(leadDetailArray);
 
 			console.log("data = " + JSON.stringify(leadDetailForm));
-			if(err){
-				alert("Please make sure that all the required fields are entered.");
+			if(error){
+			$("#dialog-confirm").html("Please make sure that all the required fields are entered.");
+                    $("#dialog-confirm").dialog({
+					    resizable: false,
+					    modal: true,
+					    title: "Warning!",
+					    height: 200,
+					    width: 400,
+					    buttons: {
+					        "Ok": function () {
+					            $(this).dialog('close');
+					        }
+					    }
+					});
 			}else{
 				$.ajax({
 					type : "POST",
@@ -119,8 +162,27 @@
 		}
 
 		$(document).ready(function () {
-		     populateLeadDetailTable();
-		});
+		    var selector = "input[name = 'material']";
+		    populateLeadDetailTable();
+			$(document).on('keydown.autocomplete', selector, function() {
+				$(this).autocomplete({
+					source: function (request, response) {
+					$.getJSON("/pms/emp/myview/searchBaseDescription/searchBaseItems.do", {
+								itemName: request.term,
+								itemType: 'material',
+								descType: 'government'
+		            	        }, response);
+				},
+				select: function(event, ui) {
+			         $(this).parents('tr:first').find('td:nth-child(4) input').val(ui.item.itemUnit);
+			         $(this).parents('tr:first').find('td:nth-child(5) input').val(ui.item.itemPrice);
+			         $(this).parents('tr:first').find('td:nth-child(9) input').val(ui.item.itemPrice);
+			         $(this).focus();
+
+			    }
+			    });
+		    });
+        });
 
         function populateLeadDetailTable() {
 			var len = document.getElementById('leadDetailTable').rows.length;
@@ -151,28 +213,31 @@
 			distance.id += len;
 			distance.value = leadDetail.distance;
 
-			var cost = new_row.cells[3].getElementsByTagName('input')[0];
+			var unit = new_row.cells[3].getElementsByTagName('input')[0];
+			unit.id += len;
+			unit.value = leadDetail.unit;
+
+			var cost = new_row.cells[4].getElementsByTagName('input')[0];
 			cost.id += len;
 			cost.value = leadDetail.cost;
 
-            var ic = new_row.cells[4].getElementsByTagName('input')[0];
+            var ic = new_row.cells[5].getElementsByTagName('input')[0];
 			ic.id += len;
 			ic.value = leadDetail.ic;
 
-            var leadCharges = new_row.cells[5].getElementsByTagName('input')[0];
+            var leadCharges = new_row.cells[6].getElementsByTagName('input')[0];
             leadCharges.id += len;
             leadCharges.value = leadDetail.leadCharges;
 
-            var loadingUnloading = new_row.cells[6].getElementsByTagName('input')[0];
+            var loadingUnloading = new_row.cells[7].getElementsByTagName('input')[0];
 			loadingUnloading.id += len;
 			loadingUnloading.value = leadDetail.loadingUnloading;
 
-            var total = new_row.cells[7].getElementsByTagName('input')[0];
+            var total = new_row.cells[8].getElementsByTagName('input')[0];
 			total.id += len;
 			total.value = leadDetail.total;
 			leadDetailTable.appendChild(new_row);
-
-	}
+	    }
 </script>
 </head>
 <body>
@@ -188,8 +253,9 @@
 			<tr>
 				<th>Material*</th>
 				<th>Source Of Supply*</th>
-				<th>Distance*</th>
-				<th>Cost</th>
+				<th>Distance</th>
+				<th>Unit*</th>
+				<th>Cost*</th>
 				<th>ic</th>
 				<th>Lead Charges</th>
 				<th>Loading Unloading Charges</th>
@@ -197,14 +263,15 @@
 				<th>Action</th>
 			</tr>
 			<tr>
-				<td><input name="material" id="material" type="text" /></td>
+				<td size="50%"><input name="material" id="material" type="text" /></td>
 				<td><input name="sourceOfSupply" id="sourceOfSupply" type="text" /></td>
-				<td><input name="distance" id="distance" type="text" /></td>
-                <td><input name="cost" id="cost" type="text" /></td>
-				<td><input name="ic" id="ic" type="text" /></td>
-				<td><input name="leadCharges" id="leadCharges" type="text" /></td>
-                <td><input name="loadingUnloading" id="loadingUnloading" type="text" /></td>
-				<td><input name="total" id="total" type="text" /></td>
+				<td><input name="distance" id="distance" type="text" value=0 /></td>
+				<td><input name="unit" id="unit" type="text" /></td>
+                <td><input name="price_cost" id="cost" type="text" value=0 /></td>
+				<td><input name="price_ic" id="ic" type="text" value=0 /></td>
+				<td><input name="price_leadCharges" id="leadCharges" type="text" value=0 /></td>
+                <td><input name="price_loadingUnloading" id="loadingUnloading" type="text" value=0 /></td>
+				<td><input name="total" id="total" type="text" value=0 /></td>
 				<td><a id="deleteLeadDetail" onclick="deleteLeadDetailRow(this)">
 				<img src="<c:url value="/resources/images/delete.png" />" /></a></td>
 			</tr>
@@ -223,4 +290,5 @@
 		<form:hidden path="employeeId" id="employeeId"/>
 	</form:form>
 	</div>
+	<div id="dialog-confirm"></div>
 </body>

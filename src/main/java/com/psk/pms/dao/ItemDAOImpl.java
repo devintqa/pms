@@ -586,13 +586,14 @@ public class ItemDAOImpl implements ItemDAO {
                             ps.setString(3, leadDetail.getMaterial());
                             ps.setString(4, leadDetail.getSourceOfSupply());
                             ps.setString(5, leadDetail.getDistance());
-                            ps.setString(6, leadDetail.getCost());
-                            ps.setString(7, leadDetail.getIc());
-                            ps.setString(8, leadDetail.getLeadCharges());
-                            ps.setString(9, leadDetail.getLoadingUnloading());
-                            ps.setString(10, leadDetail.getTotal());
-                            ps.setString(11, leadDetailConfiguration.getEmployeeId());
-                            ps.setDate(12, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                            ps.setString(6,leadDetail.getUnit());
+                            ps.setString(7, leadDetail.getCost());
+                            ps.setString(8, leadDetail.getIc());
+                            ps.setString(9, leadDetail.getLeadCharges());
+                            ps.setString(10, leadDetail.getLoadingUnloading());
+                            ps.setString(11, leadDetail.getTotal());
+                            ps.setString(12, leadDetailConfiguration.getEmployeeId());
+                            ps.setDate(13, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
                         }
 
                         @Override
@@ -617,10 +618,13 @@ public class ItemDAOImpl implements ItemDAO {
         leadDetail.setLeadDetailId(leadDetailId.toString());
         String material = (String) row.get("material");
         leadDetail.setMaterial(material);
-        String sourceOfSupply = (String) row.get("material");
+        String sourceOfSupply = (String) row.get("sourceOfSupply");
         leadDetail.setSourceOfSupply(sourceOfSupply);
         BigDecimal distance = (BigDecimal) row.get("distance");
         leadDetail.setDistance(String.valueOf(distance));
+        String unit = (String) row.get("unit");
+        leadDetail.setUnit(unit);
+        leadDetail.setSourceOfSupply(sourceOfSupply);
         BigDecimal cost = (BigDecimal) row.get("cost");
         leadDetail.setCost(String.valueOf(cost));
         BigDecimal ic = (BigDecimal) row.get("ic");
