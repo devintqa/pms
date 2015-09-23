@@ -71,7 +71,7 @@ $(document).ready(
 	function deleteFile(fileName, filePath) {
 		$("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
 		var aliasProjectName = $('#projId').val();
-		var empId = $('').val(#employeeId);
+		var empId = $('#employeeId').val();
 		$("#dialog-confirm").dialog({
 			resizable: false,
 			modal: true,
