@@ -138,10 +138,16 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     public ProjectDetail getProjectDocument(String projectId, String employeeId) {
-        String sql = projQuery + " where ProjId in(select projectId from authoriseproject where empId = ?) and ProjId =" + projectId;
+        String sql;
+        List<Map<String, Object>> rows;
+        if (!isEmpty(employeeId)) {
+            sql = projQuery + " where ProjId in(select projectId from authoriseproject where empId = ?) and ProjId =" + projectId;
+            rows = jdbcTemplate.queryForList(sql, employeeId);
+        } else {
+            sql = projQuery + " where ProjId =" + projectId;
+            rows = jdbcTemplate.queryForList(sql);
+        }
         ProjectDetail projDoc = null;
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, employeeId);
-
         for (Map<String, Object> row : rows) {
             projDoc = buildProjectDetail(row);
         }

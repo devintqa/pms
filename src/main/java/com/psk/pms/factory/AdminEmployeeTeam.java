@@ -36,6 +36,11 @@ public class AdminEmployeeTeam implements EmployeeTeam {
     @Autowired
     SubProjectService subProjectService;
 
+    /**
+     *
+     * @param model
+     * @param empId - Pass employee id as empty("") for Admin
+     */
     @Override
     public void performTeamActivity(Model model, String empId) {
         List<Employee> newSignupRequestList = employeeService
@@ -117,5 +122,10 @@ public class AdminEmployeeTeam implements EmployeeTeam {
             }
         }
         return depositDocumentList;
+    }
+
+    @Override
+    public ProjectDetail getProjectDocument(String projectId, String employeeId) {
+        return projectService.getProjectDocument(projectId, "");
     }
 }
