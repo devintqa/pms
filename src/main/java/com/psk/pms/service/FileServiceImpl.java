@@ -219,8 +219,13 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void deleteFile(String filePath) {
-		File file = new File(filePath);
+	public void deleteFile(String filePath, String fileName,
+			String aliasProjectName, String empId) {
+		ProjectDetail projectDetail = projectService.getProjectDocument(aliasProjectName, empId);
+		String str = null;
+		str = filePath.substring(0, 2) + "\\"+"PMS"+ "\\"+projectDetail.getAliasName()+"\\"+fileName;
+		LOGGER.info("Constructed Path is ::::  "+str);
+		File file = new File(str);
 		if (file.exists()) {
 			LOGGER.info("File exists and proceeding to delete ");
 			file.delete();

@@ -306,11 +306,14 @@ public class FileUploadController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
-    public void deleteFile(@RequestParam(value = "path", required = true) String path,
-                           HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.info("method = deleteFile() ,file Name :" + path);
-        fileService.deleteFile(path);
-    }
+	public void deleteFile(@RequestParam("path") String path, 
+			@RequestParam("fileName") String fileName,
+			@RequestParam("aliasProjectName") String aliasProjectName,
+			@RequestParam("empId") String empId,
+			HttpServletRequest request, HttpServletResponse response) {
+		LOGGER.info("method = deleteFile() ,file Name :" + path + " ::  CHECK FNAME ::  "+fileName+" ::  CHECK ALIASNAME ::  "+aliasProjectName);
+		fileService.deleteFile(path, fileName, aliasProjectName, empId);
+	}
 
     @RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)
     @ResponseBody

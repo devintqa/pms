@@ -17,7 +17,7 @@ public interface FileService {
 
 	List<FileUpload> downloadFiles(FileUpload fileUpload, String employeeId);
 
-	void deleteFile(String filePath);
+	void deleteFile(String filePath, String fileName, String aliasProjectName, String empId);
 
     ExcelDetail saveProjectItemDescription(Item item) throws IOException, BulkUploadException;
 }
