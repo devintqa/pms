@@ -53,4 +53,7 @@ public interface Constants {
     String ITEM_TYPE = "itemType";
     String METRIC = "metric";
     String ALL_DESCRIPTION_TYPE = "all description";
+    
+    String AUTHORIZE = "authorize";
+    
 }

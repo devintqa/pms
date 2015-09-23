@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.psk.pms.Constants;
 import com.psk.pms.model.Authorize;
 import com.psk.pms.model.JsonData;
 import com.psk.pms.model.Permission;
@@ -44,7 +45,7 @@ public class AuthorisationController {
         Authorize authorize = new Authorize();
         authorize.setEmployeeId(employeeId);
         authorize.setPrivilegeDetails(null);
-        model.addAttribute("authorize", authorize);
+        model.addAttribute(Constants.AUTHORIZE, authorize);
         Map<String, String> aliasProjectNames = projectService.getAliasProjectNames();
         model.addAttribute("projectList", aliasProjectNames);
         return "Authorization";
@@ -66,18 +67,21 @@ public class AuthorisationController {
             jsonData.setData("No Employees present.Please select another Team");
             return jsonData;
         }
-        Gson gson = new Gson();
+        buildJsonData(jsonData, permissions, employeeId, model);
+        return jsonData;
+    }
+    
+    private void buildJsonData(JsonData jsonData, List<Permission> permissions, String employeeId, Model model){
+    	Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(permissions, new TypeToken<List<Permission>>() {
         }.getType());
-
         JsonArray jsonArray = element.getAsJsonArray();
         Authorize authorize = new Authorize();
         authorize.setEmployeeId(employeeId);
         authorize.setPrivilegeDetails(jsonArray.toString());
-        model.addAttribute("authorize", authorize);
+        model.addAttribute(Constants.AUTHORIZE, authorize);
         jsonData.setData(jsonArray.toString());
         jsonData.setSuccess(true);
-        return jsonData;
     }
 
     @RequestMapping(value = "/emp/myview/manageAccess/saveProjectUserPrivilege.do", method = RequestMethod.POST)
@@ -90,21 +94,12 @@ public class AuthorisationController {
                                              Model model) {
         JsonData jsonData = new JsonData();
         try {
-            Gson gson = new Gson();
             authorisationValidator.validate(selectedUsers, projectId, jsonData,availableUsers,teamName);
             if (!isNullOrEmpty(jsonData.getData())) {
                 return jsonData;
             }
             List<Permission> permissions = authorisationService.saveProjectUserPrivilege(projectId, selectedUsers, teamName, availableUsers);
-            JsonElement element = gson.toJsonTree(permissions, new TypeToken<List<Permission>>() {
-            }.getType());
-            JsonArray jsonArray = element.getAsJsonArray();
-            Authorize authorize = new Authorize();
-            authorize.setEmployeeId(employeeId);
-            authorize.setPrivilegeDetails(jsonArray.toString());
-            model.addAttribute("authorize", authorize);
-            jsonData.setData(jsonArray.toString());
-            jsonData.setSuccess(true);
+            buildJsonData(jsonData, permissions, employeeId, model);
         } catch (Exception e) {
         	LOGGER.info("Exception In saveProjectUserPrivilege()",e);
             jsonData.setData(e.getMessage());
