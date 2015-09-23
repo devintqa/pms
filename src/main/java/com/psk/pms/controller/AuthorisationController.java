@@ -10,6 +10,8 @@ import com.psk.pms.model.Permission;
 import com.psk.pms.service.AuthorisationService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.validator.AuthorisationValidator;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,20 +27,20 @@ import static com.psk.pms.Constants.TEAM;
 public class AuthorisationController {
 
     @Autowired
-    protected ProjectService projectService;
+    private ProjectService projectService;
 
     @Autowired
-    AuthorisationService authorisationService;
+    private AuthorisationService authorisationService;
 
     @Autowired
-    private
-    AuthorisationValidator authorisationValidator;
+    private AuthorisationValidator authorisationValidator;
+    
+    private static final Logger LOGGER = Logger.getLogger(AuthorisationController.class);
 
 
     @RequestMapping(value = "/emp/myview/manageAccess/{employeeId}", method = RequestMethod.GET)
     public String grantRights(@PathVariable String employeeId, Model model) {
-
-
+    	LOGGER.info("Build Authorization Start");
         Authorize authorize = new Authorize();
         authorize.setEmployeeId(employeeId);
         authorize.setPrivilegeDetails(null);
@@ -104,6 +106,7 @@ public class AuthorisationController {
             jsonData.setData(jsonArray.toString());
             jsonData.setSuccess(true);
         } catch (Exception e) {
+        	LOGGER.info("Exception In saveProjectUserPrivilege()",e);
             jsonData.setData(e.getMessage());
         }
         return jsonData;
