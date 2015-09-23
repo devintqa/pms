@@ -58,6 +58,10 @@ public class ProjectServiceImpl implements ProjectService {
         if (projectDetail.getExPercentage() == "") {
             projectDetail.setExPercentage(null);
         }
+        if(projectDetail.getAliasProjectNameForSubProj() != 0){
+        	String mainProjectType = projectDAO.fetchMainProjectType(projectDetail.getAliasProjectNameForSubProj());
+        	projectDetail.setProjectType(mainProjectType);
+        }
         boolean isInsertSuccessful = projectDAO.saveProject(projectDetail);
         return isInsertSuccessful;
     }

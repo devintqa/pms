@@ -20,8 +20,10 @@ $(document).ready(function () {
 	  
 	  if ($(subProject).is(":checked")) {
 	  		$("#showProjectNames").show();
+	  		$("#showProjectTypes").hide();
 	  } else{
-		    $("#showProjectNames").hide(); 
+		    $("#showProjectNames").hide();
+		    $("#showProjectTypes").show();
 	  }
 	  
 	  $('#subProject').change(function () {
@@ -48,8 +50,10 @@ $(document).ready(function () {
                   }
               });
               $("#showProjectNames").show();
+              $("#showProjectTypes").hide();
           } else {
               $("#showProjectNames").hide();
+              $("#showProjectTypes").show();
           }
       });
 	  
@@ -109,7 +113,7 @@ $(function(){
 	                            <td><form:errors path="aliasProjectNameForSubProj"
 	                                             cssClass="error"/></td>
 	                        </tr>
-                            <tr>
+                            <tr id="showProjectTypes">
 								<td>Project Type<span id="colon">:</span>
 								</td>
 								<td><form:select path="projectType" cssClass="inputText"
