@@ -174,11 +174,28 @@
 		            	        }, response);
 				},
 				select: function(event, ui) {
-			         $(this).parents('tr:first').find('td:nth-child(4) input').val(ui.item.itemUnit);
-			         $(this).parents('tr:first').find('td:nth-child(5) input').val(ui.item.itemPrice);
-			         $(this).parents('tr:first').find('td:nth-child(9) input').val(ui.item.itemPrice);
-			         $(this).focus();
-
+				    if(validateItemNameExistence(ui.item.itemName)){
+                        $("#dialog-confirm").html("Lead detail for item already configured.");
+                            $("#dialog-confirm").dialog({
+                        	    resizable: false,
+                        	    modal: true,
+                        	    title: "Warning!",
+                        	    height: 180,
+                        	    width: 400,
+                        	    buttons: {
+                        	        "Ok": function () {
+                        	            $(this).dialog('close');
+                        	        }
+                        	    }
+                        });
+                		event.preventDefault();
+                		$(this).val('');
+                	}else{
+			            $(this).parents('tr:first').find('td:nth-child(4) input').val(ui.item.itemUnit);
+			            $(this).parents('tr:first').find('td:nth-child(5) input').val(ui.item.itemPrice);
+			            $(this).parents('tr:first').find('td:nth-child(9) input').val(ui.item.itemPrice);
+			            $(this).focus();
+                    }
 			    }
 			    });
 		    });
@@ -238,6 +255,20 @@
 			total.value = leadDetail.total;
 			leadDetailTable.appendChild(new_row);
 	    }
+
+	    function validateItemNameExistence(newItemName){
+		    var leadDetailTable = document.getElementById('leadDetailTable');
+		    var len = leadDetailTable.rows.length;
+		    var exists = false;
+		    for (i = 1; i <= len - 1; i++) {
+			    var itemName = leadDetailTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+			    if(itemName == newItemName){
+				    exists = true;
+				    break;
+			    }
+		    }
+		    return exists;
+	    }
 </script>
 </head>
 <body>
@@ -253,10 +284,10 @@
 			<tr>
 				<th>Material*</th>
 				<th>Source Of Supply*</th>
-				<th>Distance</th>
+				<th>Distance (Kms)</th>
 				<th>Unit*</th>
 				<th>Cost*</th>
-				<th>ic</th>
+				<th>IC</th>
 				<th>Lead Charges</th>
 				<th>Loading Unloading Charges</th>
 				<th>Total</th>
