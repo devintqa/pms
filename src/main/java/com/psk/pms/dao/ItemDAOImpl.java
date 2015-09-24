@@ -194,7 +194,7 @@ public class ItemDAOImpl implements ItemDAO {
         if (descItemDetail.getDescType().equalsIgnoreCase(Constants.PSK))
             sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         else
-            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  quotedprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
+            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  govprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         System.out.println(sql);
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);

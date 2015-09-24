@@ -68,7 +68,7 @@ public class PmsMasterQuery {
 			+ "Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId FROM projectdesc";
 
 	public static final String compareDataQuery = "SELECT distinct p.SerialNumber, p.Quantity, p.Metric, p.AliasDescription, p.PricePerQuantity, p.TotalCost, pp.PricePerQuantity as DeptPricePerQuantity, pp.TotalCost as DeptTotalCost "
-			+ "FROM projectdesc p INNER JOIN quotedprojectdesc pp on p.ProjId = pp.ProjId "
+			+ "FROM projectdesc p INNER JOIN govprojectdesc pp on p.ProjId = pp.ProjId "
 			+ "and p.AliasDescription = pp.AliasDescription";
 
 	public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
@@ -96,17 +96,17 @@ public class PmsMasterQuery {
 			+ "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) "
 			+ "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
-	public static final String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO quotedprojectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
+	public static final String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO govprojectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
 			+ "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) "
 			+ "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String NOOFPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM projectdesc WHERE ProjId = ?";
 	
-	public static final String NOOFQUOTEDPROJECTDESCASSOCIATEDTOPROJECT = "SELECT count(*) FROM quotedprojectdesc WHERE ProjId = ?";
+	public static final String NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_PROJECT = "SELECT count(*) FROM govprojectdesc WHERE ProjId = ?";
 
 	public static final String NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT = "SELECT count(*) FROM projectdesc WHERE SubProjId = ?";
 	
-	public static final String NOOFQUOTEDPROJECTDESCASSOCIATEDTOSUBPROJECT = "SELECT count(*) FROM quotedprojectdesc WHERE SubProjId = ?";
+	public static final String NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_SUBPROJECT = "SELECT count(*) FROM govprojectdesc WHERE SubProjId = ?";
 
 	public static final String SAVEITEMS = "INSERT INTO itemcodes (itemName, itemUnit ,itemType) VALUES (?, ?, ?)";
 

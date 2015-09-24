@@ -7,7 +7,7 @@ public enum DescriptionType {
 
     PSK("projectdesc","projdescitem","pskpricedetail"),
     FIELD("fieldprojectdesc","fieldprojdescitem","fieldpricedetail"),
-    GOVERNMENT("quotedprojectdesc","quotedprojdescitem","govpricedetail"),
+    GOVERNMENT("govprojectdesc","govprojdescitem","govpricedetail"),
     INVALID("","","");
 
     DescriptionType(String descriptionTableName,String descriptionItemTableName,String descriptionPriceTableName) {
