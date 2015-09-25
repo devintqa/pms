@@ -297,12 +297,12 @@
 				<td size="50%"><input name="material" id="material" type="text" /></td>
 				<td><input name="sourceOfSupply" id="sourceOfSupply" type="text" /></td>
 				<td><input name="distance" id="distance" type="text" value=0 /></td>
-				<td><input name="unit" id="unit" type="text" /></td>
-                <td><input name="price_cost" id="cost" type="text" value=0 /></td>
+				<td><input name="unit" id="unit" type="text" readonly="true" /></td>
+                <td><input name="price_cost" id="cost" type="text" value=0 readonly="true"/></td>
 				<td><input name="price_ic" id="ic" type="text" value=0 /></td>
 				<td><input name="price_leadCharges" id="leadCharges" type="text" value=0 /></td>
                 <td><input name="price_loadingUnloading" id="loadingUnloading" type="text" value=0 /></td>
-				<td><input name="total" id="total" type="text" value=0 /></td>
+				<td><input name="total" id="total" type="text" value=0 readonly="true"/></td>
 				<td><a id="deleteLeadDetail" onclick="deleteLeadDetailRow(this)">
 				<img src="<c:url value="/resources/images/delete.png" />" /></a></td>
 			</tr>
