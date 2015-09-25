@@ -22,6 +22,8 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
+import static com.psk.pms.Constants.GOVERNMENT;
+
 @Controller
 public class SearchController extends BaseController {
 
@@ -213,6 +215,9 @@ public class SearchController extends BaseController {
         request.put("subProjectId", subProjectId);
         request.put("descType", descType);
         List<ItemDetail> itemsDetail = itemService.getDescItemNames(request);
+        if(GOVERNMENT.equalsIgnoreCase(descType)){
+            itemService.updateMaterialPriceWithLeadDetailsPrice(itemsDetail,projectId,subProjectId);
+        }
         return itemsDetail;
     }
 

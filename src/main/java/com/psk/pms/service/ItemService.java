@@ -58,4 +58,5 @@ public interface ItemService {
 
     void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration);
 
+    void updateMaterialPriceWithLeadDetailsPrice(List<ItemDetail> itemDetail, String projId, String subProjId);
 }
