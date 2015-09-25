@@ -17,6 +17,13 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
+
+    $("#workoutPercentage").on("keypress keyup blur",function (event) {
+        $(this).val($(this).val().replace(/[^0-9\.]/g,''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
 	  
 	  if ($(subProject).is(":checked")) {
 	  		$("#showProjectNames").show();
@@ -244,6 +251,22 @@ $(function(){
 								<td>&nbsp;<span id="errmsg"></span></td>
 								<td><form:errors path="agreementPeriod" cssClass="error" /></td>
 							</tr>
+                            <tr>
+                                <td>Work Location<span id="colon">:</span>
+                                </td>
+                                <td><form:select path="workLocation" cssClass="inputText"
+                                                 items="${workLocations}" /></td>
+                                <td><form:errors path="workLocation" cssClass="error" /></td>
+                            </tr>
+                            <tr>
+                                <td>Department Work out Percentage<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="workoutPercentage"
+                                                placeholder="Enter Workout Percentage Period"
+                                                cssClass="inputText" required="required" /></td>
+                                <td>&nbsp;<span id="errmsg"></span></td>
+                                <td><form:errors path="workoutPercentage" cssClass="error" /></td>
+                            </tr>
 							<tr></tr>
 						</table>
 					</fieldset>

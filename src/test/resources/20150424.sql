@@ -259,6 +259,8 @@ CREATE TABLE `project` (
   `AgreementPeriod` int(10) DEFAULT NULL,
   `ProjectType` varchar(30) NOT NULL,
   `CompletionDateForBonus` datetime DEFAULT NULL,
+  `workoutPercentage` decimal(15,2) NOT NULL,
+  `workLocation` varchar(50) NOT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -562,7 +564,9 @@ INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
 ,('itemType','Material')
 ,('itemType','Labour')
 ,('itemType','Machinery')
-,('itemType','Other');
+,('itemType','Other')
+,('workLocation','Corporation')
+,('workLocation','Rural');
 
 /*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
 UNLOCK TABLES;

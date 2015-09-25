@@ -26,13 +26,13 @@ public class ProjectDAOImpl implements ProjectDAO {
         String createSql = "INSERT INTO project (ProjName, AliasProjName, MainProjId, ProjectType,AgreementNum, CERNum, Amount, "
                 + "ContractorName, ContractorAliasName , ContractorAdd, AgreementValue, TenderValue, " +
                 "ExcessInAmount, ExcessInPercentage, LessInPercentage ,CompletionDateForBonus , TenderDate, "
-                + "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt ) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + "AgreementDate, CommencementDate, CompletedDate, AgreementPeriod , LastUpdatedBy ,LastUpdatedAt,workoutPercentage,workLocation ) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?)";
 
         String updateSql = "UPDATE project set ProjectType = ? ,AgreementNum  = ?, CERNum = ?, Amount = ?, ContractorName = ?,ContractorAliasName = ?," +
                 "ContractorAdd = ?, AgreementValue = ?, TenderValue=?, ExcessInAmount = ?," +
                 "ExcessInPercentage = ?,LessInPercentage = ?,CompletionDateForBonus =?, TenderDate = ?, AgreementDate = ?," +
-                "CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ? WHERE ProjId = ?";
+                "CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ? ,workoutPercentage=?, workLocation = ? WHERE ProjId = ?";
 
         if (!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
             jdbcTemplate.update(createSql, new Object[]{projectDetail.getProjectName(),
@@ -57,7 +57,10 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getCompletionSqlDate(),
                     projectDetail.getAgreementPeriod(),
                     projectDetail.getLastUpdatedBy(),
-                    projectDetail.getLastUpdatedAt()
+                    projectDetail.getLastUpdatedAt(),
+                    projectDetail.getWorkoutPercentage(),
+                    projectDetail.getWorkLocation()
+
 
             });
         } else {
@@ -82,6 +85,8 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getAgreementPeriod(),
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
+                    projectDetail.getWorkoutPercentage(),
+                    projectDetail.getWorkLocation(),
                     projectDetail.getProjId()
             });
         }
@@ -203,6 +208,8 @@ public class ProjectDAOImpl implements ProjectDAO {
         } else {
             projDoc.setLessPercentage(lessPercentage.toString());
         }
+        projDoc.setWorkLocation((String) row.get("workLocation"));
+        projDoc.setWorkoutPercentage((BigDecimal) row.get("workoutPercentage"));
         projDoc.setCompletionDateSqlForBonus((Date) row.get("CompletionDateForBonus"));
         projDoc.setAgreementSqlDate((Date) row.get("AgreementDate"));
         projDoc.setCommencementSqlDate((Date) row.get("CommencementDate"));
@@ -225,7 +232,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     private String projQuery = "SELECT  ProjId, ProjName, ProjectType ,AliasProjName, AgreementNum, "
             + "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
             + "TenderValue , ExcessInAmount, ExcessInPercentage,LessInPercentage, "
-            + "CompletionDateForBonus ,TenderDate, AgreementDate, CommencementDate, CompletedDate, "
+            + "CompletionDateForBonus ,TenderDate, AgreementDate, CommencementDate, CompletedDate,workoutPercentage,workLocation, "
             + "AgreementPeriod FROM project";
 
 

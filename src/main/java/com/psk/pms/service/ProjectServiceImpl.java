@@ -11,13 +11,17 @@ import com.psk.pms.utils.DateFormatter;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static java.math.BigDecimal.ZERO;
 
 public class ProjectServiceImpl implements ProjectService {
 
@@ -52,6 +56,9 @@ public class ProjectServiceImpl implements ProjectService {
                 projectDetail.getCompletionDate(), formatter));
         projectDetail.setLastUpdatedBy(projectDetail.getEmployeeId());
         projectDetail.setLastUpdatedAt(getCurrentDateTime());
+        if(StringUtils.isEmpty(projectDetail.getWorkoutPercentage())){
+            projectDetail.setWorkoutPercentage(ZERO);
+        }
         if (projectDetail.getLessPercentage() == "") {
             projectDetail.setLessPercentage(null);
         }

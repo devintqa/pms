@@ -1,7 +1,9 @@
 package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.PROJECT_TYPE;
+import static com.psk.pms.Constants.WORKLOCATION;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +51,7 @@ public class ProjectController extends BaseController {
         LOGGER.info("method = buildProject()");
         ProjectDetail projDetail = new ProjectDetail();
         projDetail.setEmployeeId(employeeId);
+        projDetail.setWorkoutPercentage(BigDecimal.ZERO);
         model.addAttribute("projectForm", projDetail);
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
@@ -121,6 +124,13 @@ public class ProjectController extends BaseController {
         List<String> projectTypeNames = projectService.getDropDownValuesFor(PROJECT_TYPE);
         LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
         return projectTypeNames;
+    }
+
+    @ModelAttribute("workLocations")
+    public List<String> populateworkLocationTypes() {
+        LOGGER.info("method = populateworkLocationTypes()");
+        List<String> workLocations = projectService.getDropDownValuesFor(WORKLOCATION);
+        return workLocations;
     }
 
     @RequestMapping(value = "/emp/myview/buildProject/getAliasProjects.do", method = RequestMethod.GET)

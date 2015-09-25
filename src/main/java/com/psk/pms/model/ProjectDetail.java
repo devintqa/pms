@@ -1,5 +1,6 @@
 package com.psk.pms.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class ProjectDetail {
@@ -37,6 +38,8 @@ public class ProjectDetail {
     private String lastUpdatedBy;
     private Date lastUpdatedAt;
     private Integer aliasProjectNameForSubProj;
+    private String workLocation;
+    private BigDecimal workoutPercentage;
 
 	public Integer getAliasProjectNameForSubProj() {
 		return aliasProjectNameForSubProj;
@@ -300,4 +303,20 @@ public class ProjectDetail {
 	public void setSubProject(boolean subProject) {
 		this.subProject = subProject;
 	}
+
+    public String getWorkLocation() {
+        return workLocation;
+    }
+
+    public void setWorkLocation(String workLocation) {
+        this.workLocation = workLocation;
+    }
+
+    public BigDecimal getWorkoutPercentage() {
+        return workoutPercentage;
+    }
+
+    public void setWorkoutPercentage(BigDecimal workoutPercentage) {
+        this.workoutPercentage = workoutPercentage;
+    }
 }
