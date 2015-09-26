@@ -232,7 +232,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
             sql = sql + " FROM " + DescriptionType.getDescriptionTableName(searchDetail.getSearchOn()) + " where SubProjId = " + searchDetail.getProjId();
         }
 
-        List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
+        List<ProjDescDetail> projectDescDetailList = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {

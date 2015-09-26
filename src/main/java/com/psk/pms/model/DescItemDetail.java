@@ -96,7 +96,7 @@ public class DescItemDetail {
 		this.descType = descType;
 	}
 
-	public static class ItemDetail {
+	public static class     ItemDetail {
 
 		public ItemDetail() {
 
