@@ -72,5 +72,11 @@ public class BaseController {
        return employeeTeam.fetchDepositDetails(employee.getEmployeeId());
     }
 
+    public ProjectDetail getProjectDocument(String project, String employeeId) {
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.getProjectDocument(project,employeeId);
+    }
+
 
 }

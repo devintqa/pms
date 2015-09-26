@@ -25,4 +25,6 @@ public interface EmployeeTeam {
     List<String> fetchSubProjectInfo(String subaliasProjectName, String empId);
 
     List<DepositDetail> fetchDepositDetails(String employeeId);
+
+    ProjectDetail getProjectDocument(String projectId, String employeeId);
 }

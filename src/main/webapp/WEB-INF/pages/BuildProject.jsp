@@ -17,11 +17,20 @@ $(document).ready(function () {
 	               return false;
 	    }
 	   });
+
+    $("#workoutPercentage").on("keypress keyup blur",function (event) {
+        $(this).val($(this).val().replace(/[^0-9\.]/g,''));
+        if ((event.which != 46 || $(this).val().indexOf('.') != -1) && (event.which < 48 || event.which > 57)) {
+            event.preventDefault();
+        }
+    });
 	  
 	  if ($(subProject).is(":checked")) {
 	  		$("#showProjectNames").show();
+	  		$("#showProjectTypes").hide();
 	  } else{
-		    $("#showProjectNames").hide(); 
+		    $("#showProjectNames").hide();
+		    $("#showProjectTypes").show();
 	  }
 	  
 	  $('#subProject').change(function () {
@@ -48,8 +57,10 @@ $(document).ready(function () {
                   }
               });
               $("#showProjectNames").show();
+              $("#showProjectTypes").hide();
           } else {
               $("#showProjectNames").hide();
+              $("#showProjectTypes").show();
           }
       });
 	  
@@ -109,7 +120,7 @@ $(function(){
 	                            <td><form:errors path="aliasProjectNameForSubProj"
 	                                             cssClass="error"/></td>
 	                        </tr>
-                            <tr>
+                            <tr id="showProjectTypes">
 								<td>Project Type<span id="colon">:</span>
 								</td>
 								<td><form:select path="projectType" cssClass="inputText"
@@ -240,6 +251,22 @@ $(function(){
 								<td>&nbsp;<span id="errmsg"></span></td>
 								<td><form:errors path="agreementPeriod" cssClass="error" /></td>
 							</tr>
+                            <tr>
+                                <td>Work Location<span id="colon">:</span>
+                                </td>
+                                <td><form:select path="workLocation" cssClass="inputText"
+                                                 items="${workLocations}" /></td>
+                                <td><form:errors path="workLocation" cssClass="error" /></td>
+                            </tr>
+                            <tr>
+                                <td>Department Work out Percentage<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="workoutPercentage"
+                                                placeholder="Enter Workout Percentage Period"
+                                                cssClass="inputText" required="required" /></td>
+                                <td>&nbsp;<span id="errmsg"></span></td>
+                                <td><form:errors path="workoutPercentage" cssClass="error" /></td>
+                            </tr>
 							<tr></tr>
 						</table>
 					</fieldset>

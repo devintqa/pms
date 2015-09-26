@@ -66,9 +66,12 @@ $(document).ready(
 	
 	});
 	
+	
+	
 	function deleteFile(fileName, filePath) {
 		$("#dialog-confirm").html(fileName + " : Deletion Operation!, Please confirm to proceed");
-		alert(filePath);
+		var aliasProjectName = $('#projId').val();
+		var empId = $('#employeeId').val();
 		$("#dialog-confirm").dialog({
 			resizable: false,
 			modal: true,
@@ -80,7 +83,7 @@ $(document).ready(
 					$.ajax({
 						type: 'POST',
 						url: 'deleteFile.do',
-						data: "path=" + filePath,
+						data: "path="+filePath+"&fileName="+fileName+"&aliasProjectName="+aliasProjectName+"&empId="+empId,
 						success: function(response) {
 							location.reload();
 							console.log("Successfully deleted file");

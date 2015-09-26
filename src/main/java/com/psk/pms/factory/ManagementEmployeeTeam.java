@@ -48,4 +48,9 @@ public class ManagementEmployeeTeam implements EmployeeTeam {
     public List<DepositDetail> fetchDepositDetails(String employeeId) {
         return null;
     }
+
+    @Override
+    public ProjectDetail getProjectDocument(String projectId, String employeeId) {
+        return null;
+    }
 }

@@ -91,6 +91,11 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
         return depositDetailService.getDepositDetails(employeeId);
     }
 
+    @Override
+    public ProjectDetail getProjectDocument(String projectId, String employeeId) {
+        return projectService.getProjectDocument(projectId, employeeId);
+    }
+
     private List<DepositDetail> getExpiringDepositDetails(List<DepositDetail> depositEndAlertList) {
         Date todayDate = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");

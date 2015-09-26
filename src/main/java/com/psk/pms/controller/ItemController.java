@@ -212,6 +212,9 @@ public class ItemController {
         descItemDetail.setProjDescSerial(projDescSerial);
         descItemDetail.setDescType(descType);
         descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
+        if (Constants.GOVERNMENT.equalsIgnoreCase(descType)) {
+            itemService.updateMaterialPriceWithLeadDetailsPrice(descItemDetail.getItemDetail(),projId,subProjId);
+        }
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
         }.getType());

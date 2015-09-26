@@ -259,6 +259,8 @@ CREATE TABLE `project` (
   `AgreementPeriod` int(10) DEFAULT NULL,
   `ProjectType` varchar(30) NOT NULL,
   `CompletionDateForBonus` datetime DEFAULT NULL,
+  `workoutPercentage` decimal(15,2) NOT NULL,
+  `workLocation` varchar(50) NOT NULL,
   PRIMARY KEY (`ProjId`),
   UNIQUE KEY `AliasProjName_UNIQUE` (`AliasProjName`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
@@ -290,13 +292,13 @@ CREATE TABLE `projectdesc` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `quotedprojectdesc`
+-- Table structure for table `govprojectdesc`
 --
 
-DROP TABLE IF EXISTS `quotedprojectdesc`;
+DROP TABLE IF EXISTS `govprojectdesc`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `quotedprojectdesc` (
+CREATE TABLE `govprojectdesc` (
   `ProjId` int(10) NOT NULL,
   `SerialNumber` varchar(10) NOT NULL,
   `SubProjId` int(10) DEFAULT NULL,
@@ -444,13 +446,13 @@ CREATE TABLE `fieldprojdescitem` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `quotedprojdescitem`
+-- Table structure for table `govprojdescitem`
 --
 
-DROP TABLE IF EXISTS `quotedprojdescitem`;
+DROP TABLE IF EXISTS `govprojdescitem`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `quotedprojdescitem` (
+CREATE TABLE `govprojdescitem` (
   `ProjId` int(11) DEFAULT '0',
   `SubProjId` int(11) DEFAULT '0',
   `ProjDescId` int(11) DEFAULT '0',
@@ -562,8 +564,12 @@ INSERT INTO `pmsmastertable` (Type,Value) VALUES('team','Admin')
 ,('itemType','Material')
 ,('itemType','Labour')
 ,('itemType','Machinery')
-,('itemType','Other');
+,('itemType','Other')
+,('workLocation','Corporation')
+,('workLocation','Rural');
 
+/*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
+UNLOCK TABLES;
      -- -- -- --
 -- Table structure for table `projectLeadDetail`
 --
@@ -577,6 +583,7 @@ CREATE TABLE `projectLeadDetail` (
   `material` varchar(100) NOT NULL,
   `sourceOfSupply` varchar(100) NOT NULL,
   `distance` decimal(15,2) default '0.0',
+  `unit` varchar(30) NOT NULL,
   `cost` decimal(15,2) default '0.0',
   `ic` decimal(15,2) default '0.0',
   `leadCharges` decimal(15,2) default '0.0',
@@ -590,12 +597,10 @@ CREATE TABLE `projectLeadDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-/*!40000 ALTER TABLE `pmsmastertable` ENABLE KEYS */;
-UNLOCK TABLES;
 
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;
 DELIMITER $$
-CREATE TRIGGER SYNC_PROJECT_DESCRIPTION AFTER DELETE on quotedprojectdesc
+CREATE TRIGGER SYNC_PROJECT_DESCRIPTION AFTER DELETE on govprojectdesc
 	FOR EACH ROW
 		BEGIN
 			DELETE FROM projectdesc WHERE (projectdesc.ProjId = old.ProjId) 

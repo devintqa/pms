@@ -5,6 +5,8 @@ import com.psk.pms.Constants;
 import com.psk.pms.builder.ItemRateDescriptionBuilder;
 import com.psk.pms.builder.ProjectDescriptionDetailBuilder;
 import com.psk.pms.dao.ItemDAO;
+import com.psk.pms.factory.EmployeeTeam;
+import com.psk.pms.factory.EmployeeTeamFactory;
 import com.psk.pms.model.*;
 import com.psk.pms.validator.BulkUploadDetailsValidator;
 import org.apache.log4j.Logger;
@@ -23,9 +25,6 @@ public class FileServiceImpl implements FileService {
 
 
 	@Autowired
-	private ProjectService projectService;
-
-	@Autowired
 	private SubProjectService subProjectService;
 
 	@Autowired
@@ -36,6 +35,13 @@ public class FileServiceImpl implements FileService {
 
 	@Autowired
 	private ItemDAO itemDAO;
+
+
+    @Autowired
+    EmployeeTeamFactory employeeTeamFactory;
+
+    @Autowired
+    EmployeeService employeeService;
 
 
 	@Autowired
@@ -56,7 +62,8 @@ public class FileServiceImpl implements FileService {
 		List < MultipartFile > pmsFiles;
 		
 		boolean isSubProjectFileUpload = fileUpload.isSubProjectUpload();
-		projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName(), employeeId);
+        String aliasProjectName = fileUpload.getAliasProjectName();
+        projectDetail = getProjectDocument(employeeId, aliasProjectName);
 		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 
 		if (isSubProjectFileUpload) {
@@ -104,7 +111,13 @@ public class FileServiceImpl implements FileService {
 		return excelDetail;
 	}
 
-	private boolean validateExcelSheet(String saveDirectory, ExcelDetail excelDetail, MultipartFile multipartFile) {
+    private ProjectDetail getProjectDocument(String employeeId, String projectId) {
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
+        EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
+        return employeeTeam.getProjectDocument(projectId,employeeId);
+    }
+
+    private boolean validateExcelSheet(String saveDirectory, ExcelDetail excelDetail, MultipartFile multipartFile) {
 		String path = saveDirectory + multipartFile.getOriginalFilename();
 		boolean isExcel = isExcelType(path);
 		if (!isExcel) {
@@ -143,7 +156,7 @@ public class FileServiceImpl implements FileService {
 	public void uploadFiles(FileUpload fileUpload, String employeeId) throws IOException {
 		File files;
 		String saveDirectory;
-		ProjectDetail projectDetail = projectService.getProjectDocument(fileUpload.getAliasProjectName(), employeeId);
+		ProjectDetail projectDetail = getProjectDocument(employeeId, fileUpload.getAliasProjectName());
 		LOGGER.info("method = uploadFiles() , Alias Project Name" + projectDetail.getAliasName());
 		if (fileUpload.isSubProjectUpload()) {
 			SubProjectDetail subProjDetail = subProjectService.getSubProjectDocument(fileUpload.getAliasSubProjectName());
@@ -191,7 +204,7 @@ public class FileServiceImpl implements FileService {
 		String path = null;
 		String fileName;
 		List < FileUpload > projectFileList = new ArrayList < FileUpload > ();
-		ProjectDetail projectDetail = projectService.getProjectDocument(downloadForm.getAliasProjectName(), employeeId);
+		ProjectDetail projectDetail = getProjectDocument(employeeId, downloadForm.getAliasProjectName());
 		LOGGER.info("method = downloadFile(), Alias Project Name :" + projectDetail.getAliasName());
 
 		if (downloadForm.isSubProjectUpload()) {
@@ -219,8 +232,13 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public void deleteFile(String filePath) {
-		File file = new File(filePath);
+	public void deleteFile(String filePath, String fileName,
+			String aliasProjectName, String empId) {
+		ProjectDetail projectDetail = getProjectDocument(empId, aliasProjectName);
+		String str = null;
+		str = filePath.substring(0, 2) + "\\"+"PMS"+ "\\"+projectDetail.getAliasName()+"\\"+fileName;
+		LOGGER.info("Constructed Path is ::::  "+str);
+		File file = new File(str);
 		if (file.exists()) {
 			LOGGER.info("File exists and proceeding to delete ");
 			file.delete();

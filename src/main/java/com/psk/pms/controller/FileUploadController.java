@@ -62,7 +62,7 @@ public class FileUploadController extends BaseController {
         FileUpload fileUpload = new FileUpload();
         fileUpload.setEmployeeId(employeeId);
         model.addAttribute("uploadForm", fileUpload);
-		Map < String, String > aliasProjectList = populateAliasProjectList(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         if (aliasProjectList.size() == 0) {
             model.addAttribute("noProjectCreated",
                     "No Project Found To Be Created. Please Create a Project.");
@@ -70,8 +70,8 @@ public class FileUploadController extends BaseController {
         } else {
             model.addAttribute("aliasProjectList", aliasProjectList);
         }
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
         model.addAttribute("employee", employee);
         return fileName;
     }
@@ -112,22 +112,29 @@ public class FileUploadController extends BaseController {
                            BindingResult result, Model map) throws IllegalStateException,
             IOException {
         String employeeId = uploadForm.getEmployeeId();
-        Map < String, String > aliasProjectList = populateAliasProjectList(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName(), employeeId);
-        fileUploadValidator.validate(uploadForm, result);
-        if (!result.hasErrors()) {
-            fileService.uploadFiles(uploadForm, employeeId);
-        } else {
-            if (uploadForm.getFiles().size() == 0) {
-                map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
+        try {
+
+            fileUploadValidator.validate(uploadForm, result);
+            if (!result.hasErrors()) {
+                fileService.uploadFiles(uploadForm, employeeId);
+            } else {
+                if (uploadForm.getFiles().size() == 0) {
+                    map.addAttribute("fileAdditionSuccessful", "Please select one or more files");
+                }
+                populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
+                return "UploadFile";
             }
+            subAliasProjectList.put("0", "--Please Select--");
+            map.addAttribute("subAliasProjectList", subAliasProjectList);
+            map.addAttribute("aliasProjectList", aliasProjectList);
+            map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
+        } catch (Exception e) {
             populateAliasProjectAndSubprojectAlias(map, aliasProjectList, subAliasProjectList);
+            map.addAttribute("failureMessage", e.getMessage());
             return "UploadFile";
         }
-        subAliasProjectList.put("0", "--Please Select--");
-        map.addAttribute("subAliasProjectList", subAliasProjectList);
-        map.addAttribute("aliasProjectList", aliasProjectList);
-        map.addAttribute("fileAdditionSuccessful", "Files have got uploaded successfully");
         return "UploadFile";
     }
 
@@ -136,7 +143,7 @@ public class FileUploadController extends BaseController {
                                          BindingResult result, Model map) throws IllegalStateException,
             IOException {
         String employeeId = uploadForm.getEmployeeId();
-        Map < String, String > aliasProjectList = populateAliasProjectList(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(uploadForm.getAliasProjectName(), employeeId);
         fileUploadValidator.validate(uploadForm, result);
         if (!result.hasErrors()) {
@@ -184,7 +191,7 @@ public class FileUploadController extends BaseController {
         FileUpload fileUpload = new FileUpload();
         fileUpload.setEmployeeId(employeeId);
         model.addAttribute("downloadForm", fileUpload);
-		Map < String, String > aliasProjectList = populateAliasProjectList(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         if (aliasProjectList.size() == 0) {
             model.addAttribute("noProjectCreated",
                     "No Project Found To Be Created. Please Create a Project.");
@@ -192,8 +199,8 @@ public class FileUploadController extends BaseController {
         } else {
             model.addAttribute("aliasProjectList", aliasProjectList);
         }
-		Employee employee = new Employee();
-		employee.setEmployeeId(employeeId);
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
         model.addAttribute("employee", employee);
         return "DownloadFile";
     }
@@ -203,7 +210,7 @@ public class FileUploadController extends BaseController {
                                BindingResult result, Model map) throws IllegalStateException,
             IOException {
         String employeeId = downloadForm.getEmployeeId();
-        Map < String, String > aliasProjectList = populateAliasProjectList(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
         Map<String, String> subAliasProjectList = populateSubAliasProjectList(downloadForm.getAliasProjectName(), employeeId);
         populateAliasProjectAndSubprojectAlias(map, aliasProjectList,
                 subAliasProjectList);
@@ -306,10 +313,13 @@ public class FileUploadController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/downloadFile/deleteFile.do", method = RequestMethod.POST)
-    public void deleteFile(@RequestParam(value = "path", required = true) String path,
+    public void deleteFile(@RequestParam("path") String path,
+                           @RequestParam("fileName") String fileName,
+                           @RequestParam("aliasProjectName") String aliasProjectName,
+                           @RequestParam("empId") String empId,
                            HttpServletRequest request, HttpServletResponse response) {
-        LOGGER.info("method = deleteFile() ,file Name :" + path);
-        fileService.deleteFile(path);
+        LOGGER.info("method = deleteFile() ,file Name :" + path + " ::  CHECK FNAME ::  " + fileName + " ::  CHECK ALIASNAME ::  " + aliasProjectName);
+        fileService.deleteFile(path, fileName, aliasProjectName, empId);
     }
 
     @RequestMapping(value = "/emp/myview/uploadExcel/checkProjectDesc.do", method = RequestMethod.GET)

@@ -28,7 +28,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
 
     @Override
     public boolean saveDepositDetail(final DepositDetail depositDetail) {
-        LOGGER.info("Save EMD DAO Start");
+        LOGGER.info("Save Deposit Detail DAO Start");
         if (!"Y".equalsIgnoreCase(depositDetail.getIsUpdate())) {
             jdbcTemplate.update(CREATE_DEPOSIT_DETAIL, new Object[]{
                     depositDetail.getAliasProjectName(), depositDetail.getAliasSubProjectName(), depositDetail.getDepositAmount(), depositDetail.getSqlDepositStartDate(),
@@ -46,26 +46,26 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
                             depositDetail.getDepositStatus(), depositDetail.getSqlDepositRecievedDate(), depositDetail.getDepositRecievedComments(), depositDetail.getDepositId()
                     });
         }
-        LOGGER.info("Save EMD DAO End");
+        LOGGER.info("Save Deposit Detail DAO End");
         return true;
     }
 
     @Override
     public List<DepositDetail> getDepositDetails(String employeeId) {
-        LOGGER.info("Fetch EMD Details Start");
+        LOGGER.info("Fetch Deposit Detail Details Start");
         List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
         List<Map<String, Object>> rows;
         if (StringUtils.isEmpty(employeeId)) {
             rows = jdbcTemplate.queryForList(FETCH_DEPOSIT_DETAILS);
         }else {
-            rows = jdbcTemplate.queryForList((FETCH_DEPOSIT_DETAILS
-                    + " where p.projId in (select projectId from authoriseproject where empId = ? )"),employeeId);
+            rows = jdbcTemplate.queryForList(FETCH_DEPOSIT_DETAILS
+                    + " where p.projId in (select projectId from authoriseproject where empId = ? )",employeeId);
         }
 
         for (Map<String, Object> row : rows) {
             getDepositDetails(depositDetails, row);
         }
-        LOGGER.info("Fetch EMD Details End");
+        LOGGER.info("Fetch Deposit Detail Details End");
         return depositDetails;
     }
 
@@ -98,7 +98,8 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
         }
     }
 
-
+    
+    @Override
     public void deleteDepositDetailById(Integer depositId) {
         int noOfRows = jdbcTemplate.update(DELETE_DEPOSIT_DETAIL_BY_DEPOSIT_ID, new Object[]{depositId});
         LOGGER.info("method = deleteDepositDetailById , Number of rows deleted : " + noOfRows + " subProjectId :" + depositId);
@@ -106,7 +107,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
 
     @Override
     public List<DepositDetail> getDepositDetailsByProjectId(Integer projectId) {
-        LOGGER.info("Fetch EMD Details By ProjectId :" + projectId);
+        LOGGER.info("Fetch Deposit Details By ProjectId :" + projectId);
         List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DEPOSIT_DETAILS_BY_PROJECTID, new Object[]{projectId});
         for (Map<String, Object> row : rows) {
@@ -127,7 +128,7 @@ public class DepositDetailDAOImpl implements DepositDetailDAO {
 
     @Override
     public List<DepositDetail> getDepositDetailsBySubProjectId(Integer subProjectId) {
-        LOGGER.info("Fetch EMD Details By  subProjectId :" + subProjectId);
+        LOGGER.info("Fetch Deposit Details By  subProjectId :" + subProjectId);
         List<DepositDetail> depositDetails = new ArrayList<DepositDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DEPOSIT_DETAILS_BY_SUBPROJECTID, new Object[]{subProjectId});
         for (Map<String, Object> row : rows) {

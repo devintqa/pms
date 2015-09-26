@@ -269,7 +269,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
 	public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
-		String descTable = projDescDetail.getDescType().equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "quotedprojectdesc";
+		String descTable = projDescDetail.getDescType().equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "govprojectdesc";
 		String updateSql = "UPDATE "+descTable+" set WorkType  = ?, Quantity = ?, Metric = ?, Description = ?," + "AliasDescription = ?, PricePerQuantity = ?, TotalCost=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
 		String insertSql = null;
 
@@ -529,7 +529,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		int noOfrows = 0;
 		String sql = "";
 		if ("Y".equalsIgnoreCase(governmentEst)) {
-			sql = NOOFQUOTEDPROJECTDESCASSOCIATEDTOPROJECT;
+			sql = NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_PROJECT;
 		} else {
 			sql = NOOFPROJECTDESCASSOCIATEDTOPROJECT;
 		}
@@ -550,7 +550,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		int noOfrows = 0;
 		String sql = "";
 		if ("Y".equalsIgnoreCase(governmentEst)) {
-			sql = NOOFQUOTEDPROJECTDESCASSOCIATEDTOSUBPROJECT;
+			sql = NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_SUBPROJECT;
 		} else {
 			sql = NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT;
 		}
@@ -677,7 +677,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	public void deleteGovProjectDescriptionByProjectId(Integer projectId) {
 
-		int noOfRows = jdbcTemplate.update("DELETE FROM quotedprojectdesc WHERE ProjId = ?",
+		int noOfRows = jdbcTemplate.update("DELETE FROM govprojectdesc WHERE ProjId = ?",
 		new Object[] {
 			projectId
 		});

@@ -3,18 +3,13 @@ package com.psk.pms.service;
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.psk.pms.Constants.LABOUR;
-import static com.psk.pms.Constants.OTHER;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -156,14 +151,14 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
         List<ItemDetail> itemsDetails = itemDAO.getBaseItemNames(request);
-        String itemType = request.containsKey("itemType")?request.get("itemType").toString():null;
+        /*String itemType = request.containsKey("itemType")?request.get("itemType").toString():null;
         for (ItemDetail itemDetail : itemsDetails) {
             if (LABOUR.equalsIgnoreCase(itemType) || OTHER.equalsIgnoreCase(itemType)) {
                 String itemPrice = itemDetail.getItemPrice();
                 BigDecimal tenPercentOfAmount = new BigDecimal(itemPrice).multiply(new BigDecimal("0.1"));
                 itemDetail.setItemPrice(new BigDecimal(itemPrice).add(tenPercentOfAmount).toString());
             }
-        }
+        }*/
         return itemsDetails;
     }
 
@@ -207,4 +202,16 @@ public class ItemServiceImpl implements ItemService {
     	return itemDAO.getPskDescriptionItems(projDescId);
     }
 
+    @Override
+    public void updateMaterialPriceWithLeadDetailsPrice(List<ItemDetail> itemDetailList,String projectId,String subProjectId) {
+        LOGGER.info("Loading item data ,Updating item price for materials with lead detail price");
+        List<LeadDetailConfiguration.LeadDetail> leadDetailList = itemDAO.getLeadDetails(projectId,subProjectId);
+        for(ItemDetail itemDetail:itemDetailList) {
+            for(LeadDetailConfiguration.LeadDetail leadDetail : leadDetailList){
+                    if(itemDetail.getItemName().equalsIgnoreCase(leadDetail.getMaterial())) {
+                        itemDetail.setItemPrice(leadDetail.getTotal());
+                    }
+            }
+        }
+    }
 }

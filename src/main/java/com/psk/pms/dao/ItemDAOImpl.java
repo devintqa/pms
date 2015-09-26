@@ -192,9 +192,13 @@ public class ItemDAOImpl implements ItemDAO {
         String sql = "";
 //        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
         if (descItemDetail.getDescType().equalsIgnoreCase(Constants.PSK))
-            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
+            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit," +
+                    " pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName " +
+                    "and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         else
-            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  quotedprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
+            sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty," +
+                    " pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  govprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and " +
+                    "ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         System.out.println(sql);
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -603,13 +607,14 @@ public class ItemDAOImpl implements ItemDAO {
                             ps.setString(3, leadDetail.getMaterial());
                             ps.setString(4, leadDetail.getSourceOfSupply());
                             ps.setString(5, leadDetail.getDistance());
-                            ps.setString(6, leadDetail.getCost());
-                            ps.setString(7, leadDetail.getIc());
-                            ps.setString(8, leadDetail.getLeadCharges());
-                            ps.setString(9, leadDetail.getLoadingUnloading());
-                            ps.setString(10, leadDetail.getTotal());
-                            ps.setString(11, leadDetailConfiguration.getEmployeeId());
-                            ps.setDate(12, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
+                            ps.setString(6,leadDetail.getUnit());
+                            ps.setString(7, leadDetail.getCost());
+                            ps.setString(8, leadDetail.getIc());
+                            ps.setString(9, leadDetail.getLeadCharges());
+                            ps.setString(10, leadDetail.getLoadingUnloading());
+                            ps.setString(11, leadDetail.getTotal());
+                            ps.setString(12, leadDetailConfiguration.getEmployeeId());
+                            ps.setDate(13, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
                         }
 
                         @Override
@@ -634,10 +639,13 @@ public class ItemDAOImpl implements ItemDAO {
         leadDetail.setLeadDetailId(leadDetailId.toString());
         String material = (String) row.get("material");
         leadDetail.setMaterial(material);
-        String sourceOfSupply = (String) row.get("material");
+        String sourceOfSupply = (String) row.get("sourceOfSupply");
         leadDetail.setSourceOfSupply(sourceOfSupply);
         BigDecimal distance = (BigDecimal) row.get("distance");
         leadDetail.setDistance(String.valueOf(distance));
+        String unit = (String) row.get("unit");
+        leadDetail.setUnit(unit);
+        leadDetail.setSourceOfSupply(sourceOfSupply);
         BigDecimal cost = (BigDecimal) row.get("cost");
         leadDetail.setCost(String.valueOf(cost));
         BigDecimal ic = (BigDecimal) row.get("ic");

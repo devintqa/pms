@@ -1,12 +1,15 @@
 package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.PROJECT_TYPE;
+import static com.psk.pms.Constants.WORKLOCATION;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,6 +51,7 @@ public class ProjectController extends BaseController {
         LOGGER.info("method = buildProject()");
         ProjectDetail projDetail = new ProjectDetail();
         projDetail.setEmployeeId(employeeId);
+        projDetail.setWorkoutPercentage(BigDecimal.ZERO);
         model.addAttribute("projectForm", projDetail);
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
@@ -68,19 +72,20 @@ public class ProjectController extends BaseController {
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         model.addAttribute("employee", employee);
-        ProjectDetail projectDetail = new ProjectDetail();
-        projectDetail = projectService.getProjectDocument(project,employeeId);
+        ProjectDetail projectDetail;
+        projectDetail = getProjectDocument(project, employeeId);
         projectDetail.setIsUpdate("Y");
         projectDetail.setEmployeeId(employeeId);
         model.addAttribute("projectForm", projectDetail);
         return "BuildProject";
     }
 
+
     @RequestMapping(value = "/emp/myview/buildProject/createProject.do", method = RequestMethod.POST)
     public String saveProjectAction(
             @ModelAttribute("projectForm") ProjectDetail projectDetail,
             BindingResult result, Model model, SessionStatus status) {
-    	return createEditProject(projectDetail, result, model, status, "Project Creation Successful.");
+        return createEditProject(projectDetail, result, model, status, "Project Creation Successful.");
     }
 
     @RequestMapping(value = "/emp/myview/updateProject/createProject.do", method = RequestMethod.POST)
@@ -89,18 +94,18 @@ public class ProjectController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         return createEditProject(projectDetail, result, model, status, "Project Updated Successfully.");
     }
-    
+
     private String createEditProject(ProjectDetail projectDetail,
-            BindingResult result, Model model, SessionStatus status, String message){
-    	boolean isProjectSaveSuccessful = false;
-    	Map<String, String> aliasProjectList = populateAliasProjectList(projectDetail.getEmployeeId());
+                                     BindingResult result, Model model, SessionStatus status, String message) {
+        boolean isProjectSaveSuccessful = false;
+        Map<String, String> aliasProjectList = populateAliasProjectList(projectDetail.getEmployeeId());
         projectDetailValidator.validate(projectDetail, result);
         if (!result.hasErrors()) {
             isProjectSaveSuccessful = projectService
                     .createEditProject(projectDetail);
         }
         if (result.hasErrors() || !isProjectSaveSuccessful) {
-        	model.addAttribute("aliasProjectList", aliasProjectList);
+            model.addAttribute("aliasProjectList", aliasProjectList);
             return "BuildProject";
         } else {
             status.setComplete();
@@ -120,16 +125,23 @@ public class ProjectController extends BaseController {
         LOGGER.info("The Project Type Name Size:" + projectTypeNames.size());
         return projectTypeNames;
     }
-    
+
+    @ModelAttribute("workLocations")
+    public List<String> populateworkLocationTypes() {
+        LOGGER.info("method = populateworkLocationTypes()");
+        List<String> workLocations = projectService.getDropDownValuesFor(WORKLOCATION);
+        return workLocations;
+    }
+
     @RequestMapping(value = "/emp/myview/buildProject/getAliasProjects.do", method = RequestMethod.GET)
     @ResponseBody
     public String getAliasProjects(HttpServletRequest request,
-                                     HttpServletResponse response) {
-    	Map<String, String> aliasProjectList = populateAliasProjectList(request.getParameter("empId"));
-    	aliasProjectList.put("0", "--Please Select--");
+                                   HttpServletResponse response) {
+        Map<String, String> aliasProjectList = populateAliasProjectList(request.getParameter("empId"));
+        aliasProjectList.put("0", "--Please Select--");
         Gson gson = new Gson();
         String aliasProjectJson = gson.toJson(aliasProjectList);
         return aliasProjectJson;
     }
-    
+
 }

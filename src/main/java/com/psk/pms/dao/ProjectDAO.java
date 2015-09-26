@@ -24,6 +24,8 @@ public interface ProjectDAO {
     List<String> getDropDownValues(String type);
 
     Map<String, String> getAliasProjectNames();
+    
+    String fetchMainProjectType(Integer mainProjectId);
 
 
 }
