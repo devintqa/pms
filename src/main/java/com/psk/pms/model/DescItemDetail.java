@@ -103,11 +103,12 @@ public class DescItemDetail {
 		}
 
 		public ItemDetail(String itemName, String itemQty, String itemPrice,
-				String itemCost) {
+				String itemCost, String quantity) {
 			this.itemName = itemName;
 			this.itemQty = itemQty;
 			this.itemPrice = itemPrice;
 			this.itemCost = itemCost;
+			this.quantity=quantity;
 		}
 
 		private String label;
@@ -117,6 +118,15 @@ public class DescItemDetail {
 		private String itemQty;
 		private String itemPrice;
 		private String itemCost="0";
+		private String quantity;
+
+		public String getQuantity() {
+			return quantity;
+		}
+
+		public void setQuantity(String quantity) {
+			this.quantity = quantity;
+		}
 
 		public String getItemName() {
 			return itemName;

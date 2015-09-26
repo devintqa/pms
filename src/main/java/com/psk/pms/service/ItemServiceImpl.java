@@ -58,6 +58,7 @@ public class ItemServiceImpl implements ItemService {
 				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
 				Double itemQty = 0.0;
 				Double itemCost = 0.0;
+				Double temp = 0.0;
 				for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
 					if (itemName.getKey().equalsIgnoreCase(
 							itemDetail.getItemName())) {
@@ -65,8 +66,13 @@ public class ItemServiceImpl implements ItemService {
 						item.setItemPrice(itemDetail.getItemPrice());
 						item.setItemUnit(itemDetail.getItemUnit());
 						item.setItemType(itemName.getValue());
-						itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
-						itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
+						//itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
+						//itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
+						temp = Double.valueOf(itemDetail.getItemQty()) * Double.valueOf(itemDetail.getQuantity());
+						itemQty = itemQty + temp;
+						itemCost = itemCost + temp * Double.valueOf(itemDetail.getItemPrice());
+						temp =0.0;
+						
 					}
 				}
 				if (item.getItemName() != null) {

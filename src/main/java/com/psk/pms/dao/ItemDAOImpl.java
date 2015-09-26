@@ -230,7 +230,8 @@ public class ItemDAOImpl implements ItemDAO {
             LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
             sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where SubProjId = " + projectConfiguration.getSubProjId();
         } else {
-            sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
+        	 //sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
+        	sql = "Select  p1.projId, p1.itemname, p1.itemunit, p1.itemprice, p1.ItemCost,p1.ItemQty, p2.Quantity  from projdescitem p1, projectdesc p2 where p1.ProjId = "+projectConfiguration.getProjId()+" and p1.ProjDescSerial = p2.SerialNumber";
         }
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -252,6 +253,8 @@ public class ItemDAOImpl implements ItemDAO {
         
         if (null != row.get("itemPrice"))
             itemDetail.setItemPrice((row.get("itemPrice")).toString());
+        if (null != row.get("Quantity"))
+            itemDetail.setQuantity((row.get("Quantity")).toString());
         
         itemDetail.setItemCost((String) row.get("ItemCost"));
         return itemDetail;
