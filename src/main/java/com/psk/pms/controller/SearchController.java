@@ -206,7 +206,8 @@ public class SearchController extends BaseController {
             @RequestParam("itemType") String itemType,
             @RequestParam("projectId") String projectId,
             @RequestParam("subProjectId") String subProjectId,
-            @RequestParam("descType") String descType) {
+            @RequestParam("descType") String descType,
+            @RequestParam("employeeId") String employeeId) {
         LOGGER.info("method = getDescItem()");
         Map<String, Object> request = new Hashtable<String, Object>();
         request.put("itemName", itemName);
@@ -214,11 +215,13 @@ public class SearchController extends BaseController {
         request.put("projectId", projectId);
         request.put("subProjectId", subProjectId);
         request.put("descType", descType);
-        List<ItemDetail> itemsDetail = itemService.getDescItemNames(request);
-        if(GOVERNMENT.equalsIgnoreCase(descType)){
-            itemService.updateMaterialPriceWithLeadDetailsPrice(itemsDetail,projectId,subProjectId);
+        List<ItemDetail> itemDetails = itemService.getDescItemNames(request);
+        if (GOVERNMENT.equalsIgnoreCase(descType)) {
+            itemService.updateMaterialPriceWithLeadDetailsPrice(itemDetails, projectId, subProjectId);
+            ProjectDetail projectDetail = getProjectDocument(projectId, employeeId);
+            itemService.applyWorkoutPercentage(itemDetails, projectDetail.getWorkoutPercentage());
         }
-        return itemsDetail;
+        return itemDetails;
     }
 
     @RequestMapping(value = "/emp/myview/searchBaseDescription/searchBaseItems.do", method = RequestMethod.GET)

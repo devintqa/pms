@@ -1,15 +1,20 @@
 package com.psk.pms.service;
 
 import com.psk.pms.dao.ItemDAO;
+import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.psk.pms.Constants.LABOUR;
+import static com.psk.pms.Constants.OTHER;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -18,6 +23,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemDAO itemDAO;
+
+    @Autowired
+    ProjectDAO projectDAO;
 
     @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(ItemService.class);
@@ -151,14 +159,6 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
         List<ItemDetail> itemsDetails = itemDAO.getBaseItemNames(request);
-        /*String itemType = request.containsKey("itemType")?request.get("itemType").toString():null;
-        for (ItemDetail itemDetail : itemsDetails) {
-            if (LABOUR.equalsIgnoreCase(itemType) || OTHER.equalsIgnoreCase(itemType)) {
-                String itemPrice = itemDetail.getItemPrice();
-                BigDecimal tenPercentOfAmount = new BigDecimal(itemPrice).multiply(new BigDecimal("0.1"));
-                itemDetail.setItemPrice(new BigDecimal(itemPrice).add(tenPercentOfAmount).toString());
-            }
-        }*/
         return itemsDetails;
     }
 
@@ -190,7 +190,7 @@ public class ItemServiceImpl implements ItemService {
         LeadDetailConfiguration leadDetailConfiguration = new LeadDetailConfiguration();
         leadDetailConfiguration.setProjectId(Integer.valueOf(projectId));
         leadDetailConfiguration.setSubProjectId(Integer.valueOf(subProjectId));
-        leadDetailConfiguration.setLeadDetails(itemDAO.getLeadDetails(projectId,subProjectId));
+        leadDetailConfiguration.setLeadDetails(itemDAO.getLeadDetails(projectId, subProjectId));
         return leadDetailConfiguration;
     }
 
@@ -211,6 +211,18 @@ public class ItemServiceImpl implements ItemService {
                     if(itemDetail.getItemName().equalsIgnoreCase(leadDetail.getMaterial())) {
                         itemDetail.setItemPrice(leadDetail.getTotal());
                     }
+            }
+        }
+    }
+
+    @Override
+    public void applyWorkoutPercentage(List<ItemDetail> itemDetails, BigDecimal workOutPercentage) {
+        LOGGER.info("Loading item Data, Updating labour and other charges with calculated workout percentage");
+        for (ItemDetail itemDetail : itemDetails) {
+            if (LABOUR.equalsIgnoreCase(itemDetail.getItemType()) || OTHER.equalsIgnoreCase(itemDetail.getItemType())) {
+                BigDecimal itemPrice = new BigDecimal(itemDetail.getItemPrice());
+                BigDecimal amountAfterPercentage = (itemPrice.multiply(workOutPercentage)).divide(new BigDecimal("100"));
+                itemDetail.setItemPrice(itemPrice.add(amountAfterPercentage).toString());
             }
         }
     }

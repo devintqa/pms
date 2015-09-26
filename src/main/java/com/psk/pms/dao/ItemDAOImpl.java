@@ -193,11 +193,11 @@ public class ItemDAOImpl implements ItemDAO {
 //        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
         if (descItemDetail.getDescType().equalsIgnoreCase(Constants.PSK))
             sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit," +
-                    " pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName " +
+                    " pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemType, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName " +
                     "and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         else
             sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty," +
-                    " pdi.ItemCost, pdi.DescItemId, ppd.itemPrice from  govprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and " +
+                    " pdi.ItemCost, pdi.DescItemId, ppd.itemType, ppd.itemPrice from  govprojdescitem  pdi, govpricedetail ppd where pdi.itemName = ppd.ItemName and " +
                     "ppd.active = '1' and pdi.ProjDescId = '" + descItemDetail.getProjDescId() + "' and pdi.ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "' ";
         System.out.println(sql);
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
@@ -304,13 +304,14 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
         List<DescItemDetail.ItemDetail> itemsDetail = new ArrayList<DescItemDetail.ItemDetail>();
+        String itemType = (String) request.get("itemType");
         String sql;
         List<Map<String, Object>> rows = null;
         if ("" != request.get("itemName")) {
             if (request.get("descType").toString().equalsIgnoreCase(Constants.PSK)) {
-                sql = "select itemName, itemUnit, itemPrice from pskpricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+                sql = "select itemName, itemUnit, itemPrice from pskpricedetail where projectId = '" + request.get("projectId") + "' and subProjectId = '" + request.get("subProjectId") + "' and itemType = '" + itemType + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
             } else {
-                sql = "select itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + request.get("itemType") + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
+                sql = "select itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + itemType + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
             }
 
             rows = jdbcTemplate.queryForList(sql);
@@ -321,6 +322,7 @@ public class ItemDAOImpl implements ItemDAO {
             itemDetail.setItemName((String) row.get("itemName"));
             itemDetail.setItemUnit((String) row.get("itemUnit"));
             itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
+            itemDetail.setItemType(itemType);
             itemsDetail.add(itemDetail);
         }
         return itemsDetail;

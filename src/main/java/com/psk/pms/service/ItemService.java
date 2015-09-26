@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,4 +62,6 @@ public interface ItemService {
     void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration);
 
     void updateMaterialPriceWithLeadDetailsPrice(List<ItemDetail> itemDetail, String projId, String subProjId);
+
+    void applyWorkoutPercentage(List<ItemDetail> itemDetails, BigDecimal workoutPercentage);
 }

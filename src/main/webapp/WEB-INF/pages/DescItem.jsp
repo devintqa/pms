@@ -25,7 +25,8 @@
 								itemType: $('#itemType').val(),
 								projectId: $('#projId').val(),
 								subProjectId: $('#subProjId').val(),
-								descType: $('#descType').val()
+								descType: $('#descType').val(),
+								employeeId: $('#employeeId').val()
 		            	        }, response);
 				},
 				select: function(event, ui) { 

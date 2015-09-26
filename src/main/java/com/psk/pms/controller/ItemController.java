@@ -43,7 +43,7 @@ import com.psk.pms.validator.ItemValidator;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ItemController {
+public class ItemController extends BaseController{
 
     @Autowired
     ProjectService projectService;
@@ -213,7 +213,9 @@ public class ItemController {
         descItemDetail.setDescType(descType);
         descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
         if (Constants.GOVERNMENT.equalsIgnoreCase(descType)) {
-            itemService.updateMaterialPriceWithLeadDetailsPrice(descItemDetail.getItemDetail(),projId,subProjId);
+            ProjectDetail projectDetail = getProjectDocument(projId,employeeId);
+            itemService.updateMaterialPriceWithLeadDetailsPrice(descItemDetail.getItemDetail(), projId, subProjId);
+            itemService.applyWorkoutPercentage(descItemDetail.getItemDetail(), projectDetail.getWorkoutPercentage());
         }
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
