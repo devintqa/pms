@@ -29,6 +29,8 @@ public interface ItemDAO {
 	List<ItemDetail> searchItemName(String itemCode, String itemType);
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
+    
+    public DescItemDetail getPskDescriptionItems(final String projDescId);
 
     List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String descriptionType);
 

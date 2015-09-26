@@ -191,7 +191,9 @@
 						<tr>
 							<td></td>
 							<td><input class="button" id="submit" type="submit" /></td>
-							<td><input class="button" id="doIndent" value="Indent" type="button" /></td>
+							<td><c:if test="${employeeObj.employeeTeam eq 'Management'}">
+								<input class="button" id="doIndent" value="Build Indent" type="button" />
+							</c:if></td>
 						</tr>
 					</table>
 				</center>
@@ -208,7 +210,9 @@
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
 				<table id="projDescDocList" class="display" width="100%">
 					<thead>
-							<th>Select</th>
+							<c:if test="${employeeObj.employeeTeam eq 'Management'}">
+								<th>Select</th>
+							</c:if>
 							<th>Serial Number</th>
 							<th>Alias</th>
 							<th>Work Type</th>
@@ -224,7 +228,14 @@
 						<c:if test="${not empty projDescDocList}">
 							<c:forEach var="projDesc" items="${projDescDocList}">
 								<tr>
-									<td><input type="checkbox" name="indentDescription" aria-proj-id="${projDesc.projId}" aria-subproj-id="${projDesc.subProjId}" aria-projdesc-id="${projDesc.projDescId}" aria-employee-id="${employeeObj.employeeId}"  /></td>
+									<c:if test="${employeeObj.employeeTeam eq 'Management'}">
+										<td><input type="checkbox" name="indentDescription"
+											aria-proj-id="${projDesc.projId}"
+											aria-subproj-id="${projDesc.subProjId}"
+											aria-projdesc-id="${projDesc.projDescId}"
+											aria-employee-id="${employeeObj.employeeId}" /></td>
+									</c:if>
+
 									<td><a
 										href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${searchProjDescForm.searchOn}','${employeeObj.employeeId}')"
 										class="userAction">${projDesc.serialNumber}</a></td>
@@ -236,8 +247,8 @@
 									<td>${projDesc.totalCost}</td>
 									<td><a
 										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&type=${searchProjDescForm.searchOn}&action=edit"
-										class="userAction">Update</a> <strong> / </strong> 
-										<a id="deleteRow"
+										class="userAction">Update</a> <strong> / </strong> <a
+										id="deleteRow"
 										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descType}');"
 										style="color: red"> Delete</a></td>
 								</tr>

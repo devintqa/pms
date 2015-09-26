@@ -14,10 +14,22 @@ public class Indent {
 	private String indentId;
 	private Date startDate;
 	private Date endDate;
-	private Double area;
-	
+	private Double plannedArea;
+	private Double totalArea;
 	private List<ItemDetail> itemDetails;
-
+	
+	public Double getPlannedArea() {
+		return plannedArea;
+	}
+	public void setPlannedArea(Double plannedArea) {
+		this.plannedArea = plannedArea;
+	}
+	public Double getTotalArea() {
+		return totalArea;
+	}
+	public void setTotalArea(Double totalArea) {
+		this.totalArea = totalArea;
+	}
 	public String getIndentId() {
 		return indentId;
 	}
@@ -65,13 +77,6 @@ public class Indent {
 	}
 	public void setEmployeeId(String employeeId) {
 		this.employeeId = employeeId;
-	}
-
-	public Double getArea() {
-		return area;
-	}
-	public void setArea(Double area) {
-		this.area = area;
 	}
 
 	public String getMetric() {

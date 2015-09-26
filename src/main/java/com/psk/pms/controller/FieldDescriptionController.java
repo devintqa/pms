@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.psk.pms.Constants;
+import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.Indent.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
@@ -81,8 +82,9 @@ public class FieldDescriptionController extends BaseController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-    		indent.setArea(0.0);
-    		indent.setMetric("CFT");
+    		indent.setPlannedArea(0.0);
+    		indent.setTotalArea(new Double(descDetail.getQuantity()));
+    		indent.setMetric(descDetail.getMetric());
     		indent.setProjDescId(descDetail.getProjDescId().toString());
     		indent.setProjId(descDetail.getProjId().toString());
     		indent.setSubProjId(null);
@@ -92,11 +94,48 @@ public class FieldDescriptionController extends BaseController {
     	}
     	model.addAttribute("indentList",indentList);
     	model.addAttribute("indentForm", new Indent());
+    	model.addAttribute("projId", projectId);
+    	model.addAttribute("subProjId", subProjectId);
+    	model.addAttribute("employeeId", employeeId);
     	
 		return "CreateIndent";
 	}
     
-    @RequestMapping(value = "/emp/myview/buildFieldDescription/{employeeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/emp/myview/indent/getIndentItem", method = RequestMethod.GET)
+    @ResponseBody public List<ItemDetail> getIndentItem(
+    		@RequestParam(value = "indentQty") String indentQty,
+			@RequestParam(value = "projDescId") String projDescId,
+			Model model) {
+    	
+    	List<ItemDetail> itemList= new ArrayList<ItemDetail>();
+    	DescItemDetail descItemDetail = itemService.getPskDescriptionItems(projDescId);
+    	itemList = buildIndentedItem(indentQty, descItemDetail.getItemDetail());
+    	
+    	return itemList;
+    	
+    }
+    
+    private List<ItemDetail> buildIndentedItem(String quantity, List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList) {
+    	
+    	Double indentQty = new Double(quantity);
+    	
+    	List<ItemDetail> indentItem = new ArrayList<ItemDetail>();
+    	for(com.psk.pms.model.DescItemDetail.ItemDetail detail : itemList){
+    		ItemDetail item = new ItemDetail();
+    		item.setItemName(detail.getItemName());
+    		item.setItemPrice(detail.getItemPrice());
+    		item.setItemType(detail.getItemType());
+    		item.setItemUnit(detail.getItemUnit());
+    		Integer itemQty = new Integer(detail.getItemQty());
+    		double requiredItemQty = itemQty * indentQty;
+    		item.setItemQty(new Double(requiredItemQty).toString());
+    		indentItem.add(item);
+    	}
+		return indentItem;
+		
+	}
+
+	@RequestMapping(value = "/emp/myview/buildFieldDescription/{employeeId}", method = RequestMethod.GET)
     public String buildFieldDescription(@PathVariable String employeeId,
                                         @RequestParam(value = "team", required = true) String team,
                                         @RequestParam(value = "action", required = false) String action,

@@ -202,5 +202,9 @@ public class ItemServiceImpl implements ItemService {
     public void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration){
         itemDAO.saveLeadDetails(leadDetailConfiguration);
     }
+    
+    public DescItemDetail getPskDescriptionItems(final String projDescId) {
+    	return itemDAO.getPskDescriptionItems(projDescId);
+    }
 
 }
