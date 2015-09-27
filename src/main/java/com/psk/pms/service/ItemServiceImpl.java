@@ -19,7 +19,6 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     ItemDAO itemDAO;
 
-    @SuppressWarnings("unused")
     private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
     public boolean createEditItem(Item item) {
@@ -198,8 +197,8 @@ public class ItemServiceImpl implements ItemService {
         itemDAO.saveLeadDetails(leadDetailConfiguration);
     }
     
-    public DescItemDetail getPskDescriptionItems(final String projDescId) {
-    	return itemDAO.getPskDescriptionItems(projDescId);
+    public DescItemDetail getPskFieldDescriptionItems(final String projDescId) {
+    	return itemDAO.getPskFieldDescriptionItems(projDescId);
     }
 
     @Override

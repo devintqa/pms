@@ -71,7 +71,7 @@ public class PmsMasterQuery {
 			+ "FROM projectdesc p INNER JOIN govprojectdesc pp on p.ProjId = pp.ProjId "
 			+ "and p.AliasDescription = pp.AliasDescription";
 
-	public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric,"
+	public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric, "
 			+ "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";
 
 	public static final String baseDescDetail = "SELECT BaseDescId, WorkType, Metric, Quantity, PricePerQuantity, LastUpdatedBy, LastUpdatedAt, Description, BaseDescription FROM basedesc";

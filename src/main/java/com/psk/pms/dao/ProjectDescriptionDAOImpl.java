@@ -683,4 +683,20 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		});
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
+
+	@Override
+	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
+		String sql = null;
+		if (!StringUtils.isNullOrEmpty(projDescId)) {
+			sql = projDescDetail + " FROM "+ DescriptionType.getDescriptionTableName(Constants.FIELD) +" as d WHERE d.ProjDescId = " + projDescId;
+		} 
+		System.out.println(sql);
+		ProjDescDetail projDescDetail = null;
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map < String, Object > row: rows) {
+			projDescDetail = buildProjectDescDetail(row);
+		}
+		return projDescDetail;
+	}
 }

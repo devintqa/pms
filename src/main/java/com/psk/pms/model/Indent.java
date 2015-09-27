@@ -1,6 +1,5 @@
 package com.psk.pms.model;
 
-import java.util.Date;
 import java.util.List;
 
 public class Indent {
@@ -12,8 +11,8 @@ public class Indent {
 	private String aliasProjDesc;
 	private String employeeId;
 	private String indentId;
-	private Date startDate;
-	private Date endDate;
+	private String startDate;
+	private String endDate;
 	private Double plannedArea;
 	private Double totalArea;
 	private List<ItemDetail> itemDetails;
@@ -35,18 +34,6 @@ public class Indent {
 	}
 	public void setIndentId(String indentId) {
 		this.indentId = indentId;
-	}
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	public Date getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 	public List<ItemDetail> getItemDetails() {
 		return itemDetails;
@@ -91,6 +78,20 @@ public class Indent {
 	}
 	public void setAliasProjDesc(String aliasProjDesc) {
 		this.aliasProjDesc = aliasProjDesc;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public static class ItemDetail {

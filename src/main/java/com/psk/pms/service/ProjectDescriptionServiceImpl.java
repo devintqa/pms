@@ -75,6 +75,14 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
+	
+	@Override
+	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
+		ProjDescDetail projDescDetail = projectDescriptionDAO.getPskFieldProjectDescription(projDescId);
+		return projDescDetail;
+	}
+	
+	
 
 	@Override
 	public List < ProjDescDetail > getSubProjectDescDetailList(Integer subProjectId) {

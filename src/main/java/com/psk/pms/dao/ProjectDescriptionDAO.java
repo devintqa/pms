@@ -55,4 +55,6 @@ public interface ProjectDescriptionDAO {
 	
     ProjDescDetail getBaseDescription(String descId);
 
+	ProjDescDetail getPskFieldProjectDescription(String projDescId);
+
 }

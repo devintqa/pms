@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import com.psk.pms.model.Indent;
+
 import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
@@ -60,4 +62,10 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
             jdbcTemplate.update(CREATESUBPROJECTFIELDDESCRIPTIONITEM, subProjectId);
         }
     }
+
+	@Override
+	public boolean saveIndentDescription(Indent indent) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

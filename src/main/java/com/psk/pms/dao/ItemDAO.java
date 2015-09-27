@@ -30,7 +30,7 @@ public interface ItemDAO {
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
     
-    public DescItemDetail getPskDescriptionItems(final String projDescId);
+    public DescItemDetail getPskFieldDescriptionItems(final String projDescId);
 
     List<DescItemDetail.ItemDetail> getProjectData(ProjectConfiguration projectConfiguration, boolean isEditSubProject, String descriptionType);
 

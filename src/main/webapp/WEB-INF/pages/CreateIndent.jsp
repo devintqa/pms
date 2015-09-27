@@ -63,7 +63,7 @@
 					for (i = 0; i <= response.length - 1; i++) {
 						var new_row = itemTable.rows[1].cloneNode(true);
 						var len = itemTable.rows.length;
-						new_row.cells[0].innerHTML = response[i].itemType;
+						new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
 						new_row.cells[1].innerHTML = response[i].itemName;
 						new_row.cells[2].innerHTML = response[i].itemUnit;
 						new_row.cells[3].innerHTML = response[i].itemQty;
@@ -71,15 +71,14 @@
 
 						itemTable.appendChild(new_row);
 					}
-		
 				}
 			});
 			
 		});
 		
 		function ItemDetail(itemType, itemName, itemUnit, itemQty) {
-			this.itemType = itemName;
-			this.itemName = itemUnit;
+			this.itemType = itemType;
+			this.itemName = itemName;
 			this.itemUnit = itemUnit;
 			this.itemQty = itemQty;
 			} 
@@ -103,9 +102,9 @@
 				var new_row = itemTable.rows[i];
 				console.log(new_row.cells[0].innerHTML);
 				var itemType = new_row.cells[0].innerHTML;
-				var itemName = new_row.cells[0].innerHTML;
-				var itemUnit = new_row.cells[0].innerHTML;
-				var itemQty = new_row.cells[0].innerHTML;
+				var itemName = new_row.cells[1].innerHTML;
+				var itemUnit = new_row.cells[2].innerHTML;
+				var itemQty = new_row.cells[3].innerHTML;
 				
 				var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
 				if(itemType && itemName && itemUnit && itemQty){
@@ -113,11 +112,26 @@
 				}
 			}
 			indentDescForm["employeeId"] = employeeId;
+			indentDescForm["startDate"] = startDate;
+			indentDescForm["endDate"] = endDate;
 			indentDescForm["projDescId"] = projDescId;
 			indentDescForm["projId"] = projId;
-			indentDescForm["indentItemDetail"] = JSON.stringify(itemObjArray);
+			indentDescForm["itemDetails"] = itemObjArray;
+			indentDescForm["metric"] = indentMetric;
 			
 			console.log(JSON.stringify(indentDescForm));
+			
+			$.ajax({
+				type : "POST",
+				url : "saveIndentItem.do",
+				contentType: "application/json",
+				cache : false,
+				data : JSON.stringify(indentDescForm),
+				success : function(response) {
+					
+				}
+			});
+			
 		});
 		
 	});

@@ -39,6 +39,7 @@ public interface Constants {
 	String NULL_STRING = "null";
 	String PSK = "psk";
 	String GOVERNMENT = "government";
+	String FIELD = "field";
 	String PSK_SHEET = "PSK_DESC";
 	String GOV_SHEET = "GOV_DESC";
 	String DESC_SHEET = "DESCRIPTION";

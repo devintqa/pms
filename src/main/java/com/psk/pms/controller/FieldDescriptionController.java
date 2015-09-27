@@ -17,13 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.psk.pms.Constants;
 import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.Indent.ItemDetail;
@@ -45,7 +45,7 @@ public class FieldDescriptionController extends BaseController {
 
     private static final Logger LOGGER = Logger.getLogger(FieldDescriptionController.class);
 
-    //http://localhost:8080/pms/emp/myview/indent/createIndent?employeeId=akumar&projectId=2&subProjectId=&projDescs=2
+    //http://localhost:8080/pms/emp/myview/indent/createIndent?employeeId=akumar&projectId=1&subProjectId=&projDescs=1,2
     @RequestMapping(value = "/emp/myview/indent/createIndent", method = RequestMethod.GET)
 	public String createIndent(
 			@RequestParam(value = "employeeId") String employeeId,
@@ -72,7 +72,7 @@ public class FieldDescriptionController extends BaseController {
      	String[] projDescId = projDescs.split(",");
     	List<Indent> indentList = new ArrayList<Indent>();
     	for(int i=0; i<projDescId.length; i++){
-    		ProjDescDetail descDetail = projectDescriptionService.getProjectDescDetail(projDescId[i], null, Constants.PSK);
+    		ProjDescDetail descDetail = projectDescriptionService.getPskFieldProjectDescription(projDescId[i]);
     		Indent indent = new Indent();
     		indent.setAliasProjDesc(descDetail.getAliasDescription());
     		indent.setEmployeeId(employeeId);
@@ -108,11 +108,16 @@ public class FieldDescriptionController extends BaseController {
 			Model model) {
     	
     	List<ItemDetail> itemList= new ArrayList<ItemDetail>();
-    	DescItemDetail descItemDetail = itemService.getPskDescriptionItems(projDescId);
+    	DescItemDetail descItemDetail = itemService.getPskFieldDescriptionItems(projDescId);
     	itemList = buildIndentedItem(indentQty, descItemDetail.getItemDetail());
     	
     	return itemList;
     	
+    }
+    
+    @RequestMapping(value = "/emp/myview/indent/saveIndentItem.do", method = RequestMethod.POST)
+    @ResponseBody public boolean saveIndentItem(@RequestBody Indent indent) {
+    	return fieldDescriptionService.saveIndentDescription(indent);
     }
     
     private List<ItemDetail> buildIndentedItem(String quantity, List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList) {

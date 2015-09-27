@@ -32,7 +32,7 @@ public interface ItemService {
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
     
-    DescItemDetail getPskDescriptionItems(final String projDescId);
+    DescItemDetail getPskFieldDescriptionItems(final String projDescId);
 
     void deleteItemByDescriptionItemId(Integer subProjectid);
 
