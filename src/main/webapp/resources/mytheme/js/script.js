@@ -22,6 +22,9 @@ $(function() {
 	$("#completionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
+    $("#recievedDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);
 	$("#depositEndDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);	

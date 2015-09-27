@@ -80,7 +80,7 @@ public class DepositDetailServiceImpl implements DepositDetailService {
         Date date = null;
         try {
             if (null != dateToBeFormatted) {
-                date = (Date) formatter.parse(dateToBeFormatted);
+                date = formatter.parse(dateToBeFormatted);
             }
         } catch (ParseException e) {
             LOGGER.error("Error in parsing the date " + e.getMessage());

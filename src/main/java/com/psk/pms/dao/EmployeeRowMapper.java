@@ -7,7 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import com.psk.pms.model.Employee;
 
-public class EmployeeRowMapper implements RowMapper {
+public class EmployeeRowMapper implements RowMapper<Object> {
 
 	public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Employee employee = new Employee();

@@ -16,7 +16,7 @@
     </bean>
 
     <tx:annotation-driven proxy-target-class="true"
-                          transaction-manager="transactionManager" />
+                          transaction-manager="transactionManager"/>
 
     <bean id="fileService" class="com.psk.pms.service.FileServiceImpl">
     </bean>
@@ -30,12 +30,19 @@
     <bean id="projectDAO" class="com.psk.pms.dao.ProjectDAOImpl">
     </bean>
 
+    <bean id="storeDetailDAO" class="com.psk.pms.dao.StoreDetailDAOImpl">
+    </bean>
+
     <bean id="projectService" class="com.psk.pms.service.ProjectServiceImpl">
         <property name="projectDAO" ref="projectDAO"/>
     </bean>
 
     <bean id="depositDetailService" class="com.psk.pms.service.DepositDetailServiceImpl">
         <property name="depositDetailDAO" ref="depositDetailDAO"/>
+    </bean>
+
+    <bean id="storeService" class="com.psk.pms.service.StoreServiceImpl">
+        <property name="storeDetailDAO" ref="storeDetailDAO"/>
     </bean>
 
     <bean id="depositDetailDAO" class="com.psk.pms.dao.DepositDetailDAOImpl">
@@ -75,12 +82,13 @@
     <bean class="com.psk.pms.validator.ItemValidator"/>
     <bean class="com.psk.pms.validator.BaseDescriptionValidator"/>
     <bean class="com.psk.pms.validator.AuthorisationValidator"/>
+    <bean class="com.psk.pms.validator.StoreValidator"/>
 
     <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/pms"/>
         <property name="username" value="root"/>
-        <property name="password" value="mysql"/>
+        <property name="password" value="1234"/>
     </bean>
 
     <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
@@ -92,7 +100,7 @@
 
     <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource" />
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
 

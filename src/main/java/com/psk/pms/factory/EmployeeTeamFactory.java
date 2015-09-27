@@ -14,6 +14,7 @@ public class EmployeeTeamFactory {
     public static final String ACCOUNT = "Account";
     public static final String MANAGEMENT = "Management";
     public static final String PURCHASE = "Purchase";
+    public static final String STORE = "Store";
     @Autowired
     AdminEmployeeTeam adminEmployeeTeam;
 
@@ -23,6 +24,9 @@ public class EmployeeTeamFactory {
     @Autowired
     ManagementEmployeeTeam managementEmployeeTeam;
 
+    @Autowired
+    StoreEmployeeTeam storeEmployeeTeam;
+
 
     public EmployeeTeam getEmployeeTeam(String employeeTeam) {
         if (ADMIN.equalsIgnoreCase(employeeTeam)) {
@@ -30,6 +34,9 @@ public class EmployeeTeamFactory {
         }
         if (TECHNICAL.equalsIgnoreCase(employeeTeam)) {
             return technicalEmployeeTeam;
+        }
+        if(STORE.equalsIgnoreCase(employeeTeam)){
+            return storeEmployeeTeam;
         }
         return managementEmployeeTeam;
     }

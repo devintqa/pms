@@ -38,8 +38,7 @@ public class BaseController {
     public Map<String, String> populateAliasProjectList(String empId) {
         Employee employee = employeeService.getEmployeeDetails(empId);
         EmployeeTeam employeeTeam = employeeTeamFactory.getEmployeeTeam(employee.getEmployeeTeam());
-        Map<String, String> aliasProjectList = employeeTeam.fetchProjects(employee.getEmployeeId());
-        return aliasProjectList;
+        return employeeTeam.fetchProjects(employee.getEmployeeId());
     }
 
     public Map<String, String> populateSubAliasProjectList(String projectId, String empId) {
@@ -78,5 +77,14 @@ public class BaseController {
         return employeeTeam.getProjectDocument(project,employeeId);
     }
 
+    public String fetchProjectId(String projId, String employeeId) {
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
+        for (Map.Entry<String, String> entry : aliasProjectList.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(projId)) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
 
 }

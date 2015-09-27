@@ -516,6 +516,26 @@ CREATE TABLE `pmsmastertable` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `storeDetail`
+--
+
+DROP TABLE IF EXISTS `storeDetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `storeDetail` (
+  `storeDetailId` int(10) NOT NULL AUTO_INCREMENT,
+  `ProjId` int(10) NOT NULL,
+  `itemType` varchar(10) NOT NULL,
+  `itemName` varchar(30) NOT NULL,
+  `supplierName` varchar(30) NOT NULL,
+  `vehicleNo` varchar(30) NOT NULL,
+  `quantityRecieved` varchar(30) NOT NULL,
+  `recievedDate` datetime NOT NULL,
+  `comments` varchar(200) NOT NULL,
+  PRIMARY KEY (`storeDetailId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 
 --

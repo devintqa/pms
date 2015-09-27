@@ -1,5 +1,14 @@
 package com.psk.pms.dao;
 
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_AUTHORIZE_PROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_EMPLOYEE;
+import static com.psk.pms.dao.PmsMasterQuery.GET_ALL_EMPLOYEE;
+import static com.psk.pms.dao.PmsMasterQuery.GET_AVAILABLE_EMPLOYEES;
+import static com.psk.pms.dao.PmsMasterQuery.GET_ROLES;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SELECTED_EMPLOYEES;
+import static com.psk.pms.dao.PmsMasterQuery.INSERT_INTO_AUTHORISE_PROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.SAVE_ROLES;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,8 +24,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Team;
-
-import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class EmployeeDAOImpl implements EmployeeDAO {
 
