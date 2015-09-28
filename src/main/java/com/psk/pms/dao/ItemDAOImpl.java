@@ -230,8 +230,7 @@ public class ItemDAOImpl implements ItemDAO {
             LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
             sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where SubProjId = " + projectConfiguration.getSubProjId();
         } else {
-        	 //sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where ProjId = " + projectConfiguration.getProjId() + " and SubProjId = " + projectConfiguration.getSubProjId();
-        	sql = "Select  p1.projId, p1.itemname, p1.itemunit, p1.itemprice, p1.ItemCost,p1.ItemQty, p2.Quantity  from projdescitem p1, projectdesc p2 where p1.ProjId = "+projectConfiguration.getProjId()+" and p1.ProjDescSerial = p2.SerialNumber";
+        	sql = "Select  p1.projId, p1.itemname, p1.itemunit, p1.itemprice, p1.ItemCost,p1.ItemQty, p2.Quantity  from " + DescriptionType.getDescriptionItemTableName(descType) + " p1, " + DescriptionType.getDescriptionTableName(descType) + " p2 where p1.ProjId = "+projectConfiguration.getProjId()+" and p1.ProjDescSerial = p2.SerialNumber";
         }
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
@@ -428,7 +427,7 @@ public class ItemDAOImpl implements ItemDAO {
                     "pdi.ProjDescId = pd.ProjDescId and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
         } else {
             sql = "select pdi.ProjDescId, pdi.ProjDescSerial, pd.AliasDescription,\n" +
-                    "pdi.itemName, pdi.ItemQty, pdi.itemUnit from " + DescriptionType.getDescriptionItemTableName(descType) + " pdi," +
+                    "pdi.itemName, pdi.ItemQty, pdi.itemUnit, (pdi.ItemQty * pd.Quantity) Quantity  from " + DescriptionType.getDescriptionItemTableName(descType) + " pdi," +
                     " " + DescriptionType.getDescriptionTableName(descType) + " pd where\n" +
                     "pdi.ProjDescId = pd.ProjDescId and pdi.ProjId = '" + projectConfiguration.getProjId() + "' and pdi.SubProjId = '" + projectConfiguration.getSubProjId() + "' and pdi.itemName = '" + itemName + "'";
         }
@@ -439,7 +438,7 @@ public class ItemDAOImpl implements ItemDAO {
             projectItemDescription.setProjectDescId((Integer) row.get("ProjDescId"));
             projectItemDescription.setProjectDescSerialNumber((String) row.get("ProjDescSerial"));
             projectItemDescription.setItemName((String) row.get("itemName"));
-            projectItemDescription.setItemQuantity((String) row.get("ItemQty"));
+            projectItemDescription.setItemQuantity( row.get("Quantity").toString());
             projectItemDescription.setItemUnit((String) row.get("itemUnit"));
             projectItemDescription.setAliasDescription((String) row.get("AliasDescription"));
             projectItemDescriptions.add(projectItemDescription);

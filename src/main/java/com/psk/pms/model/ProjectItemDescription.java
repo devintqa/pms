@@ -8,6 +8,7 @@ public class ProjectItemDescription {
     private String itemName;
     private String itemQuantity;
     private String itemUnit;
+    private String quantity;
     private String aliasDescription;
 
     public Integer getProjectDescId() {
@@ -22,7 +23,7 @@ public class ProjectItemDescription {
         return projectDescSerialNumber;
     }
 
-    public void setProjectDescSerialNumber(String projectDescSerialNumber) {
+	public void setProjectDescSerialNumber(String projectDescSerialNumber) {
         this.projectDescSerialNumber = projectDescSerialNumber;
     }
 
@@ -57,4 +58,14 @@ public class ProjectItemDescription {
     public void setAliasDescription(String aliasDescription) {
         this.aliasDescription = aliasDescription;
     }
+    
+
+    public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+
 }

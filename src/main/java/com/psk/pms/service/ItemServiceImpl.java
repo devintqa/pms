@@ -54,9 +54,9 @@ public class ItemServiceImpl implements ItemService {
 			Map<String, String> itemNames = itemDAO.fetchItemInfo();
 			for (Map.Entry<String, String> itemName : itemNames.entrySet()) {
 				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
-				Double itemQty = 0.0;
-				Double itemCost = 0.0;
-				Double temp = 0.0;
+				BigDecimal itemQty =  new BigDecimal("0");
+				BigDecimal itemCost = new BigDecimal("0");
+				BigDecimal temp =  new BigDecimal("0");
 				for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
 					if (itemName.getKey().equalsIgnoreCase(
 							itemDetail.getItemName())) {
@@ -64,12 +64,10 @@ public class ItemServiceImpl implements ItemService {
 						item.setItemPrice(itemDetail.getItemPrice());
 						item.setItemUnit(itemDetail.getItemUnit());
 						item.setItemType(itemName.getValue());
-						//itemQty = itemQty + Double.valueOf(itemDetail.getItemQty());
-						//itemCost = itemCost + Double.valueOf(itemDetail.getItemCost());
-						temp = Double.valueOf(itemDetail.getItemQty()) * Double.valueOf(itemDetail.getQuantity());
-						itemQty = itemQty + temp;
-						itemCost = itemCost + temp * Double.valueOf(itemDetail.getItemPrice());
-						temp =0.0;
+						temp = new BigDecimal(itemDetail.getItemQty()).multiply(new BigDecimal(itemDetail.getQuantity()));
+						itemQty = itemQty.add(temp);
+						itemCost = itemCost.add(temp.multiply(new BigDecimal(itemDetail.getItemPrice())));
+						temp =BigDecimal.ZERO;
 						
 					}
 				}
