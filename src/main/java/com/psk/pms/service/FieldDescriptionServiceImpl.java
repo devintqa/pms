@@ -1,7 +1,10 @@
 package com.psk.pms.service;
 
+import java.util.List;
+
 import com.psk.pms.dao.FieldDescriptionDAO;
 import com.psk.pms.model.Indent;
+import com.psk.pms.model.ProjDescDetail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -32,4 +35,15 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	public boolean saveIndentDescription(Indent indent) {
 		 return fieldDescriptionDAO.saveIndentDescription(indent);
 	}
+
+	@Override
+	public List<Indent> getIndentDescAndItems(int projDescId) {
+		return fieldDescriptionDAO.getIndentDescAndItems(projDescId);
+	}
+	
+	@Override
+	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
+		return fieldDescriptionDAO.getPskFieldProjectDescription(projDescId);
+	}
+	
 }

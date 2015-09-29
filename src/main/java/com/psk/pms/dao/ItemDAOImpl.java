@@ -190,7 +190,6 @@ public class ItemDAOImpl implements ItemDAO {
 
     public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
         String sql = "";
-//        sql = "Select * from  "+ DescriptionType.getDescriptionItemTableName(descItemDetail.getDescType()) +"  where ProjDescId = " + descItemDetail.getProjDescId() + " and ProjDescSerial = '" + descItemDetail.getProjDescSerial() + "'";
         if (descItemDetail.getDescType().equalsIgnoreCase(Constants.PSK))
             sql = "Select  pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit," +
                     " pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemType, ppd.itemPrice from  projdescitem  pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName " +

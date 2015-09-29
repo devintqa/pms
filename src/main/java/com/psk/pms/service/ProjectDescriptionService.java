@@ -15,8 +15,6 @@ public interface ProjectDescriptionService {
 
 	ProjDescDetail getProjectDescDetail(String projDescId, String subProject,String descType);
 	
-	ProjDescDetail getPskFieldProjectDescription(String projDescId);
-	
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 
 	List<ProjDescDetail> getSubProjectDescDetailList(Integer subProjId);

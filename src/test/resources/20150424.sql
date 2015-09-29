@@ -616,6 +616,33 @@ CREATE TABLE `projectLeadDetail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+DROP TABLE IF EXISTS `indentdesc`;
+CREATE TABLE `indentdesc` (
+  `ProjId` int(10) NOT NULL,
+  `ProjDescId` int(10) NOT NULL,
+  `Quantity` decimal(15,2) NOT NULL,
+  `Metric` varchar(30) NOT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  `IndentId` int(10) NOT NULL AUTO_INCREMENT,
+  `StartDate` varchar(30) NOT NULL,
+  `EndDate` varchar(30) NOT NULL,
+  PRIMARY KEY (`IndentId`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `indentitem`;
+CREATE TABLE `indentitem` (
+  `ProjId` int(11) DEFAULT '0',
+  `IndentId` int(11) DEFAULT '0',
+  `ProjDescId` int(11) DEFAULT '0',
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemType` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(45) DEFAULT '0',
+  `ItemUnit` varchar(45) DEFAULT NULL,
+  `ItemPrice` varchar(45) DEFAULT '0',
+  `IndentItemId` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`IndentItemId`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;

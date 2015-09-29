@@ -1,20 +1,23 @@
 package com.psk.pms.dao;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.Constants;
-import com.psk.pms.constants.DescriptionType;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.SearchDetail;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTDESCRIPTIONBYSUBPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.FETCHBASEDESCRIPTIONS;
+import static com.psk.pms.dao.PmsMasterQuery.GETBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTGOVPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTSUBPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.ISBASEDESCEXISTS;
+import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_PROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_SUBPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATEBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.baseDescDetail;
+import static com.psk.pms.dao.PmsMasterQuery.compareDataQuery;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetailQuery;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -24,7 +27,21 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.Constants;
+import com.psk.pms.constants.DescriptionType;
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.ProjDescComparisonDetail;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -684,19 +701,5 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
 
-	@Override
-	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
-		String sql = null;
-		if (!StringUtils.isNullOrEmpty(projDescId)) {
-			sql = projDescDetail + " FROM "+ DescriptionType.getDescriptionTableName(Constants.FIELD) +" as d WHERE d.ProjDescId = " + projDescId;
-		} 
-		System.out.println(sql);
-		ProjDescDetail projDescDetail = null;
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			projDescDetail = buildProjectDescDetail(row);
-		}
-		return projDescDetail;
-	}
+	
 }

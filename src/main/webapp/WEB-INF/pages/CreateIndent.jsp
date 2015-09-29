@@ -37,7 +37,7 @@
 <script>
 	$(document).ready(function() {
 		$.fn.rowCount = function() {
-		    return $('tr', $(this).find('tbody')).length;
+		    return $(this).find('tr').length;
 		};
 		
 		$(".collapse").accordion({
@@ -51,7 +51,8 @@
 		
 		$('.getIndentButton').click(function(){
 			var projDescId = $(this).attr('aria-desc-id');
-			var indentQty = $("#plannedArea"+projDescId).val();
+			var indentId = $(this).attr('aria-indent-id');
+			var indentQty = $("#plannedArea"+projDescId+indentId).val();
 			$.ajax({
 				type : "GET",
 				url : "getIndentItem",
@@ -59,10 +60,17 @@
 				cache : false,
 				data : "projDescId="+projDescId+"&indentQty="+indentQty,
 				success : function(response) {
-					var itemTable = document.getElementById("itemTbl"+projDescId);
-					for (i = 0; i <= response.length - 1; i++) {
-						var new_row = itemTable.rows[1].cloneNode(true);
-						var len = itemTable.rows.length;
+					var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
+					for (i = 0; i < response.length; i++) {
+						
+					    var new_row = itemTable.insertRow(0);
+					    var cell1 = new_row.insertCell(0);
+					    var cell2 = new_row.insertCell(1);
+					    var cell3 = new_row.insertCell(2);
+					    var cell4 = new_row.insertCell(3);
+					    var cell5 = new_row.insertCell(4);
+					    
+// 						var new_row = document.getElementById("dummyRow");
 						new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
 						new_row.cells[1].innerHTML = response[i].itemName;
 						new_row.cells[2].innerHTML = response[i].itemUnit;
@@ -76,6 +84,8 @@
 			
 		});
 		
+		 
+		
 		function ItemDetail(itemType, itemName, itemUnit, itemQty) {
 			this.itemType = itemType;
 			this.itemName = itemName;
@@ -87,20 +97,20 @@
 			var itemObjArray = [];
 			var indentDescForm = {};
 			var projDescId = $(this).attr('aria-desc-id');
+			var indentId = $(this).attr('aria-indent-id');
 			var projId = $("#projId").val();
 			var subProjId = $("#subProjId").val();
 			var employeeId = $("#employeeId").val();
 			
-			var startDate = $("#startDate"+projDescId).val();
-			var endDate = $("#endDate"+projDescId).val();
-			var indentQty = $("#plannedArea"+projDescId).val();
-			var indentMetric = $("#metric"+projDescId).val();
+			var startDate = $("#startDate"+projDescId+indentId).val();
+			var endDate = $("#endDate"+projDescId+indentId).val();
+			var indentQty = $("#plannedArea"+projDescId+indentId).val();
+			var indentMetric = $("#metric"+projDescId+indentId).val();
 			
-			var itemTable = document.getElementById("itemTbl"+projDescId);
-			var tableLength = $("#itemTbl"+projDescId).rowCount();
-			for (i = 0; i <= tableLength; i++) {
+			var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
+			var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
+			for (i = 1; i < tableLength; i++) {
 				var new_row = itemTable.rows[i];
-				console.log(new_row.cells[0].innerHTML);
 				var itemType = new_row.cells[0].innerHTML;
 				var itemName = new_row.cells[1].innerHTML;
 				var itemUnit = new_row.cells[2].innerHTML;
@@ -112,6 +122,7 @@
 				}
 			}
 			indentDescForm["employeeId"] = employeeId;
+			indentDescForm["plannedArea"] = indentQty;
 			indentDescForm["startDate"] = startDate;
 			indentDescForm["endDate"] = endDate;
 			indentDescForm["projDescId"] = projDescId;
@@ -162,39 +173,44 @@
 
 				<c:forEach var="indent" items="${indentList}">
 					<div class="collapse">
-						<h3>${indent.aliasProjDesc}</h3>
+						<h3>${indent.aliasProjDesc}
+						  <c:if test="${indent.indentId eq '_'}">
+                                    *
+                           </c:if>
+						</h3>
 						<fieldset style="margin: 1em; text-align: left;">
 							<table>
 								<tr>
 									<td>Start date<span id="colon">:</span>
 									</td>
-									<td><input  class="dateField" id="startDate${indent.projDescId}" value="${indent.startDate}"  placeholder="DD-MM-YYYY"  /></td>
+									<td><input  class="dateField" id="startDate${indent.projDescId}${indent.indentId}" value="${indent.startDate}"  placeholder="DD-MM-YYYY"  /></td>
 								</tr>
 								<tr>
 									<td>End date<span id="colon">:</span>
 									</td>
-									<td><input  class="dateField" id="endDate${indent.projDescId}" value="${indent.endDate}" placeholder="DD-MM-YYYY"  /></td>
+									<td><input  class="dateField" id="endDate${indent.projDescId}${indent.indentId}" value="${indent.endDate}" placeholder="DD-MM-YYYY"  /></td>
 								</tr>
 								<tr>
 									<td>Quantity<span id="colon">:</span>
 									</td>
-									<td><input id="plannedArea${indent.projDescId}" value="${indent.plannedArea}" class="inputText" /></td>
+									<td><input id="plannedArea${indent.projDescId}${indent.indentId}" value="${indent.plannedArea}" class="inputText" /></td>
 								</tr>
 								<tr>
 									<td>Metric<span id="colon">:</span>
 									</td>
-									<td><input id="metric${indent.projDescId}" value="${indent.metric}" readonly="readonly" class="inputText" /></td>
+									<td><input id="metric${indent.projDescId}${indent.indentId}" value="${indent.metric}" readonly="readonly" class="inputText" /></td>
 								</tr>
 								<tr><td></td></tr>
 								<tr>
-									<td><input class="getIndentButton" aria-desc-id="${indent.projDescId}" value="Get Material" type="button" /></td>
-									<td><input class="saveIndentButton" aria-desc-id="${indent.projDescId}" value="Indent" type="button" /></td>
+									<td><input class="getIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Get Material" type="button" /></td>
+									<td><input class="saveIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Indent" type="button" /></td>
 									<td></td>
 								</tr>
 								<tr><td></td></tr>
 							</table>
 							
-							<table id="itemTbl${indent.projDescId}" border="1" class="gridView">
+							<table id="itemTbl${indent.projDescId}${indent.indentId}" border="1" class="gridView">
+								
 								<tr>
 									<th>Type</th>
 									<th>Item</th>
@@ -202,24 +218,37 @@
 									<th>Adequacy</th>
 									<th>Action</th>
 								</tr>
-									<c:forEach var="row" items="${indent.itemDetails}">
+								
+								<c:forEach var="row" items="${indent.itemDetails}">
 									<tr>
-									<td>${row.itemType}</td>
-									<td>${row.itemName}</td>
-									<td>${row.itemUnit}</td>
-									<td>${row.itemQty}</td>
-									<td><a id="deleteItem" onclick="deleteItemRow(this)">
-									<img src="<c:url value="/resources/images/delete.png" />" /></a></td>
-								</tr>
-									</c:forEach>
+										<td>${row.itemType}</td>
+										<td>${row.itemName}</td>
+										<td>${row.itemUnit}</td>
+										<td>${row.itemQty}</td>
+										<td><a id="deleteItem" onclick="deleteItemRow(this)">
+												<img src="<c:url value="/resources/images/delete.png" />" />
+										</a></td>
+									</tr>
+								</c:forEach>
 							</table>
+							<input type="hidden" value="${indent.projId}" id="projId" />
+							<input type="hidden" value="${indent.employeeId}" id="employeeId" />
+							<input type="hidden" value="${indent.indentId}" id="indentId" />
 						</fieldset>
 					</div>
 				</c:forEach>
 				
-		<form:hidden path="projId" id="projId" />
-		<form:hidden path="subProjId" id="subProjId" />
-		<form:hidden path="employeeId" id="employeeId" />
+				<table style="display:none;">
+					<tr id="dummyRow">
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td><a id="deleteItem" onclick="deleteItemRow(this)"> <img
+								src="<c:url value="/resources/images/delete.png" />" />
+						</a></td>
+					</tr>
+				</table>
 			</form:form>
 
 		</div>

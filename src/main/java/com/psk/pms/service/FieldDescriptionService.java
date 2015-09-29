@@ -1,10 +1,11 @@
 package com.psk.pms.service;
 
-import com.psk.pms.model.Indent;
+import java.util.List;
 
-/**
- * Created by prakashbhanu57 on 8/18/2015.
- */
+import com.psk.pms.model.Indent;
+import com.psk.pms.model.ProjDescDetail;
+
+
 public interface FieldDescriptionService {
 
     boolean isFieldDescriptionDetailsExistsForProject(int projectId);
@@ -14,4 +15,8 @@ public interface FieldDescriptionService {
     void createFieldDescription(int projectId, int subProjectId);
     
     boolean saveIndentDescription(Indent indent);
+    
+    List<Indent> getIndentDescAndItems(int projDescId);
+    
+    public ProjDescDetail getPskFieldProjectDescription(String projDescId);
 }

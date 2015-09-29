@@ -54,52 +54,41 @@ public class FieldDescriptionController extends BaseController {
 			@RequestParam(value = "projDescs") String projDescs,
 			Model model) {
     	
-    	List<ItemDetail> itemList = new ArrayList<ItemDetail>();
-    	ItemDetail  itemDetail = new ItemDetail();
-    	itemDetail.setItemName("CEMENT");
-    	itemDetail.setItemType("MATERIAL");
-    	itemDetail.setItemQty("1");
-    	itemDetail.setItemUnit("KG");
-    	itemList.add(itemDetail);
-    	
-    	itemDetail = new ItemDetail();
-     	itemDetail.setItemName("SAND");
-     	itemDetail.setItemType("MATERIAL");
-     	itemDetail.setItemQty("1");
-     	itemDetail.setItemUnit("CFT");
-     	itemList.add(itemDetail);
-     	
-     	String[] projDescId = projDescs.split(",");
-    	List<Indent> indentList = new ArrayList<Indent>();
+    	String[] projDescId = projDescs.split(",");
+    	List<Indent> indents = new ArrayList<Indent>();
     	for(int i=0; i<projDescId.length; i++){
-    		ProjDescDetail descDetail = projectDescriptionService.getPskFieldProjectDescription(projDescId[i]);
-    		Indent indent = new Indent();
-    		indent.setAliasProjDesc(descDetail.getAliasDescription());
-    		indent.setEmployeeId(employeeId);
-    		try {
-    			indent.setStartDate(null);
-				indent.setEndDate(null);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-    		indent.setPlannedArea(0.0);
-    		indent.setTotalArea(new Double(descDetail.getQuantity()));
-    		indent.setMetric(descDetail.getMetric());
-    		indent.setProjDescId(descDetail.getProjDescId().toString());
-    		indent.setProjId(descDetail.getProjId().toString());
-    		indent.setSubProjId(null);
-    		indent.setIndentId(null);
-    		indent.setItemDetails(itemList);
-    		indentList.add(indent);
+    		List<Indent> indentList = fieldDescriptionService.getIndentDescAndItems(new Integer(projDescId[i]));
+    		Indent indent = getNewIndent(projDescId[i], employeeId);
+			indentList.add(indent);
+    		indents.addAll(indentList);
     	}
-    	model.addAttribute("indentList",indentList);
+    	model.addAttribute("indentList",indents);
     	model.addAttribute("indentForm", new Indent());
     	model.addAttribute("projId", projectId);
-    	model.addAttribute("subProjId", subProjectId);
     	model.addAttribute("employeeId", employeeId);
-    	
-		return "CreateIndent";
+
+    	return "CreateIndent";
 	}
+    
+    Indent getNewIndent(String projDescId, String employeeId){
+    	ProjDescDetail descDetail = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
+		Indent indent = new Indent();
+		indent.setAliasProjDesc(descDetail.getAliasDescription());
+		indent.setEmployeeId(employeeId);
+		indent.setTotalArea(new Double(descDetail.getQuantity()));
+		try {
+			indent.setStartDate(null);
+			indent.setEndDate(null);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		indent.setPlannedArea(0.0);
+		indent.setMetric(descDetail.getMetric());
+		indent.setProjDescId(descDetail.getProjDescId().toString());
+		indent.setProjId(descDetail.getProjId().toString());
+		indent.setIndentId("_");
+		return indent;
+    }
     
     @RequestMapping(value = "/emp/myview/indent/getIndentItem", method = RequestMethod.GET)
     @ResponseBody public List<ItemDetail> getIndentItem(
