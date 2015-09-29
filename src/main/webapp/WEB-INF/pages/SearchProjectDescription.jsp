@@ -60,9 +60,9 @@
                 projDescs.push(projDescId);
                 
             });
-                
-                window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs;
-
+                if($('input[name="indentDescription"]:checked').length > 0){
+                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs;
+                }
            
         });
 
@@ -191,7 +191,7 @@
 						<tr>
 							<td></td>
 							<td><input class="button" id="submit" type="submit" /></td>
-							<td><c:if test="${employeeObj.employeeTeam eq 'Management'}">
+							<td><c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 								<input class="button" id="doIndent" value="Build Indent" type="button" />
 							</c:if></td>
 						</tr>
@@ -210,7 +210,7 @@
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
 				<table id="projDescDocList" class="display" width="100%">
 					<thead>
-							<c:if test="${employeeObj.employeeTeam eq 'Management'}">
+							<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 								<th>Select</th>
 							</c:if>
 							<th>Serial Number</th>
@@ -228,7 +228,7 @@
 						<c:if test="${not empty projDescDocList}">
 							<c:forEach var="projDesc" items="${projDescDocList}">
 								<tr>
-									<c:if test="${employeeObj.employeeTeam eq 'Management'}">
+									<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 										<td><input type="checkbox" name="indentDescription"
 											aria-proj-id="${projDesc.projId}"
 											aria-subproj-id="${projDesc.subProjId}"

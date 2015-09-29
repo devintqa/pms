@@ -70,7 +70,6 @@
 					    var cell4 = new_row.insertCell(3);
 					    var cell5 = new_row.insertCell(4);
 					    
-// 						var new_row = document.getElementById("dummyRow");
 						new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
 						new_row.cells[1].innerHTML = response[i].itemName;
 						new_row.cells[2].innerHTML = response[i].itemUnit;
@@ -83,8 +82,6 @@
 			});
 			
 		});
-		
-		 
 		
 		function ItemDetail(itemType, itemName, itemUnit, itemQty) {
 			this.itemType = itemType;
@@ -139,7 +136,9 @@
 				cache : false,
 				data : JSON.stringify(indentDescForm),
 				success : function(response) {
-					
+					if(response==true){
+						alert('saved successfully');
+					}
 				}
 			});
 			

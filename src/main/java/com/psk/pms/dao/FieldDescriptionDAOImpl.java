@@ -117,36 +117,38 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 				generatedIndentId = keys.getInt(1); //id returned after insert execution
 			} 
 
+
+			final Integer indentId = generatedIndentId;
+			String indentDescItemSql = "INSERT INTO " + DescriptionType.getDescriptionItemTableName(Constants.INDENT)
+					+ " (ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
+
+				@Override
+				public void setValues(PreparedStatement ps, int i)
+						throws SQLException {
+					Indent.ItemDetail itemDetail = indent.getItemDetails().get(i);
+					ps.setString(1, indent.getProjId());
+					ps.setInt(2, indentId);
+					ps.setString(3, indent.getProjDescId());
+					ps.setString(4, itemDetail.getItemName());
+					ps.setString(5, itemDetail.getItemType());
+					ps.setString(6, itemDetail.getItemQty());
+					ps.setString(7, itemDetail.getItemUnit());
+					ps.setString(8, itemDetail.getItemPrice());
+				}
+
+				@Override
+				public int getBatchSize() {
+					return indent.getItemDetails().size();
+				}
+			});
+
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
-
-		final Integer indentId = generatedIndentId;
-		String indentDescItemSql = "INSERT INTO " + DescriptionType.getDescriptionItemTableName(Constants.INDENT)
-				+ " (ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-		jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
-
-			@Override
-			public void setValues(PreparedStatement ps, int i)
-					throws SQLException {
-				Indent.ItemDetail itemDetail = indent.getItemDetails().get(i);
-				ps.setString(1, indent.getProjId());
-				ps.setInt(2, indentId);
-				ps.setString(3, indent.getProjDescId());
-				ps.setString(4, itemDetail.getItemName());
-				ps.setString(5, itemDetail.getItemType());
-				ps.setString(6, itemDetail.getItemQty());
-				ps.setString(7, itemDetail.getItemUnit());
-				ps.setString(8, itemDetail.getItemPrice());
-			}
-
-			@Override
-			public int getBatchSize() {
-				return indent.getItemDetails().size();
-			}
-		});
-		return false;
+		return true;
 	}
 
 	@Override
