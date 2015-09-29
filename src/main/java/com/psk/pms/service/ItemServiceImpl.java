@@ -56,7 +56,7 @@ public class ItemServiceImpl implements ItemService {
 				DescItemDetail.ItemDetail item = new DescItemDetail.ItemDetail();
 				BigDecimal itemQty =  new BigDecimal("0");
 				BigDecimal itemCost = new BigDecimal("0");
-				BigDecimal temp =  new BigDecimal("0");
+				BigDecimal temp;
 				for (DescItemDetail.ItemDetail itemDetail : itemDetailList) {
 					if (itemName.getKey().equalsIgnoreCase(
 							itemDetail.getItemName())) {
@@ -67,8 +67,6 @@ public class ItemServiceImpl implements ItemService {
 						temp = new BigDecimal(itemDetail.getItemQty()).multiply(new BigDecimal(itemDetail.getQuantity()));
 						itemQty = itemQty.add(temp);
 						itemCost = itemCost.add(temp.multiply(new BigDecimal(itemDetail.getItemPrice())));
-						temp =BigDecimal.ZERO;
-						
 					}
 				}
 				if (item.getItemName() != null) {

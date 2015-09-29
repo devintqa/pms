@@ -314,7 +314,6 @@ public class ItemDAOImpl implements ItemDAO {
             } else {
                 sql = "select itemName, itemUnit, itemPrice from govpricedetail where itemType = '" + itemType + "' and itemName LIKE '%" + request.get("itemName") + "%' and active = '1'";
             }
-
             rows = jdbcTemplate.queryForList(sql);
         }
         for (Map<String, Object> row : rows) {
