@@ -53,6 +53,10 @@
 			var projDescId = $(this).attr('aria-desc-id');
 			var indentId = $(this).attr('aria-indent-id');
 			var indentQty = $("#plannedArea"+projDescId+indentId).val();
+			
+			var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
+			var tableLength = itemTable.rows.length;
+			
 			$.ajax({
 				type : "GET",
 				url : "getIndentItem",
@@ -60,7 +64,12 @@
 				cache : false,
 				data : "projDescId="+projDescId+"&indentQty="+indentQty,
 				success : function(response) {
-					var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
+					
+					while(itemTable.rows.length > 1){
+						itemTable.deleteRow(tableLength-1);
+						tableLength--;
+					}
+					
 					for (i = 0; i < response.length; i++) {
 						
 					    var new_row = itemTable.insertRow(0);
@@ -200,11 +209,13 @@
 									<td><input id="metric${indent.projDescId}${indent.indentId}" value="${indent.metric}" readonly="readonly" class="inputText" /></td>
 								</tr>
 								<tr><td></td></tr>
-								<tr>
-									<td><input class="getIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Get Material" type="button" /></td>
-									<td><input class="saveIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Indent" type="button" /></td>
-									<td></td>
-								</tr>
+								  <c:if test="${indent.indentId eq '_'}">
+									<tr>
+										<td><input class="getIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Get Material" type="button" /></td>
+										<td><input class="saveIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Indent" type="button" /></td>
+										<td></td>
+									</tr>
+								 </c:if>
 								<tr><td></td></tr>
 							</table>
 							

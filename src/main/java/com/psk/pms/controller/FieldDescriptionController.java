@@ -52,14 +52,20 @@ public class FieldDescriptionController extends BaseController {
 			@RequestParam(value = "projectId") String projectId, 
 			@RequestParam(value = "subProjectId") String subProjectId,
 			@RequestParam(value = "projDescs") String projDescs,
+			@RequestParam(value = "action") String action,
 			Model model) {
     	
     	String[] projDescId = projDescs.split(",");
     	List<Indent> indents = new ArrayList<Indent>();
+    	List<Indent> indentList = null;
     	for(int i=0; i<projDescId.length; i++){
-    		List<Indent> indentList = fieldDescriptionService.getIndentDescAndItems(new Integer(projDescId[i]));
-    		Indent indent = getNewIndent(projDescId[i], employeeId);
-			indentList.add(indent);
+    		indentList = new ArrayList<Indent>();
+    		if(action.equals("view")){
+    			indentList = fieldDescriptionService.getIndentDescAndItems(new Integer(projDescId[i]));
+    		}else{
+	    		Indent indent = getNewIndent(projDescId[i], employeeId, action);
+				indentList.add(indent);
+    		}
     		indents.addAll(indentList);
     	}
     	model.addAttribute("indentList",indents);
@@ -70,7 +76,7 @@ public class FieldDescriptionController extends BaseController {
     	return "CreateIndent";
 	}
     
-    Indent getNewIndent(String projDescId, String employeeId){
+    Indent getNewIndent(String projDescId, String employeeId, String action){
     	ProjDescDetail descDetail = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
 		Indent indent = new Indent();
 		indent.setAliasProjDesc(descDetail.getAliasDescription());
@@ -86,7 +92,10 @@ public class FieldDescriptionController extends BaseController {
 		indent.setMetric(descDetail.getMetric());
 		indent.setProjDescId(descDetail.getProjDescId().toString());
 		indent.setProjId(descDetail.getProjId().toString());
-		indent.setIndentId("_");
+		if(action.equals("edit"))
+			indent.setIndentId("_");
+		else
+			indent.setIndentId(null);
 		return indent;
     }
     

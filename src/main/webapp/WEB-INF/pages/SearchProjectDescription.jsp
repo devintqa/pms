@@ -61,9 +61,38 @@
                 
             });
                 if($('input[name="indentDescription"]:checked').length > 0){
-                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs;
+                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs+"&action=edit";
                 }
            
+        });
+        
+        $("#viewIndent").click(function() {
+            console.log($('input[name="indentDescription"]:checked'));
+            var projDescs = [];
+            var indentObjArray = [];
+            var projId = '';
+            var subProjId = '';
+            var projDescId = '';
+            var employeeId = '';
+            
+            $($('input[name="indentDescription"]:checked')).each(function(index) {
+
+                console.log(index + ": " + $(this).attr('aria-proj-id'));
+                console.log(index + ": " + $(this).attr('aria-subproj-id'));
+                console.log(index + ": " + $(this).attr('aria-projdesc-id'));
+                console.log(index + ": " + $(this).attr('aria-employee-id'));
+                
+                projId = $(this).attr('aria-proj-id');
+                subProjId = $(this).attr('aria-subproj-id');
+                projDescId = $(this).attr('aria-projdesc-id');
+                employeeId = $(this).attr('aria-employee-id');
+
+                projDescs.push(projDescId);
+                
+            });
+            if($('input[name="indentDescription"]:checked').length > 0){
+                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs+"&action=view";
+            }
         });
 
     });
@@ -193,6 +222,8 @@
 							<td><input class="button" id="submit" type="submit" /></td>
 							<td><c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 								<input class="button" id="doIndent" value="Build Indent" type="button" />
+								&nbsp;
+								<input class="button" id="viewIndent" value="View Indent" type="button" />
 							</c:if></td>
 						</tr>
 					</table>
