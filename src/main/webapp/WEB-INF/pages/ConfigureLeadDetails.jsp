@@ -289,7 +289,7 @@
 				<th>Cost*</th>
 				<th>IC</th>
 				<th>Lead Charges</th>
-				<th>Loading Unloading Charges</th>
+				<th>Handling Charges</th>
 				<th>Total</th>
 				<th>Action</th>
 			</tr>
