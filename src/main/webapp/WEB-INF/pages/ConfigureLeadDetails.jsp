@@ -6,7 +6,7 @@
 <head>
 <title>PMS :: Lead Details</title>
 <%@include file="Script.jsp" %>
-
+<%@include file="Utility.jsp" %>
 <script>
 
 	    $(document).on("keyup","input[name^= 'price_']",function(){
@@ -270,6 +270,12 @@
 		    return exists;
 	    }
 </script>
+
+<style>
+.configureLeadMaterial{
+	width: 125px;
+} 
+</style>
 </head>
 <body>
 	<header>
@@ -280,29 +286,31 @@
 
 		<h1 style="text-align: center; color: #007399; font-size: 24px;">Configure Lead Details</h1>
 		<br>
-		<table id="leadDetailTable" border="1" class="gridView">
+		<table id="leadDetailTable" class="gridView">
+		<thead>
 			<tr>
-				<th>Material*</th>
-				<th>Source Of Supply*</th>
-				<th>Distance (Kms)</th>
-				<th>Unit*</th>
-				<th>Cost*</th>
-				<th>IC</th>
-				<th>Lead Charges</th>
-				<th>Handling Charges</th>
-				<th>Total</th>
-				<th>Action</th>
+				<th width="50px">Material*</th>
+				<th width="50px">Source Of Supply*</th>
+				<th width="50px">Distance (Kms)</th>
+				<th width="50px">Unit*</th>
+				<th width="50px">Cost*</th>
+				<th width="50px">IC</th>
+				<th width="50px">Lead Charges</th>
+				<th width="50px">Handling Charges</th>
+				<th width="50px">Total</th>
+				<th width="50px">Action</th>
 			</tr>
+			</thead>
 			<tr>
-				<td><input name="material" id="material" type="text" /></td>
-				<td><input name="sourceOfSupply" id="sourceOfSupply" type="text" /></td>
-				<td><input name="distance" id="distance" type="text" size="15" value=0 /></td>
-				<td><input name="unit" id="unit" type="text" size="15" readonly="true" /></td>
-                <td><input name="price_cost" id="cost" type="text" size="15" value=0 readonly="true"/></td>
-				<td><input name="price_ic" id="ic" type="text" size="15" value=0 /></td>
-				<td><input name="price_leadCharges" id="leadCharges" size="15" type="text" value=0 /></td>
-                <td><input name="price_loadingUnloading" id="loadingUnloading" size="15" type="text" value=0 /></td>
-				<td><input name="total" id="total" type="text" value=0  size="15" readonly="true"/></td>
+				<td><input class="configureLeadMaterial" name="material" id="material" type="text" /></td>
+				<td><input class="configureLeadMaterial" name="sourceOfSupply" id="sourceOfSupply" type="text" /></td>
+				<td><input class="configureLeadMaterial" name="distance" id="distance" type="text"  value=0 /></td>
+				<td><input class="configureLeadMaterial" name="unit" id="unit" type="text" readonly="readonly" /></td>
+                <td><input class="configureLeadMaterial" name="price_cost" id="cost" type="text" value=0 readonly="readonly"/></td>
+				<td><input class="configureLeadMaterial" name="price_ic" id="ic" type="text"  value=0 /></td>
+				<td><input class="configureLeadMaterial" name="price_leadCharges" id="leadCharges"  type="text" value=0 /></td>
+                <td><input class="configureLeadMaterial" name="price_loadingUnloading" id="loadingUnloading"  type="text" value=0 /></td>
+				<td><input class="configureLeadMaterial" name="total" id="total" type="text" value=0  readonly="readonly"/></td>
 				<td><a id="deleteLeadDetail" onclick="deleteLeadDetailRow(this)">
 				<img src="<c:url value="/resources/images/delete.png" />" /></a></td>
 			</tr>

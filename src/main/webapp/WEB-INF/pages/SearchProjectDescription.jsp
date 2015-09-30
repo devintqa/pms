@@ -239,8 +239,9 @@
 				value="${searchProjDescForm.searchOn}" />
 			<c:if test="${projDescDocListSize gt 0}">
 				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
-				<table id="projDescDocList" class="display" width="100%">
+				<table id="projDescDocList" class="display">
 					<thead>
+						<tr>
 							<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
 								<th>Select</th>
 							</c:if>
@@ -254,7 +255,7 @@
 							<th>Action</th>
 						</tr>
 					</thead>
-					
+
 					<tbody>
 						<c:if test="${not empty projDescDocList}">
 							<c:forEach var="projDesc" items="${projDescDocList}">
