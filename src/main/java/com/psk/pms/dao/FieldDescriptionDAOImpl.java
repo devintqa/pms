@@ -155,7 +155,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	public List<Indent> getIndentDescAndItems(int projDescId) {
 		String sql = "SELECT ProjId, ProjDescId, Quantity, Metric, LastUpdatedBy, LastUpdatedAt, IndentId, StartDate, EndDate FROM indentdesc WHERE ProjDescId ="+projDescId;
 
-		List<Indent> indentDescList = new ArrayList<>();
+		List<Indent> indentDescList = new ArrayList<Indent>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		ProjDescDetail projDescDetail = getPskFieldProjectDescription(new Integer(projDescId).toString());
 		for (Map<String, Object> row : rows) {
@@ -171,7 +171,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	public List<Indent.ItemDetail> getIndentItems(String indentId) {
 		String sql = "SELECT ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice, IndentItemId FROM indentitem WHERE IndentId ="+indentId;
 
-		List<Indent.ItemDetail> itemList = new ArrayList<>();
+		List<Indent.ItemDetail> itemList = new ArrayList<Indent.ItemDetail>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {

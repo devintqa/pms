@@ -40,7 +40,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
     @Override
     public List<StoreDetail> getStoreDetails(int projId) {
-        List<StoreDetail> storeDetails = new ArrayList<>();
+        List<StoreDetail> storeDetails = new ArrayList<StoreDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_STORE_DETAILS, projId);
         for (Map<String, Object> row : rows) {
             storeDetails.add(buildStoreDetails(row));

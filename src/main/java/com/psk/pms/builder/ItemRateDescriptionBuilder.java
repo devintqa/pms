@@ -18,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.psk.pms.Constants.SERIALNUMBEREMPTY;
-
 /**
  * Created by Sony on 18-08-2015.
  */
