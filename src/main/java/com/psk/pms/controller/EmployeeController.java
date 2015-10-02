@@ -116,11 +116,7 @@ public class EmployeeController {
     @RequestMapping(value = "/emp/sessionTimeout", method = RequestMethod.GET)
     public String expiredForm(ModelMap model, HttpSession session) {
         session.invalidate();
-        Employee employee = new Employee();
-        model.addAttribute("employeeForm", employee);
-        model.addAttribute("sessionTimeOutMessage",
-                "Session has got timed out. Please re-login.");
-        return "SignIn";
+        return "SessionTimeout";
     }
 
     @InitBinder

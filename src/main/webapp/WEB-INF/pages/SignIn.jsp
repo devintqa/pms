@@ -6,7 +6,7 @@
 <html>
 <head>
 <title>PMS :: A Licensed Product</title>
-<link rel="stylesheet" href="<c:url value="/resources/css/style.css" />">
+	<%@include file="Script.jsp" %>
 </head>
 
 <body>
