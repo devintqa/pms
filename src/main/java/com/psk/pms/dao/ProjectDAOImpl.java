@@ -109,7 +109,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         String sql;
         List<Map<String, Object>> rows;
         if (!isEmpty(empId)) {
-            sql = "select ProjId, AliasProjName from project where ProjId in (select projectId from authoriseproject where empId = ?)";
+            sql = "select ProjId, AliasProjName from project where ProjId in (select projectId from authoriseproject where empId = ?) and mainProjId = 0";
             rows = jdbcTemplate.queryForList(sql, empId);
         } else {
             sql = "select ProjId, AliasProjName from project";
