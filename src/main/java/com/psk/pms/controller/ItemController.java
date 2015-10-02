@@ -252,7 +252,7 @@ public class ItemController extends BaseController {
         ObjectMapper mapper = new ObjectMapper();
         List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
         descItemDetail.setItemDetail(itemList);
-        boolean status = itemService.insertBaseDescriptionItems(descItemDetail);
+        boolean status = itemService.saveBaseDescriptionItems(descItemDetail);
         return status;
     }
 

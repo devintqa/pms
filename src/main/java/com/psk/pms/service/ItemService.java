@@ -27,9 +27,9 @@ public interface ItemService {
 
     boolean insertProjectDescriptionItems(DescItemDetail descItemDetail);
 
-    boolean insertBaseDescriptionItems(DescItemDetail descItemDetail);
+    boolean saveBaseDescriptionItems(DescItemDetail descItemDetail);
 
-    boolean insertDataDescription(DescItemDetail descItemDetail);
+    //boolean insertDataDescription(DescItemDetail descItemDetail);
 
     DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail);
     

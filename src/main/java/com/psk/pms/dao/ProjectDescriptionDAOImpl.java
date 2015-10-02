@@ -416,15 +416,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 		});
 
+		LOGGER.info("saveProjectDescriptionDetails:projDescDetails.size(): " + projDescDetails.size());
 		for (ProjDescDetail projDescDetail: projDescDetails) {
 			try {
-				System.out.println("saveProjectDescriptionDetails:projDescDetails.size(): " + projDescDetails.size());
 				if (null != projDescDetail.getBaseDescName() && !projDescDetail.getBaseDescName().isEmpty()) {
 					ProjDescDetail baseDescDetail = this.getBaseDescription(Constants.PSK, projDescDetail.getBaseDescName());
 					if (null == baseDescDetail.getSubProjId()) {
 						baseDescDetail.setSubProjId(0);
 					}
-					System.out.println("saveProjectDescriptionDetails:projDescDetails:baseDescDetail" + baseDescDetail.getBaseDescId());
+					LOGGER.debug("saveProjectDescriptionDetails:projDescDetails:baseDescDetail" + baseDescDetail.getBaseDescId());
 					DescItemDetail descItemDetail = new DescItemDetail();
 					descItemDetail.setBaseDescId(new Integer(baseDescDetail.getBaseDescId()));
 					descItemDetail.setProjId(projDescDetail.getProjId());
@@ -433,14 +433,14 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					descItemDetail.setProjDescId(this.getProjectDescDetailByAlias(Constants.PSK, projDescDetail.getAliasDescription()));
 					descItemDetail.setProjDescSerial(projDescDetail.getSerialNumber());
 					List < ItemDetail > itemDetailList = itemDAO.getBaseDescription(descItemDetail).getItemDetail();
-					System.out.println("saveProjectDescriptionDetails:itemDetailList: " + itemDetailList.size());
+					LOGGER.debug("saveProjectDescriptionDetails:itemDetailList: " + itemDetailList.size());
 					descItemDetail.setItemDetail(itemDetailList);
 					if (itemDetailList.size() > 0) {
 						itemDAO.insertProjectDescriptionItems(descItemDetail);
 					}
 				}
 			} catch (Exception e) {
-
+				LOGGER.error("Save project Desc items failed"+e.getMessage());
 			}
 		}
 
@@ -623,7 +623,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	@Override
 	public void saveBaseDescription(ProjDescDetail projDescDetail) {
-		LOGGER.info("method = saveBaseDescription , baseDescription :" + projDescDetail.getAliasDescription());
+		LOGGER.info("method = saveBaseDescription , baseDescription alias :" + projDescDetail.getAliasDescription());
 		if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
 			jdbcTemplate.update(UPDATEBASEDESCRIPTION, new Object[] {
 				projDescDetail.getWorkType(), projDescDetail.getMetric(),
@@ -638,6 +638,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					projDescDetail.getLastUpdatedBy(), projDescDetail.getLastUpdatedAt(),
 					projDescDetail.getDescription(), projDescDetail.getAliasDescription()
 			});
+			LOGGER.info("Inserting an entry with same details for government");
 			jdbcTemplate.update(INSERTBASEDESCRIPTION, new Object[] {
 					Constants.GOVERNMENT,
 					projDescDetail.getWorkType(), projDescDetail.getMetric(),

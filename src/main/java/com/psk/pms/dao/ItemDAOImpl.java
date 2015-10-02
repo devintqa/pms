@@ -464,9 +464,6 @@ public class ItemDAOImpl implements ItemDAO {
     public boolean insertBaseDescriptionItems(final DescItemDetail descItemDetail) {
         String sql = "INSERT INTO basedescitem" + "(BaseDescId, ItemName, ItemUnit, ItemType, ItemQty, ItemPrice) " + "VALUES (?, ?, ?, ?, ?, ?)";
 
-        String deleteSql = "DELETE from basedescitem where BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
-        jdbcTemplate.execute(deleteSql);
-
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 
             @Override
@@ -490,27 +487,20 @@ public class ItemDAOImpl implements ItemDAO {
             }
         });
 
-        long sumItemCost = 0;
-
-        if (descItemDetail.getDescType().equalsIgnoreCase(Constants.GOVERNMENT)) {
-            for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
-                long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
-                long itemQty = Double.valueOf(itemDetail.getItemQty()).longValue();
-                long itemCost = itemPrice * itemQty;
-                sumItemCost = sumItemCost + itemCost;
-            }
-        }
-
-        String updateSql = "UPDATE basedesc set PricePerQuantity = ? where Category = '" + descItemDetail.getDescType() + "' and BaseDescId = '" + descItemDetail.getBaseDescId() + "'";
-        System.out.println(updateSql);
-        jdbcTemplate.update(updateSql, new Object[]{
-                sumItemCost
-        });
-
-
         return true;
     }
 
+    public void deleteBaseDescriptionById(Integer baseDescId) {
+        LOGGER.info("Deleting baseDescription item of baseDescId:"+baseDescId);
+        String deleteSql = "DELETE from basedescitem where BaseDescId = '" + baseDescId + "'";
+        jdbcTemplate.execute(deleteSql);
+    }
+
+    public void updateBaseDescTotalItemCost(long totalItemsCost,Integer baseDescId) {
+        LOGGER.info("updating total Item Cost(PricePerQuantity) in BaseDesc"+ baseDescId);
+        String updateSql = "UPDATE basedesc set PricePerQuantity = ? where Category = '" + Constants.GOVERNMENT + "' and BaseDescId = '" + baseDescId + "'";
+        jdbcTemplate.update(updateSql, new Object[]{totalItemsCost});
+    }
 
     @Override
     @Transactional

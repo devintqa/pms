@@ -9,6 +9,7 @@ public enum DescriptionType {
     FIELD("fieldprojectdesc","fieldprojdescitem","fieldpricedetail"),
     GOVERNMENT("govprojectdesc","govprojdescitem","govpricedetail"),
     INDENT("indentdesc","indentitem",null),
+    BASE("basedesc","basedescitem",null),
     INVALID("","","");
 
     DescriptionType(String descriptionTableName,String descriptionItemTableName,String descriptionPriceTableName) {

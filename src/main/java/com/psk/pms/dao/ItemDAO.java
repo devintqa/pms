@@ -70,4 +70,8 @@ public interface ItemDAO {
 
     void saveLeadDetails(LeadDetailConfiguration leadDetailConfiguration);
 
+    void deleteBaseDescriptionById(Integer baseDescId);
+
+    void updateBaseDescTotalItemCost(long totalItemsCost,Integer baseDescId);
+
 }

@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.model.*;
@@ -103,12 +104,27 @@ public class ItemServiceImpl implements ItemService {
         return isInsertSuccessful;
     }
 
-    public boolean insertBaseDescriptionItems(DescItemDetail descItemDetail) {
+    public boolean saveBaseDescriptionItems(DescItemDetail descItemDetail) {
         boolean isInsertSuccessful = false;
         if (descItemDetail.getItemDetail() != null) {
+            itemDAO.deleteBaseDescriptionById(descItemDetail.getBaseDescId());
             isInsertSuccessful = itemDAO.insertBaseDescriptionItems(descItemDetail);
+            if(Constants.GOVERNMENT.equalsIgnoreCase(descItemDetail.getDescType())){
+                itemDAO.updateBaseDescTotalItemCost(getDescriptionItemsTotalCost(descItemDetail.getItemDetail()),descItemDetail.getBaseDescId());
+            }
         }
         return isInsertSuccessful;
+    }
+
+    private long getDescriptionItemsTotalCost(List<ItemDetail> itemDetails) {
+        long sumItemCost = 0;
+        for (ItemDetail itemDetail : itemDetails) {
+            long itemPrice = Double.valueOf(itemDetail.getItemPrice()).longValue();
+            long itemQty = Double.valueOf(itemDetail.getItemQty()).longValue();
+            long itemCost = itemPrice * itemQty;
+            sumItemCost = sumItemCost + itemCost;
+        }
+        return sumItemCost;
     }
 
     public DescItemDetail getProjectDescriptionItems(final DescItemDetail descItemDetail) {
@@ -120,13 +136,13 @@ public class ItemServiceImpl implements ItemService {
         itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
     }
 
-    public boolean insertDataDescription(DescItemDetail descItemDetail) {
+/*    public boolean insertDataDescription(DescItemDetail descItemDetail) {
         boolean isInsertSuccessful = false;
         if (descItemDetail.getItemDetail() != null) {
             isInsertSuccessful = itemDAO.insertProjectDescriptionItems(descItemDetail);
         }
         return isInsertSuccessful;
-    }
+    }*/
 
     @Override
     public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
