@@ -142,7 +142,7 @@ DROP TABLE IF EXISTS `govpricedetail`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `govpricedetail` (
-  `scheduledItemNumber` varchar(10) NOT NULL,
+  `scheduledItemNumber` varchar(20) NOT NULL,
     `itemName` varchar(100) NOT NULL,
     `itemDescription` text NOT NULL,
     `itemUnit` varchar(20) NOT NULL,

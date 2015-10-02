@@ -43,7 +43,7 @@ import com.psk.pms.validator.ItemValidator;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-public class ItemController extends BaseController{
+public class ItemController extends BaseController {
 
     @Autowired
     ProjectService projectService;
@@ -96,7 +96,7 @@ public class ItemController extends BaseController{
     @RequestMapping(value = "/emp/myview/buildItem/ItemPresent.do", method = RequestMethod.GET)
     public
     @ResponseBody
-    boolean isItemPresent(HttpServletRequest request){
+    boolean isItemPresent(HttpServletRequest request) {
         return itemService.isItemDescriptionPresent();
     }
 
@@ -213,7 +213,7 @@ public class ItemController extends BaseController{
         descItemDetail.setDescType(descType);
         descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
         if (Constants.GOVERNMENT.equalsIgnoreCase(descType)) {
-            ProjectDetail projectDetail = getProjectDocument(projId,employeeId);
+            ProjectDetail projectDetail = getProjectDocument(projId, employeeId);
             itemService.updateMaterialPriceWithLeadDetailsPrice(descItemDetail.getItemDetail(), projId, subProjId);
             itemService.applyWorkoutPercentage(descItemDetail.getItemDetail(), projectDetail.getWorkoutPercentage());
         }
@@ -309,19 +309,22 @@ public class ItemController extends BaseController{
 
 
     @RequestMapping("emp/myview/configureLead/{employeeId}")
-    public String  configureLead(@PathVariable String employeeId,@RequestParam String project,@RequestParam String subProject,Model model) {
+    public String configureLead(@PathVariable String employeeId, @RequestParam String project, @RequestParam String subProject, Model model) {
         Gson gson = new Gson();
         LeadDetailConfiguration leadDetailConfiguration = itemService.getLeadDetails(project, subProject);
         leadDetailConfiguration.setEmployeeId(employeeId);
-        JsonElement element = gson.toJsonTree(leadDetailConfiguration.getLeadDetails(), new TypeToken<List<LeadDetailConfiguration.LeadDetail>>() {}.getType());
+        JsonElement element = gson.toJsonTree(leadDetailConfiguration.getLeadDetails(), new TypeToken<List<LeadDetailConfiguration.LeadDetail>>() {
+        }.getType());
         JsonArray jsonArray = element.getAsJsonArray();
         leadDetailConfiguration.setLeadConfiguration(jsonArray.toString());
         model.addAttribute("leadDetailForm", leadDetailConfiguration);
         return "ConfigureLeadDetails";
     }
 
-    @RequestMapping(value = "emp/myview/configureLead/createLead.do", method = RequestMethod.POST , consumes = "application/json")
-    public @ResponseBody void createOrUpdateLeadDetail(@RequestBody LeadDetailConfiguration leadDetailConfiguration) throws IOException {
+    @RequestMapping(value = "emp/myview/configureLead/createLead.do", method = RequestMethod.POST, consumes = "application/json")
+    public
+    @ResponseBody
+    void createOrUpdateLeadDetail(@RequestBody LeadDetailConfiguration leadDetailConfiguration) throws IOException {
         LOGGER.info("method = createOrUpdateLeadDetail()");
         ObjectMapper mapper = new ObjectMapper();
         List<LeadDetail> leadDetailList = mapper.readValue(leadDetailConfiguration.getLeadConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, LeadDetail.class));

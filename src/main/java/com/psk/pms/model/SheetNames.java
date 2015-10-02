@@ -5,7 +5,7 @@ public enum SheetNames {
 
     MATERIAL_RATES("Material Rates"),
     LABOUR_RATES("Labour Rates"),
-    WORK_RATES("Work Rates"),
+    WORK_RATES("Machine Rates"),
     OTHER_RATES("Other Rates");
 
     private final String sheetName;

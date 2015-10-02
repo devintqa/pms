@@ -1,5 +1,6 @@
 package com.psk.pms.builder;
 
+import com.psk.exception.BulkUploadException;
 import com.psk.pms.Constants;
 import com.psk.pms.model.ItemRateDescription;
 import com.psk.pms.model.SheetNames;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static com.psk.pms.Constants.SERIALNUMBEREMPTY;
+
 /**
  * Created by Sony on 18-08-2015.
  */
@@ -26,7 +29,7 @@ public class ItemRateDescriptionBuilder {
             .getLogger(ItemRateDescriptionBuilder.class);
 
     public List<ItemRateDescription> buildItemRateDescription(String saveDirectory,
-                                                              MultipartFile multipartFile) throws IOException {
+                                                              MultipartFile multipartFile) throws IOException, BulkUploadException {
         List<ItemRateDescription> itemRateDescriptions = new ArrayList<ItemRateDescription>();
         FileInputStream fileInputStream = null;
         try {
@@ -72,6 +75,7 @@ public class ItemRateDescriptionBuilder {
 
         } catch (Exception e) {
             LOGGER.error("Exception while reading excel", e);
+            throw new BulkUploadException("Error in Uploading the file");
         } finally {
             if (fileInputStream != null) {
                 fileInputStream.close();

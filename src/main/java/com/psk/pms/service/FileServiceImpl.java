@@ -11,6 +11,7 @@ import com.psk.pms.model.*;
 import com.psk.pms.validator.BulkUploadDetailsValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -246,6 +247,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
+    @Transactional
 	public ExcelDetail saveProjectItemDescription(Item item) throws IOException, BulkUploadException {
 		String directory = "C:/PMS/ItemDescriptions/";
 		ExcelDetail excelDetail = new ExcelDetail();

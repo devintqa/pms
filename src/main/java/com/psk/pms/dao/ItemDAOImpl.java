@@ -279,9 +279,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public void deleteItemBySubProjectId(Integer subProjectId) {
         LOGGER.info("method = deleteItemBySubProjectId()");
-        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYSUBPROJECTID, new Object[]{
-                subProjectId
-        });
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYSUBPROJECTID, subProjectId);
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
@@ -289,7 +287,7 @@ public class ItemDAOImpl implements ItemDAO {
     public void deleteItemByProjectDescriptionId(String projectDescId, String descType) {
         LOGGER.info("method = deleteItemByProjectDescriptionId()");
         String DELETEPROJDESCAITEMBYPROJECTDESCID = "DELETE FROM " + DescriptionType.getDescriptionItemTableName(descType) + " WHERE ProjDescId = ?";
-        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCID, new Object[]{projectDescId});
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCID, projectDescId);
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
