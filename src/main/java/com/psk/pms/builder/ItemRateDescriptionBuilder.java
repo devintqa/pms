@@ -56,7 +56,7 @@ public class ItemRateDescriptionBuilder {
                             itemRateDescription = getItemDescription(row, itemRateDescription, cellIterator, Constants.LABOUR);
                         }
                     }
-                    if (sheetName == SheetNames.MATERIAL_RATES) {
+                    if (sheetName == SheetNames.MACHINERY_RATES) {
                         while (cellIterator.hasNext()) {
                             itemRateDescription = getItemDescription(row, itemRateDescription, cellIterator, Constants.MACHINERY);
                         }
