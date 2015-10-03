@@ -61,8 +61,7 @@
 				<table id="projectDocumentList" class="display" width="100%">
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Alias</th>
+							<th>Alias Project Name</th>
 							<th>Agreement No</th>
 							<th>CER No</th>
 							<th>Amount</th>
@@ -75,7 +74,6 @@
 					<tbody>
 						<c:forEach var="projDoc" items="${projectDocumentList}">
 							<tr>
-								<td>${projDoc.projectName}</td>
 								<td>${projDoc.aliasName}</td>
 								<td>${projDoc.agreementNo}</td>
 								<td>${projDoc.cerNo}</td>
