@@ -21,8 +21,14 @@
 			            	            }, response);
 					},
 					select: function(event, ui) { 
-				         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
-				         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
+						if(validateItemNameExistence(ui.item.itemName)){
+					        alert("Item already exists!");
+					        event.preventDefault();
+					        $(this).val('');
+						}else{
+					         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
+					         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
+						}
 				    }
 				});
 			});
@@ -39,6 +45,19 @@
 		    }
 		});
 		
+		function validateItemNameExistence(newItemName){
+			var itemTable = document.getElementById('itemTable');
+			var len = itemTable.rows.length;
+			var exists = false;
+			for (i = 1; i <= len - 1; i++) {
+				var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+				if(itemName == newItemName){
+					exists = true;
+					break;
+				}
+			}
+			return exists;
+		}
 		
 		function deleteItemRow(row) {
 			var itemTable = document.getElementById('itemTable');
