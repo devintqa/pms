@@ -648,4 +648,56 @@ public class ItemDAOImpl implements ItemDAO {
         leadDetail.setTotal(String.valueOf(total));
         return leadDetail;
     }
+
+    public List<ItemDetailDto> getAllItemsConfiguredToProject(Integer projectId, String descriptionType) {
+        LOGGER.info("Fetching descriptionItems for projectId: "+projectId);
+        List<ItemDetailDto> itemDetailDtos = new ArrayList<ItemDetailDto>();
+        String sql = "select * from " + DescriptionType.getDescriptionItemTableName(descriptionType) +
+                " where ProjId = " + projectId + " and SubProjId = 0";
+        try {
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+            itemDetailDtos = buildItemDetailDao(rows);
+        } catch (Exception e) {
+            LOGGER.error("Failed while retrieving items " + e);
+        }
+        return itemDetailDtos;
+    }
+
+    private List<ItemDetailDto> buildItemDetailDao(List<Map<String, Object>> rows) {
+        List<ItemDetailDto> itemDetailDtos = new ArrayList<ItemDetailDto>();
+        for (Map<String, Object> itemDetail : rows) {
+            ItemDetailDto itemDetailDto = new ItemDetailDto();
+            itemDetailDto.setProjectId((Integer) itemDetail.get("ProjId"));
+            itemDetailDto.setSubProjectId((Integer) itemDetail.get("SubProjId"));
+            itemDetailDto.setItemName((String) itemDetail.get("ItemName"));
+            itemDetailDto.setItemUnit((String) itemDetail.get("ItemUnit"));
+            itemDetailDto.setItemQuantity(Integer.parseInt((String) itemDetail.get("ItemQty")));
+            itemDetailDto.setItemPrice(new BigDecimal((String) itemDetail.get("ItemPrice")));
+            itemDetailDto.setItemCost(new BigDecimal((String) itemDetail.get("ItemCost")));
+            itemDetailDto.setProjectDescId((Integer) itemDetail.get("ProjDescId"));
+            itemDetailDto.setProjectDescSerial((String) itemDetail.get("ProjDescSerial"));
+            itemDetailDto.setProjectDescItemId((Integer) itemDetail.get("DescItemId"));
+            itemDetailDtos.add(itemDetailDto);
+        }
+        return itemDetailDtos;
+    }
+
+    public void updateProjectDescItems(final List<ItemDetailDto> itemDetailDtos) {
+        LOGGER.info("Batch updating projectDescriptionItems into database.");
+        jdbcTemplate.batchUpdate(PmsMasterQuery.UPDATE_PRICE_COST_DESC_ITEMS,
+                new BatchPreparedStatementSetter() {
+                    @Override
+                    public void setValues(PreparedStatement ps, int i) throws SQLException {
+                        ItemDetailDto itemDetailDto = itemDetailDtos.get(i);
+                        ps.setString(1, itemDetailDto.getItemPrice().toString());
+                        ps.setString(2, itemDetailDto.getItemCost().toString());
+                        ps.setInt(3, itemDetailDto.getProjectDescItemId());
+                    }
+
+                    @Override
+                    public int getBatchSize() {
+                        return itemDetailDtos.size();
+                    }
+                });
+    }
 }

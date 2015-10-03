@@ -74,4 +74,8 @@ public interface ItemDAO {
 
     void updateBaseDescTotalItemCost(long totalItemsCost,Integer baseDescId);
 
+    List<ItemDetailDto> getAllItemsConfiguredToProject(Integer projectId, String descriptionType);
+
+    void updateProjectDescItems(List<ItemDetailDto> itemDetailDtos);
+
 }

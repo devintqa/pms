@@ -3,6 +3,7 @@ package com.psk.pms.service;
 import com.psk.pms.Constants;
 import com.psk.pms.dao.ItemDAO;
 import com.psk.pms.dao.ProjectDAO;
+import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import org.apache.log4j.Logger;
@@ -27,6 +28,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ProjectDAO projectDAO;
+
+    @Autowired
+    ProjectDescriptionDAO projectDescriptionDAO;
+
     private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
     public boolean createEditItem(Item item) {
@@ -159,6 +164,7 @@ public class ItemServiceImpl implements ItemService {
     public boolean configureItemPrice(
             ProjectConfiguration projectItemConfiguration) {
         boolean isInsertSuccessful = false;
+        LOGGER.info("Saving changed item prices into pskPriceDetail");
         if (projectItemConfiguration.getItemDetail() != null) {
             isInsertSuccessful = itemDAO.configureItemPrice(projectItemConfiguration);
         }
@@ -241,5 +247,62 @@ public class ItemServiceImpl implements ItemService {
                 itemDetail.setItemPrice(itemPrice.add(amountAfterPercentage).toString());
             }
         }
+    }
+
+    public void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemNamePriceMap,
+                                                     Map<Integer, BigDecimal> descIdItemCostMap) {
+        List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, Constants.PSK);
+        applyPriceAndCostForAllItems(itemDetailDtos, itemNamePriceMap, descIdItemCostMap);
+        itemDAO.updateProjectDescItems(itemDetailDtos);
+    }
+
+    private void applyPriceAndCostForAllItems(List<ItemDetailDto> itemDetailDtos, Map<String, BigDecimal> itemDetails,
+                                              Map<Integer, BigDecimal> descIdItemCostMap) {
+        LOGGER.info("Applying new price and recalculated cost");
+        String itemName;
+        Integer itemQunatity;
+        BigDecimal itemCost;
+        BigDecimal itemPrice;
+        for (ItemDetailDto itemDetailDto : itemDetailDtos) {
+            itemName = itemDetailDto.getItemName();
+            itemQunatity = itemDetailDto.getItemQuantity();
+            if (itemDetails.containsKey(itemName)) {
+                itemPrice = itemDetails.get(itemName);
+                itemDetailDto.setItemPrice(itemPrice);
+                itemCost = new BigDecimal(itemQunatity).multiply(itemPrice);
+                itemDetailDto.setItemCost(itemCost);
+            } else {
+                itemCost = itemDetailDto.getItemCost();
+            }
+            calculateTotalOfItemCostPerDescription(itemCost, itemDetailDto.getProjectDescId(), descIdItemCostMap);
+        }
+    }
+
+    private void calculateTotalOfItemCostPerDescription(BigDecimal itemCost, Integer projectDescId, Map<Integer, BigDecimal> descIdItemCostMap) {
+        if (descIdItemCostMap.isEmpty()) {
+            descIdItemCostMap.put(projectDescId, itemCost);
+        } else {
+            if (descIdItemCostMap.containsKey(projectDescId)) {
+                BigDecimal previousCost = descIdItemCostMap.get(projectDescId);
+                descIdItemCostMap.put(projectDescId, previousCost.add(itemCost));
+            } else {
+                descIdItemCostMap.put(projectDescId, itemCost);
+            }
+        }
+    }
+
+    @Override
+    public void updateProjectDescriptionWithRecalculatedCost(Integer projId, Map<Integer, BigDecimal> descIdItemCostMap) {
+        List<ProjDescDetail> projDescDetails = projectDescriptionDAO.getProjectDescDetailList(descIdItemCostMap.keySet(),Constants.PSK);
+        LOGGER.info("Applying new pricePerQuantity and totalCost ");
+        for (ProjDescDetail projDescDetail : projDescDetails) {
+            if(descIdItemCostMap.containsKey(projDescDetail.getProjDescId())){
+                BigDecimal descriptionQty = new BigDecimal(projDescDetail.getQuantity());
+                BigDecimal descPrice = descIdItemCostMap.get(projDescDetail.getProjDescId());
+                BigDecimal totalCost = descPrice.multiply(descriptionQty);
+                projDescDetail.setTotalCost(totalCost.toString());
+            }
+        }
+        projectDescriptionDAO.updateProjectDescriptions(projDescDetails);
     }
 }
