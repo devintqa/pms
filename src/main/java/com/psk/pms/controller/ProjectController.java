@@ -2,6 +2,7 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.PROJECT_TYPE;
 import static com.psk.pms.Constants.WORKLOCATION;
+import static com.psk.pms.constants.JSPFileNames.BUILD_PROJECT;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -41,8 +42,7 @@ public class ProjectController extends BaseController {
     @Autowired
     SubProjectService subProjectService;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(ProjectController.class);
+    private static final Logger LOGGER = Logger.getLogger(ProjectController.class);
 
     @RequestMapping(value = "/emp/myview/buildProject/{employeeId}", method = RequestMethod.GET)
     public String buildProject(@PathVariable String employeeId,
@@ -57,7 +57,7 @@ public class ProjectController extends BaseController {
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         model.addAttribute("employee", employee);
-        return "BuildProject";
+        return BUILD_PROJECT;
     }
 
     @RequestMapping(value = "/emp/myview/updateProject/{employeeId}", method = RequestMethod.GET)
@@ -77,7 +77,7 @@ public class ProjectController extends BaseController {
         projectDetail.setIsUpdate("Y");
         projectDetail.setEmployeeId(employeeId);
         model.addAttribute("projectForm", projectDetail);
-        return "BuildProject";
+        return BUILD_PROJECT;
     }
 
 
@@ -106,7 +106,7 @@ public class ProjectController extends BaseController {
         }
         if (result.hasErrors() || !isProjectSaveSuccessful) {
             model.addAttribute("aliasProjectList", aliasProjectList);
-            return "BuildProject";
+            return BUILD_PROJECT;
         } else {
             status.setComplete();
             Employee employee = new Employee();
@@ -114,7 +114,7 @@ public class ProjectController extends BaseController {
             model.addAttribute("employee", employee);
             model.addAttribute("aliasProjectList", aliasProjectList);
             model.addAttribute("projectCreationMessage", message);
-            return "BuildProject";
+            return BUILD_PROJECT;
         }
     }
 
