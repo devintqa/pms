@@ -1,15 +1,23 @@
 package com.psk.pms.validator;
 
+import com.mysql.jdbc.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.psk.pms.model.StoreDetail;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by Sony on 26-09-2015.
  */
 public class StoreValidator extends BaseValidator implements Validator {
+
+
+    private Pattern pattern;
+    private Matcher matcher;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -37,6 +45,15 @@ public class StoreValidator extends BaseValidator implements Validator {
                 "required.comments", "Enter Comments");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "supplierName",
                 "required.supplierName", "Enter the Supplier Name");
+
+        if (!StringUtils.isNullOrEmpty(storeDetail.getRecievedQuantity())) {
+            pattern = Pattern.compile(ID_PATTERN);
+            matcher = pattern.matcher(storeDetail.getRecievedQuantity());
+            if (!matcher.matches()) {
+                errors.rejectValue("recievedQuantity", "recievedQuantity.incorrect",
+                        "Enter a numeric value");
+            }
+        }
 
     }
 }

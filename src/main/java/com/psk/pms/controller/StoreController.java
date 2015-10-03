@@ -70,7 +70,7 @@ public class StoreController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/buildStoreDetail/saveStoreDetail.do", method = RequestMethod.POST)
-    public String saveDepositAction(@ModelAttribute("storeDetailForm") StoreDetail storeDetail,
+    public String saveStoreDetail(@ModelAttribute("storeDetailForm") StoreDetail storeDetail,
                                     BindingResult result, Model model, SessionStatus status) {
         try {
             Map<String, String> aliasProjectList = getProjectDetails(storeDetail.getEmployeeId());
