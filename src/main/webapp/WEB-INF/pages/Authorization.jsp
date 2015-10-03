@@ -182,42 +182,53 @@
 
 
         <form:form id="authorize" method="POST" commandName="authorize">
-            <table align="center">
-                <tr>
-                    <td>Project<span id="colon">:</span></td>
-                    <td><form:select id="projectId" name="project" items="${projectList}" path="projectName"
-                                     cssClass="inputText">
-                    </form:select>
-                    </td>
-                    <td><form:errors path="projectName" cssClass="error"/></td>
+				<table align="center">
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td colspan="4">Project<span id="colon">:</span></td>
+									<td><form:select id="projectId" name="project"
+											items="${projectList}" path="projectName"
+											cssClass="inputText">
+										</form:select></td>
+								</tr>
+								<tr>
+									<td colspan="4">Team:<span id="colon">:</span></td>
+									<td><form:select path="teamName" cssClass="inputText"
+											items="${teamList}" /></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<table>
+								<tr>
+									<td colspan="2"><br></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<div>
+											<select id="user" name="user" multiple="multiple">
+											</select>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2"><br></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><input type="button" class="button" value="Authorize"
+										onclick="updateConsole()" /></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
 
-                    <td>Team <span id="colon">:</span>
-                    </td>
-                    <td><form:select path="teamName" cssClass="inputText"
-                                     items="${teamList}"/></td>
-                    <td><form:errors path="teamName" cssClass="error"/></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><br></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div>
-                            <select id="user" name="user" multiple="multiple">
-                            </select>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2"><br></td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td><input class="button" value="Authorize" onclick="updateConsole()"/></td>
-                </tr>
-            </table>
-           
-            <form:hidden path="privilegeDetails" id="privilegeDetails"/>
+				<form:hidden path="privilegeDetails" id="privilegeDetails"/>
             <form:hidden path="employeeId" id="employee"/>
 
         </form:form>
