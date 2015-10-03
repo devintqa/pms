@@ -49,6 +49,29 @@
 				   { dateFormat: 'dd-mm-yy'}
 		);
 		
+		$('#startDateMaster').datepicker("option",
+				"onSelect", function(){ 
+	        			var selected = $(this).val();
+				        $('.dateField').each(function() {
+				            var elementId = $(this).attr("id");
+				            console.log(elementId);
+				            if( elementId.indexOf("startDate") > -1 ){
+				            	 $(this).val( selected );
+				            }
+				        });
+    				});
+		$('#endDateMaster').datepicker("option",
+				"onSelect", function(){ 
+	        			var selected = $(this).val();
+				        $('.dateField').each(function() {
+				            var elementId = $(this).attr("id");
+				            console.log(elementId);
+				            if( elementId.indexOf("endDate") > -1 ){
+				            	 $(this).val( selected );
+				            }
+				        });
+    				});
+		
 		$('.getIndentButton').click(function(){
 			var projDescId = $(this).attr('aria-desc-id');
 			var indentId = $(this).attr('aria-indent-id');
@@ -178,7 +201,21 @@
 
 		<div>
 			<form:form id="indentForm" commandName="indentForm">
-
+				
+				<fieldset style="margin: 1em; text-align: left;">
+						<legend>Cascade Use</legend>
+				<table style="width:50%">
+					<tr>
+						<td>Start date<span id="colon">:</span>
+						</td>
+						<td><input  class="dateField" id="startDateMaster" value=""  placeholder="DD-MM-YYYY"  /></td>
+						<td>End date<span id="colon">:</span>
+						</td>
+						<td><input  class="dateField" id="endDateMaster" value=""  placeholder="DD-MM-YYYY"  /></td>
+					</tr>
+				</table>
+				</fieldset>
+				
 				<c:forEach var="indent" items="${indentList}">
 					<div class="collapse">
 						<h3>${indent.aliasProjDesc}
