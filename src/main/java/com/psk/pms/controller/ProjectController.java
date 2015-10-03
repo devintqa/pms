@@ -129,8 +129,7 @@ public class ProjectController extends BaseController {
     @ModelAttribute("workLocations")
     public List<String> populateworkLocationTypes() {
         LOGGER.info("method = populateworkLocationTypes()");
-        List<String> workLocations = projectService.getDropDownValuesFor(WORKLOCATION);
-        return workLocations;
+        return projectService.getDropDownValuesFor(WORKLOCATION);
     }
 
     @RequestMapping(value = "/emp/myview/buildProject/getAliasProjects.do", method = RequestMethod.GET)
