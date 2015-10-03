@@ -4,9 +4,8 @@ import static com.psk.pms.Constants.ITEM_TYPE;
 import static com.psk.pms.model.LeadDetailConfiguration.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.math.BigDecimal;
+import java.util.*;
 
 import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
@@ -260,19 +259,38 @@ public class ItemController extends BaseController {
     public
     @ResponseBody
     String saveConfiguredItems(@RequestBody ProjectConfiguration projectItemConfiguration) throws JsonParseException, JsonMappingException, IOException {
+        Integer projectId = projectItemConfiguration.getProjId();
+        LOGGER.info("Saving prices into pskpricedetail and updating prices of descriptionItems and recalculating all totals for Project Id:" + projectId);
         ObjectMapper mapper = new ObjectMapper();
         String result = "";
+        Map<Integer, BigDecimal> descIdItemCostMap = new HashMap<Integer, BigDecimal>();
         List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemList = mapper.readValue(projectItemConfiguration.getItemPriceConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.ProjectConfiguration.ItemDetail.class));
         projectItemConfiguration.setItemDetail(itemList);
         result = itemValidator.validateItem(result, projectItemConfiguration);
         if (result != "") {
+            LOGGER.warn("Duplicate items found, save unsuccessful");
             return result;
         }
-        boolean status = itemService.configureItemPrice(projectItemConfiguration);
-        if (status) {
-            result = Constants.ITEM_SAVE_SUCCESSFUL;
+        try {
+            Map<String, BigDecimal> itemNamePriceMap = getConvertItemListToMap(itemList);
+            itemService.updatePriceAndCostForConfiguredItems(projectId, itemNamePriceMap, descIdItemCostMap);
+            itemService.updateProjectDescriptionWithRecalculatedCost(projectId, descIdItemCostMap);
+            boolean status = itemService.configureItemPrice(projectItemConfiguration);
+            if (status) {
+                result = Constants.ITEM_SAVE_SUCCESSFUL;
+            }
+        } catch (Exception e) {
+            LOGGER.error("Failed while saving projectDescriptions :" + e);
         }
         return result;
+    }
+
+    private Map<String, BigDecimal> getConvertItemListToMap(List<ProjectConfiguration.ItemDetail> itemList) {
+        Map<String, BigDecimal> itemNamePriceMap = new HashMap<String, BigDecimal>();
+        for (ProjectConfiguration.ItemDetail itemDetail : itemList) {
+            itemNamePriceMap.put(itemDetail.getItemName(), new BigDecimal(itemDetail.getItemPrice()));
+        }
+        return itemNamePriceMap;
     }
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/loadBaseDescItems.do")

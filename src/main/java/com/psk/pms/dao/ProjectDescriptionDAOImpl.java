@@ -1,39 +1,5 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.DELETEBASEDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTDESCRIPTIONBYSUBPROJECTID;
-import static com.psk.pms.dao.PmsMasterQuery.FETCHBASEDESCRIPTIONS;
-import static com.psk.pms.dao.PmsMasterQuery.GETBASEDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.INSERTBASEDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.INSERTGOVPROJECTDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.INSERTPROJECTDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.INSERTSUBPROJECTDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.ISBASEDESCEXISTS;
-import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOPROJECT;
-import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT;
-import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_PROJECT;
-import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_SUBPROJECT;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATEBASEDESCRIPTION;
-import static com.psk.pms.dao.PmsMasterQuery.baseDescDetail;
-import static com.psk.pms.dao.PmsMasterQuery.compareDataQuery;
-import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
-import static com.psk.pms.dao.PmsMasterQuery.projDescDetailQuery;
-
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
@@ -42,6 +8,22 @@ import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.*;
+
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -55,6 +37,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	@Autowired
 	private ItemDAO itemDAO;
+
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Override
 	public void deleteProjectDescriptionBySubProjectId(Integer subProjectId) {
@@ -89,10 +74,10 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	public void deleteProjectDescription(String projectDescriptionId,String descType) {
 		itemDAO.deleteItemByProjectDescriptionId(projectDescriptionId,descType);
 
-		int noOfRows = jdbcTemplate.update("DELETE FROM "+DescriptionType.getDescriptionTableName(descType)+" where ProjDescId = ?",
-		new Object[] {
-			projectDescriptionId
-		});
+		int noOfRows = jdbcTemplate.update("DELETE FROM " + DescriptionType.getDescriptionTableName(descType) + " where ProjDescId = ?",
+				new Object[]{
+						projectDescriptionId
+				});
 		LOGGER.info("Number of rows deleted : " + noOfRows);
 	}
 
@@ -225,6 +210,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	public List < ProjDescDetail > getProjectDescDetailList(Integer projectId,
 	boolean searchUnderProject) {
+		LOGGER.info("Getting projectDescriptions for projectId:"+projectId);
 		String sql;
 		if (searchUnderProject) {
 			sql = projDescDetailQuery + " where ProjId = " + projectId + " and SubProjId is null";
@@ -702,5 +688,30 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
 
-	
+	public void updateProjectDescriptions(final List<ProjDescDetail> projDescDetails) {
+		LOGGER.info("batch updating projectDescriptions with new priceperQuantity and totalCost");
+		jdbcTemplate.batchUpdate(UPDATE_PRICE_COST_DESCRIPTIONS, new BatchPreparedStatementSetter() {
+			@Override
+			public void setValues(PreparedStatement ps, int i) throws SQLException {
+				ProjDescDetail projDescDetail = projDescDetails.get(i);
+				ps.setString(1, projDescDetail.getPricePerQuantity());
+				ps.setString(2, projDescDetail.getTotalCost());
+				ps.setInt(3, projDescDetail.getProjDescId());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return projDescDetails.size();
+			}
+		});
+	}
+
+	@Override
+	public List<ProjDescDetail> getProjectDescDetailList(Set<Integer> descItemIds, String descType) {
+		String sqlQuery = "select * from " + DescriptionType.getDescriptionTableName(descType) + " where ProjDescId in (:ids)";
+		MapSqlParameterSource parameters = new MapSqlParameterSource();
+		parameters.addValue("ids", descItemIds);
+		List<ProjDescDetail> projDescDetails = namedParameterJdbcTemplate.query(sqlQuery, parameters, ParameterizedBeanPropertyRowMapper.newInstance(ProjDescDetail.class));
+		return projDescDetails;
+	}
 }

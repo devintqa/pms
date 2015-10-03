@@ -5,6 +5,7 @@ import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -54,5 +55,9 @@ public interface ProjectDescriptionDAO {
 	ProjDescDetail getBaseDescDetail(String baseDescId);
 	
     ProjDescDetail getBaseDescription(String descId);
+
+	void updateProjectDescriptions(List<ProjDescDetail> projDescDetails);
+
+	List<ProjDescDetail> getProjectDescDetailList(Set<Integer> descItemIds, String descType);
 
 }

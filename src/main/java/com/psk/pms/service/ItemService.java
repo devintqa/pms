@@ -64,4 +64,8 @@ public interface ItemService {
     void updateMaterialPriceWithLeadDetailsPrice(List<ItemDetail> itemDetail, String projId, String subProjId);
 
     void applyWorkoutPercentage(List<ItemDetail> itemDetails, BigDecimal workoutPercentage);
+
+    void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemDetails, Map<Integer , BigDecimal> descIdItemCostMap);
+
+    void updateProjectDescriptionWithRecalculatedCost(Integer projId, Map<Integer, BigDecimal> descIdItemCostMap);
 }
