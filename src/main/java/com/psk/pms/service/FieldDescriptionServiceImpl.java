@@ -5,6 +5,7 @@ import java.util.List;
 import com.psk.pms.dao.FieldDescriptionDAO;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -44,6 +45,11 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	@Override
 	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
 		return fieldDescriptionDAO.getPskFieldProjectDescription(projDescId);
+	}
+
+	@Override
+	public List<Indent> getIndentList(SearchDetail searchDetail) {
+		return fieldDescriptionDAO.getIndentList(searchDetail);
 	}
 	
 }

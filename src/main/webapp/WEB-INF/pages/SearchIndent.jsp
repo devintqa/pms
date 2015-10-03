@@ -163,9 +163,9 @@
 	<div id="wrapper">
 
 		<div class="ui-widget">
-			<form:form id="searchProjDescForm" method="POST"
-				commandName="searchProjDescForm"
-				action="searchFieldDescDetail.do">
+			<form:form id="searchIndentForm" method="POST"
+				commandName="searchIndentForm"
+				action="searchIndentsOfProject.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Search Indent</legend>
@@ -185,12 +185,6 @@
 						<tr>
 							<td></td>
 							<td><input class="button" id="submit" type="submit" /></td>
-							<td> <c:if test="${projDescDocListSize gt 0}">
-								<input class="button" id="doIndent" value="Build Indent" type="button" />
-								&nbsp;
-								<input class="button" id="viewIndent" value="View Indent" type="button" />
-								</c:if>
-							</td>
 						</tr>
 					</table>
 				</center>
@@ -203,34 +197,34 @@
 			</form:form>
 			<input id="searchOn" type="hidden"
 				value="${searchProjDescForm.searchOn}" />
-			<c:if test="${projDescDocListSize gt 0}">
-				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Description Details</h1>
-				<table id="projDescDocList" class="display">
+			<c:if test="${indentListSize gt 0}">
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projectAliasName} Project Indent Details</h1>
+				<table id="indentList" class="display">
 					<thead>
 						<tr>
-							<th>Select</th>
-							<th>Serial Number</th>
-							<th>Alias</th>
-							<th>Work Type</th>
-							<th>No of Quantity</th>
+							<th>Alias Description</th>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Quantity</th>
 							<th>Metric</th>
 						</tr>
 					</thead>
 
 					<tbody>
-						<c:if test="${not empty projDescDocList}">
-							<c:forEach var="projDesc" items="${projDescDocList}">
+						<c:if test="${not empty indentList}">
+							<c:forEach var="indent" items="${indentList}">
 								<tr>
-										<td><input type="checkbox" name="indentDescription"
-											aria-proj-id="${projDesc.projId}"
-											aria-subproj-id="${projDesc.subProjId}"
-											aria-projdesc-id="${projDesc.projDescId}"
-											aria-employee-id="${employeeObj.employeeId}" /></td>
-									<td>${projDesc.serialNumber}</td>
-									<td>${projDesc.aliasDescription}</td>
-									<td>${projDesc.workType}</td>
-									<td>${projDesc.quantity}</td>
-									<td>${projDesc.metric}</td>
+									<td>${indent.aliasProjDesc}
+									<input type="hidden" value="${indent.projId}"/>
+									<input type="hidden" value="${indent.projDescId}"/>
+									<input type="hidden" value="${indent.indentId}"/></td>
+									<td>${indent.startDate}</td>
+									<td>${indent.endDate}</td>
+									<td>${indent.plannedArea}</td>
+									<td>${indent.metric}</td>
+									<td>${indent.projId}</td>
+									<td>${indent.projDescId}</td>
+									<td>${indent.indentId}</td>
 								</tr>
 							</c:forEach>
 						</c:if>

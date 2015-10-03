@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 
 public interface FieldDescriptionService {
@@ -19,4 +20,6 @@ public interface FieldDescriptionService {
     List<Indent> getIndentDescAndItems(int projDescId);
     
     public ProjDescDetail getPskFieldProjectDescription(String projDescId);
+
+	List<Indent> getIndentList(SearchDetail searchDetail);
 }

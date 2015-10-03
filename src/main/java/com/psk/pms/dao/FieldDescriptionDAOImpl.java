@@ -35,6 +35,7 @@ import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.Indent.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 /**
  * Created by prakashbhanu57 on 8/18/2015.
@@ -256,6 +257,39 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		}
 		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
 		return projDescDetail;
+	}
+
+	@Override
+	public List<Indent> getIndentList(SearchDetail searchDetail) {
+		List<Indent> indentList = new ArrayList<Indent>();
+		String sql = null;
+		if (null!=searchDetail.getProjId()) {
+			sql = "SELECT i.ProjId, d.AliasDescription, i.ProjDescId, i.Quantity, i.Metric, i.IndentId, i.StartDate, i.EndDate FROM indentdesc i, projectdesc d where i.ProjDescId = d.ProjDescId and i.ProjId='"+searchDetail.getProjId()+"'";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map < String, Object > row: rows) {
+			indentList.add(buildIndent(row));
+		}
+		return indentList;
+	}
+
+	private Indent buildIndent(Map<String, Object> row) {
+		Indent indent = new Indent();
+		indent.setProjId(row.get("ProjId").toString());
+		indent.setProjId(row.get("ProjDescId").toString());	
+		indent.setMetric((String) row.get("Metric"));
+		indent.setIndentId(row.get("IndentId").toString());
+		indent.setAliasProjDesc(row.get("AliasDescription").toString());
+		BigDecimal quantity = (BigDecimal) row.get("Quantity");
+		if (null == quantity) {
+			indent.setPlannedArea(null);
+		} else {
+			indent.setPlannedArea(quantity.doubleValue());
+		}
+		indent.setStartDate((String) row.get("StartDate"));
+		indent.setEndDate((String) row.get("EndDate"));
+		return indent;
 	}
 
 	

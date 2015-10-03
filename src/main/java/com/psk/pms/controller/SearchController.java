@@ -4,6 +4,7 @@ import com.psk.pms.Constants;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.service.DepositDetailService;
+import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.SubProjectService;
@@ -47,6 +48,9 @@ public class SearchController extends BaseController {
 
     @Autowired
     ProjectDescriptionService projectDescriptionService;
+    
+    @Autowired
+    FieldDescriptionService fieldDescriptionService;
 
     @RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
     public String searchProject(@PathVariable String employeeId, Model model) {
@@ -124,19 +128,38 @@ public class SearchController extends BaseController {
     
     
     @RequestMapping(value = "/emp/myview/searchIndents/{employeeId}", method = RequestMethod.GET)
-    public String searchIndents(@PathVariable String employeeId, @RequestParam("team") String team,
+    public String buildIndents(@PathVariable String employeeId, @RequestParam("team") String team,
                                            Model model) {
-        LOGGER.info("Search Controller : searchProjectDescription()");
         Employee employee = new Employee();
         employee.setEmployeeId(employeeId);
         employee.setEmployeeTeam(team);
         SearchDetail searchDetail = new SearchDetail();
         searchDetail.setEmployeeId(employeeId);
-        model.addAttribute("searchProjDescForm", searchDetail);
+        model.addAttribute("searchIndentForm", searchDetail);
         model.addAttribute("employeeObj", employee);
         return "SearchIndent";
     }
 
+    @RequestMapping(value = "/emp/myview/searchIndents/searchIndentsOfProject.do", method = RequestMethod.POST)
+    public String searchIndent(
+            @ModelAttribute("searchIndentForm") SearchDetail searchDetail,
+            BindingResult result,
+            Model model,
+            SessionStatus status) {
+    	 searchValidator.indentValidator(searchDetail, result);
+         if (!result.hasErrors()) {
+            List<Indent> indentList = fieldDescriptionService.getIndentList(searchDetail);
+            if (indentList.size() > 0) {
+                model.addAttribute("indentList", indentList);
+                model.addAttribute("indentListSize", indentList.size());
+                model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
+            } else {
+                model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
+            }
+         }
+        return "SearchIndent";
+    }
+    
     @RequestMapping(value = "/emp/myview/searchSubProject/searchSubProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -170,9 +193,7 @@ public class SearchController extends BaseController {
             BindingResult result, Model model, SessionStatus status) {
         LOGGER.info("method = searchSubProjectDetail()");
         searchValidator.validate(searchDetail, result);
-        LOGGER.info("method = searchSubProjectDetail()" + "after validate");
         if (!result.hasErrors()) {
-            LOGGER.info("method = searchSubProjectDetail()" + "into fetch");
             List<SubProjectDetail> subProjectDocumentList = getSubProjectDocumentList(searchDetail
                     .getProjId());
             if (subProjectDocumentList.size() > 0) {

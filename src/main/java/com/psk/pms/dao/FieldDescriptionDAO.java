@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
 /**
  * Created by prakashbhanu57 on 8/18/2015.
@@ -21,4 +22,6 @@ public interface FieldDescriptionDAO {
 	List<Indent> getIndentDescAndItems(int projDescId);
 
 	ProjDescDetail getPskFieldProjectDescription(String projDescId);
+
+	List<Indent> getIndentList(SearchDetail searchDetail);
 }

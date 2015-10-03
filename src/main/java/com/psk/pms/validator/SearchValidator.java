@@ -14,13 +14,30 @@ public class SearchValidator extends BaseValidator implements Validator {
         return SearchDetail.class.isAssignableFrom(clazz);
     }
 
+    public void indentValidator(Object target, Errors errors) {
+
+        SearchDetail searchDetail = (SearchDetail) target;
+            if (StringUtils.isNullOrEmpty(searchDetail.getAliasProjectName())) {
+                errors.rejectValue("aliasProjectName", "required.aliasProjectName", "Please select Alias Project Name.");
+            }else{
+            	String projId = fetchProjectId(searchDetail.getAliasProjectName(),searchDetail.getEmployeeId());
+                if (projId == null) {
+                    errors.rejectValue("aliasProjectName",
+                            "invalid.aliasProjectName",
+                            "Please select valid Alias Project Name.");
+                } else {
+                    searchDetail.setProjId(Integer.valueOf(projId));
+                }
+            }
+        
+    }
+    
     @Override
     public void validate(Object target, Errors errors) {
 
         SearchDetail searchDetail = (SearchDetail) target;
         if (!GLOBAL.equalsIgnoreCase(searchDetail.getSearchUnder())) {
-            if ((searchDetail
-                    .isEditSubProject())
+            if ((searchDetail.isEditSubProject())
                     && StringUtils
                     .isNullOrEmpty(searchDetail.getAliasProjectName())) {
                 errors.rejectValue("aliasProjectName", "required.aliasProjectName",
