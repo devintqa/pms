@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 import com.psk.pms.utils.DateFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_STORE_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -48,6 +48,36 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         return storeDetails;
     }
 
+    @Override
+    public void saveStockDetail(StoreDetail storeDetail) {
+        jdbcTemplate.update(CREATE_STOCK_DETAILS, storeDetail.getProjId(),
+                storeDetail.getItemName(),
+                storeDetail.getRecievedQuantity());
+    }
+
+    @Override
+    public List<StockDetail> getStockDetails(int projId, String itemName) {
+        List<StockDetail> stockDetails = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_STOCK_DETAILS, projId, itemName);
+        for (Map<String, Object> row : rows) {
+            stockDetails.add(buildStockDetails(row));
+        }
+        return stockDetails;
+    }
+
+    @Override
+    public void updateStockDetail(int projId, String itemName, String totalQuantity) {
+        jdbcTemplate.update(UPDATE_STOCK_DETAILS, totalQuantity, projId, itemName);
+    }
+
+    private StockDetail buildStockDetails(Map<String, Object> row) {
+        StockDetail stockDetail = new StockDetail();
+        stockDetail.setItemName((String) row.get("itemName"));
+        stockDetail.setProjId((Integer) row.get("projectId"));
+        stockDetail.setTotalQuantity((String) row.get("totalQuantity"));
+        return stockDetail;
+    }
+
     private StoreDetail buildStoreDetails(Map<String, Object> row) {
         StoreDetail detail = new StoreDetail();
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -57,7 +87,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         detail.setRecievedQuantity((String) row.get("quantityRecieved"));
         Date recievedDate = (Date) row.get("recievedDate");
         detail.setSqlRecievedDate(recievedDate);
-        detail.setRecievedDate(DateFormatter.getStringDate(recievedDate,formatter));
+        detail.setRecievedDate(DateFormatter.getStringDate(recievedDate, formatter));
         return detail;
     }
 }

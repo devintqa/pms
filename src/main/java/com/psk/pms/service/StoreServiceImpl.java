@@ -5,11 +5,15 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.psk.pms.model.StockDetail;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.psk.pms.dao.StoreDetailDAO;
 import com.psk.pms.model.StoreDetail;
+import org.springframework.transaction.annotation.Transactional;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -22,11 +26,23 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override
+    @Transactional
     public void saveStoreDetail(StoreDetail storeDetail) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         storeDetail.setSqlRecievedDate(getSQLDate(storeDetail.getRecievedDate(),
                 formatter));
         storeDetailDAO.saveStoreDetail(storeDetail);
+        saveStockDetails(storeDetail);
+    }
+
+    private void saveStockDetails(StoreDetail storeDetail) {
+        List<StockDetail> stockDetails = storeDetailDAO.getStockDetails(storeDetail.getProjId(), storeDetail.getItemName());
+        if (stockDetails.isEmpty()) {
+            storeDetailDAO.saveStockDetail(storeDetail);
+        } else {
+            int totalQuantity = parseInt(storeDetail.getRecievedQuantity()) + parseInt(stockDetails.get(0).getTotalQuantity());
+            storeDetailDAO.updateStockDetail(storeDetail.getProjId(), storeDetail.getItemName(), String.valueOf(totalQuantity));
+        }
     }
 
 

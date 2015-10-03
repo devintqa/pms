@@ -645,6 +645,27 @@ CREATE TABLE `indentitem` (
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 
+
+--
+-- Table structure for table `stockDetail`
+--
+
+DROP TABLE IF EXISTS `stockDetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `stockDetail` (
+    `stockDetailId` int(11) NOT NULL AUTO_INCREMENT,
+    `projectId` int(10) NOT NULL,
+    `itemName` varchar(20) NOT NULL,
+	`totalQuantity` varchar(20) NOT NULL,
+    PRIMARY KEY (`stockDetailId`,`projectId`,`itemName`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+
+
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;
 DELIMITER $$
 CREATE TRIGGER SYNC_PROJECT_DESCRIPTION AFTER DELETE on govprojectdesc

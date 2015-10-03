@@ -171,4 +171,12 @@ public class PmsMasterQuery {
     public static final String UPDATE_PRICE_COST_DESC_ITEMS = "update projdescitem set ItemPrice = ? ,ItemCost = ? where DescItemId = ?";
 
     public static final String UPDATE_PRICE_COST_DESCRIPTIONS = "update projectdesc set PricePerQuantity = ? , TotalCost = ? where ProjDescId = ?";
+
+    public static final String GET_STOCK_DETAILS = "select * from stockDetail where projectId = ? and itemName=?";
+
+    public static final String CREATE_STOCK_DETAILS = "insert into stockDetail(projectId, itemName, totalQuantity) values (?,?,?)";
+
+    public static final String UPDATE_STOCK_DETAILS = "update stockDetail set totalQuantity=? where projectId=? and itemName=?";
+
+
 }
