@@ -24,7 +24,6 @@
                             if (response != null) {
                                 var obj = jQuery.parseJSON(response);
                                 var options = '';
-                                //options = '<option value=0>--Please Select--</option>';
                                 for (var key in obj) {
                                     var attrName = key;
                                     var attrValue = obj[key];
@@ -160,8 +159,7 @@
 </header>
 <div id="wrapper">
     <div>
-        <h2
-                style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${projDescCreationMessage}</h2>
+        <h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${projDescCreationMessage}</h2>
     </div>
     <div>
         <form:form id="projDescForm" method="POST" commandName="projDescForm">

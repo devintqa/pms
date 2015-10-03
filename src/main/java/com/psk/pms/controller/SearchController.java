@@ -121,6 +121,21 @@ public class SearchController extends BaseController {
         }
         return "BuildIndent";
     }
+    
+    
+    @RequestMapping(value = "/emp/myview/searchIndents/{employeeId}", method = RequestMethod.GET)
+    public String searchIndents(@PathVariable String employeeId, @RequestParam("team") String team,
+                                           Model model) {
+        LOGGER.info("Search Controller : searchProjectDescription()");
+        Employee employee = new Employee();
+        employee.setEmployeeId(employeeId);
+        employee.setEmployeeTeam(team);
+        SearchDetail searchDetail = new SearchDetail();
+        searchDetail.setEmployeeId(employeeId);
+        model.addAttribute("searchProjDescForm", searchDetail);
+        model.addAttribute("employeeObj", employee);
+        return "SearchIndent";
+    }
 
     @RequestMapping(value = "/emp/myview/searchSubProject/searchSubProject.do", method = RequestMethod.GET)
     public
@@ -130,8 +145,6 @@ public class SearchController extends BaseController {
         LOGGER.info("method = getProjectList()");
         return fetchSubProjectsInfo(name, empId);
     }
-
-
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/searchProject.do", method = RequestMethod.GET)
     public

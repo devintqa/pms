@@ -36,75 +36,6 @@
                 }
             });
 
-        $("#doIndent").click(function() {
-            console.log($('input[name="indentDescription"]:checked'));
-            var projDescs = [];
-            var indentObjArray = [];
-            var projId = '';
-            var subProjId = '';
-            var projDescId = '';
-            var employeeId = '';
-            
-            $($('input[name="indentDescription"]:checked')).each(function(index) {
-
-                console.log(index + ": " + $(this).attr('aria-proj-id'));
-                console.log(index + ": " + $(this).attr('aria-subproj-id'));
-                console.log(index + ": " + $(this).attr('aria-projdesc-id'));
-                console.log(index + ": " + $(this).attr('aria-employee-id'));
-                
-                projId = $(this).attr('aria-proj-id');
-                subProjId = $(this).attr('aria-subproj-id');
-                projDescId = $(this).attr('aria-projdesc-id');
-                employeeId = $(this).attr('aria-employee-id');
-
-                projDescs.push(projDescId);
-                
-            });
-                if($('input[name="indentDescription"]:checked').length > 0){
-                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs+"&action=edit";
-                }
-           
-        });
-        
-        $("#viewIndent").click(function() {
-            console.log($('input[name="indentDescription"]:checked'));
-            var projDescs = [];
-            var indentObjArray = [];
-            var projId = '';
-            var subProjId = '';
-            var projDescId = '';
-            var employeeId = '';
-            
-            $($('input[name="indentDescription"]:checked')).each(function(index) {
-
-                console.log(index + ": " + $(this).attr('aria-proj-id'));
-                console.log(index + ": " + $(this).attr('aria-subproj-id'));
-                console.log(index + ": " + $(this).attr('aria-projdesc-id'));
-                console.log(index + ": " + $(this).attr('aria-employee-id'));
-                
-                projId = $(this).attr('aria-proj-id');
-                subProjId = $(this).attr('aria-subproj-id');
-                projDescId = $(this).attr('aria-projdesc-id');
-                employeeId = $(this).attr('aria-employee-id');
-
-                projDescs.push(projDescId);
-                
-            });
-            if($('input[name="indentDescription"]:checked').length > 0){
-                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs+"&action=view";
-            }
-        });
-
-    });
-
-    function Indent(projId, subProjId, projDescId, employeeId) {
-        this.projId = projId;
-        this.subProjId = subProjId;
-        this.projDescId = projDescId;
-        this.employeeId = employeeId;
-    }
-
-
 
     function openProjDescLoader(projDescSerial, projId, subProjId, projDescId,
         descType, employeeId) {
@@ -220,11 +151,6 @@
 						<tr>
 							<td></td>
 							<td><input class="button" id="submit" type="submit" /></td>
-							<td><c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-								<input class="button" id="doIndent" value="Build Indent" type="button" />
-								&nbsp;
-								<input class="button" id="viewIndent" value="View Indent" type="button" />
-							</c:if></td>
 						</tr>
 					</table>
 				</center>
@@ -242,9 +168,6 @@
 				<table id="projDescDocList" class="display">
 					<thead>
 						<tr>
-							<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-								<th>Select</th>
-							</c:if>
 							<th>Serial Number</th>
 							<th>Alias</th>
 							<th>Work Type</th>
@@ -260,14 +183,6 @@
 						<c:if test="${not empty projDescDocList}">
 							<c:forEach var="projDesc" items="${projDescDocList}">
 								<tr>
-									<c:if test="${employeeObj.employeeTeam eq 'Admin'}">
-										<td><input type="checkbox" name="indentDescription"
-											aria-proj-id="${projDesc.projId}"
-											aria-subproj-id="${projDesc.subProjId}"
-											aria-projdesc-id="${projDesc.projDescId}"
-											aria-employee-id="${employeeObj.employeeId}" /></td>
-									</c:if>
-
 									<td><a
 										href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','${searchProjDescForm.searchOn}','${employeeObj.employeeId}')"
 										class="userAction">${projDesc.serialNumber}</a></td>

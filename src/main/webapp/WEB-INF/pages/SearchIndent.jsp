@@ -97,6 +97,63 @@
         this.employeeId = employeeId;
     }
 
+
+
+    function openProjDescLoader(projDescSerial, projId, subProjId, projDescId,
+        descType, employeeId) {
+        if (subProjId == '') {
+            subProjId = 0;
+        }
+        descType = $("#searchOn").val();
+        windowObjectReference = window
+            .open(
+                "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="
+                		+ projDescSerial + "&projId=" + projId + "&subProjId=" + subProjId 
+                		+ "&projDescId=" + projDescId + "&descType=" + descType 
+                		+ "&employeeId=" + employeeId,
+                'winname',
+                'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
+
+    }
+
+    function deleteProjectDescription(projectDescriptionAlias,
+        projectDescriptionId, projectDescriptionType) {
+
+        $("#dialog-confirm").html(
+            projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
+
+        // Define the Dialog and its properties.
+        $("#dialog-confirm")
+            .dialog({
+                resizable: false,
+                modal: true,
+                title: "Warning!",
+                height: 200,
+                width: 400,
+                buttons: {
+                    "Yes": function() {
+                        $
+                            .ajax({
+                                url: 'deleteProjectDescription.do',
+                                data: "projectDescriptionId=" + projectDescriptionId + "&projectDescriptionType=" + projectDescriptionType,
+                                success: function(response) {
+                                    location.reload();
+                                    console.log("Successfully deleted row ");
+                                },
+                                error: function(err) {
+                                    console.log("Error deleting project description ");
+                                }
+                            });
+                        $(this).dialog('close');
+                    },
+                    "No": function() {
+                        $(this).dialog('close');
+
+                    }
+                }
+            });
+
+    }
 </script>
 </head>
 <body>
@@ -111,7 +168,7 @@
 				action="searchFieldDescDetail.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
-						<legend>Search Field Description</legend>
+						<legend>Search Indent</legend>
 						<table>
 							<tr>
 								<td>Alias Project Name <span id="colon">:</span>
