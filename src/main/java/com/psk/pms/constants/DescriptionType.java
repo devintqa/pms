@@ -6,7 +6,7 @@ package com.psk.pms.constants;
 public enum DescriptionType {
 
     PSK("projectdesc","projdescitem","pskpricedetail"),
-    FIELD("fieldprojectdesc","fieldprojdescitem","fieldpricedetail"),
+    FIELD("fieldprojectdesc","fieldprojdescitem","pskpricedetail"),
     GOVERNMENT("govprojectdesc","govprojdescitem","govpricedetail"),
     INDENT("indentdesc","indentitem",null),
     BASE("basedesc","basedescitem",null),
