@@ -2,9 +2,12 @@ package com.psk.pms.factory;
 
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +17,10 @@ import java.util.Map;
 
 @Component
 public class ManagementEmployeeTeam implements EmployeeTeam {
+	
+	@Autowired
+    ProjectService projectService;
+	 
     @Override
     public void performTeamActivity(Model model, String empId) {
 
@@ -26,12 +33,19 @@ public class ManagementEmployeeTeam implements EmployeeTeam {
 
     @Override
     public List<String> fetchProjects(String name, String empId) {
-        return null;
+    	List<String> result = new ArrayList<String>();
+        Map<String, String> aliasProjectNames = projectService.getAliasProjectNames(empId);
+        for (Map.Entry<String, String> entry : aliasProjectNames.entrySet()) {
+            if (entry.getValue().toUpperCase().contains(name.toUpperCase())) {
+                result.add(entry.getValue());
+            }
+        }
+        return result;
     }
 
     @Override
     public Map<String, String> fetchProjects(String empId) {
-        return null;
+        return projectService.getAliasProjectNames(empId);
     }
 
     @Override
