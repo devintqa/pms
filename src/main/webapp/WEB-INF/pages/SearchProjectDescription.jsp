@@ -22,21 +22,21 @@
             $("#aliasProjectName").autocomplete({
                 source: function (request, response) {
                     var empId = $('#employeeId').val();
-                    if($("#searchUnderSubProject").is(':checked'))	{
+                    if ($("#searchUnderSubProject").is(':checked')) {
                         $.getJSON("/pms/emp/myview/searchProjectDescription/searchSubProject.do", {
                             term: request.term,
-                            employeeId : empId
+                            employeeId: empId
                         }, response);
-                    }else{
-                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do",{
+                    } else {
+                        $.getJSON("/pms/emp/myview/searchProjectDescription/searchProject.do", {
                             term: request.term,
-                            employeeId : empId
+                            employeeId: empId
                         }, response);
                     }
                 }
             });
 
-
+        });
     function openProjDescLoader(projDescSerial, projId, subProjId, projDescId,
         descType, employeeId) {
         if (subProjId == '') {
