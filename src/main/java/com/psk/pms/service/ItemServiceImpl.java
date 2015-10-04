@@ -299,6 +299,7 @@ public class ItemServiceImpl implements ItemService {
             if(descIdItemCostMap.containsKey(projDescDetail.getProjDescId())){
                 BigDecimal descriptionQty = new BigDecimal(projDescDetail.getQuantity());
                 BigDecimal descPrice = descIdItemCostMap.get(projDescDetail.getProjDescId());
+                projDescDetail.setPricePerQuantity(descPrice.toString());
                 BigDecimal totalCost = descPrice.multiply(descriptionQty);
                 projDescDetail.setTotalCost(totalCost.toString());
             }
