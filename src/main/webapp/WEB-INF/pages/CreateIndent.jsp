@@ -49,28 +49,6 @@
 				   { dateFormat: 'dd-mm-yy'}
 		);
 		
-		$('#startDateMaster').datepicker("option",
-				"onSelect", function(){ 
-	        			var selected = $(this).val();
-				        $('.dateField').each(function() {
-				            var elementId = $(this).attr("id");
-				            console.log(elementId);
-				            if( elementId.indexOf("startDate") > -1 ){
-				            	 $(this).val( selected );
-				            }
-				        });
-    				});
-		$('#endDateMaster').datepicker("option",
-				"onSelect", function(){ 
-	        			var selected = $(this).val();
-				        $('.dateField').each(function() {
-				            var elementId = $(this).attr("id");
-				            console.log(elementId);
-				            if( elementId.indexOf("endDate") > -1 ){
-				            	 $(this).val( selected );
-				            }
-				        });
-    				});
 		
 		$('.getIndentButton').click(function(){
 			var projDescId = $(this).attr('aria-desc-id');
@@ -123,18 +101,21 @@
 			} 
 		
 		$('.saveIndentButton').click(function(){
+			var indent = {};
+			var indentDesc = {};
 			var itemObjArray = [];
-			var indentDescForm = {};
+			
 			var projDescId = $(this).attr('aria-desc-id');
 			var indentId = $(this).attr('aria-indent-id');
 			var projId = $("#projId").val();
 			var subProjId = $("#subProjId").val();
 			var employeeId = $("#employeeId").val();
 			
-			var startDate = $("#startDate"+projDescId+indentId).val();
-			var endDate = $("#endDate"+projDescId+indentId).val();
-			var indentQty = $("#plannedArea"+projDescId+indentId).val();
-			var indentMetric = $("#metric"+projDescId+indentId).val();
+			var startDate = $('#workStartDate').val();
+			var endDate = $('#workEndDate').val();
+			
+			var indentDescQty = $("#plannedQty"+projDescId+indentId).val();
+			var indentDescMetric = $("#metric"+projDescId+indentId).val();
 			
 			var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
 			var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
@@ -150,18 +131,20 @@
 					itemObjArray.push(obj); 
 				}
 			}
-			indentDescForm["employeeId"] = employeeId;
-			indentDescForm["plannedArea"] = indentQty;
-			indentDescForm["startDate"] = startDate;
-			indentDescForm["endDate"] = endDate;
-			indentDescForm["projDescId"] = projDescId;
-			indentDescForm["projId"] = projId;
-			indentDescForm["itemDetails"] = itemObjArray;
-			indentDescForm["metric"] = indentMetric;
+			indent["projId"] = projId;
+			indent["employeeId"] = employeeId;
+			indent["startDate"] = startDate;
+			indent["endDate"] = endDate;
 			
-			console.log(JSON.stringify(indentDescForm));
+			indentDesc["plannedQty"] = indentDescQty;
+			indentDesc["metric"] = indentDescMetric;
+			indentDesc["projDescId"] = projDescId;
+			indentDesc["itemDetails"] = itemObjArray;
+			indent['indentDescList'] = indentDesc
 			
-			$.ajax({
+			console.log(JSON.stringify(indent));
+			
+			/*$.ajax({
 				type : "POST",
 				url : "saveIndentItem.do",
 				contentType: "application/json",
@@ -172,10 +155,62 @@
 						alert('saved successfully');
 					}
 				}
-			});
+			});*/
 			
 		});
 		
+	});
+
+	
+	$(document).on("keyup", "input[name = 'plannedQty']", function() {
+		
+		var valid = /^\d+(\.\d{0,2})?$/.test(this.value);
+		var val = this.value;
+		if (!valid) {
+			console.log("Invalid input!");
+			this.value = val.substring(0, val.length - 1);
+		}else{
+			var projDescId = $(this).attr('aria-projdesc-id');
+			var indentDescId =  $(this).attr('aria-indentdesc-id');
+			var indentQty = this.value;
+			
+			var itemTable = document.getElementById("itemTbl"+projDescId+indentDescId);
+			var tableLength = itemTable.rows.length;
+			
+			$.ajax({
+				type : "GET",
+				url : "getIndentItem",
+				contentType: "application/json",
+				cache : false,
+				data : "projDescId="+projDescId+"&indentQty="+indentQty,
+				success : function(response) {
+					
+					while(itemTable.rows.length > 1){
+						itemTable.deleteRow(tableLength-1);
+						tableLength--;
+					}
+					
+					for (i = 0; i < response.length; i++) {
+						
+					    var new_row = itemTable.insertRow(0);
+					    var cell1 = new_row.insertCell(0);
+					    var cell2 = new_row.insertCell(1);
+					    var cell3 = new_row.insertCell(2);
+					    var cell4 = new_row.insertCell(3);
+					    var cell5 = new_row.insertCell(4);
+					    
+						new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
+						new_row.cells[1].innerHTML = response[i].itemName;
+						new_row.cells[2].innerHTML = response[i].itemUnit;
+						new_row.cells[3].innerHTML = response[i].itemQty;
+						new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
+
+						itemTable.appendChild(new_row);
+					}
+				}
+			});
+			
+		}
 	});
 
 	function deleteItemRow(row) {
@@ -186,10 +221,6 @@
 			$(row).closest("tr").remove();
 		}
 	}
-	
-	
-	
-	
 </script>
 </head>
 
@@ -200,7 +231,7 @@
 	<div id="wrapper">
 
 		<div>
-			<form:form id="indentForm" commandName="indentForm">
+			<form:form id="indentForm" commandName="indent">
 				
 				<fieldset style="margin: 1em; text-align: left;">
 						<legend>Cascade Use</legend>
@@ -208,55 +239,41 @@
 					<tr>
 						<td>Start date<span id="colon">:</span>
 						</td>
-						<td><input  class="dateField" id="startDateMaster" value=""  placeholder="DD-MM-YYYY"  /></td>
+						<td><input  class="dateField" id="workStartDate" value=""  placeholder="DD-MM-YYYY"  /></td>
 						<td>End date<span id="colon">:</span>
 						</td>
-						<td><input  class="dateField" id="endDateMaster" value=""  placeholder="DD-MM-YYYY"  /></td>
+						<td><input  class="dateField" id="workEndDate" value=""  placeholder="DD-MM-YYYY"  /></td>
 					</tr>
 				</table>
 				</fieldset>
 				
-				<c:forEach var="indent" items="${indentList}">
+				<c:forEach var="indentDesc" items="${indentDescList}">
 					<div class="collapse">
-						<h3>${indent.aliasProjDesc}
-						  <c:if test="${indent.indentId eq '_'}">
+						<h3>${indentDesc.aliasProjDesc}
+						  <c:if test="${indentDesc.indentId eq '_'}">
                                     *
                            </c:if>
 						</h3>
 						<fieldset style="margin: 1em; text-align: left;">
 							<table>
 								<tr>
-									<td>Start date<span id="colon">:</span>
-									</td>
-									<td><input  class="dateField" id="startDate${indent.projDescId}${indent.indentId}" value="${indent.startDate}"  placeholder="DD-MM-YYYY"  /></td>
-								</tr>
-								<tr>
-									<td>End date<span id="colon">:</span>
-									</td>
-									<td><input  class="dateField" id="endDate${indent.projDescId}${indent.indentId}" value="${indent.endDate}" placeholder="DD-MM-YYYY"  /></td>
-								</tr>
-								<tr>
 									<td>Quantity<span id="colon">:</span>
 									</td>
-									<td><input id="plannedArea${indent.projDescId}${indent.indentId}" value="${indent.plannedArea}" class="inputText" /></td>
+									<td><input name="plannedQty" aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" 
+										id="plannedQty${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.plannedQty}" class="inputText" /></td>
 								</tr>
 								<tr>
 									<td>Metric<span id="colon">:</span>
 									</td>
-									<td><input id="metric${indent.projDescId}${indent.indentId}" value="${indent.metric}" readonly="readonly" class="inputText" /></td>
+									<td><input id="metric${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.metric}" 
+									readonly="readonly" class="inputText" /></td>
 								</tr>
 								<tr><td></td></tr>
-								  <c:if test="${indent.indentId eq '_'}">
-									<tr>
-										<td><input class="getIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Get Material" type="button" /></td>
-										<td><input class="saveIndentButton" aria-desc-id="${indent.projDescId}" aria-indent-id="${indent.indentId}" value="Indent" type="button" /></td>
-										<td></td>
-									</tr>
-								 </c:if>
+								 
 								<tr><td></td></tr>
 							</table>
 							
-							<table id="itemTbl${indent.projDescId}${indent.indentId}" border="1" class="gridView">
+							<table id="itemTbl${indentDesc.projDescId}${indentDesc.indentDescId}" border="1" class="gridView">
 								
 								<tr>
 									<th>Type</th>
@@ -266,7 +283,7 @@
 									<th>Action</th>
 								</tr>
 								
-								<c:forEach var="row" items="${indent.itemDetails}">
+								<c:forEach var="row" items="${indentDesc.itemDetails}">
 									<tr>
 										<td>${row.itemType}</td>
 										<td>${row.itemName}</td>
@@ -278,13 +295,23 @@
 									</tr>
 								</c:forEach>
 							</table>
-							<input type="hidden" value="${indent.projId}" id="projId" />
-							<input type="hidden" value="${indent.employeeId}" id="employeeId" />
-							<input type="hidden" value="${indent.indentId}" id="indentId" />
+							<input type="hidden" value="${indentDesc.projId}" id="projId" />
 						</fieldset>
 					</div>
 				</c:forEach>
-				
+
+				<c:if test="${indent.indentId eq '_'}">
+					<center>
+						<table>
+							<tr>
+								<td><input class="saveIndentButton"
+									aria-desc-id="${indent.projId}"
+									aria-indent-id="${indent.indentId}" value="Next" type="button" /></td>
+								<td></td>
+							</tr>
+						</table>
+					</center>
+				</c:if>
 				<table style="display:none;">
 					<tr id="dummyRow">
 						<td></td>

@@ -33,7 +33,8 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.Indent;
-import com.psk.pms.model.Indent.ItemDetail;
+import com.psk.pms.model.IndentDesc;
+import com.psk.pms.model.IndentDesc.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
 
@@ -95,7 +96,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	public boolean saveIndentDescription(final Indent indent) {
 		Integer generatedIndentId = null;
 		try {
-			String indentDescSql = "INSERT INTO " + DescriptionType.getDescriptionTableName(Constants.INDENT)
+			/*String indentDescSql = "INSERT INTO " + DescriptionType.getDescriptionTableName(Constants.INDENT)
 					+ " (ProjId, ProjDescId, Quantity, Metric, StartDate, EndDate, LastUpdatedBy, LastUpdatedAt) "
 					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -128,7 +129,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 				@Override
 				public void setValues(PreparedStatement ps, int i)
 						throws SQLException {
-					Indent.ItemDetail itemDetail = indent.getItemDetails().get(i);
+					IndentDesc.ItemDetail itemDetail = indent.getItemDetails().get(i);
 					ps.setString(1, indent.getProjId());
 					ps.setInt(2, indentId);
 					ps.setString(3, indent.getProjDescId());
@@ -143,9 +144,9 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 				public int getBatchSize() {
 					return indent.getItemDetails().size();
 				}
-			});
+			});*/
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -160,19 +161,19 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		ProjDescDetail projDescDetail = getPskFieldProjectDescription(new Integer(projDescId).toString());
 		for (Map<String, Object> row : rows) {
-			Indent indent = buildIndentDescDetail(row);
+			/*Indent indent = buildIndentDescDetail(row);
 			indent.setAliasProjDesc(projDescDetail.getAliasDescription());
 			indent.setMetric(projDescDetail.getMetric());
-			indentDescList.add(indent);
+			indentDescList.add(indent);*/
 		}
 		return indentDescList;
 	}
 
 
-	public List<Indent.ItemDetail> getIndentItems(String indentId) {
+	public List<IndentDesc.ItemDetail> getIndentItems(String indentId) {
 		String sql = "SELECT ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice, IndentItemId FROM indentitem WHERE IndentId ="+indentId;
 
-		List<Indent.ItemDetail> itemList = new ArrayList<Indent.ItemDetail>();
+		List<IndentDesc.ItemDetail> itemList = new ArrayList<IndentDesc.ItemDetail>();
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map<String, Object> row : rows) {
@@ -195,7 +196,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		Indent indent = new Indent();
 		indent.setIndentId(row.get("IndentId").toString());
 		indent.setProjId(row.get("ProjId").toString());
-		indent.setProjDescId(row.get("ProjDescId").toString());
+		/*indent.setProjDescId(row.get("ProjDescId").toString());
 		BigDecimal plannedArea = (BigDecimal) row.get("Quantity");
 		if (null == plannedArea) {
 			indent.setPlannedArea(null);
@@ -206,7 +207,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		indent.setMetric((String) row.get("Metric"));
 		indent.setStartDate((String) row.get("StartDate"));
 		indent.setEndDate((String) row.get("EndDate"));
-		indent.setItemDetails(getIndentItems(indent.getIndentId()));
+		indent.setItemDetails(getIndentItems(indent.getIndentId()));*/
 		return indent;
 	}
 
@@ -278,7 +279,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		Indent indent = new Indent();
 		indent.setProjId(row.get("ProjId").toString());
 		indent.setProjId(row.get("ProjDescId").toString());	
-		indent.setMetric((String) row.get("Metric"));
+	/*	indent.setMetric((String) row.get("Metric"));
 		indent.setIndentId(row.get("IndentId").toString());
 		indent.setAliasProjDesc(row.get("AliasDescription").toString());
 		BigDecimal quantity = (BigDecimal) row.get("Quantity");
@@ -286,7 +287,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			indent.setPlannedArea(null);
 		} else {
 			indent.setPlannedArea(quantity.doubleValue());
-		}
+		}*/
 		indent.setStartDate((String) row.get("StartDate"));
 		indent.setEndDate((String) row.get("EndDate"));
 		return indent;
