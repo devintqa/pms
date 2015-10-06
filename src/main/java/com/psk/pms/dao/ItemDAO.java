@@ -78,4 +78,6 @@ public interface ItemDAO {
 
     void updateProjectDescItems(List<ItemDetailDto> itemDetailDtos);
 
+	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId);
+
 }

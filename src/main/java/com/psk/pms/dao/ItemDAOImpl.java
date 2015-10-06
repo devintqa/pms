@@ -4,6 +4,7 @@ import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -703,4 +704,22 @@ public class ItemDAOImpl implements ItemDAO {
                     }
                 });
     }
+
+	@Override
+	public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId) {
+		List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<com.psk.pms.model.IndentDesc.ItemDetail>();
+		String indentItemToRequestSql = "SELECT ItemName, ItemType, sum(ItemQty) as ItemQty FROM indentdescitem where indentDescId in (select indentdescid from indentdesc where indentId = '"+indentId+"') group by ItemName";
+		List<Map<String, Object>> rows = null;
+		System.out.println(indentItemToRequestSql);
+		rows = jdbcTemplate.queryForList(indentItemToRequestSql);
+		for (Map<String, Object> row : rows) {
+			com.psk.pms.model.IndentDesc.ItemDetail itemDetail = new com.psk.pms.model.IndentDesc.ItemDetail();
+			itemDetail.setItemName((String) row.get("ItemName"));
+			itemDetail.setItemType((String) row.get("ItemType"));
+			itemDetail.setItemQty(((Double)row.get("ItemQty")).toString());
+			indentDescItemList.add(itemDetail);
+		}
+		System.out.println("(indentDescItemList.size()"+indentDescItemList.size());
+		return indentDescItemList;
+	}
 }

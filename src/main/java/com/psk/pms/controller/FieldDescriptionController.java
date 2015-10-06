@@ -51,11 +51,9 @@ public class FieldDescriptionController extends BaseController {
 	public String createIndent(
 			@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "projectId") String projectId, 
-			@RequestParam(value = "subProjectId") String subProjectId,
 			@RequestParam(value = "projDescs") String projDescs,
 			@RequestParam(value = "action") String action,
 			Model model) {
-    	
     	String[] projDescId = projDescs.split(",");
     	List<IndentDesc> indentDescList = null;
     	Indent indent = null;
@@ -66,6 +64,7 @@ public class FieldDescriptionController extends BaseController {
     		indent.setStartDate(null);
     		indent.setEndDate(null);
     		indent.setProjId(projectId);
+    		indent.setEmployeeId(employeeId);
     		indent.setIndentId("_");
     	}
     	indentDescList = new ArrayList<IndentDesc>();
@@ -116,8 +115,22 @@ public class FieldDescriptionController extends BaseController {
     	
     }
     
+    @RequestMapping(value = "/emp/myview/indent/itemToRequest", method = RequestMethod.GET)
+    public String getIndentItemForRequest(
+    		@RequestParam(value = "employeeId") String employeeId,
+			@RequestParam(value = "indentId") String indentId,
+			Model model) {
+    	IndentDesc indentDesc = new IndentDesc();
+    	indentDesc.setIndentId(indentId);
+    	indentDesc.setItemDetails(itemService.getIndentItemForRequest(indentId));
+    	model.addAttribute("indentDesc", indentDesc);
+    	model.addAttribute("indentItems", indentDesc.getItemDetails());
+    	model.addAttribute("indentItemSize", indentDesc.getItemDetails().size());
+    	return "PlaceIndentRequest";
+    }
+    
     @RequestMapping(value = "/emp/myview/indent/saveIndentItem.do", method = RequestMethod.POST)
-    @ResponseBody public boolean saveIndentItem(@RequestBody Indent indent) {
+    @ResponseBody public Integer saveIndentItem(@RequestBody Indent indent) {
     	return fieldDescriptionService.saveIndentDescription(indent);
     }
     

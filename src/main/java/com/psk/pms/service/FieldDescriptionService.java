@@ -15,7 +15,7 @@ public interface FieldDescriptionService {
 
     void createFieldDescription(int projectId, int subProjectId);
     
-    boolean saveIndentDescription(Indent indent);
+    Integer saveIndentDescription(Indent indent);
     
     List<Indent> getIndentDescAndItems(int projDescId);
     

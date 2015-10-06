@@ -6,6 +6,7 @@ import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -306,4 +307,9 @@ public class ItemServiceImpl implements ItemService {
         }
         projectDescriptionDAO.updateProjectDescriptions(projDescDetails);
     }
+
+	@Override
+	public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId) {
+		return itemDAO.getIndentItemForRequest(indentId);
+	}
 }
