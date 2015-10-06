@@ -109,7 +109,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         String sql;
         List<Map<String, Object>> rows;
         if (!isEmpty(empId)) {
-            sql = "select ProjId, AliasProjName from project where ProjId in (select projectId from authoriseproject where empId = ?) and mainProjId = 0";
+            sql = "select ProjId, AliasProjName from project where ProjId in (select projectId from authoriseproject where empId = ?)";
             rows = jdbcTemplate.queryForList(sql, empId);
         } else {
             sql = "select ProjId, AliasProjName from project";
@@ -172,6 +172,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     private ProjectDetail buildProjectDetail(Map<String, Object> row) {
         ProjectDetail projDoc = new ProjectDetail();
         projDoc.setProjId((Integer) row.get("ProjId"));
+        projDoc.setAliasProjectNameForSubProj((Integer) row.get("MainProjId"));
         projDoc.setProjectName((String) row.get("ProjName"));
         projDoc.setAliasName((String) row.get("AliasProjName"));
         projDoc.setProjectType((String) row.get("ProjectType"));
@@ -229,7 +230,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         return true;
     }
 
-    private String projQuery = "SELECT  ProjId, ProjName, ProjectType ,AliasProjName, AgreementNum, "
+    private String projQuery = "SELECT  ProjId, MainProjId, ProjName, ProjectType ,AliasProjName, AgreementNum, "
             + "CERNum, Amount, ContractorName,ContractorAliasName, ContractorAdd, AgreementValue, "
             + "TenderValue , ExcessInAmount, ExcessInPercentage,LessInPercentage, "
             + "CompletionDateForBonus ,TenderDate, AgreementDate, CommencementDate, CompletedDate,workoutPercentage,workLocation, "

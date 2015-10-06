@@ -177,6 +177,8 @@ public class PmsMasterQuery {
     public static final String CREATE_STOCK_DETAILS = "insert into stockDetail(projectId, itemName, totalQuantity) values (?,?,?)";
 
     public static final String UPDATE_STOCK_DETAILS = "update stockDetail set totalQuantity=? where projectId=? and itemName=?";
+    
+    public static final String GET_ITEM_NAMES_STORE = "select itemName from stockDetail where projectId=?";
 
 
 }

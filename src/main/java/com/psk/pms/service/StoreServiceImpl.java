@@ -67,4 +67,12 @@ public class StoreServiceImpl implements StoreService {
     public void setStoreDetailDAO(StoreDetailDAO storeDetailDAO) {
         this.storeDetailDAO = storeDetailDAO;
     }
+
+	@Override
+	public List<String> getItemNamesInStore(String projId) {
+		 List<String> stockDetails = storeDetailDAO.getItemNamesInStore(projId);	
+		 return stockDetails;
+	}
+
+	
 }

@@ -8,15 +8,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>PMS</title>
 <script type="text/javascript">
-        $(document).ready(
-                function () {
-                    $('.nav li').hover(function () {
-                        $('ul', this).fadeIn();
-                    }, function () {
-                        $('ul', this).fadeOut();
-                    });
-                });
-    </script>
+	$(document).ready(function() {
+		$('.nav li').hover(function() {
+			$('ul', this).fadeIn();
+		}, function() {
+			$('ul', this).fadeOut();
+		});
+	});
+</script>
 </head>
 
 <div class="navigation">
@@ -240,12 +239,20 @@
 							href="/pms/emp/myview/buildStoreDetail/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Store
 								Detail</a></li>
 					</ul></li>
+				<li><a href="#">Transact</a>
+					<ul>
+						<li><a id="dispatchTransaction"
+							href="/pms/emp/myview/dispatchTransaction/${employeeObj.employeeId}">Dispatch
+						</a></li>
+					</ul></li>
+
 				<li><a href="#">View</a>
 					<ul>
 						<li><a id="viewStoreDetails"
 							href="/pms/emp/myview/viewStoreDetails/${employeeObj.employeeId}">
 								Store Details</a></li>
 					</ul></li>
+
 				<li><a id="profile"
 					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 						Profile</a></li>
