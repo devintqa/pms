@@ -3,6 +3,7 @@ package com.psk.pms.dao;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 import com.psk.pms.utils.DateFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -64,6 +65,14 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         }
         return stockDetails;
     }
+    
+    @Override
+    public List<String> getItemNamesInStore(String projectId) {
+ 
+       
+        return jdbcTemplate.queryForList(GET_ITEM_NAMES_STORE, new Object[]{projectId},String.class);
+
+    }
 
     @Override
     public void updateStockDetail(int projId, String itemName, String totalQuantity) {
@@ -90,4 +99,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         detail.setRecievedDate(DateFormatter.getStringDate(recievedDate, formatter));
         return detail;
     }
+
+		
+	
 }

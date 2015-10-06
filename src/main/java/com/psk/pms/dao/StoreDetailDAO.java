@@ -18,4 +18,7 @@ public interface StoreDetailDAO {
     List<StockDetail> getStockDetails(int projId, String itemName);
 
     void updateStockDetail(int projId, String itemName, String totalQuantity);
+
+	List<String> getItemNamesInStore(String projId);
+
 }
