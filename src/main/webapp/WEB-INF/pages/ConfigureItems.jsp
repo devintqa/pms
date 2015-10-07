@@ -113,17 +113,30 @@
 			var itemDescForm = {};
 			var len = itemTable.rows.length;
 			var err = null;
-			for (i = 1; i <= len - 1; i++) {
-				var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
-				var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
-				var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
-				var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-				
-				var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
-				if(itemName && itemType && itemUnit && itemPrice){
-					itemObjArray.push(obj); 
-				}else{
-					err = true;
+			if(1 == len-1 ){
+					var itemName = itemTable.rows[1].cells[0].getElementsByTagName('input')[0].value;
+					var itemType = itemTable.rows[1].cells[0].getElementsByTagName('input')[1].value;
+					var itemUnit = itemTable.rows[1].cells[1].getElementsByTagName('input')[0].value;
+					var itemPrice = itemTable.rows[1].cells[2].getElementsByTagName('input')[0].value;
+					var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
+				if(itemName && itemType && itemUnit && itemPrice || !(itemName && itemType && itemUnit && itemPrice)){
+						itemObjArray.push(obj);
+					}else{
+						err = true;
+					}
+			} else{
+				for (i = 1; i <= len - 1; i++) {
+					var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+					var itemType = itemTable.rows[i].cells[0].getElementsByTagName('input')[1].value;
+					var itemUnit = itemTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
+					var itemPrice = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
+
+					var obj = new ItemDetail(itemName, itemType, itemUnit, itemPrice );
+					if(itemName && itemType && itemUnit && itemPrice){
+						itemObjArray.push(obj);
+					}else{
+						err = true;
+					}
 				}
 			}
 			itemDescForm["employeeId"] = document.getElementById('employeeId').value;

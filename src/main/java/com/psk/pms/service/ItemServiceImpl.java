@@ -11,10 +11,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.psk.pms.Constants.LABOUR;
 import static com.psk.pms.Constants.OTHER;
@@ -254,17 +251,23 @@ public class ItemServiceImpl implements ItemService {
                                                      Map<Integer, BigDecimal> descIdItemCostMap) {
         List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, Constants.PSK);
         applyPriceAndCostForAllItems(itemDetailDtos, itemNamePriceMap, descIdItemCostMap);
-        itemDAO.updateProjectDescItems(itemDetailDtos);
+        if(!itemDetailDtos.isEmpty())
+        {
+            itemDAO.updateProjectDescItems(itemDetailDtos);
+        }
     }
 
     private void applyPriceAndCostForAllItems(List<ItemDetailDto> itemDetailDtos, Map<String, BigDecimal> itemDetails,
                                               Map<Integer, BigDecimal> descIdItemCostMap) {
         LOGGER.info("Applying new price and recalculated cost");
+        List<ItemDetailDto> deletedItems = new ArrayList<ItemDetailDto>();
         String itemName;
         Integer itemQunatity;
         BigDecimal itemCost;
         BigDecimal itemPrice;
-        for (ItemDetailDto itemDetailDto : itemDetailDtos) {
+        Iterator itemDetailsIterator = itemDetailDtos.iterator();
+        while (itemDetailsIterator.hasNext()) {
+            ItemDetailDto itemDetailDto = (ItemDetailDto) itemDetailsIterator.next();
             itemName = itemDetailDto.getItemName();
             itemQunatity = itemDetailDto.getItemQuantity();
             if (itemDetails.containsKey(itemName)) {
@@ -273,9 +276,14 @@ public class ItemServiceImpl implements ItemService {
                 itemCost = new BigDecimal(itemQunatity).multiply(itemPrice);
                 itemDetailDto.setItemCost(itemCost);
             } else {
-                itemCost = itemDetailDto.getItemCost();
+                itemCost = BigDecimal.ZERO;
+                deletedItems.add(itemDetailDto);
+                itemDetailsIterator.remove();
             }
             calculateTotalOfItemCostPerDescription(itemCost, itemDetailDto.getProjectDescId(), descIdItemCostMap);
+        }
+        for (ItemDetailDto itemDetailDto : deletedItems) {
+            itemDAO.deleteItemByProjectDescItemId(itemDetailDto.getProjectDescItemId());
         }
     }
 
@@ -287,7 +295,11 @@ public class ItemServiceImpl implements ItemService {
                 BigDecimal previousCost = descIdItemCostMap.get(projectDescId);
                 descIdItemCostMap.put(projectDescId, previousCost.add(itemCost));
             } else {
-                descIdItemCostMap.put(projectDescId, itemCost);
+                if (itemCost.compareTo(BigDecimal.ZERO) == -1) {
+                    descIdItemCostMap.put(projectDescId, BigDecimal.ZERO);
+                } else {
+                    descIdItemCostMap.put(projectDescId, itemCost);
+                }
             }
         }
     }

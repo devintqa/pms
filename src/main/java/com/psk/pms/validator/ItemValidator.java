@@ -64,7 +64,7 @@ public class ItemValidator extends BaseValidator implements Validator {
 			ProjectConfiguration projectItemConfiguration) {
 		List<String> itemNames = new ArrayList<String>();
 		Set<String> itemName = new HashSet<String>();
-		if (projectItemConfiguration.getItemDetail() != null) {
+		if (projectItemConfiguration.getItemDetail() != null && projectItemConfiguration.getItemDetail().size() > 1) {
 			for (ProjectConfiguration.ItemDetail items : projectItemConfiguration
 					.getItemDetail()) {
 				String item = items.getItemName().toUpperCase();
@@ -73,6 +73,10 @@ public class ItemValidator extends BaseValidator implements Validator {
 			}
 			if (itemNames.size() != itemName.size()) {
 				return Constants.DUPLICATED_ITEM_NAMES;
+			}
+		}else {
+			if(projectItemConfiguration.getItemDetail().get(0).getItemName().isEmpty()){
+				projectItemConfiguration.getItemDetail().remove(0);
 			}
 		}
 		return result;

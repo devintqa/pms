@@ -274,7 +274,9 @@ public class ItemController extends BaseController {
         try {
             Map<String, BigDecimal> itemNamePriceMap = getConvertItemListToMap(itemList);
             itemService.updatePriceAndCostForConfiguredItems(projectId, itemNamePriceMap, descIdItemCostMap);
-            itemService.updateProjectDescriptionWithRecalculatedCost(projectId, descIdItemCostMap);
+            if(!descIdItemCostMap.isEmpty()){
+                itemService.updateProjectDescriptionWithRecalculatedCost(projectId, descIdItemCostMap);
+            }
             boolean status = itemService.configureItemPrice(projectItemConfiguration);
             if (status) {
                 result = Constants.ITEM_SAVE_SUCCESSFUL;
@@ -287,8 +289,10 @@ public class ItemController extends BaseController {
 
     private Map<String, BigDecimal> getConvertItemListToMap(List<ProjectConfiguration.ItemDetail> itemList) {
         Map<String, BigDecimal> itemNamePriceMap = new HashMap<String, BigDecimal>();
-        for (ProjectConfiguration.ItemDetail itemDetail : itemList) {
-            itemNamePriceMap.put(itemDetail.getItemName(), new BigDecimal(itemDetail.getItemPrice()));
+            for (ProjectConfiguration.ItemDetail itemDetail : itemList) {
+                if(!itemDetail.getItemName().isEmpty()) {
+                    itemNamePriceMap.put(itemDetail.getItemName(), new BigDecimal(itemDetail.getItemPrice()));
+                }
         }
         return itemNamePriceMap;
     }
