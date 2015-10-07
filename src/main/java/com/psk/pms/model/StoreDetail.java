@@ -1,6 +1,7 @@
 package com.psk.pms.model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Sony on 25-09-2015.
@@ -17,6 +18,10 @@ public class StoreDetail {
     private String recievedQuantity;
     private String comments;
     private String supplierName;
+    private List<String>fieldUsers;
+    private List<String>items;
+    private String fieldUser;
+    private String totalQuantity;
 
     public int getProjId() {
         return projId;
@@ -96,5 +101,37 @@ public class StoreDetail {
 
     public void setSupplierName(String supplierName) {
         this.supplierName = supplierName;
+    }
+
+    public List<String> getFieldUsers() {
+        return fieldUsers;
+    }
+
+    public void setFieldUsers(List<String> fieldUsers) {
+        this.fieldUsers = fieldUsers;
+    }
+
+    public List<String> getItems() {
+        return items;
+    }
+
+    public void setItems(List<String> items) {
+        this.items = items;
+    }
+
+    public String getFieldUser() {
+        return fieldUser;
+    }
+
+    public void setFieldUser(String fieldUser) {
+        this.fieldUser = fieldUser;
+    }
+
+    public String getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(String totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 }

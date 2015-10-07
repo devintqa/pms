@@ -5,8 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.model.StockDetail;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.psk.pms.dao.StoreDetailDAO;
@@ -23,6 +25,9 @@ public class StoreServiceImpl implements StoreService {
     private static final Logger LOGGER = Logger.getLogger(StoreServiceImpl.class);
 
     private StoreDetailDAO storeDetailDAO;
+
+    @Autowired
+    EmployeeDAO employeeDAO;
 
 
     @Override
@@ -51,6 +56,11 @@ public class StoreServiceImpl implements StoreService {
         return storeDetailDAO.getStoreDetails(projId);
     }
 
+    @Override
+    public List<String> getSelectedUser(String teamName, String projectId) {
+        return employeeDAO.getSelectedEmployees(teamName, projectId);
+    }
+
     private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter) {
         Date date = null;
         try {
@@ -68,11 +78,19 @@ public class StoreServiceImpl implements StoreService {
         this.storeDetailDAO = storeDetailDAO;
     }
 
-	@Override
-	public List<String> getItemNamesInStore(String projId) {
-		 List<String> stockDetails = storeDetailDAO.getItemNamesInStore(projId);	
-		 return stockDetails;
-	}
+    @Override
+    public List<String> getItemNamesInStore(String projId) {
+        List<String> stockDetails = storeDetailDAO.getItemNamesInStore(projId);
+        return stockDetails;
+    }
 
-	
+    @Override
+    public String getItemQuantityInStock(String projId, String itemName) {
+        String quantity = null;
+        List<StockDetail> stockDetails = storeDetailDAO.getStockDetails(Integer.parseInt(projId), itemName);
+        if (!stockDetails.isEmpty()) {
+            quantity = stockDetails.get(0).getTotalQuantity();
+        }
+        return quantity;
+    }
 }

@@ -13,6 +13,10 @@ public interface StoreService {
     void saveStoreDetail(StoreDetail storeDetail);
 
     List<StoreDetail> getStoreDetails(int projId);
+
+    List<String> getSelectedUser(String teamName, String projectId);
     
     List<String> getItemNamesInStore(String projId);
+
+    String getItemQuantityInStock(String projId, String itemName);
 }
