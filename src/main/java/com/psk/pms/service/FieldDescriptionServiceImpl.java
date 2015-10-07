@@ -33,7 +33,7 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
     }
 
 	@Override
-	public boolean saveIndentDescription(Indent indent) {
+	public Integer saveIndentDescription(Indent indent) {
 		 return fieldDescriptionDAO.saveIndentDescription(indent);
 	}
 

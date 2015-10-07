@@ -93,66 +93,99 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	}
 
 	@Override
-	public boolean saveIndentDescription(final Indent indent) {
-		Integer generatedIndentId = null;
+	public Integer saveIndentDescription(final Indent indent) {
+		Integer indentId = 0;
 		try {
-			/*String indentDescSql = "INSERT INTO " + DescriptionType.getDescriptionTableName(Constants.INDENT)
-					+ " (ProjId, ProjDescId, Quantity, Metric, StartDate, EndDate, LastUpdatedBy, LastUpdatedAt) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-			Connection connection = jdbcTemplate.getDataSource().getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(indentDescSql, Statement.RETURN_GENERATED_KEYS);
-
-			preparedStatement.setString(1, indent.getProjId());
-			preparedStatement.setString(2, indent.getProjDescId());
-			preparedStatement.setString(3, indent.getPlannedArea().toString());
-			preparedStatement.setString(4, indent.getMetric());
-			preparedStatement.setString(5, indent.getStartDate());
-			preparedStatement.setString(6, indent.getEndDate());
-			preparedStatement.setString(7, indent.getEmployeeId());
-			preparedStatement.setDate(8, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
-
-			preparedStatement.executeUpdate();
-			ResultSet keys = preparedStatement.getGeneratedKeys();
-
-			if (keys.next()) {
-				generatedIndentId = keys.getInt(1); //id returned after insert execution
-			} 
-
-
-			final Integer indentId = generatedIndentId;
-			String indentDescItemSql = "INSERT INTO " + DescriptionType.getDescriptionItemTableName(Constants.INDENT)
-					+ " (ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-			jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
-
-				@Override
-				public void setValues(PreparedStatement ps, int i)
-						throws SQLException {
-					IndentDesc.ItemDetail itemDetail = indent.getItemDetails().get(i);
-					ps.setString(1, indent.getProjId());
-					ps.setInt(2, indentId);
-					ps.setString(3, indent.getProjDescId());
-					ps.setString(4, itemDetail.getItemName());
-					ps.setString(5, itemDetail.getItemType());
-					ps.setString(6, itemDetail.getItemQty());
-					ps.setString(7, itemDetail.getItemUnit());
-					ps.setString(8, itemDetail.getItemPrice());
-				}
-
-				@Override
-				public int getBatchSize() {
-					return indent.getItemDetails().size();
-				}
-			});*/
+			indentId = insertIndent(indent);
+			
+			for(IndentDesc indentDesc: indent.getIndentDescList()){
+				Integer indentDescId = insertIndentDesc(indentId, indentDesc);
+				insertIndentDescItem(indentDescId, indentDesc.getItemDetails());
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return 0;
 		}
-		return true;
+		return indentId;
 	}
 
+
+	Integer insertIndent(Indent indent) throws SQLException{
+
+		Integer generatedIndentId = null;
+
+		String indentDescSql = "INSERT INTO Indent (ProjId, StartDate, EndDate, LastUpdatedBy, LastUpdatedAt) "
+				+ "VALUES (?, ?, ?, ?, ?)";
+
+		Connection connection = jdbcTemplate.getDataSource().getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(indentDescSql, Statement.RETURN_GENERATED_KEYS);
+
+		preparedStatement.setString(1, indent.getProjId());
+		preparedStatement.setString(2, indent.getStartDate());
+		preparedStatement.setString(3, indent.getEndDate());
+		preparedStatement.setString(4, indent.getEmployeeId());
+		preparedStatement.setDate(5, new java.sql.Date(Calendar.getInstance().getTime().getTime()));
+
+		preparedStatement.executeUpdate();
+		ResultSet keys = preparedStatement.getGeneratedKeys();
+
+		if (keys.next()) {
+			generatedIndentId = keys.getInt(1); //id returned after insert execution
+		} 
+
+		return generatedIndentId;
+
+	}
+
+	Integer insertIndentDesc(Integer indentId, IndentDesc indentDesc) throws SQLException{
+
+		Integer generatedIndentDescId = null;
+		
+		String indentDescSql = "INSERT INTO IndentDesc (IndentId, ProjDescId, Quantity, Metric)"
+				+ "VALUES (?, ?, ?, ?)";
+
+		Connection connection = jdbcTemplate.getDataSource().getConnection();
+		PreparedStatement preparedStatement = connection.prepareStatement(indentDescSql, Statement.RETURN_GENERATED_KEYS);
+
+		preparedStatement.setString(1, indentId.toString());
+		preparedStatement.setString(2, indentDesc.getProjDescId());
+		preparedStatement.setDouble(3, indentDesc.getPlannedQty());
+		preparedStatement.setString(4, indentDesc.getMetric());
+
+		preparedStatement.executeUpdate();
+		ResultSet keys = preparedStatement.getGeneratedKeys();
+
+		if (keys.next()) {
+			generatedIndentDescId = keys.getInt(1); //id returned after insert execution
+		} 
+
+		return generatedIndentDescId;
+	}
+	
+	void insertIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList){
+		String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
+				+ "VALUES (?, ?, ?, ?, ?)";
+		jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i)
+					throws SQLException {
+				ItemDetail itemDetail = itemDetailList.get(i);
+				ps.setString(1, indentDescId.toString());
+				ps.setString(2, itemDetail.getItemName());
+				ps.setString(3, itemDetail.getItemType());
+				ps.setString(4, itemDetail.getItemQty());
+				ps.setString(5, itemDetail.getItemUnit());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return itemDetailList.size();
+			}
+		});
+	}
+	
 	@Override
 	public List<Indent> getIndentDescAndItems(int projDescId) {
 		String sql = "SELECT ProjId, ProjDescId, Quantity, Metric, LastUpdatedBy, LastUpdatedAt, IndentId, StartDate, EndDate FROM indentdesc WHERE ProjDescId ="+projDescId;
@@ -170,7 +203,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	}
 
 
-	public List<IndentDesc.ItemDetail> getIndentItems(String indentId) {
+	/*public List<IndentDesc.ItemDetail> getIndentItems(String indentId) {
 		String sql = "SELECT ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice, IndentItemId FROM indentitem WHERE IndentId ="+indentId;
 
 		List<IndentDesc.ItemDetail> itemList = new ArrayList<IndentDesc.ItemDetail>();
@@ -190,7 +223,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		item.setItemUnit((String) row.get("itemUnit"));
 		item.setItemPrice((String) row.get("itemPrice"));
 		return item;
-	}
+	}*/
 
 	private Indent buildIndentDescDetail(Map<String, Object> row) {
 		Indent indent = new Indent();
@@ -279,7 +312,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		Indent indent = new Indent();
 		indent.setProjId(row.get("ProjId").toString());
 		indent.setProjId(row.get("ProjDescId").toString());	
-	/*	indent.setMetric((String) row.get("Metric"));
+		/*	indent.setMetric((String) row.get("Metric"));
 		indent.setIndentId(row.get("IndentId").toString());
 		indent.setAliasProjDesc(row.get("AliasDescription").toString());
 		BigDecimal quantity = (BigDecimal) row.get("Quantity");
@@ -293,5 +326,5 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		return indent;
 	}
 
-	
+
 }

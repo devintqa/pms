@@ -617,7 +617,6 @@ CREATE TABLE `projectLeadDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
-
 CREATE TABLE `indent` (
   `IndentId` int(11) NOT NULL AUTO_INCREMENT,
   `ProjId` int(10) NOT NULL,
@@ -626,7 +625,7 @@ CREATE TABLE `indent` (
   `LastUpdatedBy` varchar(45) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   PRIMARY KEY (`IndentId`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 CREATE TABLE `indentdesc` (
   `IndentId` int(10) NOT NULL,
@@ -635,19 +634,17 @@ CREATE TABLE `indentdesc` (
   `Metric` varchar(30) NOT NULL,
   `IndentDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`IndentDescId`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
-CREATE TABLE `indentitem` (
+CREATE TABLE `indentdescitem` (
   `IndentDescId` int(11) DEFAULT '0',
   `ItemName` varchar(45) DEFAULT NULL,
   `ItemType` varchar(45) DEFAULT NULL,
   `ItemQty` varchar(45) DEFAULT '0',
   `ItemUnit` varchar(45) DEFAULT NULL,
-  `ItemPrice` varchar(45) DEFAULT '0',
   `IndentItemId` int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`IndentItemId`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
-
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 --
 -- Table structure for table `stockDetail`
 --
