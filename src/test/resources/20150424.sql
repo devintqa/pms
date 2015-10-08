@@ -663,6 +663,25 @@ CREATE TABLE `stockDetail` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 
+--
+-- Table structure for table `dispatchdetail`
+--
+
+DROP TABLE IF EXISTS `dispatchdetail`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dispatchdetail` (
+    `projectId` int(10) NOT NULL,
+  `itemName` varchar(100) NOT NULL,
+  `dispactchedDate` datetime NOT NULL,
+  `fieldUser` varchar(100) NOT NULL,
+  `dispatchId` int(11) NOT NULL AUTO_INCREMENT,
+	`dispatchDesc` varchar(100) NOT NULL,
+  PRIMARY KEY (`dispatchId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+
 
 
 DROP TRIGGER IF EXISTS `SYNC_PROJECT_DESCRIPTION`;

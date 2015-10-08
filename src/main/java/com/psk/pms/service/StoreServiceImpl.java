@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.EmployeeDAO;
+import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +42,12 @@ public class StoreServiceImpl implements StoreService {
         saveStockDetails(storeDetail);
     }
 
-    private void saveStockDetails(StoreDetail storeDetail) {
-        List<StockDetail> stockDetails = storeDetailDAO.getStockDetails(storeDetail.getProjId(), storeDetail.getItemName());
-        if (stockDetails.isEmpty()) {
-            storeDetailDAO.saveStockDetail(storeDetail);
-        } else {
-            int totalQuantity = parseInt(storeDetail.getRecievedQuantity()) + parseInt(stockDetails.get(0).getTotalQuantity());
-            storeDetailDAO.updateStockDetail(storeDetail.getProjId(), storeDetail.getItemName(), String.valueOf(totalQuantity));
-        }
+    @Override
+    @Transactional
+    public void saveDispatchedDetail(DispatchDetail dispatchDetail) {
+        dispatchDetail.setSqlDispatchedDate(new Date());
+        storeDetailDAO.saveDispatchedDetails(dispatchDetail, Constants.DISPATCHED);
+        deductFromStock(dispatchDetail);
     }
 
 
@@ -56,26 +56,10 @@ public class StoreServiceImpl implements StoreService {
         return storeDetailDAO.getStoreDetails(projId);
     }
 
+
     @Override
     public List<String> getSelectedUser(String teamName, String projectId) {
         return employeeDAO.getSelectedEmployees(teamName, projectId);
-    }
-
-    private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter) {
-        Date date = null;
-        try {
-            if (null != dateToBeFormatted) {
-                date = formatter.parse(dateToBeFormatted);
-            }
-        } catch (ParseException e) {
-            LOGGER.error("Error in parsing the date " + e.getMessage());
-        }
-        return date;
-    }
-
-
-    public void setStoreDetailDAO(StoreDetailDAO storeDetailDAO) {
-        this.storeDetailDAO = storeDetailDAO;
     }
 
     @Override
@@ -92,5 +76,41 @@ public class StoreServiceImpl implements StoreService {
             quantity = stockDetails.get(0).getTotalQuantity();
         }
         return quantity;
+    }
+
+
+    private void saveStockDetails(StoreDetail storeDetail) {
+        List<StockDetail> stockDetails = storeDetailDAO.getStockDetails(storeDetail.getProjId(), storeDetail.getItemName());
+        if (stockDetails.isEmpty()) {
+            storeDetailDAO.saveStockDetail(storeDetail);
+        } else {
+            addIntoStocks(storeDetail, stockDetails);
+        }
+    }
+
+    private void addIntoStocks(StoreDetail storeDetail, List<StockDetail> stockDetails) {
+        int totalQuantity = parseInt(storeDetail.getRecievedQuantity()) + parseInt(stockDetails.get(0).getTotalQuantity());
+        storeDetailDAO.updateStockDetail(storeDetail.getProjId(), storeDetail.getItemName(), String.valueOf(totalQuantity));
+    }
+
+    private void deductFromStock(DispatchDetail dispatchDetail) {
+        int totalQuantity = parseInt(dispatchDetail.getTotalQuantity()) - parseInt(dispatchDetail.getRequestedQuantity());
+        storeDetailDAO.updateStockDetail(dispatchDetail.getProjId(), dispatchDetail.getItemName(), String.valueOf(totalQuantity));
+    }
+
+    private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter) {
+        Date date = null;
+        try {
+            if (null != dateToBeFormatted) {
+                date = formatter.parse(dateToBeFormatted);
+            }
+        } catch (ParseException e) {
+            LOGGER.error("Error in parsing the date " + e.getMessage());
+        }
+        return date;
+    }
+
+    public void setStoreDetailDAO(StoreDetailDAO storeDetailDAO) {
+        this.storeDetailDAO = storeDetailDAO;
     }
 }

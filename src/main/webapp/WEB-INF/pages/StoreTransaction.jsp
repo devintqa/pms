@@ -11,9 +11,12 @@
     <%@include file="Script.jsp" %>
     <script>
         $(document).ready(function () {
-            $("#itemNameField").hide();
+            if ($('#projId').val() == 0) {
+                $("#itemNameField").hide();
+            }
+
+
             $("#itemName").change(function () {
-                alert("item changed");
                 var projId = $('#projId').val();
                 var itemName = $('#itemName').val();
                 $.ajax({
@@ -22,7 +25,6 @@
                     cache: false,
                     data: "projId=" + projId + "&itemName=" + itemName,
                     success: function (response) {
-                        alert(response);
                         $("#totalQuantity").val(response);
                     }
                 });
@@ -54,11 +56,11 @@
                                     });
                                 }
                             });
-                            $("#itemNameField").show();
                             $('#itemName').html(options);
                             $('#fieldUser').html(fieldUserOptions);
                         } else {
                             $("#itemNameField").hide();
+                            $("#projId").prop('selectedIndex', 0);
                             $("#dialog-confirm").html(response.data);
                             $("#dialog-confirm").dialog({
                                 modal: true,
@@ -71,12 +73,10 @@
                                     }
                                 }
                             });
-                            $("#itemType").prop('selectedIndex', 0);
                         }
                     }
-
                 });
-
+                $("#itemNameField").show();
             });
 
         });
@@ -100,8 +100,8 @@
 
     </div>
     <div>
-        <form:form method="POST" commandName="storeDetailForm"
-                   action="saveStoreDetail.do">
+        <form:form method="POST" commandName="dispatchDetailForm"
+                   action="saveDispatchedDetail.do">
             <center>
                 <fieldset style="margin: 1em; text-align: left;">
                     <legend>Store Details</legend>
@@ -113,12 +113,6 @@
                                              id="projId" items="${aliasProjectList}">
                             </form:select></td>
                             <td><form:errors path="projId" cssClass="error"/></td>
-
-                            <td>Total Quantity<span id="colon">:</span>
-                            </td>
-                            <td><form:input path="totalQuantity"
-                                            cssClass="inputText"/></td>
-                            <td><form:errors path="totalQuantity" cssClass="error"/></td>
 
 
                         </tr>
@@ -143,6 +137,17 @@
                                             selected="selected">${storeDetailForm.itemName}</option>
                                 </form:select>
                                 </td>
+                                <td>Total Quantity<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="totalQuantity"
+                                                cssClass="inputText" readonly="true"/></td>
+                                <td><form:errors path="totalQuantity" cssClass="error"/></td>
+                                <td>Requested Quantity<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="requestedQuantity"
+                                                placeholder="Enter Requested Quantity" cssClass="inputText"/></td>
+                                <td><form:errors path="requestedQuantity"
+                                                 cssClass="error"/></td>
                             </tr>
                         </table>
 

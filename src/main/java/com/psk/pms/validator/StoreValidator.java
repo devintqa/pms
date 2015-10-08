@@ -1,6 +1,9 @@
 package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
+import com.psk.exception.ValidationException;
+import com.psk.pms.model.DispatchDetail;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -55,5 +58,35 @@ public class StoreValidator extends BaseValidator implements Validator {
             }
         }
 
+    }
+
+    public void validate(Object o, Errors errors, String dispatched) throws ValidationException {
+        DispatchDetail dispatchDetail = (DispatchDetail) o;
+        if (dispatchDetail.getProjId() == 0) {
+            errors.rejectValue("projId", "required.projId",
+                    "Please Select Project Name.");
+        }
+        if ("--Please Select--".equalsIgnoreCase(dispatchDetail.getItemName())) {
+            errors.rejectValue("itemName", "required.itemName",
+                    "Please select a valid Item Name");
+        }
+        if (!StringUtils.isNullOrEmpty(dispatchDetail.getRequestedQuantity())) {
+            pattern = Pattern.compile(ID_PATTERN);
+            matcher = pattern.matcher(dispatchDetail.getRequestedQuantity());
+            if (!matcher.matches()) {
+                errors.rejectValue("requestedQuantity", "requestedQuantity.incorrect",
+                        "Enter a numeric value");
+            }
+        }
+        if (!errors.hasErrors()) {
+            int totalQuantity = Integer.parseInt(dispatchDetail.getTotalQuantity());
+            int requestedQuantity = Integer.parseInt(dispatchDetail.getRequestedQuantity());
+            if (totalQuantity == 0) {
+                throw new ValidationException("There are no " + dispatchDetail.getItemName() + " in the store");
+            }
+            if (requestedQuantity > totalQuantity) {
+                throw new ValidationException("Requested Quantity is more than available Quantity");
+            }
+        }
     }
 }

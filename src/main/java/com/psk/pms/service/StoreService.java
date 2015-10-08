@@ -2,6 +2,7 @@ package com.psk.pms.service;
 
 import java.util.List;
 
+import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 
@@ -19,4 +20,6 @@ public interface StoreService {
     List<String> getItemNamesInStore(String projId);
 
     String getItemQuantityInStock(String projId, String itemName);
+
+    void saveDispatchedDetail(DispatchDetail dispatchDetail);
 }

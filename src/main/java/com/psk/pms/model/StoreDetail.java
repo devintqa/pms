@@ -18,10 +18,11 @@ public class StoreDetail {
     private String recievedQuantity;
     private String comments;
     private String supplierName;
-    private List<String>fieldUsers;
-    private List<String>items;
     private String fieldUser;
     private String totalQuantity;
+    private String requestedQuantity;
+    private List<String>fieldUsers;
+    private List<String>items;
 
     public int getProjId() {
         return projId;
@@ -133,5 +134,13 @@ public class StoreDetail {
 
     public void setTotalQuantity(String totalQuantity) {
         this.totalQuantity = totalQuantity;
+    }
+
+    public String getRequestedQuantity() {
+        return requestedQuantity;
+    }
+
+    public void setRequestedQuantity(String requestedQuantity) {
+        this.requestedQuantity = requestedQuantity;
     }
 }

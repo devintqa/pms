@@ -8,6 +8,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.psk.exception.ValidationException;
+import com.psk.pms.Constants;
+import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,14 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.JsonData;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjectConfiguration;
 import com.psk.pms.model.ProjectConfiguration.ItemDetail;
-import com.psk.pms.model.ProjectItemDescription;
-import com.psk.pms.model.StockDetail;
-import com.psk.pms.model.StoreDetail;
 import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.StoreValidator;
 
@@ -109,7 +105,6 @@ public class StoreController extends BaseController {
     }
 
 
-
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getTotalQuantity.do", method = RequestMethod.GET)
     @ResponseBody
     public String getTotalQuantity(HttpServletRequest httpServletRequest) {
@@ -117,7 +112,7 @@ public class StoreController extends BaseController {
                 + httpServletRequest.getParameter("projId"));
         String projId = httpServletRequest.getParameter("projId");
         String itemName = httpServletRequest.getParameter("itemName");
-        return storeService.getItemQuantityInStock(projId,itemName);
+        return storeService.getItemQuantityInStock(projId, itemName);
     }
 
 
@@ -125,10 +120,31 @@ public class StoreController extends BaseController {
     public String dispatchTransaction(@PathVariable String employeeId, Model model) {
         LOGGER.info("Store Controller : buildStoreDetail()");
         Map<String, String> aliasProjectList = getProjectDetails(employeeId);
-        StoreDetail storeDetail = new StoreDetail();
-        storeDetail.setEmployeeId(employeeId);
-        model.addAttribute("storeDetailForm", storeDetail);
+        DispatchDetail dispatchDetail = new DispatchDetail();
+        dispatchDetail.setEmployeeId(employeeId);
+        model.addAttribute("dispatchDetailForm", dispatchDetail);
         model.addAttribute("aliasProjectList", aliasProjectList);
+        return "StoreTransaction";
+    }
+
+    @RequestMapping(value = "/emp/myview/dispatchTransaction/saveDispatchedDetail.do", method = RequestMethod.POST)
+    public String saveDispatchedDetail(@ModelAttribute("dispatchDetailForm") DispatchDetail dispatchDetail,
+                                       BindingResult result, Model model, SessionStatus status) {
+        LOGGER.info("Store Controller : saveDispatchedDetail()");
+        try {
+            Map<String, String> aliasProjectList = getProjectDetails(dispatchDetail.getEmployeeId());
+            model.addAttribute("aliasProjectList", aliasProjectList);
+            storeValidator.validate(dispatchDetail, result, Constants.DISPATCHED);
+            model.addAttribute("dispatchDetailForm", dispatchDetail);
+            if (result.hasErrors()) {
+                return "StoreTransaction";
+            }
+            storeService.saveDispatchedDetail(dispatchDetail);
+            model.addAttribute("successMessage",
+                    "Dispatched Details saved successfully");
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+        }
         return "StoreTransaction";
     }
 

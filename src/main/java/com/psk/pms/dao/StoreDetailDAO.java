@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 
@@ -21,4 +22,5 @@ public interface StoreDetailDAO {
 
 	List<String> getItemNamesInStore(String projId);
 
+    void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched);
 }
