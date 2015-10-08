@@ -19,6 +19,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -185,64 +186,6 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			}
 		});
 	}
-	
-	@Override
-	public List<Indent> getIndentDescAndItems(int projDescId) {
-		String sql = "SELECT ProjId, ProjDescId, Quantity, Metric, LastUpdatedBy, LastUpdatedAt, IndentId, StartDate, EndDate FROM indentdesc WHERE ProjDescId ="+projDescId;
-
-		List<Indent> indentDescList = new ArrayList<Indent>();
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-		ProjDescDetail projDescDetail = getPskFieldProjectDescription(new Integer(projDescId).toString());
-		for (Map<String, Object> row : rows) {
-			/*Indent indent = buildIndentDescDetail(row);
-			indent.setAliasProjDesc(projDescDetail.getAliasDescription());
-			indent.setMetric(projDescDetail.getMetric());
-			indentDescList.add(indent);*/
-		}
-		return indentDescList;
-	}
-
-
-	/*public List<IndentDesc.ItemDetail> getIndentItems(String indentId) {
-		String sql = "SELECT ProjId, IndentId, ProjDescId, ItemName, ItemType, ItemQty, ItemUnit, ItemPrice, IndentItemId FROM indentitem WHERE IndentId ="+indentId;
-
-		List<IndentDesc.ItemDetail> itemList = new ArrayList<IndentDesc.ItemDetail>();
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map<String, Object> row : rows) {
-			itemList.add(buildIndentItem(row));
-		}
-		return itemList;
-	}
-
-	private ItemDetail buildIndentItem(Map<String, Object> row) {
-		ItemDetail item = new ItemDetail();
-		item.setItemName((String) row.get("itemName"));
-		item.setItemType((String) row.get("itemType"));
-		item.setItemQty((String) row.get("itemQty"));
-		item.setItemUnit((String) row.get("itemUnit"));
-		item.setItemPrice((String) row.get("itemPrice"));
-		return item;
-	}*/
-
-	private Indent buildIndentDescDetail(Map<String, Object> row) {
-		Indent indent = new Indent();
-		indent.setIndentId(row.get("IndentId").toString());
-		indent.setProjId(row.get("ProjId").toString());
-		/*indent.setProjDescId(row.get("ProjDescId").toString());
-		BigDecimal plannedArea = (BigDecimal) row.get("Quantity");
-		if (null == plannedArea) {
-			indent.setPlannedArea(null);
-		} else {
-			indent.setPlannedArea(plannedArea.doubleValue());
-		}
-
-		indent.setMetric((String) row.get("Metric"));
-		indent.setStartDate((String) row.get("StartDate"));
-		indent.setEndDate((String) row.get("EndDate"));
-		indent.setItemDetails(getIndentItems(indent.getIndentId()));*/
-		return indent;
-	}
 
 	@Override
 	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
@@ -298,7 +241,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Indent> indentList = new ArrayList<Indent>();
 		String sql = null;
 		if (null!=searchDetail.getProjId()) {
-			sql = "SELECT i.ProjId, d.AliasDescription, i.ProjDescId, i.Quantity, i.Metric, i.IndentId, i.StartDate, i.EndDate FROM indentdesc i, projectdesc d where i.ProjDescId = d.ProjDescId and i.ProjId='"+searchDetail.getProjId()+"'";
+			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where ProjId='"+searchDetail.getProjId()+"'";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
@@ -311,20 +254,45 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	private Indent buildIndent(Map<String, Object> row) {
 		Indent indent = new Indent();
 		indent.setProjId(row.get("ProjId").toString());
-		indent.setProjId(row.get("ProjDescId").toString());	
-		/*	indent.setMetric((String) row.get("Metric"));
-		indent.setIndentId(row.get("IndentId").toString());
-		indent.setAliasProjDesc(row.get("AliasDescription").toString());
-		BigDecimal quantity = (BigDecimal) row.get("Quantity");
-		if (null == quantity) {
-			indent.setPlannedArea(null);
-		} else {
-			indent.setPlannedArea(quantity.doubleValue());
-		}*/
+		indent.setIndentId(row.get("IndentId").toString());	
+		indent.setStatus((String) row.get("Status"));
 		indent.setStartDate((String) row.get("StartDate"));
 		indent.setEndDate((String) row.get("EndDate"));
 		return indent;
 	}
 
+	@Override
+	public String placeIndentRequest(Indent indent) {
+		String status = "";
+		if(indent.getStatus().equalsIgnoreCase("new")){
+			String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
+			Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{"REQUESTED", indent.getEmployeeId(), indent.getIndentId()});
+			if(row==1)
+				status = "Indent requested succesffuly";
+		}else{
+			status = "Indents in "+indent.getStatus().toLowerCase()+" status is invalid";
+		}
+		return status;
+	}
+	
+	Map<String, Object> buildDescQtyMap(Map < String, Object > row){
+		
+		return row;
+	}
+
+	@Override
+	public Map<String, Object> getRequestedIndentQty(Integer projId) {
+		Map < String, Object > descQty = new HashMap< String, Object>();
+		String sql = null;
+		if (null!=projId) {
+			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status='REQUESTED') group by projdescid";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		for (Map < String, Object > row: rows) {
+			descQty.put(row.get("projdescid").toString(), row.get("qty"));
+		}
+		return descQty;
+	}
 
 }
+

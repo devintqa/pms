@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
@@ -17,9 +18,12 @@ public interface FieldDescriptionService {
     
     Integer saveIndentDescription(Indent indent);
     
-    List<Indent> getIndentDescAndItems(int projDescId);
-    
     public ProjDescDetail getPskFieldProjectDescription(String projDescId);
 
 	List<Indent> getIndentList(SearchDetail searchDetail);
+
+	String placeIndentRequest(Indent indent);
+
+	Map<String, Object> getRequestedIndentQty(Integer projId);
+
 }

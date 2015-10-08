@@ -5,17 +5,10 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>PMS :: Build Indent</title>
+  <title>PMS :: Search Indent</title>
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
 <script>
-    var windowObjectReference = null;
-
-    function popUpClosed() {
-        if (windowObjectReference) {
-            window.location.reload();
-        }
-    }
 
         $(document).ready(function () {
             $("#showSearchProjectDesc").hide();
@@ -29,35 +22,6 @@
                 }
             });
 
-        $("#doIndent").click(function() {
-            console.log($('input[name="indentDescription"]:checked'));
-            var projDescs = [];
-            var indentObjArray = [];
-            var projId = '';
-            var subProjId = '';
-            var projDescId = '';
-            var employeeId = '';
-            
-            $($('input[name="indentDescription"]:checked')).each(function(index) {
-
-                console.log(index + ": " + $(this).attr('aria-proj-id'));
-                console.log(index + ": " + $(this).attr('aria-subproj-id'));
-                console.log(index + ": " + $(this).attr('aria-projdesc-id'));
-                console.log(index + ": " + $(this).attr('aria-employee-id'));
-                
-                projId = $(this).attr('aria-proj-id');
-                subProjId = $(this).attr('aria-subproj-id');
-                projDescId = $(this).attr('aria-projdesc-id');
-                employeeId = $(this).attr('aria-employee-id');
-
-                projDescs.push(projDescId);
-                
-            });
-                if($('input[name="indentDescription"]:checked').length > 0){
-                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&subProjectId="+subProjId+"&projDescs="+projDescs+"&action=edit";
-                }
-           
-        });
         
         $("#viewIndent").click(function() {
             console.log($('input[name="indentDescription"]:checked'));
@@ -90,70 +54,9 @@
 
     });
 
-    function Indent(projId, subProjId, projDescId, employeeId) {
-        this.projId = projId;
-        this.subProjId = subProjId;
-        this.projDescId = projDescId;
-        this.employeeId = employeeId;
-    }
 
 
-
-    function openProjDescLoader(projDescSerial, projId, subProjId, projDescId,
-        descType, employeeId) {
-        if (subProjId == '') {
-            subProjId = 0;
-        }
-        descType = $("#searchOn").val();
-        windowObjectReference = window
-            .open(
-                "/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="
-                		+ projDescSerial + "&projId=" + projId + "&subProjId=" + subProjId 
-                		+ "&projDescId=" + projDescId + "&descType=" + descType 
-                		+ "&employeeId=" + employeeId,
-                'winname',
-                'directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
-
-    }
-
-    function deleteProjectDescription(projectDescriptionAlias,
-        projectDescriptionId, projectDescriptionType) {
-
-        $("#dialog-confirm").html(
-            projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
-
-        // Define the Dialog and its properties.
-        $("#dialog-confirm")
-            .dialog({
-                resizable: false,
-                modal: true,
-                title: "Warning!",
-                height: 200,
-                width: 400,
-                buttons: {
-                    "Yes": function() {
-                        $
-                            .ajax({
-                                url: 'deleteProjectDescription.do',
-                                data: "projectDescriptionId=" + projectDescriptionId + "&projectDescriptionType=" + projectDescriptionType,
-                                success: function(response) {
-                                    location.reload();
-                                    console.log("Successfully deleted row ");
-                                },
-                                error: function(err) {
-                                    console.log("Error deleting project description ");
-                                }
-                            });
-                        $(this).dialog('close');
-                    },
-                    "No": function() {
-                        $(this).dialog('close');
-
-                    }
-                }
-            });
-
-    }
+    
 </script>
 </head>
 <body>
@@ -193,7 +96,7 @@
 					<h2
 						style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 				</div>
-                <form:hidden path="employeeId"/>
+                <form:hidden id="employeeId" path="employeeId"/>
 			</form:form>
 			<input id="searchOn" type="hidden"
 				value="${searchProjDescForm.searchOn}" />
@@ -202,11 +105,9 @@
 				<table id="indentList" class="display">
 					<thead>
 						<tr>
-							<th>Alias Description</th>
 							<th>Start Date</th>
 							<th>End Date</th>
-							<th>Quantity</th>
-							<th>Metric</th>
+							<th>Status</th>
 						</tr>
 					</thead>
 
@@ -214,17 +115,10 @@
 						<c:if test="${not empty indentList}">
 							<c:forEach var="indent" items="${indentList}">
 								<tr>
-									<td>${indent.aliasProjDesc}
-									<input type="hidden" value="${indent.projId}"/>
-									<input type="hidden" value="${indent.projDescId}"/>
-									<input type="hidden" value="${indent.indentId}"/></td>
-									<td>${indent.startDate}</td>
+									<td><a href="/pms/emp/myview/indent/itemToRequest?employeeId=${indent.employeeId}&indentId=${indent.indentId}&status=${indent.status}">${indent.startDate}</a>
+									</td>
 									<td>${indent.endDate}</td>
-									<td>${indent.plannedArea}</td>
-									<td>${indent.metric}</td>
-									<td>${indent.projId}</td>
-									<td>${indent.projDescId}</td>
-									<td>${indent.indentId}</td>
+									<td>${indent.status}</td>
 								</tr>
 							</c:forEach>
 						</c:if>

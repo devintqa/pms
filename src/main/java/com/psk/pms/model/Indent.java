@@ -10,6 +10,7 @@ public class Indent {
 	private String endDate;
 	private String employeeId;
 	private Date lastUpdateAt;
+	private String status;
 	private List<IndentDesc> indentDescList;
 	
 	public String getIndentId() {
@@ -54,5 +55,11 @@ public class Indent {
 	}
 	public void setIndentDescList(List<IndentDesc> indentDescList) {
 		this.indentDescList = indentDescList;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 }

@@ -215,7 +215,6 @@ public class ItemDAOImpl implements ItemDAO {
     
     public DescItemDetail getPskFieldDescriptionItems(final String projDescId) {
         String sql = "Select pdi.ProjId, pdi.SubProjId, pdi.ProjDescId, pdi.ProjDescSerial, pdi.ItemName, pdi.ItemUnit, pdi.ItemQty, pdi.ItemCost, pdi.DescItemId, ppd.itemPrice, ppd.ItemType from fieldprojdescitem pdi, pskpricedetail ppd where pdi.itemName = ppd.ItemName and pdi.ProjId = ppd.projectId and ppd.active = '1' and pdi.ProjDescId = '" + projDescId + "'";
-        System.out.println(sql);
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         DescItemDetail descItems = new DescItemDetail();

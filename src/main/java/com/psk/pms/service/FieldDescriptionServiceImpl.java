@@ -1,6 +1,7 @@
 package com.psk.pms.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.psk.pms.dao.FieldDescriptionDAO;
 import com.psk.pms.model.Indent;
@@ -38,11 +39,6 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	}
 
 	@Override
-	public List<Indent> getIndentDescAndItems(int projDescId) {
-		return fieldDescriptionDAO.getIndentDescAndItems(projDescId);
-	}
-	
-	@Override
 	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
 		return fieldDescriptionDAO.getPskFieldProjectDescription(projDescId);
 	}
@@ -51,5 +47,15 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	public List<Indent> getIndentList(SearchDetail searchDetail) {
 		return fieldDescriptionDAO.getIndentList(searchDetail);
 	}
-	
+
+	@Override
+	public String placeIndentRequest(Indent indent) {
+		return fieldDescriptionDAO.placeIndentRequest(indent);
+	}
+
+	@Override
+	public Map<String, Object> getRequestedIndentQty(Integer projId) {
+		return fieldDescriptionDAO.getRequestedIndentQty(projId);
+	}
+
 }

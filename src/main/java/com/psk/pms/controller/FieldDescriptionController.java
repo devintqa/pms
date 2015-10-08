@@ -5,6 +5,7 @@ import static com.psk.pms.Constants.NOTEXIST;
 import static com.psk.pms.Constants.NULL_STRING;
 import static com.psk.pms.Constants.SUCCESS;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +71,6 @@ public class FieldDescriptionController extends BaseController {
     	indentDescList = new ArrayList<IndentDesc>();
     	for(int i=0; i<projDescId.length; i++){
     		if(action.equals("view")){
-//    			indentList = fieldDescriptionService.getIndentDescAndItems(new Integer(projDescId[i]));
     		}else{
 	    		IndentDesc indentDesc = getNewIndentDesc(projDescId[i], employeeId, action);
 				indentDescList.add(indentDesc);
@@ -81,7 +81,7 @@ public class FieldDescriptionController extends BaseController {
     	model.addAttribute("indent", indent);
     	model.addAttribute("projId", projectId);
     	model.addAttribute("employeeId", employeeId);
-
+    	
     	return "CreateIndent";
 	}
     
@@ -110,15 +110,43 @@ public class FieldDescriptionController extends BaseController {
     	List<ItemDetail> itemList= new ArrayList<ItemDetail>();
     	DescItemDetail descItemDetail = itemService.getPskFieldDescriptionItems(projDescId);
     	itemList = buildIndentedItem(indentQty, descItemDetail.getItemDetail());
-    	
     	return itemList;
-    	
+    }
+    
+    @RequestMapping(value = "/emp/myview/indent/validateIndentDescQty", method = RequestMethod.GET)
+    @ResponseBody public String validateIndentDescQty(
+    		@RequestParam(value = "indentQty") String indentDescQty,
+			@RequestParam(value = "projDescId") String projDescId,
+			Model model) {
+    	String validation = "valid";
+    	ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
+    	Double fixedProjDescQty = new Double(projDesc.getQuantity());
+    	Double askingIndentQty = new Double(indentDescQty);
+    	if(askingIndentQty < fixedProjDescQty){
+    		Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId());
+    		BigDecimal availedDescIndentQtyBigD = (BigDecimal) availedDescIndentQty.get(projDescId);
+    		Double sumOfQty = availedDescIndentQtyBigD.doubleValue() + askingIndentQty;
+    		Double qtyAvailable = fixedProjDescQty - availedDescIndentQtyBigD.doubleValue();
+    		if(sumOfQty >  fixedProjDescQty){
+    			validation = "Quantity requested is more than the available limit of "+qtyAvailable;
+    		}
+    	}else{
+    		validation = "Quantity cannot be more than the fixed description limit";
+    	}
+    	return validation;
+    }
+    
+    
+    @RequestMapping(value = "/emp/myview/indent/saveIndentItem.do", method = RequestMethod.POST)
+    @ResponseBody public Integer saveIndentItem(@RequestBody Indent indent) {
+    	return fieldDescriptionService.saveIndentDescription(indent);
     }
     
     @RequestMapping(value = "/emp/myview/indent/itemToRequest", method = RequestMethod.GET)
     public String getIndentItemForRequest(
     		@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "indentId") String indentId,
+			@RequestParam(value = "status") String status,
 			Model model) {
     	IndentDesc indentDesc = new IndentDesc();
     	indentDesc.setIndentId(indentId);
@@ -126,12 +154,21 @@ public class FieldDescriptionController extends BaseController {
     	model.addAttribute("indentDesc", indentDesc);
     	model.addAttribute("indentItems", indentDesc.getItemDetails());
     	model.addAttribute("indentItemSize", indentDesc.getItemDetails().size());
+    	model.addAttribute("employeeId", employeeId);
+    	model.addAttribute("indentStatus", status);
     	return "PlaceIndentRequest";
     }
     
-    @RequestMapping(value = "/emp/myview/indent/saveIndentItem.do", method = RequestMethod.POST)
-    @ResponseBody public Integer saveIndentItem(@RequestBody Indent indent) {
-    	return fieldDescriptionService.saveIndentDescription(indent);
+    @RequestMapping(value = "/emp/myview/indent/placeIndentRequest.do", method = RequestMethod.POST)
+    @ResponseBody  public String placeIndentRequest(
+    		@RequestParam(value = "employeeId") String employeeId,
+			@RequestParam(value = "indentId") String indentId,
+			Model model) {
+    	Indent indent = new Indent();
+    	indent.setEmployeeId(employeeId);
+    	indent.setIndentId(indentId);
+		indent.setStatus("NEW");
+    	return fieldDescriptionService.placeIndentRequest(indent);
     }
     
     private List<ItemDetail> buildIndentedItem(String quantity, List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList) {

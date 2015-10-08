@@ -2,7 +2,6 @@ package com.psk.pms.service;
 
 import java.util.List;
 
-import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 
 /**

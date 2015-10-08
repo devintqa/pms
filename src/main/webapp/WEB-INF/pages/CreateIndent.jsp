@@ -153,7 +153,7 @@
 				data : JSON.stringify(indent),
 				success : function(response) {
 					if(response > 0){
-						window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response;
+						window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response+"&status=NEW";
 					}else{
 						alert("Error occured while saving the indent!");
 					}
@@ -182,36 +182,52 @@
 			
 			$.ajax({
 				type : "GET",
-				url : "getIndentItem",
+				url : "validateIndentDescQty",
 				contentType: "application/json",
 				cache : false,
 				data : "projDescId="+projDescId+"&indentQty="+indentQty,
 				success : function(response) {
-					
-					while(itemTable.rows.length > 1){
-						itemTable.deleteRow(tableLength-1);
-						tableLength--;
-					}
-					
-					for (i = 0; i < response.length; i++) {
-						
-					    var new_row = itemTable.insertRow(0);
-					    var cell1 = new_row.insertCell(0);
-					    var cell2 = new_row.insertCell(1);
-					    var cell3 = new_row.insertCell(2);
-					    var cell4 = new_row.insertCell(3);
-					    var cell5 = new_row.insertCell(4);
-					    
-						new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
-						new_row.cells[1].innerHTML = response[i].itemName;
-						new_row.cells[2].innerHTML = response[i].itemUnit;
-						new_row.cells[3].innerHTML = response[i].itemQty;
-						new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
+					if(response=='valid'){
+						$('#error'+projDescId).text('');
+						$.ajax({
+							type : "GET",
+							url : "getIndentItem",
+							contentType: "application/json",
+							cache : false,
+							data : "projDescId="+projDescId+"&indentQty="+indentQty,
+							success : function(response) {
+								
+								while(itemTable.rows.length > 1){
+									itemTable.deleteRow(tableLength-1);
+									tableLength--;
+								}
+								
+								for (i = 0; i < response.length; i++) {
+									
+								    var new_row = itemTable.insertRow(0);
+								    var cell1 = new_row.insertCell(0);
+								    var cell2 = new_row.insertCell(1);
+								    var cell3 = new_row.insertCell(2);
+								    var cell4 = new_row.insertCell(3);
+								    var cell5 = new_row.insertCell(4);
+								    
+									new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
+									new_row.cells[1].innerHTML = response[i].itemName;
+									new_row.cells[2].innerHTML = response[i].itemUnit;
+									new_row.cells[3].innerHTML = response[i].itemQty;
+									new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
 
-						itemTable.appendChild(new_row);
+									itemTable.appendChild(new_row);
+								}
+							}
+						});
+					}else{
+						$('#error'+projDescId).text(response);
+						val='';
 					}
 				}
 			});
+			
 			
 		}
 	});
@@ -263,7 +279,8 @@
 									<td>Quantity<span id="colon">:</span>
 									</td>
 									<td><input name="plannedQty" aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" 
-										id="plannedQty${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.plannedQty}" class="inputText" /></td>
+										id="plannedQty${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.plannedQty}" class="inputText" /> 
+										&nbsp; <span style="color:red;" id="error${indentDesc.projDescId}"></span></td>
 								</tr>
 								<tr>
 									<td>Metric<span id="colon">:</span>

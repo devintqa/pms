@@ -20,13 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
-import com.psk.pms.model.DescItemDetail;
 import com.psk.pms.model.JsonData;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjectConfiguration;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
-import com.psk.pms.model.ProjectItemDescription;
-import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.StoreValidator;
@@ -86,8 +80,6 @@ public class StoreController extends BaseController {
 				+ httpServletRequest.getParameter("projId"));
 		JsonData jsonData = new JsonData();
 		String projId = httpServletRequest.getParameter("projId");
-		String employeeId = httpServletRequest.getParameter("employeeId");
-		String projectId = fetchProjectId(projId, employeeId);
 		List<String> itemNames = storeService.getItemNamesInStore(projId);
 		if (!itemNames.isEmpty()) {
 			Gson gson = new Gson();
