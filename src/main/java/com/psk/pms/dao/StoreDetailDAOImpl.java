@@ -74,7 +74,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     }
 
     @Override
-    public List<String> getItemNamesInStore(String projectId) {
+    public List<String> getItemNamesInStore(String projectId ) {
         return jdbcTemplate.queryForList(GET_ITEM_NAMES_STORE, new Object[]{projectId}, String.class);
 
     }
