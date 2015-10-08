@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 import com.psk.pms.utils.DateFormatter;
@@ -65,12 +66,16 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         }
         return stockDetails;
     }
-    
+
     @Override
-    public List<String> getItemNamesInStore(String projectId) {
- 
-       
-        return jdbcTemplate.queryForList(GET_ITEM_NAMES_STORE, new Object[]{projectId},String.class);
+    public void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched) {
+        jdbcTemplate.update(CREATE_DISPATCH_DETAILS, dispatchDetail.getProjId(), dispatchDetail.getItemName()
+                , dispatchDetail.getSqlDispatchedDate(), dispatchDetail.getFieldUser(), dispatched);
+    }
+
+    @Override
+    public List<String> getItemNamesInStore(String projectId ) {
+        return jdbcTemplate.queryForList(GET_ITEM_NAMES_STORE, new Object[]{projectId}, String.class);
 
     }
 
@@ -100,6 +105,5 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         return detail;
     }
 
-		
-	
+
 }

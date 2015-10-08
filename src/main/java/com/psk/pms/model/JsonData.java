@@ -6,6 +6,7 @@ package com.psk.pms.model;
 public class JsonData {
     private boolean success;
     private String data;
+    private Object object;
 
     public boolean isSuccess() {
         return success;
@@ -21,5 +22,13 @@ public class JsonData {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    public Object getObject() {
+        return object;
+    }
+
+    public void setObject(Object object) {
+        this.object = object;
     }
 }
