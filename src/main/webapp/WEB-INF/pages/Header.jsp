@@ -198,13 +198,13 @@
 				<li><a href="#">Create</a>
 					<ul>
 						<li><a id="searchDescriptionForIndent"
-							href="/pms/emp/myview/searchDescriptionForIndenting/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-								Create Indent </a></li>
+							href="/pms/emp/myview/indent/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+								Indent </a></li>
 					</ul></li>
 				<li><a href="#">Search</a>
 					<ul>
 						<li><a id="searchIndent"
-							href="/pms/emp/myview/searchIndents/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+							href="/pms/emp/myview/indent/search_${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Indent </a></li>
 					</ul></li>
 				<li><a id="profile"

@@ -616,7 +616,13 @@ CREATE TABLE `projectLeadDetail` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Table structure for table `indent`
+--
 
+DROP TABLE IF EXISTS `indent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `indent` (
   `IndentId` int(11) NOT NULL AUTO_INCREMENT,
   `ProjId` int(10) NOT NULL,
@@ -624,9 +630,17 @@ CREATE TABLE `indent` (
   `EndDate` varchar(45) NOT NULL,
   `LastUpdatedBy` varchar(45) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
+  `Status` varchar(15) NOT NULL DEFAULT 'NEW',
   PRIMARY KEY (`IndentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
+--
+-- Table structure for table `indentdesc`
+--
+
+DROP TABLE IF EXISTS `indentdesc`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `indentdesc` (
   `IndentId` int(10) NOT NULL,
   `ProjDescId` int(10) NOT NULL,
@@ -636,6 +650,13 @@ CREATE TABLE `indentdesc` (
   PRIMARY KEY (`IndentDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
+--
+-- Table structure for table `indentdescitem`
+--
+
+DROP TABLE IF EXISTS `indentdescitem`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `indentdescitem` (
   `IndentDescId` int(11) DEFAULT '0',
   `ItemName` varchar(45) DEFAULT NULL,
@@ -679,8 +700,6 @@ CREATE TABLE `dispatchdetail` (
 	`dispatchDesc` varchar(100) NOT NULL,
   PRIMARY KEY (`dispatchId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-
 
 
 

@@ -253,7 +253,7 @@
 			<form:form id="indentForm" commandName="indent">
 				
 				<fieldset style="margin: 1em; text-align: left;">
-						<legend>Cascade Use</legend>
+						<legend>Indent Period</legend>
 				<table style="width:50%">
 					<tr>
 						<td>Start date<span id="colon">:</span>

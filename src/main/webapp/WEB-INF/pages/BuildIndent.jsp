@@ -29,6 +29,10 @@
                 }
             });
 
+          $('input[name="indentDescription"]').change(function(){
+        	  $('#error').text('');
+          });
+            
         $("#doIndent").click(function() {
             var projDescs = [];
             var projId = '';
@@ -36,11 +40,10 @@
             var employeeId = '';
             
             $($('input[name="indentDescription"]:checked')).each(function(index) {
-
+               
                 console.log(index + ": " + $(this).attr('aria-proj-id'));
                 console.log(index + ": " + $(this).attr('aria-projdesc-id'));
                 console.log(index + ": " + $(this).attr('aria-employee-id'));
-                
                 projId = $(this).attr('aria-proj-id');
                 projDescId = $(this).attr('aria-projdesc-id');
                 employeeId = $(this).attr('aria-employee-id');
@@ -49,8 +52,9 @@
                 
             });
                 if($('input[name="indentDescription"]:checked').length > 0){
-                	console.log("/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&projDescs="+projDescs+"&action=edit");
                 	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&action=edit&projDescs="+projDescs;
+                }else{
+                	$('#error').text('Please select any description to build indent');
                 }
            
         });
@@ -88,16 +92,16 @@
 							<td></td>
 							<td><input class="button" id="submit" type="submit" /></td>
 							<td> <c:if test="${projDescDocListSize gt 0}">
-								<input class="button" id="doIndent" value="Build Indent" type="button" />
+									<input class="button" id="doIndent" value="Build Indent" type="button" />
 								</c:if>
 							</td>
 						</tr>
 					</table>
+					<span id="error" style="color:red;"></span>
 				</center>
 				<br>
 				<div>
-					<h2
-						style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
+					<h2 style="text-align: left; font-family: arial; color: #007399; font-size: 14px;">${noDetailsFound}</h2>
 				</div>
                 <form:hidden path="employeeId"/>
 			</form:form>
