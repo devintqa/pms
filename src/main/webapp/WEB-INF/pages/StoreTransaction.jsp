@@ -15,8 +15,8 @@
                 $("#itemNameField").hide();
             }
 
-
             $("#itemName").change(function () {
+                $("#requestedQuantity").val("");
                 var projId = $('#projId').val();
                 var itemName = $('#itemName').val();
                 $.ajax({
@@ -121,9 +121,9 @@
                                 <td>Field User<span id="colon">:</span>
                                 </td>
                                 <td><form:select path="fieldUser" cssClass="inputText"
-                                                 id="fieldUser">
-                                    <option value="${storeDetailForm.fieldUser}"
-                                            selected="selected">${storeDetailForm.fieldUser}</option>
+                                                 id="fieldUser" items="${fieldUsers}">
+                                    <option value="${fieldUser}"
+                                            selected="selected">${fieldUser}</option>
 
                                 </form:select>
                                 </td>
@@ -132,9 +132,9 @@
                                 <td>Item Name <span id="colon">:</span>
                                 </td>
                                 <td><form:select path="itemName" cssClass="inputText"
-                                                 id="itemName">
-                                    <option value="${storeDetailForm.itemName}"
-                                            selected="selected">${storeDetailForm.itemName}</option>
+                                                 id="itemName" items="${itemNames}">
+                                    <option value="${itemName}"
+                                            selected="selected">${itemName}</option>
                                 </form:select>
                                 </td>
                                 <td>Total Quantity<span id="colon">:</span>
