@@ -52,16 +52,6 @@ public class ViewController extends BaseController {
         return "ViewDetails";
     }
 
-    @RequestMapping(value = "/emp/myview/viewStoreDetails/{employeeId}", method = RequestMethod.GET)
-    public String viewStoreDetails(@PathVariable String employeeId, Model model) {
-        LOGGER.info("View Controller : viewStoreDetails()");
-        StoreDetail storeDetail = new StoreDetail();
-        storeDetail.setEmployeeId(employeeId);
-        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
-        model.addAttribute("storeDetailForm", storeDetail);
-        model.addAttribute("aliasProjectList", aliasProjectList);
-        return "ViewStoreDetails";
-    }
 
     @RequestMapping(value = "/emp/myview/viewDetails/searchProject.do", method = RequestMethod.GET)
     public
@@ -79,29 +69,6 @@ public class ViewController extends BaseController {
             @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getSubProjectList()");
         return fetchSubProjectsInfo(name, empId);
-    }
-
-
-    @RequestMapping(value = "/emp/myview/viewStoreDetails/viewStoreDetails.do", method = RequestMethod.POST)
-    public String viewStoreDetails(
-            @ModelAttribute("storeDetailForm") StoreDetail storeDetail,
-            BindingResult result, Model model, SessionStatus status) {
-        Map<String, String> aliasProjectList = populateAliasProjectList(storeDetail.getEmployeeId());
-        model.addAttribute("storeDetailForm", storeDetail);
-        model.addAttribute("aliasProjectList", aliasProjectList);
-        if (storeDetail.getProjId() == 0) {
-            model.addAttribute("errorMessage", "Please select the project");
-            return "ViewStoreDetails";
-        }
-        List<StoreDetail> storeDetails = storeService.getStoreDetails(storeDetail.getProjId());
-        if (storeDetails.size() > 0) {
-            model.addAttribute("storeDetailsSize", storeDetails.size());
-            model.addAttribute("storeDetails", storeDetails);
-        } else {
-            model.addAttribute("errorMessage", "There are no Materials in the Store");
-        }
-
-        return "ViewStoreDetails";
     }
 
 

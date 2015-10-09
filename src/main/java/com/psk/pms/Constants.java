@@ -57,6 +57,7 @@ public interface Constants {
     String WORKLOCATION = "workLocation";
     String ALL_DESCRIPTION_TYPE = "all description";
     String DISPATCHED = "Dispatched";
+    String RETURNED = "Returned";
 
     String AUTHORIZE = "authorize";
 	String REQUESTED_FOR = "baseDescription";

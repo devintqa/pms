@@ -52,6 +52,11 @@ public class StoreServiceImpl implements StoreService {
 
 
     @Override
+    public List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail) {
+        return storeDetailDAO.getDispatchedDetails(dispatchDetail);
+    }
+
+    @Override
     public List<StoreDetail> getStoreDetails(int projId) {
         return storeDetailDAO.getStoreDetails(projId);
     }

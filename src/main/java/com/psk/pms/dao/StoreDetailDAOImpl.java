@@ -68,9 +68,21 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     }
 
     @Override
+    public List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail) {
+        List<DispatchDetail> dispatchDetails = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DISPATCH_DETAILS, dispatchDetail.getProjId(), dispatchDetail.getFieldUser());
+        for (Map<String, Object> row : rows) {
+            dispatchDetails.add(buildDispatchDetail(row));
+        }
+        return dispatchDetails;
+    }
+
+
+
+    @Override
     public void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched) {
         jdbcTemplate.update(CREATE_DISPATCH_DETAILS, dispatchDetail.getProjId(), dispatchDetail.getItemName()
-                , dispatchDetail.getSqlDispatchedDate(), dispatchDetail.getFieldUser(), dispatched);
+                , dispatchDetail.getSqlDispatchedDate(), dispatchDetail.getFieldUser(), dispatched,dispatchDetail.getRequestedQuantity());
     }
 
     @Override
@@ -105,5 +117,12 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         return detail;
     }
 
+    private DispatchDetail buildDispatchDetail(Map<String, Object> row) {
+        DispatchDetail dispatchDetail = new DispatchDetail();
+        dispatchDetail.setItemName((String) row.get("itemName"));
+        dispatchDetail.setRequestedQuantity((String) row.get("quantity"));
+        dispatchDetail.setDescription((String) row.get("dispatchDesc"));
+        return dispatchDetail;
+    }
 
 }

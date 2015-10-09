@@ -21,4 +21,6 @@ public interface StoreService {
     String getItemQuantityInStock(String projId, String itemName);
 
     void saveDispatchedDetail(DispatchDetail dispatchDetail);
+
+    List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
 }

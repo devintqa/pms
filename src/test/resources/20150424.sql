@@ -696,6 +696,7 @@ CREATE TABLE `dispatchdetail` (
   `itemName` varchar(100) NOT NULL,
   `dispactchedDate` datetime NOT NULL,
   `fieldUser` varchar(100) NOT NULL,
+  `quantity` varchar(100) NOT NULL,
   `dispatchId` int(11) NOT NULL AUTO_INCREMENT,
 	`dispatchDesc` varchar(100) NOT NULL,
   PRIMARY KEY (`dispatchId`)
