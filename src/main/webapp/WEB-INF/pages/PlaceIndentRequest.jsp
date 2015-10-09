@@ -39,7 +39,18 @@
 				cache : false,
 				data : "indentId="+indentId+"&employeeId="+employeeId,
 				success : function(response) {
-					alert(response);
+					 $("#dialog-confirm").html(response);
+					 $("#dialog-confirm").dialog({
+                         modal: true,
+                         title: "Message!",
+                         height: 200,
+                         width: 300,
+                         buttons: {
+                             Ok: function () {
+                                 $(this).dialog("close");
+                             }
+                         }
+                     });
 				}
 			});
         });
@@ -94,6 +105,7 @@
 			</c:if>
 			</form:form>
 		</div>
+		 <div id="dialog-confirm"></div>
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />
