@@ -42,7 +42,8 @@
 		
 		$(".collapse").accordion({
 			collapsible : true,
-			active : false
+			active : false,
+			heightStyle: "content" 
 		});
 		
 		$('.dateField').datepicker(
