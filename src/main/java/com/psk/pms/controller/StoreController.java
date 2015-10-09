@@ -80,7 +80,7 @@ public class StoreController extends BaseController {
         LOGGER.info("getItemNamesInStore for Project :"
                 + httpServletRequest.getParameter("projId"));
         JsonData jsonData = new JsonData();
-        StoreDetail storeDetail = new StoreDetail();
+        DispatchDetail dispatchDetail = new DispatchDetail();
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
         String projectId = fetchProjectId(projId, employeeId);
@@ -89,10 +89,10 @@ public class StoreController extends BaseController {
         if (!itemNames.isEmpty() && !fieldUsers.isEmpty()) {
             fieldUsers.add(0, "--Please Select--");
             itemNames.add(0, "--Please Select--");
-            storeDetail.setFieldUsers(fieldUsers);
-            storeDetail.setItems(itemNames);
+            dispatchDetail.setFieldUsers(fieldUsers);
+            dispatchDetail.setItems(itemNames);
             Gson gson = new Gson();
-            jsonData.setObject(gson.toJson(storeDetail));
+            jsonData.setObject(gson.toJson(dispatchDetail));
             jsonData.setSuccess(true);
         }
         if (itemNames.isEmpty()) {
@@ -176,7 +176,92 @@ public class StoreController extends BaseController {
             model.addAttribute("errorMessage", e.getMessage());
         }
         return "BuildStoreDetail";
+    }
 
+
+    @RequestMapping(value = "/emp/myview/viewStoreDetails/{employeeId}", method = RequestMethod.GET)
+    public String viewStoreDetails(@PathVariable String employeeId, Model model) {
+        LOGGER.info("View Controller : viewStoreDetails()");
+        StoreDetail storeDetail = new StoreDetail();
+        storeDetail.setEmployeeId(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
+        model.addAttribute("storeDetailForm", storeDetail);
+        model.addAttribute("aliasProjectList", aliasProjectList);
+        return "ViewStoreDetails";
+    }
+
+    @RequestMapping(value = "/emp/myview/viewDispatchDetails/{employeeId}", method = RequestMethod.GET)
+    public String viewDispatchDetails(@PathVariable String employeeId, Model model) {
+        LOGGER.info("View Controller : viewStoreDetails()");
+        DispatchDetail dispatchDetail = new DispatchDetail();
+        dispatchDetail.setEmployeeId(employeeId);
+        Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
+        model.addAttribute("dispatchDetailForm", dispatchDetail);
+        model.addAttribute("aliasProjectList", aliasProjectList);
+        return "ViewDispatchedDetails";
+    }
+
+    @RequestMapping(value = "/emp/myview/viewDispatchDetails/getFieldUsers.do", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData getFieldUsers(HttpServletRequest httpServletRequest) {
+        LOGGER.info("getFieldUsers for Project :"
+                + httpServletRequest.getParameter("projId"));
+        JsonData jsonData = new JsonData();
+        String projId = httpServletRequest.getParameter("projId");
+        String employeeId = httpServletRequest.getParameter("employeeId");
+        String projectId = fetchProjectId(projId, employeeId);
+        List<String> fieldUsers = storeService.getSelectedUser(FIELD, projectId);
+        Gson gson = new Gson();
+        jsonData.setObject(gson.toJson(fieldUsers));
+        jsonData.setSuccess(true);
+        return jsonData;
+    }
+
+
+    @RequestMapping(value = "/emp/myview/viewStoreDetails/viewStoreDetails.do", method = RequestMethod.POST)
+    public String viewStoreDetails(
+            @ModelAttribute("storeDetailForm") StoreDetail storeDetail,
+            BindingResult result, Model model, SessionStatus status) {
+        Map<String, String> aliasProjectList = populateAliasProjectList(storeDetail.getEmployeeId());
+        model.addAttribute("storeDetailForm", storeDetail);
+        model.addAttribute("aliasProjectList", aliasProjectList);
+        if (storeDetail.getProjId() == 0) {
+            model.addAttribute("errorMessage", "Please select the project");
+            return "ViewStoreDetails";
+        }
+        List<StoreDetail> storeDetails = storeService.getStoreDetails(storeDetail.getProjId());
+        if (storeDetails.size() > 0) {
+            model.addAttribute("storeDetailsSize", storeDetails.size());
+            model.addAttribute("storeDetails", storeDetails);
+        } else {
+            model.addAttribute("errorMessage", "There are no Materials in the Store");
+        }
+
+        return "ViewStoreDetails";
+    }
+
+    @RequestMapping(value = "/emp/myview/viewDispatchDetails/viewDispatchDetails.do", method = RequestMethod.POST)
+    public String viewDispatchDetails(
+            @ModelAttribute("dispatchDetailForm") DispatchDetail dispatchDetail,
+            BindingResult result, Model model, SessionStatus status) {
+        Map<String, String> aliasProjectList = populateAliasProjectList(dispatchDetail.getEmployeeId());
+        List<String> fieldUsers = storeService.getSelectedUser(FIELD, String.valueOf(dispatchDetail.getProjId()));
+        model.addAttribute("fieldUsers", fieldUsers);
+        model.addAttribute("dispatchDetailForm", dispatchDetail);
+        model.addAttribute("aliasProjectList", aliasProjectList);
+        if (dispatchDetail.getProjId() == 0) {
+            model.addAttribute("errorMessage", "Please select the project");
+            return "ViewStoreDetails";
+        }
+        List<DispatchDetail> dispatchDetails = storeService.getDispatchedDetails(dispatchDetail);
+        if (dispatchDetails.size() > 0) {
+            model.addAttribute("dispatchDetailsSize", dispatchDetails.size());
+            model.addAttribute("dispatchDetails", dispatchDetails);
+        } else {
+            model.addAttribute("errorMessage", "There were no Materials Dispatched from the Store");
+        }
+
+        return "ViewDispatchedDetails";
     }
 
     private Map<String, String> getProjectDetails(String empId) {

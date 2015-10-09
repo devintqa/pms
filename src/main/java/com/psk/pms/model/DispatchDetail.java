@@ -18,6 +18,7 @@ public class DispatchDetail {
     private String requestedQuantity;
     private List<String> fieldUsers;
     private List<String>items;
+    private String description;
 
     public int getProjId() {
         return projId;
@@ -97,5 +98,13 @@ public class DispatchDetail {
 
     public void setSqlDispatchedDate(Date sqlDispatchedDate) {
         this.sqlDispatchedDate = sqlDispatchedDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

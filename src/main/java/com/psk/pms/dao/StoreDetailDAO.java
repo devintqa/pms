@@ -23,4 +23,6 @@ public interface StoreDetailDAO {
 	List<String> getItemNamesInStore(String projId);
 
     void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched);
+
+    List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
 }

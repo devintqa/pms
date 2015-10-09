@@ -18,11 +18,6 @@ public class StoreDetail {
     private String recievedQuantity;
     private String comments;
     private String supplierName;
-    private String fieldUser;
-    private String totalQuantity;
-    private String requestedQuantity;
-    private List<String>fieldUsers;
-    private List<String>items;
 
     public int getProjId() {
         return projId;
@@ -104,43 +99,4 @@ public class StoreDetail {
         this.supplierName = supplierName;
     }
 
-    public List<String> getFieldUsers() {
-        return fieldUsers;
-    }
-
-    public void setFieldUsers(List<String> fieldUsers) {
-        this.fieldUsers = fieldUsers;
-    }
-
-    public List<String> getItems() {
-        return items;
-    }
-
-    public void setItems(List<String> items) {
-        this.items = items;
-    }
-
-    public String getFieldUser() {
-        return fieldUser;
-    }
-
-    public void setFieldUser(String fieldUser) {
-        this.fieldUser = fieldUser;
-    }
-
-    public String getTotalQuantity() {
-        return totalQuantity;
-    }
-
-    public void setTotalQuantity(String totalQuantity) {
-        this.totalQuantity = totalQuantity;
-    }
-
-    public String getRequestedQuantity() {
-        return requestedQuantity;
-    }
-
-    public void setRequestedQuantity(String requestedQuantity) {
-        this.requestedQuantity = requestedQuantity;
-    }
 }
