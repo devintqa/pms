@@ -1,4 +1,4 @@
-package com.psk.pms.controller;
+/*package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.PROJECT_TYPE;
 
@@ -39,7 +39,7 @@ public class SubProjectController extends BaseController {
     private static final Logger LOGGER = Logger
             .getLogger(SubProjectController.class);
 
-    /*@RequestMapping(value = "/emp/myview/buildSubProject/{employeeId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/emp/myview/buildSubProject/{employeeId}", method = RequestMethod.GET)
     public String buildSubProject(
             @PathVariable String employeeId,
             @RequestParam(value = "team", required = true) String team,
@@ -61,7 +61,7 @@ public class SubProjectController extends BaseController {
         }
 
         return "BuildSubProject";
-    }*/
+    }
 
     @RequestMapping(value = "/emp/myview/updateSubProject/{employeeId}", method = RequestMethod.GET)
     public String updateSubProject(
@@ -100,7 +100,7 @@ public class SubProjectController extends BaseController {
         return "BuildSubProject";
     }
 
-    /*@RequestMapping(value = "/emp/myview/buildSubProject/createSubProject.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/emp/myview/buildSubProject/createSubProject.do", method = RequestMethod.POST)
     public String saveSubProjectAction(
             @ModelAttribute("subProjectForm") SubProjectDetail subProjectDetail,
             BindingResult result, Model model, SessionStatus status) {
@@ -125,7 +125,7 @@ public class SubProjectController extends BaseController {
             model.addAttribute("aliasProjectList", aliasProjectList);
             return "BuildSubProject";
         }
-    }*/
+    }
 
     @RequestMapping(value = "/emp/myview/updateSubProject/createSubProject.do", method = RequestMethod.POST)
     public String updateSubProjectAction(
@@ -162,3 +162,4 @@ public class SubProjectController extends BaseController {
         return projectTypeNames;
     }
 }
+*/

@@ -31,9 +31,6 @@
 						<li><a id="createProject"
 							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Project</a>
 						</li>
-						<!--<li><a id="createSubProject"
-							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Sub-Project</a></li>
-						-->
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base
 								Description</a></li>
@@ -52,9 +49,6 @@
 						<li><a id="searchProject"
 							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}">
 								Project</a></li>
-						<li><a id="searchSubProject"
-							href="/pms/emp/myview/searchSubProject/${employeeObj.employeeId}">
-								Sub Project</a></li>
 						<li><a id="searchProjectDesc"
 							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Project Description </a></li>
@@ -111,10 +105,6 @@
 						<li><a id="createProject"
 							href="/pms/emp/myview/buildProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Project</a></li>
-						<!--<li><a id="createSubProject"
-							href="/pms/emp/myview/buildSubProject/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
-							Sub-Project</a></li>
-						-->
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Base Description</a></li>
@@ -142,9 +132,6 @@
 						<li><a id="searchProject"
 							href="/pms/emp/myview/searchProject/${employeeObj.employeeId}">
 								Project</a></li>
-						<li><a id="searchSubProject"
-							href="/pms/emp/myview/searchSubProject/${employeeObj.employeeId}">
-								Sub Project</a></li>
 						<li><a id="searchProjectDesc"
 							href="/pms/emp/myview/searchProjectDescription/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Project Description </a></li>

@@ -1,4 +1,4 @@
-package com.psk.pms.validator;
+/*package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.SubProjectDetail;
@@ -195,3 +195,4 @@ public class SubProjectDetailValidator extends BaseValidator implements
 
 	}
 }
+*/
