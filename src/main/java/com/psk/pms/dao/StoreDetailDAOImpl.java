@@ -59,7 +59,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
     @Override
     public List<StockDetail> getStockDetails(int projId, String itemName) {
-        List<StockDetail> stockDetails = new ArrayList<>();
+        List<StockDetail> stockDetails = new ArrayList<StockDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_STOCK_DETAILS, projId, itemName);
         for (Map<String, Object> row : rows) {
             stockDetails.add(buildStockDetails(row));
@@ -69,7 +69,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
     @Override
     public List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail) {
-        List<DispatchDetail> dispatchDetails = new ArrayList<>();
+        List<DispatchDetail> dispatchDetails = new ArrayList<DispatchDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_DISPATCH_DETAILS, dispatchDetail.getProjId(), dispatchDetail.getFieldUser());
         for (Map<String, Object> row : rows) {
             dispatchDetails.add(buildDispatchDetail(row));

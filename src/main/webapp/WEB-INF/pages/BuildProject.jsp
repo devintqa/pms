@@ -11,6 +11,13 @@
 
 <script>
 $(document).ready(function () {
+	
+    if($('#isUpdate').val()=='Y') {
+  	  	$("#aliasName").attr("readonly", "readonly");
+  	    $("#mainAliasProjectName").attr("readonly", "readonly");
+  	    $("#projectType").attr("readonly", "readonly");
+	}
+    
 	  $("#agreementPeriod").keypress(function (e) {
 	     if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 	        $("#errmsg").html("Numbers Only").show().fadeOut("slow");
@@ -65,13 +72,6 @@ $(document).ready(function () {
       });
 	  
 });
-$(function(){
-    if($('#isUpdate').val()=='Y') {
-          	  	$("#aliasName").attr("readonly", "readonly");
-          	    $("#mainAliasProjectName").attr("readonly", "readonly");
-          	    $("#projectType").attr("readonly", "readonly");
-     }
-});
 </script>
 </head>
 
@@ -109,29 +109,29 @@ $(function(){
 								<td><form:errors path="aliasName" cssClass="error" /></td>
 							</tr>
 							<c:if test="${projectForm.mainAliasProjectName ne null}">
-							<tr>
-								<td>Main Alias Project Name<span id="colon">:</span>
-								</td>
-								<td><form:input path="mainAliasProjectName"
-										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
-								<td><form:errors path="mainAliasProjectName" cssClass="error" /></td>
-							</tr>
+								<tr>
+									<td>Main Alias Project Name<span id="colon">:</span>
+									</td>
+									<td><form:input path="mainAliasProjectName"
+											placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
+									<td><form:errors path="mainAliasProjectName" cssClass="error" /></td>
+								</tr>
 							</c:if>
 							<c:if test="${projectForm.isUpdate ne 'Y'}">
-							<tr id="isSubProject">
-	                            <td>Sub Project Creation? :</td>
-	                            <td><form:checkbox path="subProject" id="subProject"/></td>
-	                            <td><form:errors path="subProject" cssClass="error"/></td>
-                        	</tr>
-	                        <tr id="showProjectNames">
-	                            <td>Alias Project Name <span id="colon">:</span>
-	                            </td>
-	                            <td><form:select path="aliasProjectNameForSubProj"
-	                                             id="aliasProjectNameForSubProj" cssClass="inputText"
-	                                             items="${aliasProjectList}"></form:select></td>	                            
-	                            <td><form:errors path="aliasProjectNameForSubProj"
-	                                             cssClass="error"/></td>
-	                        </tr>
+								<tr id="isSubProject">
+		                            <td>Sub Project Creation? :</td>
+		                            <td><form:checkbox path="subProject" id="subProject"/></td>
+		                            <td><form:errors path="subProject" cssClass="error"/></td>
+	                        	</tr>
+		                        <tr id="showProjectNames">
+		                            <td>Alias Project Name <span id="colon">:</span>
+		                            </td>
+		                            <td><form:select path="aliasProjectNameForSubProj"
+		                                             id="aliasProjectNameForSubProj" cssClass="inputText"
+		                                             items="${aliasProjectList}"></form:select></td>	                            
+		                            <td><form:errors path="aliasProjectNameForSubProj"
+		                                             cssClass="error"/></td>
+		                        </tr>
 	                        </c:if>
 	                        <c:choose>
 							    <c:when test="${projectForm.isUpdate ne 'Y'}">
