@@ -26,6 +26,8 @@ public interface ProjectDAO {
     Map<String, String> getAliasProjectNames();
     
     String fetchMainProjectType(Integer mainProjectId);
+    
+    String getMainProjAliasName(Integer mainProjectId);
 
 
 }

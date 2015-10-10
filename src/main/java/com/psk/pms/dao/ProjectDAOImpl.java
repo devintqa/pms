@@ -131,6 +131,15 @@ public class ProjectDAOImpl implements ProjectDAO {
     	
     	return mainProjectType;
     }
+    
+    public String getMainProjAliasName(Integer mainProjectId){
+    	String sql = "select AliasProjName from project where ProjId = ?";
+		 
+    	String mainAliasProjName = (String)jdbcTemplate.queryForObject(
+    			sql, new Object[] { mainProjectId }, String.class);
+    	
+    	return mainAliasProjName;
+    }
 
 
     public List<ProjectDetail> getProjectDocumentList(String employeeId) {

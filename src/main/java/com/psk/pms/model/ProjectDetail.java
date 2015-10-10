@@ -10,7 +10,8 @@ public class ProjectDetail {
 	private String projectName;
     private String projectType;
     private String aliasName;
-    private String agreementNo;
+    private String mainAliasProjectName;
+	private String agreementNo;
     private String cerNo;
     private String amount;
     private String contractorName;
@@ -319,4 +320,12 @@ public class ProjectDetail {
     public void setWorkoutPercentage(BigDecimal workoutPercentage) {
         this.workoutPercentage = workoutPercentage;
     }
+    
+    public String getMainAliasProjectName() {
+		return mainAliasProjectName;
+	}
+
+	public void setMainAliasProjectName(String mainAliasProjectName) {
+		this.mainAliasProjectName = mainAliasProjectName;
+	}
 }

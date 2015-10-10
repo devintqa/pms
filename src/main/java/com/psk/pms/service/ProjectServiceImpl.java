@@ -143,6 +143,12 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDetail getProjectDocument(String projectId, String employeeId) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         ProjectDetail projectDetail = projectDAO.getProjectDocument(projectId, employeeId);
+        if(projectDetail.getAliasProjectNameForSubProj() != 0){
+        	String mainProjectName = projectDAO.getMainProjAliasName(projectDetail.getAliasProjectNameForSubProj());
+        	String projectType = projectDAO.fetchMainProjectType(projectDetail.getAliasProjectNameForSubProj());
+        	projectDetail.setMainAliasProjectName(mainProjectName);
+        	projectDetail.setProjectType(projectType);
+        }
         projectDetail.setCompletionDateForBonus(DateFormatter.getStringDate(
                 projectDetail.getCompletionDateSqlForBonus(), formatter));
         projectDetail.setTenderDate(DateFormatter.getStringDate(

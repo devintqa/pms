@@ -68,6 +68,8 @@ $(document).ready(function () {
 $(function(){
     if($('#isUpdate').val()=='Y') {
           	  	$("#aliasName").attr("readonly", "readonly");
+          	    $("#mainAliasProjectName").attr("readonly", "readonly");
+          	    $("#projectType").attr("readonly", "readonly");
      }
 });
 </script>
@@ -106,6 +108,16 @@ $(function(){
 										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
 								<td><form:errors path="aliasName" cssClass="error" /></td>
 							</tr>
+							<c:if test="${projectForm.mainAliasProjectName ne null}">
+							<tr>
+								<td>Main Alias Project Name<span id="colon">:</span>
+								</td>
+								<td><form:input path="mainAliasProjectName"
+										placeholder="Enter Alias Project Name" cssClass="inputText" /></td>
+								<td><form:errors path="mainAliasProjectName" cssClass="error" /></td>
+							</tr>
+							</c:if>
+							<c:if test="${projectForm.isUpdate ne 'Y'}">
 							<tr id="isSubProject">
 	                            <td>Sub Project Creation? :</td>
 	                            <td><form:checkbox path="subProject" id="subProject"/></td>
@@ -120,13 +132,26 @@ $(function(){
 	                            <td><form:errors path="aliasProjectNameForSubProj"
 	                                             cssClass="error"/></td>
 	                        </tr>
-                            <tr id="showProjectTypes">
-								<td>Project Type<span id="colon">:</span>
-								</td>
-								<td><form:select path="projectType" cssClass="inputText"
-										items="${projectTypeList}" /></td>
+	                        </c:if>
+	                        <c:choose>
+							    <c:when test="${projectForm.isUpdate ne 'Y'}">
+								    <tr id="showProjectTypes">
+									<td>Project Type<span id="colon">:</span>
+									</td>
+									<td><form:select path="projectType" cssClass="inputText"
+											items="${projectTypeList}" /></td>
+									<td><form:errors path="projectType" cssClass="error" /></td>
+									</tr>
+							    </c:when>    
+							    <c:otherwise>
+								    <tr id="showProjectTypes">
+									<td>Project Type<span id="colon">:</span>
+									</td>
+									<td><form:input path="projectType" cssClass="inputText" /></td>
 								<td><form:errors path="projectType" cssClass="error" /></td>
-							</tr>
+									</tr>
+							    </c:otherwise>
+							</c:choose>							
 							<tr>
 								<td>Estimate C.E.R. Number<span id="colon">:</span>
 								</td>
