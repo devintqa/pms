@@ -273,7 +273,7 @@ public class ItemController extends BaseController {
         }
         try {
             Map<String, BigDecimal> itemNamePriceMap = getConvertItemListToMap(itemList);
-            itemService.updatePriceAndCostForConfiguredItems(projectId, itemNamePriceMap, descIdItemCostMap);
+            itemService.updatePriceAndCostForConfiguredItems(projectId, itemNamePriceMap, descIdItemCostMap, Constants.PSK);
             if(!descIdItemCostMap.isEmpty()){
                 itemService.updateProjectDescriptionWithRecalculatedCost(projectId, descIdItemCostMap);
             }
@@ -349,10 +349,33 @@ public class ItemController extends BaseController {
     void createOrUpdateLeadDetail(@RequestBody LeadDetailConfiguration leadDetailConfiguration) throws IOException {
         LOGGER.info("method = createOrUpdateLeadDetail()");
         ObjectMapper mapper = new ObjectMapper();
+        Map<String,BigDecimal> materialNameCostMap;
+        Integer projectId = leadDetailConfiguration.getProjectId();
         List<LeadDetail> leadDetailList = mapper.readValue(leadDetailConfiguration.getLeadConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, LeadDetail.class));
         leadDetailConfiguration.setLeadDetails(leadDetailList);
+        materialNameCostMap = getConvertLeadDetailListToMap(leadDetailList);
+        getLeadConfiguredItemNames(leadDetailList);
+        itemService.updatePricesForAlreadyConfiguredItems(projectId, materialNameCostMap,getLeadConfiguredItemNames(leadDetailList) ,Constants.GOVERNMENT);
+        projectDescService.recalculateProjectPrices(projectId,Constants.GOVERNMENT);
         itemService.saveLeadDetails(leadDetailConfiguration);
         LOGGER.info("Save Lead detail success");
     }
 
+    private List<String > getLeadConfiguredItemNames(List<LeadDetail> leadDetailList) {
+        List<String > itemNames = new ArrayList<>();
+        for(LeadDetail leadDetail: leadDetailList) {
+            itemNames.add(leadDetail.getMaterial());
+        }
+        return itemNames;
+    }
+
+    private Map<String, BigDecimal> getConvertLeadDetailListToMap(List<LeadDetail> leadDetails) {
+        Map<String, BigDecimal> itemNamePriceMap = new HashMap<String, BigDecimal>();
+        for (LeadDetail leadDetail : leadDetails) {
+            if(!leadDetail.getMaterial().isEmpty()) {
+                itemNamePriceMap.put(leadDetail.getMaterial(), new BigDecimal(leadDetail.getTotal()));
+            }
+        }
+        return itemNamePriceMap;
+    }
 }

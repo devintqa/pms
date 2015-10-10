@@ -55,5 +55,5 @@ public interface ProjectDescriptionService {
 
     ProjDescDetail getBaseDescription(String descId);
 
-	
+	void recalculateProjectPrices(Integer projectId, String descriptionType);
 }

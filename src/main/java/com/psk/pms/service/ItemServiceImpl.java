@@ -6,7 +6,7 @@ import com.psk.pms.dao.ProjectDAO;
 import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-
+import com.psk.pms.utils.ItemUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -135,8 +135,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId) {
-        itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId);
+    public void deleteItemByDescriptionItemId(Integer projectDescriptionItemId, String descriptionType) {
+        itemDAO.deleteItemByProjectDescItemId(projectDescriptionItemId, descriptionType);
     }
 
 /*    public boolean insertDataDescription(DescItemDetail descItemDetail) {
@@ -248,17 +248,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemNamePriceMap,
-                                                     Map<Integer, BigDecimal> descIdItemCostMap) {
-        List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, Constants.PSK);
-        applyPriceAndCostForAllItems(itemDetailDtos, itemNamePriceMap, descIdItemCostMap);
+                                                     Map<Integer, BigDecimal> descIdItemCostMap, String descriptionType) {
+        List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, descriptionType);
+        applyPriceAndCostForAllItems(itemDetailDtos, itemNamePriceMap, descIdItemCostMap, descriptionType);
         if(!itemDetailDtos.isEmpty())
         {
-            itemDAO.updateProjectDescItems(itemDetailDtos);
+            itemDAO.updatePriceAndCostOfProjectDescItems(itemDetailDtos, Constants.PSK);
         }
     }
 
     private void applyPriceAndCostForAllItems(List<ItemDetailDto> itemDetailDtos, Map<String, BigDecimal> itemDetails,
-                                              Map<Integer, BigDecimal> descIdItemCostMap) {
+                                              Map<Integer, BigDecimal> descIdItemCostMap,String descriptionType) {
         LOGGER.info("Applying new price and recalculated cost");
         List<ItemDetailDto> deletedItems = new ArrayList<ItemDetailDto>();
         String itemName;
@@ -283,7 +283,7 @@ public class ItemServiceImpl implements ItemService {
             calculateTotalOfItemCostPerDescription(itemCost, itemDetailDto.getProjectDescId(), descIdItemCostMap);
         }
         for (ItemDetailDto itemDetailDto : deletedItems) {
-            itemDAO.deleteItemByProjectDescItemId(itemDetailDto.getProjectDescItemId());
+            itemDAO.deleteItemByProjectDescItemId(itemDetailDto.getProjectDescItemId(),descriptionType);
         }
     }
 
@@ -317,11 +317,82 @@ public class ItemServiceImpl implements ItemService {
                 projDescDetail.setTotalCost(totalCost.toString());
             }
         }
-        projectDescriptionDAO.updateProjectDescriptions(projDescDetails);
+        projectDescriptionDAO.updateProjectDescriptions(projDescDetails,Constants.PSK);
     }
 
 	@Override
 	public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId) {
 		return itemDAO.getIndentItemForRequest(indentId);
 	}
+
+    @Override
+    public void updatePricesForAlreadyConfiguredItems(Integer projectId, Map<String, BigDecimal> materialNameCostMap, List<String> materailNames,
+                                                      String descriptionType) {
+        LOGGER.info("Updating prices for already configured items for ProjectId: " + projectId);
+        List<ItemDetailDto> finalUpdateList = new ArrayList<ItemDetailDto>();
+        List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, descriptionType);
+        List<ItemDetailDto> itemsDetailsOfMaterialType = ItemUtils.filterItemNames(itemDetailDtos, materailNames);
+        List<ItemDetailDto> itemsWithRemovedLeadDetails = ItemUtils.seperteOutItemsTobeRemoved(materialNameCostMap, itemsDetailsOfMaterialType);
+        applyOriginalPriceForRemovedItems(itemsWithRemovedLeadDetails);
+        applyRecalculatedPriceForItems(materialNameCostMap, itemDetailDtos);
+        finalUpdateList.addAll(itemDetailDtos);
+        finalUpdateList.addAll(itemsWithRemovedLeadDetails);
+        itemDAO.updatePriceAndCostOfProjectDescItems(finalUpdateList, descriptionType);
+    }
+
+    private void applyOriginalPriceForRemovedItems(List<ItemDetailDto> itemsWithRemovedLeadDetails) {
+        if (!itemsWithRemovedLeadDetails.isEmpty()) {
+            Map<String, BigDecimal> itemPrices = itemDAO.getItemPrices(
+                    getLeadConfiguredItemNames(itemsWithRemovedLeadDetails));
+            applyRecalculatedPriceForItems(itemPrices, itemsWithRemovedLeadDetails);
+        }
+    }
+
+    private List<String> getLeadConfiguredItemNames(List<ItemDetailDto> leadDetailList) {
+        List<String> itemNames = new ArrayList<>();
+        for (ItemDetailDto leadDetail : leadDetailList) {
+            itemNames.add(leadDetail.getItemName());
+        }
+        return itemNames;
+    }
+
+    private void removeProjectDescriptionItems(List<ItemDetailDto> itemsToRemove, String descriptionType) {
+        LOGGER.info("Remove project Descriptions items ");
+        for (ItemDetailDto itemDetail : itemsToRemove) {
+            itemDAO.deleteItemByProjectDescItemId(itemDetail.getProjectDescItemId(), descriptionType);
+        }
+    }
+
+    private void applyRecalculatedPriceForItems(Map<String, BigDecimal> materialNameCostMap, List<ItemDetailDto> itemDetailDtos) {
+        LOGGER.info("Apply new prices for project changed project Description Items. ");
+        Integer itemQunatity;
+        BigDecimal itemCost;
+        BigDecimal itemPrice;
+        Iterator itemDetailsIterator = itemDetailDtos.iterator();
+        while (itemDetailsIterator.hasNext()) {
+            ItemDetailDto itemDetailDto = (ItemDetailDto) itemDetailsIterator.next();
+            itemQunatity = itemDetailDto.getItemQuantity();
+            itemPrice = materialNameCostMap.get(itemDetailDto.getItemName());
+            itemDetailDto.setItemPrice(itemPrice);
+            itemCost = new BigDecimal(itemQunatity).multiply(itemPrice);
+            itemDetailDto.setItemCost(itemCost);
+        }
+    }
+
+    public Map<Integer, BigDecimal> getTotalCostOfItemsProjectDescIdForProject(Integer projectId, String descriptionType) {
+        LOGGER.info("Fetch all the items configured for the project:" + projectId + " of descriptionType:" + descriptionType);
+        Map<Integer, BigDecimal> projectDescIdCostMap = new HashMap<Integer, BigDecimal>();
+        List<ItemDetailDto> itemDetailDtos = itemDAO.getAllItemsConfiguredToProject(projectId, descriptionType);
+        LOGGER.info("Prepare of ProjectDescriptionId -> cost of all items for projectDescription");
+        BigDecimal newCost;
+        for (ItemDetailDto itemDetail : itemDetailDtos) {
+            if (projectDescIdCostMap.containsKey(itemDetail.getProjectDescId())) {
+                newCost = itemDetail.getItemCost().add(projectDescIdCostMap.get(itemDetail.getProjectDescId()));
+                projectDescIdCostMap.put(itemDetail.getProjectDescId(), newCost);
+            } else {
+                projectDescIdCostMap.put(itemDetail.getProjectDescId(), itemDetail.getItemCost());
+            }
+        }
+        return projectDescIdCostMap;
+    }
 }

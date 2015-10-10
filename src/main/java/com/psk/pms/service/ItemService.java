@@ -35,7 +35,7 @@ public interface ItemService {
     
     DescItemDetail getPskFieldDescriptionItems(final String projDescId);
 
-    void deleteItemByDescriptionItemId(Integer subProjectid);
+    void deleteItemByDescriptionItemId(Integer subProjectid, String descriptionType);
 
     List<String> fetchUniqueItemUnits();
 
@@ -65,10 +65,14 @@ public interface ItemService {
 
     void applyWorkoutPercentage(List<ItemDetail> itemDetails, BigDecimal workoutPercentage);
 
-    void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemDetails, Map<Integer , BigDecimal> descIdItemCostMap);
+    void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemDetails, Map<Integer , BigDecimal> descIdItemCostMap ,String descriptionType);
 
     void updateProjectDescriptionWithRecalculatedCost(Integer projId, Map<Integer, BigDecimal> descIdItemCostMap);
 
 	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(
 			String indentId);
+
+    void updatePricesForAlreadyConfiguredItems(Integer projectId, Map<String, BigDecimal> materialNameCostMap, List<String > materialNames, String descriptionType);
+
+    Map<Integer, BigDecimal> getTotalCostOfItemsProjectDescIdForProject(Integer projectId, String descriptionType);
 }

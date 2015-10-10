@@ -56,7 +56,7 @@ public interface ProjectDescriptionDAO {
 	
     ProjDescDetail getBaseDescription(String descId);
 
-	void updateProjectDescriptions(List<ProjDescDetail> projDescDetails);
+	void updateProjectDescriptions(List<ProjDescDetail> projDescDetails,String descriptionType);
 
 	List<ProjDescDetail> getProjectDescDetailList(Set<Integer> descItemIds, String descType);
 

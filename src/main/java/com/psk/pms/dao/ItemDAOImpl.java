@@ -4,7 +4,7 @@ import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -295,9 +295,10 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public void deleteItemByProjectDescItemId(Integer projectDescItemId) {
+    public void deleteItemByProjectDescItemId(Integer projectDescItemId,String descriptionType) {
         LOGGER.info("method = deleteItemByProjectDescriptionItemId()");
-        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCAITEMBYPROJECTDESCITEMID, new Object[]{
+        String query = "DELETE FROM "+ DescriptionType.getDescriptionItemTableName(descriptionType)+" WHERE DescItemId = ?";
+        int noOfrowsDeleted = jdbcTemplate.update(query, new Object[]{
                 projectDescItemId
         });
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
@@ -685,9 +686,10 @@ public class ItemDAOImpl implements ItemDAO {
         return itemDetailDtos;
     }
 
-    public void updateProjectDescItems(final List<ItemDetailDto> itemDetailDtos) {
+    public void updatePriceAndCostOfProjectDescItems(final List<ItemDetailDto> itemDetailDtos, String descriptionType) {
         LOGGER.info("Batch updating projectDescriptionItems into database.");
-        jdbcTemplate.batchUpdate(PmsMasterQuery.UPDATE_PRICE_COST_DESC_ITEMS,
+        String UPDATE_PRICE_COST_DESC_ITEMS = "update "+DescriptionType.getDescriptionItemTableName(descriptionType)+" set ItemPrice = ? ,ItemCost = ? where DescItemId = ?";
+        jdbcTemplate.batchUpdate(UPDATE_PRICE_COST_DESC_ITEMS,
                 new BatchPreparedStatementSetter() {
                     @Override
                     public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -718,7 +720,20 @@ public class ItemDAOImpl implements ItemDAO {
 			itemDetail.setItemQty(((Double)row.get("ItemQty")).toString());
 			indentDescItemList.add(itemDetail);
 		}
-		System.out.println("(indentDescItemList.size()"+indentDescItemList.size());
+		System.out.println("(indentDescItemList.size()" + indentDescItemList.size());
 		return indentDescItemList;
 	}
+
+    public Map<String ,BigDecimal> getItemPrices(List<String> itemNames) {
+        LOGGER.info("Getting gov prices from item names"+ itemNames.toString());
+        Map<String ,BigDecimal> itemPrices = new HashMap();
+        String commaSeperatedNames = StringUtils.join(itemNames, ",");
+        String sql = "Select itemName , itemPrice from govpricedetail where itemName in ("
+                + commaSeperatedNames + ")";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> row : rows) {
+            itemPrices.put((String) row.get("itemName"), new BigDecimal((String) row.get("itemPrice")));
+        }
+        return itemPrices;
+    }
 }

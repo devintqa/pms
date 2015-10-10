@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -40,7 +41,7 @@ public interface ItemDAO {
 
     void deleteItemByProjectDescriptionId(String projectDescId, String descType);
 
-    void deleteItemByProjectDescItemId(Integer itemId);
+    void deleteItemByProjectDescItemId(Integer itemId, String descType);
 
     List<String> fetchUniqueItemUnits();
 
@@ -76,8 +77,10 @@ public interface ItemDAO {
 
     List<ItemDetailDto> getAllItemsConfiguredToProject(Integer projectId, String descriptionType);
 
-    void updateProjectDescItems(List<ItemDetailDto> itemDetailDtos);
+    void updatePriceAndCostOfProjectDescItems(List<ItemDetailDto> itemDetailDtos,String descriptiontype);
 
 	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId);
+
+    Map<String ,BigDecimal> getItemPrices(List<String> itemNames);
 
 }

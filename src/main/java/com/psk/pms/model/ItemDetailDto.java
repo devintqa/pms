@@ -97,4 +97,28 @@ public class ItemDetailDto {
     public void setItemCost(BigDecimal itemCost) {
         this.itemCost = itemCost;
     }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result
+                + ((projectDescItemId == null) ? 0 : projectDescItemId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj) {
+            return true;
+        }
+        if (null == obj) {
+            return false;
+        }
+        if (getClass()!=this.getClass()){
+            return false;
+        }
+        final ItemDetailDto itemDetailDto = (ItemDetailDto) obj;
+        return itemDetailDto.getProjectDescItemId() == this.getProjectDescItemId();
+    }
 }

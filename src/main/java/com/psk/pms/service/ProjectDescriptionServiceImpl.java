@@ -4,16 +4,14 @@ import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by prakashbhanu57 on 7/6/2015.
@@ -22,6 +20,9 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 
 	@Autowired
 	ProjectDescriptionDAO projectDescriptionDAO;
+
+	@Autowired
+	ItemService itemService;
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionServiceImpl.class);
 
@@ -75,7 +76,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		projDescDetail.setIsUpdate("Y");
 		return projDescDetail;
 	}
-	
+
 
 	@Override
 	public List < ProjDescDetail > getSubProjectDescDetailList(Integer subProjectId) {
@@ -195,4 +196,37 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		return projectDescriptionDAO.getBaseDescription(descId);
 	}
 
+	@Override
+    public void recalculateProjectPrices(Integer projectId, String descriptionType) {
+        LOGGER.info("Recalculating project prices for projectId:" + projectId);
+        SearchDetail searchDetail = new SearchDetail();
+        searchDetail.setSearchUnder("project");
+        searchDetail.setProjId(projectId);
+        searchDetail.setSearchOn(descriptionType);
+        Map<Integer, BigDecimal> projectDescIdPricePerQuantityMap = itemService.getTotalCostOfItemsProjectDescIdForProject(projectId, descriptionType);
+        List<ProjDescDetail> projDescDetails = projectDescriptionDAO.getProjectDescDetailList(searchDetail);
+        applyRecalculatedPriceForProjectDescriptions(projectDescIdPricePerQuantityMap, projDescDetails);
+        projectDescriptionDAO.updateProjectDescriptions(projDescDetails, descriptionType);
+        LOGGER.info("Recalculating project prices for projectId:" + projectId + " Complete.");
+    }
+
+    private void applyRecalculatedPriceForProjectDescriptions(Map<Integer, BigDecimal> projectDescIdPricePerQuantityMap, List<ProjDescDetail> itemDetailDtos) {
+        LOGGER.info("Applying recalculated Prices for each project descriptions.");
+        BigDecimal itemQunatity;
+        BigDecimal totalCost;
+        BigDecimal pricePerQuantity;
+        Iterator itemDetailsIterator = itemDetailDtos.iterator();
+        while (itemDetailsIterator.hasNext()) {
+            ProjDescDetail projDescDetail = (ProjDescDetail) itemDetailsIterator.next();
+            if (projectDescIdPricePerQuantityMap.containsKey(projDescDetail.getProjDescId())) {
+                itemQunatity = new BigDecimal(projDescDetail.getQuantity());
+                pricePerQuantity = projectDescIdPricePerQuantityMap.get(projDescDetail.getProjDescId());
+                projDescDetail.setPricePerQuantity(pricePerQuantity.toString());
+                totalCost = itemQunatity.multiply(pricePerQuantity);
+                projDescDetail.setTotalCost(totalCost.toString());
+            } else {
+                itemDetailsIterator.remove();
+            }
+        }
+    }
 }

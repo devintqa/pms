@@ -168,9 +168,6 @@ public class PmsMasterQuery {
 
     public static final String GET_STORE_DETAILS = "select * from storeDetail where projId = ?";
 
-    public static final String UPDATE_PRICE_COST_DESC_ITEMS = "update projdescitem set ItemPrice = ? ,ItemCost = ? where DescItemId = ?";
-
-    public static final String UPDATE_PRICE_COST_DESCRIPTIONS = "update projectdesc set PricePerQuantity = ? , TotalCost = ? where ProjDescId = ?";
 
     public static final String GET_STOCK_DETAILS = "select * from stockDetail where projectId = ? and itemName=?";
 

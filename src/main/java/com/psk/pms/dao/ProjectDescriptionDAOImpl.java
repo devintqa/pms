@@ -228,6 +228,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 	}
 
     public List<ProjDescDetail> getProjectDescDetailList(SearchDetail searchDetail) {
+		LOGGER.info("Fetch all projectDescriptions configured for the project"+ searchDetail.getProjId() +
+				" for descriptionType:"+searchDetail.getSearchOn());
         String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, TotalCost, ProjDescId";
         if ("project".equalsIgnoreCase(searchDetail.getSearchUnder())) {
             sql = sql + " FROM " + DescriptionType.getDescriptionTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
@@ -688,22 +690,28 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		LOGGER.info("method = deleteProjectDescriptionByProjectId , Number of rows deleted : " + noOfRows + " projectId :" + projectId);
 	}
 
-	public void updateProjectDescriptions(final List<ProjDescDetail> projDescDetails) {
+	public void updateProjectDescriptions(final List<ProjDescDetail> projDescDetails,String descriptionType) {
 		LOGGER.info("batch updating projectDescriptions with new priceperQuantity and totalCost");
-		jdbcTemplate.batchUpdate(UPDATE_PRICE_COST_DESCRIPTIONS, new BatchPreparedStatementSetter() {
-			@Override
-			public void setValues(PreparedStatement ps, int i) throws SQLException {
-				ProjDescDetail projDescDetail = projDescDetails.get(i);
-				ps.setString(1, projDescDetail.getPricePerQuantity());
-				ps.setString(2, projDescDetail.getTotalCost());
-				ps.setInt(3, projDescDetail.getProjDescId());
-			}
+		String UPDATE_PRICE_COST_DESCRIPTIONS =  "update "+DescriptionType.getDescriptionTableName(descriptionType)+" set PricePerQuantity = ? , TotalCost = ? where ProjDescId = ?";
+		try{
+			jdbcTemplate.batchUpdate(UPDATE_PRICE_COST_DESCRIPTIONS, new BatchPreparedStatementSetter() {
+				@Override
+				public void setValues(PreparedStatement ps, int i) throws SQLException {
+					ProjDescDetail projDescDetail = projDescDetails.get(i);
+					ps.setString(1, projDescDetail.getPricePerQuantity());
+					ps.setString(2, projDescDetail.getTotalCost());
+					ps.setInt(3, projDescDetail.getProjDescId());
+				}
 
-			@Override
-			public int getBatchSize() {
-				return projDescDetails.size();
-			}
-		});
+				@Override
+				public int getBatchSize() {
+					return projDescDetails.size();
+				}
+			});
+		}catch (Exception e){
+			LOGGER.error("Error got occurred"+e);
+		}
+
 	}
 
 	@Override
