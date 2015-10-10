@@ -28,4 +28,6 @@ public interface FieldDescriptionDAO {
 
 	Map<String, Object> getRequestedIndentQty(Integer projId);
 
+	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
+
 }

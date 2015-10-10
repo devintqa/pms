@@ -111,56 +111,59 @@
 			var startDate = $('#workStartDate').val();
 			var endDate = $('#workEndDate').val();
 			
-			 $("div[name = 'collapse']").each(function() {
-				 var indentDesc = {};
-				 var itemObjArray = [];
-				 var projDescId = $(this).attr('aria-projdesc-id');
-				 var indentDescQty = $("#plannedQty"+projDescId+indentId).val();
-				 var indentDescMetric = $("#metric"+projDescId+indentId).val();
-				 var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
-				 var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
-					for (i = 1; i < tableLength; i++) {
-						var new_row = itemTable.rows[i];
-						var itemType = new_row.cells[0].innerHTML;
-						var itemName = new_row.cells[1].innerHTML;
-						var itemUnit = new_row.cells[2].innerHTML;
-						var itemQty = new_row.cells[3].innerHTML;
-						
-						var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
-						if(itemType && itemName && itemUnit && itemQty){
-							itemObjArray.push(obj); 
+				 $("div[name = 'collapse']").each(function() {
+					 var indentDesc = {};
+					 var itemObjArray = [];
+					 var projDescId = $(this).attr('aria-projdesc-id');
+					 var indentDescQty = $("#plannedQty"+projDescId+indentId).val();
+					 var indentDescMetric = $("#metric"+projDescId+indentId).val();
+					 var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
+					 var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
+						for (i = 1; i < tableLength; i++) {
+							var new_row = itemTable.rows[i];
+							var itemType = new_row.cells[0].innerHTML;
+							var itemName = new_row.cells[1].innerHTML;
+							var itemUnit = new_row.cells[2].innerHTML;
+							var itemQty = new_row.cells[3].innerHTML;
+							
+							var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
+							if(itemType && itemName && itemUnit && itemQty){
+								itemObjArray.push(obj); 
+							}
 						}
-					}
-					indentDesc["plannedQty"] = indentDescQty;
-					indentDesc["metric"] = indentDescMetric;
-					indentDesc["projDescId"] = projDescId;
-					indentDesc["itemDetails"] = itemObjArray;
-					indentDescArray.push(indentDesc);
-		     });
-				indent["projId"] = projId;
-				indent["employeeId"] = employeeId;
-				indent["startDate"] = startDate;
-				indent["endDate"] = endDate;
-				indent['indentDescList'] = indentDescArray
-			
-			
-			console.log(JSON.stringify(indent));
-			
-			$.ajax({
-				type : "POST",
-				url : "saveIndentItem.do",
-				contentType: "application/json",
-				cache : false,
-				data : JSON.stringify(indent),
-				success : function(response) {
-					if(response > 0){
-						window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response+"&status=NEW";
+						if(indentDescQty){
+							indentDesc["plannedQty"] = indentDescQty;
+							indentDesc["metric"] = indentDescMetric;
+							indentDesc["projDescId"] = projDescId;
+							indentDesc["itemDetails"] = itemObjArray;
+							indentDescArray.push(indentDesc);
+						}
+			     });
+					indent["projId"] = projId;
+					indent["employeeId"] = employeeId;
+					indent["startDate"] = startDate;
+					indent["endDate"] = endDate;
+					indent['indentDescList'] = indentDescArray
+				
+				console.log(JSON.stringify(indent));
+					if(startDate && endDate){
+						$.ajax({
+							type : "POST",
+							url : "saveIndentItem.do",
+							contentType: "application/json",
+							cache : false,
+							data : JSON.stringify(indent),
+							success : function(response) {
+								if(response > 0){
+									window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response+"&status=NEW";
+								}else{
+									alert("Error occured while saving the indent!");
+								}
+							}
+						});
 					}else{
-						alert("Error occured while saving the indent!");
+						$('#error').text('Date field value is missing!');
 					}
-				}
-			});
-			
 		});
 		
 	});
@@ -225,6 +228,10 @@
 					}else{
 						$('#error'+projDescId).text(response);
 						val='';
+						while(itemTable.rows.length > 1){
+							itemTable.deleteRow(tableLength-1);
+							tableLength--;
+						}
 					}
 				}
 			});
@@ -323,11 +330,12 @@
 				<input type="hidden" value="${indent.employeeId}" id="employeeId" />
 				<c:if test="${indent.indentId eq '_'}">
 					<center>
+					<br>
+					<span style="color: red;" id="error"></span>
 						<table>
 							<tr>
 								<td><input class="saveIndentButton"
 									aria-indent-id="${indent.indentId}" value="Next" type="button" /></td>
-								<td></td>
 							</tr>
 						</table>
 					</center>

@@ -265,10 +265,11 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	public String placeIndentRequest(Indent indent) {
 		String status = "";
 		if(indent.getStatus().equalsIgnoreCase("new")){
+			indent.setStatus("PENDING LEVEL 1 APPROVAL");
 			String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
-			Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{"REQUESTED", indent.getEmployeeId(), indent.getIndentId()});
+			Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
 			if(row==1)
-				status = "Indent requested succesffuly";
+				status = "Indent requested succesfully";
 		}else{
 			status = "Indents in "+indent.getStatus().toLowerCase()+" status is invalid";
 		}
@@ -285,13 +286,35 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		Map < String, Object > descQty = new HashMap< String, Object>();
 		String sql = null;
 		if (null!=projId) {
-			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status='REQUESTED') group by projdescid";
+			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status <> 'NEW') group by projdescid";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 		for (Map < String, Object > row: rows) {
 			descQty.put(row.get("projdescid").toString(), row.get("qty"));
 		}
 		return descQty;
+	}
+
+	@Override
+	public List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail) {
+		String sql = "SELECT ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, Description, AliasDescription, PricePerQuantity, "
+				+ "TotalCost, ProjDescId FROM " + DescriptionType.getDescriptionTableName(searchDetail.getSearchOn()) + " where ProjId = '" + searchDetail.getProjId() + "'" + " and SubProjId is null";
+
+		List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
+		BigDecimal availedDescIndentQtyBigD  = new BigDecimal(0); 
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		Map<String, Object> indentUsedOnDesc = getRequestedIndentQty(searchDetail.getProjId());
+		for (Map<String, Object> row : rows) {
+			ProjDescDetail fieldDesc = buildProjectDescDetail(row);
+			Double totalQty = new Double(fieldDesc.getQuantity());
+			if(null!=indentUsedOnDesc.get(fieldDesc.getProjDescId().toString()))
+				availedDescIndentQtyBigD = (BigDecimal) indentUsedOnDesc.get(fieldDesc.getProjDescId().toString());
+			Double availedQty = availedDescIndentQtyBigD.doubleValue();
+			Double availableQty = totalQty - availedQty;
+			fieldDesc.setAvailableQty(availableQty.toString());
+			projectDescDetailList.add(fieldDesc);
+		}
+		return projectDescDetailList;
 	}
 
 }

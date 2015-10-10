@@ -16,6 +16,15 @@
             window.location.reload();
         }
     }
+    
+    function openProjDescLoader(projDescSerial, projId, subProjId, projDescId, descType, employeeId){
+  	  if(subProjId == ''){
+  		  subProjId = 0;
+  	  }
+  	  descType = $("#searchOn").val();
+  	  windowObjectReference = window.open("/pms/emp/myview/buildProjectDesc/loadProjDescItems.do?projDescSerial="+projDescSerial+"&projId="+projId+"&subProjId="+subProjId+"&projDescId="+projDescId+"&descType="+descType+"&employeeId="+employeeId,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
+    }
+    
 
         $(document).ready(function () {
             $("#showSearchProjectDesc").hide();
@@ -33,32 +42,32 @@
         	  $('#error').text('');
           });
             
-        $("#doIndent").click(function() {
-            var projDescs = [];
-            var projId = '';
-            var projDescId = '';
-            var employeeId = '';
-            
-            $($('input[name="indentDescription"]:checked')).each(function(index) {
-               
-                console.log(index + ": " + $(this).attr('aria-proj-id'));
-                console.log(index + ": " + $(this).attr('aria-projdesc-id'));
-                console.log(index + ": " + $(this).attr('aria-employee-id'));
-                projId = $(this).attr('aria-proj-id');
-                projDescId = $(this).attr('aria-projdesc-id');
-                employeeId = $(this).attr('aria-employee-id');
-
-                projDescs.push(projDescId);
-                
-            });
-                if($('input[name="indentDescription"]:checked').length > 0){
-                	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&action=edit&projDescs="+projDescs;
-                }else{
-                	$('#error').text('Please select any description to build indent');
-                }
-           
-        });
-        });
+		 $("#doIndent").click(function() {
+		     var projDescs = [];
+		     var projId = '';
+		     var projDescId = '';
+		     var employeeId = '';
+		     
+		      $($('input[name="indentDescription"]:checked')).each(function(index) {
+		         
+		          console.log(index + ": " + $(this).attr('aria-proj-id'));
+		          console.log(index + ": " + $(this).attr('aria-projdesc-id'));
+		          console.log(index + ": " + $(this).attr('aria-employee-id'));
+		          projId = $(this).attr('aria-proj-id');
+		          projDescId = $(this).attr('aria-projdesc-id');
+		          employeeId = $(this).attr('aria-employee-id');
+		
+		          projDescs.push(projDescId);
+		          
+		      });
+		         if($('input[name="indentDescription"]:checked').length > 0){
+		         	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&action=edit&projDescs="+projDescs;
+		         }else{
+		         	$('#error').text('Please select any description to build indent');
+		         }
+		    
+		});
+     });
         
 </script>
 </head>
@@ -116,7 +125,8 @@
 							<th>Serial Number</th>
 							<th>Alias</th>
 							<th>Work Type</th>
-							<th>No of Quantity</th>
+							<th>Total Quantity</th>
+							<th>Available Quantity</th>
 							<th>Metric</th>
 						</tr>
 					</thead>
@@ -129,10 +139,13 @@
 											aria-proj-id="${projDesc.projId}"
 											aria-projdesc-id="${projDesc.projDescId}"
 											aria-employee-id="${employeeObj.employeeId}" /></td>
-									<td>${projDesc.serialNumber}</td>
+									<td>
+									<a href="javascript:openProjDescLoader('${projDesc.serialNumber}','${projDesc.projId}','${projDesc.subProjId}','${projDesc.projDescId}','FIELD','${employeeObj.employeeId}')"
+										class="userAction">${projDesc.serialNumber}</a></td>
 									<td>${projDesc.aliasDescription}</td>
 									<td>${projDesc.workType}</td>
 									<td>${projDesc.quantity}</td>
+									<td>${projDesc.availableQty}</td>
 									<td>${projDesc.metric}</td>
 								</tr>
 							</c:forEach>

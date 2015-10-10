@@ -69,6 +69,7 @@
 				<table id="indentList" class="display">
 					<thead>
 						<tr>
+							<th>Indent No</th>
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Status</th>
@@ -79,6 +80,7 @@
 						<c:if test="${not empty indentList}">
 							<c:forEach var="indent" items="${indentList}">
 								<tr>
+									<td>${indent.indentId}</td>
 									<td><a href="/pms/emp/myview/indent/itemToRequest?employeeId=${employeeId}&indentId=${indent.indentId}&status=${indent.status}">${indent.startDate}</a>
 									</td>
 									<td>${indent.endDate}</td>

@@ -51,6 +51,7 @@
                              }
                          }
                      });
+					 window.location = "/pms/emp/myview/"+employeeId;
 				}
 			});
         });

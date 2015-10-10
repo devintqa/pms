@@ -58,4 +58,9 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 		return fieldDescriptionDAO.getRequestedIndentQty(projId);
 	}
 
+	@Override
+	public List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail) {
+		return fieldDescriptionDAO.getFieldDescDetailList(searchDetail);
+	}
+
 }

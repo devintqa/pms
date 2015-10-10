@@ -10,6 +10,7 @@ public class ProjDescDetail {
 	private String serialNumber;
 	private String workType;
 	private String quantity;
+	private String availableQty;
 	private String metric;
 	private String description;
 	private String aliasDescription;
@@ -200,6 +201,14 @@ public class ProjDescDetail {
 
 	public void setDescType(String descType) {
 		this.descType = descType;
+	}
+
+	public String getAvailableQty() {
+		return availableQty;
+	}
+
+	public void setAvailableQty(String availableQty) {
+		this.availableQty = availableQty;
 	}
 
 }

@@ -26,4 +26,6 @@ public interface FieldDescriptionService {
 
 	Map<String, Object> getRequestedIndentQty(Integer projId);
 
+	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
+
 }

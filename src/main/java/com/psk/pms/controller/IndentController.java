@@ -65,7 +65,7 @@ public class IndentController extends BaseController {
 		searchDetail.setSearchOn(Constants.FIELD);
 		searchValidator.validate(searchDetail, result);
 		if (!result.hasErrors()) {
-			List<ProjDescDetail> projDescDocList = projectDescriptionService.getProjectDescDetailList(searchDetail);
+			List<ProjDescDetail> projDescDocList = fieldDescriptionService.getFieldDescDetailList(searchDetail);
 			if (projDescDocList.size() > 0) {
 				model.addAttribute("projDescDocList", projDescDocList);
 				model.addAttribute("projDescDocListSize", projDescDocList.size());
@@ -106,7 +106,7 @@ public class IndentController extends BaseController {
 				model.addAttribute("projectAliasName", searchDetail.getAliasProjectName());
 				model.addAttribute("employeeId", searchDetail.getEmployeeId());
 			} else {
-				model.addAttribute("noDetailsFound", "No Project Descriptions Found For The Selection.");
+				model.addAttribute("noDetailsFound", "Project Descriptions not found for the selection.");
 			}
 		}
 		return "SearchIndent";
@@ -168,12 +168,12 @@ public class IndentController extends BaseController {
 			Model model) {
 		String validation = "valid";
 		BigDecimal availedDescIndentQtyBigD = new BigDecimal(0);
+		Double askingIndentQty = new Double(indentDescQty);
 		ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
 		Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId());
 		Double fixedProjDescQty = new Double(projDesc.getQuantity());
-		Double askingIndentQty = new Double(indentDescQty);
-		if(askingIndentQty < fixedProjDescQty){
-			if(availedDescIndentQty.size() > 0)
+		if(askingIndentQty <= fixedProjDescQty){
+			if(availedDescIndentQty.size() > 0 && null!=availedDescIndentQty.get(projDescId))
 				availedDescIndentQtyBigD = (BigDecimal) availedDescIndentQty.get(projDescId);
 			Double sumOfQty = availedDescIndentQtyBigD.doubleValue() + askingIndentQty;
 			Double qtyAvailable = fixedProjDescQty - availedDescIndentQtyBigD.doubleValue();
