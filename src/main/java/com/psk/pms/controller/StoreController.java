@@ -8,7 +8,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.psk.exception.ValidationException;
 import com.psk.pms.Constants;
 import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
-import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.StoreValidator;
 

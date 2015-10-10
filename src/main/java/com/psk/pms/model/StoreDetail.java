@@ -1,7 +1,6 @@
 package com.psk.pms.model;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Sony on 25-09-2015.
