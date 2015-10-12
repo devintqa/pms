@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.StoreTransactionDetail;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -23,4 +24,6 @@ public interface StoreService {
     void saveDispatchedDetail(DispatchDetail dispatchDetail);
 
     List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
+    
+    void saveReturnedDetail(StoreTransactionDetail storeTransactionDetail);
 }

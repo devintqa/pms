@@ -77,8 +77,12 @@ public class StoreController extends BaseController {
     public JsonData getItemNamesInStore(HttpServletRequest httpServletRequest) {
         LOGGER.info("getItemNamesInStore for Project :"
                 + httpServletRequest.getParameter("projId"));
-        JsonData jsonData = new JsonData();
-        DispatchDetail dispatchDetail = new DispatchDetail();
+        return getItemAndFieldUser(httpServletRequest);
+    }
+
+	private JsonData getItemAndFieldUser(HttpServletRequest httpServletRequest) {
+		JsonData jsonData = new JsonData();
+		DispatchDetail dispatchDetail = new DispatchDetail();
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
         String projectId = fetchProjectId(projId, employeeId);
@@ -100,6 +104,14 @@ public class StoreController extends BaseController {
             jsonData.setData("There are no field users for the project");
         }
         return jsonData;
+	}
+    
+    @RequestMapping(value = "/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData getItemNamesInStoreForReturn(HttpServletRequest httpServletRequest) {
+        LOGGER.info("getItemNamesInStore for Project :"
+                + httpServletRequest.getParameter("projId"));
+        return getItemAndFieldUser(httpServletRequest);
     }
 
 
@@ -124,6 +136,19 @@ public class StoreController extends BaseController {
         model.addAttribute("aliasProjectList", aliasProjectList);
         return "StoreTransaction";
     }
+    
+    @RequestMapping(value = "/emp/myview/returnTransaction/{employeeId}", method = RequestMethod.GET)
+    public String returnTransaction(@PathVariable String employeeId, Model model) {
+        LOGGER.info("Store Controller : buildStoreDetail()");
+        Map<String, String> aliasProjectList = getProjectDetails(employeeId);
+        StoreTransactionDetail storeTransactionDetail = new StoreTransactionDetail();
+        storeTransactionDetail.setEmployeeId(employeeId);
+        model.addAttribute("returnDetailForm", storeTransactionDetail);
+        model.addAttribute("aliasProjectList", aliasProjectList);
+        return "ReturnTransaction";
+    }
+    
+    
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/saveDispatchedDetail.do", method = RequestMethod.POST)
     public String saveDispatchedDetail(@ModelAttribute("dispatchDetailForm") DispatchDetail dispatchDetail,

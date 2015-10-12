@@ -231,6 +231,9 @@
 						<li><a id="dispatchTransaction"
 							href="/pms/emp/myview/dispatchTransaction/${employeeObj.employeeId}">Dispatch
 						</a></li>
+						<li><a id="returnTransaction"
+							href="/pms/emp/myview/returnTransaction/${employeeObj.employeeId}">Return
+						</a></li>
 					</ul></li>
 
 				<li><a href="#">View</a>

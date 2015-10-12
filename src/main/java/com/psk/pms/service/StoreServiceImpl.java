@@ -1,23 +1,24 @@
 package com.psk.pms.service;
 
+import static java.lang.Integer.parseInt;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.psk.pms.Constants;
-import com.psk.pms.dao.EmployeeDAO;
-import com.psk.pms.model.DispatchDetail;
-import com.psk.pms.model.StockDetail;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.psk.pms.dao.StoreDetailDAO;
-import com.psk.pms.model.StoreDetail;
 import org.springframework.transaction.annotation.Transactional;
 
-import static java.lang.Integer.parseInt;
+import com.psk.pms.Constants;
+import com.psk.pms.dao.EmployeeDAO;
+import com.psk.pms.dao.StoreDetailDAO;
+import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.StockDetail;
+import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.StoreTransactionDetail;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -48,6 +49,14 @@ public class StoreServiceImpl implements StoreService {
         dispatchDetail.setSqlDispatchedDate(new Date());
         storeDetailDAO.saveDispatchedDetails(dispatchDetail, Constants.DISPATCHED);
         deductFromStock(dispatchDetail);
+    }
+    
+    @Override
+    @Transactional
+    public void saveReturnedDetail(StoreTransactionDetail storeTransactionDetail) {
+        storeTransactionDetail.setSqlReturnedDate(new Date());
+        storeDetailDAO.saveReturnedDetails(storeTransactionDetail, Constants.RETURNED);
+        returnToStock(storeTransactionDetail);
     }
 
 
@@ -101,6 +110,12 @@ public class StoreServiceImpl implements StoreService {
     private void deductFromStock(DispatchDetail dispatchDetail) {
         int totalQuantity = parseInt(dispatchDetail.getTotalQuantity()) - parseInt(dispatchDetail.getRequestedQuantity());
         storeDetailDAO.updateStockDetail(dispatchDetail.getProjId(), dispatchDetail.getItemName(), String.valueOf(totalQuantity));
+    }
+    
+    private void returnToStock(StoreTransactionDetail storeTransactionDetail) {
+    	String quantity = getItemQuantityInStock(storeTransactionDetail.getProjId().toString(), storeTransactionDetail.getItemName());
+    	int totalQuantity= Integer.parseInt(quantity) + Integer.parseInt(storeTransactionDetail.getReturnedQuantity());
+        storeDetailDAO.updateStockDetail(storeTransactionDetail.getProjId(), storeTransactionDetail.getItemName(), String.valueOf(totalQuantity));
     }
 
     private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter) {

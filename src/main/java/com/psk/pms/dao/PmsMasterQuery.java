@@ -176,7 +176,7 @@ public class PmsMasterQuery {
 
     public static final String GET_ITEM_NAMES_STORE = "select itemName from stockDetail where projectId=?";
 
-    public static final String CREATE_DISPATCH_DETAILS = "insert into dispatchdetail(projectId, itemName, dispactchedDate,fieldUser,dispatchDesc,quantity) values (?,?,?,?,?,?)";
+    public static final String CREATE_TRANSACTION_DETAILS = "insert into dispatchdetail(projectId, itemName, dispactchedDate,fieldUser,dispatchDesc,quantity) values (?,?,?,?,?,?)";
 
     public static final String GET_DISPATCH_DETAILS = "select * from dispatchdetail where projectId = ? and fieldUser=?";
 
