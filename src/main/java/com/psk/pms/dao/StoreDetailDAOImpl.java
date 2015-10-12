@@ -93,7 +93,6 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
                 , dispatchDetail.getSqlDispatchedDate(), dispatchDetail.getFieldUser(), dispatched,dispatchDetail.getRequestedQuantity());
     }
     
-    
     @Override
     public void saveReturnedDetails(StoreTransactionDetail storeTransactionDetail, String returned) {
         jdbcTemplate.update(CREATE_TRANSACTION_DETAILS, storeTransactionDetail.getProjId(), storeTransactionDetail.getItemName()

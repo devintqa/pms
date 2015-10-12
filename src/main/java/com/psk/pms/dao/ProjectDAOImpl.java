@@ -1,17 +1,20 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.ProjectDetail;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.GET_DROP_DOWN_VALUES;
+import static org.springframework.util.StringUtils.isEmpty;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.math.BigDecimal;
-import java.util.*;
-
-import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTBYPROJECTID;
-import static com.psk.pms.dao.PmsMasterQuery.GET_DROP_DOWN_VALUES;
-import static org.springframework.util.StringUtils.isEmpty;
+import com.psk.pms.model.ProjectDetail;
 
 public class ProjectDAOImpl implements ProjectDAO {
 
@@ -19,6 +22,8 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Qualifier("jdbcTemplate")
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    ResultTransformer transformer = new ResultTransformer();
 
     private static final Logger LOGGER = Logger.getLogger(ProjectDAOImpl.class);
 
@@ -146,7 +151,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         List<ProjectDetail> projDocList = new ArrayList<ProjectDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList((projQuery + " where ProjId in(select projectId from authoriseproject where empId = ?)"), employeeId);
         for (Map<String, Object> row : rows) {
-            projDocList.add(buildProjectDetail(row));
+            projDocList.add(transformer.buildProjectDetail(row));
         }
         return projDocList;
     }
@@ -156,7 +161,7 @@ public class ProjectDAOImpl implements ProjectDAO {
         List<ProjectDetail> projDocList = new ArrayList<ProjectDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(projQuery);
         for (Map<String, Object> row : rows) {
-            projDocList.add(buildProjectDetail(row));
+            projDocList.add(transformer.buildProjectDetail(row));
         }
         return projDocList;
     }
@@ -173,59 +178,8 @@ public class ProjectDAOImpl implements ProjectDAO {
         }
         ProjectDetail projDoc = null;
         for (Map<String, Object> row : rows) {
-            projDoc = buildProjectDetail(row);
+            projDoc = transformer.buildProjectDetail(row);
         }
-        return projDoc;
-    }
-
-    private ProjectDetail buildProjectDetail(Map<String, Object> row) {
-        ProjectDetail projDoc = new ProjectDetail();
-        projDoc.setProjId((Integer) row.get("ProjId"));
-        projDoc.setAliasProjectNameForSubProj((Integer) row.get("MainProjId"));
-        projDoc.setProjectName((String) row.get("ProjName"));
-        projDoc.setAliasName((String) row.get("AliasProjName"));
-        projDoc.setProjectType((String) row.get("ProjectType"));
-        projDoc.setAgreementNo((String) row.get("AgreementNum"));
-        projDoc.setCerNo((String) row.get("CERNum"));
-        projDoc.setContractorName((String) row.get("ContractorName"));
-        projDoc.setAliasContractorName((String) row.get("ContractorAliasName"));
-        projDoc.setContractorAddress((String) row.get("ContractorAdd"));
-        projDoc.setTenderSqlDate((Date) row.get("TenderDate"));
-
-        BigDecimal amount = (BigDecimal) row.get("Amount");
-        projDoc.setAmount(amount.toString());
-
-        BigDecimal aggValue = (BigDecimal) row.get("AgreementValue");
-        projDoc.setAgreementValue(aggValue.toString());
-
-        BigDecimal tenderValue = (BigDecimal) row.get("TenderValue");
-        projDoc.setTenderValue(tenderValue.toString());
-
-
-        BigDecimal exAmount = (BigDecimal) row.get("ExcessInAmount");
-        projDoc.setExAmount(exAmount.toString());
-
-        BigDecimal exPercentage = (BigDecimal) row.get("ExcessInPercentage");
-        if (null == exPercentage) {
-            projDoc.setExPercentage("");
-        } else {
-            projDoc.setExPercentage(exPercentage.toString());
-        }
-
-        BigDecimal lessPercentage = (BigDecimal) row.get("LessInPercentage");
-        if (null == lessPercentage) {
-            projDoc.setLessPercentage("");
-        } else {
-            projDoc.setLessPercentage(lessPercentage.toString());
-        }
-        projDoc.setWorkLocation((String) row.get("workLocation"));
-        projDoc.setWorkoutPercentage((BigDecimal) row.get("workoutPercentage"));
-        projDoc.setCompletionDateSqlForBonus((Date) row.get("CompletionDateForBonus"));
-        projDoc.setAgreementSqlDate((Date) row.get("AgreementDate"));
-        projDoc.setCommencementSqlDate((Date) row.get("CommencementDate"));
-        projDoc.setCompletionSqlDate((Date) row.get("CompletedDate"));
-        projDoc.setAgreementPeriod((Integer) row.get("AgreementPeriod"));
-
         return projDoc;
     }
 

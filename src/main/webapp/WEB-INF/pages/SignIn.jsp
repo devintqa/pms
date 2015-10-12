@@ -23,8 +23,8 @@
 				   <div style="text-align: center;">
 					<br><br>
 					<br><br>		
-<%-- 						<img src="<c:url value="/resources/images/PSK.jpg" />" --%>
-<!-- 							alt="PSK Logo">		 -->
+						<img src="<c:url value="/resources/images/PSK.jpg" />"
+							alt="PSK Logo">		
 							<br><br>
 							<br><br>
 							<br><br>

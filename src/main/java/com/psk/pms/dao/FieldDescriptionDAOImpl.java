@@ -39,15 +39,15 @@ import com.psk.pms.model.IndentDesc.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
 
-/**
- * Created by prakashbhanu57 on 8/18/2015.
- */
+
 public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
 	@Qualifier("jdbcTemplate")
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	ResultTransformer transformer = new ResultTransformer();
+	
 	private static final Logger LOGGER = Logger.getLogger(FieldDescriptionDAOImpl.class);
 
 	@Override
@@ -198,44 +198,11 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projDescDetail = buildProjectDescDetail(row);
+			projDescDetail = transformer.buildProjectDescDetail(row);
 		}
 		return projDescDetail;
 	}
-	private ProjDescDetail buildProjectDescDetail(Map < String, Object > row) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		projDescDetail.setProjId((Integer) row.get("ProjId"));
-		projDescDetail.setAliasProjectName((String) row.get("AliasProjName"));
-		projDescDetail.setSerialNumber((String) row.get("SerialNumber"));
-		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
-		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
-		projDescDetail.setWorkType((String) row.get("WorkType"));
-		BigDecimal quantity = (BigDecimal) row.get("Quantity");
-		projDescDetail.setMetric((String) row.get("Metric"));
-		if (null == quantity) {
-			projDescDetail.setQuantity("");
-		} else {
-			projDescDetail.setQuantity(quantity.toString());
-		}
-		projDescDetail.setDescription((String) row.get("Description"));
-		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
-
-		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
-		if (null == pricePerQuantity) {
-			projDescDetail.setPricePerQuantity("");
-		} else {
-			projDescDetail.setPricePerQuantity(pricePerQuantity.toString());
-		}
-		BigDecimal totalCost = (BigDecimal) row.get("TotalCost");
-		if (null == totalCost) {
-			projDescDetail.setTotalCost("");
-		} else {
-			projDescDetail.setTotalCost(totalCost.toString());
-		}
-		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
-		return projDescDetail;
-	}
-
+	
 	@Override
 	public List<Indent> getIndentList(SearchDetail searchDetail) {
 		List<Indent> indentList = new ArrayList<Indent>();
@@ -305,7 +272,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		Map<String, Object> indentUsedOnDesc = getRequestedIndentQty(searchDetail.getProjId());
 		for (Map<String, Object> row : rows) {
-			ProjDescDetail fieldDesc = buildProjectDescDetail(row);
+			ProjDescDetail fieldDesc = transformer.buildProjectDescDetail(row);
 			Double totalQty = new Double(fieldDesc.getQuantity());
 			if(null!=indentUsedOnDesc.get(fieldDesc.getProjDescId().toString()))
 				availedDescIndentQtyBigD = (BigDecimal) indentUsedOnDesc.get(fieldDesc.getProjDescId().toString());

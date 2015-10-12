@@ -7,6 +7,7 @@ import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
 import com.psk.pms.utils.ItemUtils;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -356,19 +357,19 @@ public class ItemServiceImpl implements ItemService {
         return itemNames;
     }
 
-    private void removeProjectDescriptionItems(List<ItemDetailDto> itemsToRemove, String descriptionType) {
-        LOGGER.info("Remove project Descriptions items ");
-        for (ItemDetailDto itemDetail : itemsToRemove) {
-            itemDAO.deleteItemByProjectDescItemId(itemDetail.getProjectDescItemId(), descriptionType);
-        }
-    }
+//    private void removeProjectDescriptionItems(List<ItemDetailDto> itemsToRemove, String descriptionType) {
+//        LOGGER.info("Remove project Descriptions items ");
+//        for (ItemDetailDto itemDetail : itemsToRemove) {
+//            itemDAO.deleteItemByProjectDescItemId(itemDetail.getProjectDescItemId(), descriptionType);
+//        }
+//    }
 
     private void applyRecalculatedPriceForItems(Map<String, BigDecimal> materialNameCostMap, List<ItemDetailDto> itemDetailDtos) {
         LOGGER.info("Apply new prices for project changed project Description Items. ");
         Integer itemQunatity;
         BigDecimal itemCost;
         BigDecimal itemPrice;
-        Iterator itemDetailsIterator = itemDetailDtos.iterator();
+        Iterator<ItemDetailDto> itemDetailsIterator = itemDetailDtos.iterator();
         while (itemDetailsIterator.hasNext()) {
             ItemDetailDto itemDetailDto = (ItemDetailDto) itemDetailsIterator.next();
             itemQunatity = itemDetailDto.getItemQuantity();

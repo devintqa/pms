@@ -4,6 +4,7 @@ import com.psk.pms.dao.ProjectDescriptionDAO;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -215,7 +216,7 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
         BigDecimal itemQunatity;
         BigDecimal totalCost;
         BigDecimal pricePerQuantity;
-        Iterator itemDetailsIterator = itemDetailDtos.iterator();
+        Iterator<ProjDescDetail> itemDetailsIterator = itemDetailDtos.iterator();
         while (itemDetailsIterator.hasNext()) {
             ProjDescDetail projDescDetail = (ProjDescDetail) itemDetailsIterator.next();
             if (projectDescIdPricePerQuantityMap.containsKey(projDescDetail.getProjDescId())) {

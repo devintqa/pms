@@ -1,13 +1,32 @@
 package com.psk.pms.dao;
 
-import com.mysql.jdbc.StringUtils;
-import com.psk.pms.Constants;
-import com.psk.pms.constants.DescriptionType;
-import com.psk.pms.model.DescItemDetail;
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.ProjDescComparisonDetail;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.SearchDetail;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.DELETEPROJECTDESCRIPTIONBYSUBPROJECTID;
+import static com.psk.pms.dao.PmsMasterQuery.FETCHBASEDESCRIPTIONS;
+import static com.psk.pms.dao.PmsMasterQuery.GETBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTGOVPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.INSERTSUBPROJECTDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.ISBASEDESCEXISTS;
+import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NOOFPROJECTDESCASSOCIATEDTOSUBPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_PROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.NO_OF_GOV_PROJECT_DESC_ASSOCIATED_TO_SUBPROJECT;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATEBASEDESCRIPTION;
+import static com.psk.pms.dao.PmsMasterQuery.baseDescDetail;
+import static com.psk.pms.dao.PmsMasterQuery.compareDataQuery;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetail;
+import static com.psk.pms.dao.PmsMasterQuery.projDescDetailQuery;
+
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,20 +37,22 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.ParameterizedBeanPropertyRowMapper;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.*;
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.Constants;
+import com.psk.pms.constants.DescriptionType;
+import com.psk.pms.model.DescItemDetail;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.model.ProjDescComparisonDetail;
+import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.SearchDetail;
 
-import static com.psk.pms.dao.PmsMasterQuery.*;
 
-/**
- * Created by prakashbhanu57 on 7/6/2015.
- */
 public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionDAOImpl.class);
-
+	
+	ResultTransformer transformer = new ResultTransformer();
+	
 	@Qualifier("jdbcTemplate")@Autowired
 	private JdbcTemplate jdbcTemplate;
 
@@ -97,86 +118,11 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projDescDetail = buildProjectDescDetail(row);
+			projDescDetail = transformer.buildProjectDescDetail(row);
 		}
 		return projDescDetail;
 	}
 
-	private ProjDescDetail buildProjectDescDetail(Map < String, Object > row) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		projDescDetail.setProjId((Integer) row.get("ProjId"));
-		projDescDetail.setAliasProjectName((String) row.get("AliasProjName"));
-		projDescDetail.setSerialNumber((String) row.get("SerialNumber"));
-		projDescDetail.setSubProjId((Integer) row.get("SubProjId"));
-		projDescDetail.setAliasSubProjectName((String) row.get("AliasSubProjName"));
-		projDescDetail.setWorkType((String) row.get("WorkType"));
-		BigDecimal quantity = (BigDecimal) row.get("Quantity");
-		projDescDetail.setMetric((String) row.get("Metric"));
-		if (null == quantity) {
-			projDescDetail.setQuantity("");
-		} else {
-			projDescDetail.setQuantity(quantity.toString());
-		}
-		projDescDetail.setDescription((String) row.get("Description"));
-		projDescDetail.setAliasDescription((String) row.get("AliasDescription"));
-
-		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
-		if (null == pricePerQuantity) {
-			projDescDetail.setPricePerQuantity("");
-		} else {
-			projDescDetail.setPricePerQuantity(pricePerQuantity.toString());
-		}
-		BigDecimal totalCost = (BigDecimal) row.get("TotalCost");
-		if (null == totalCost) {
-			projDescDetail.setTotalCost("");
-		} else {
-			projDescDetail.setTotalCost(totalCost.toString());
-		}
-		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
-		return projDescDetail;
-	}
-
-
-	private ProjDescComparisonDetail buildProjDescComparisonDetail(
-	Map < String, Object > row) {
-		ProjDescComparisonDetail projDescComparisonDetail = new ProjDescComparisonDetail();
-
-		projDescComparisonDetail.setSerialNumber((String) row.get("SerialNumber"));
-		BigDecimal quantity = (BigDecimal) row.get("Quantity");
-		projDescComparisonDetail.setMetric((String) row.get("Metric"));
-		if (null == quantity) {
-			projDescComparisonDetail.setQuantity("");
-		} else {
-			projDescComparisonDetail.setQuantity(quantity.toString());
-		}
-		projDescComparisonDetail.setAliasDescription((String) row.get("AliasDescription"));
-
-		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
-		if (null == pricePerQuantity) {
-			projDescComparisonDetail.setPricePerQuantity("");
-		} else {
-			projDescComparisonDetail.setPricePerQuantity(pricePerQuantity.toString());
-		}
-		BigDecimal totalCost = (BigDecimal) row.get("TotalCost");
-		if (null == totalCost) {
-			projDescComparisonDetail.setTotalCost("");
-		} else {
-			projDescComparisonDetail.setTotalCost(totalCost.toString());
-		}
-		BigDecimal deptPricePerQuantity = (BigDecimal) row.get("DeptPricePerQuantity");
-		if (null == deptPricePerQuantity) {
-			projDescComparisonDetail.setDeptPricePerQuantity("");
-		} else {
-			projDescComparisonDetail.setDeptPricePerQuantity(deptPricePerQuantity.toString());
-		}
-		BigDecimal deptTotalCost = (BigDecimal) row.get("DeptTotalCost");
-		if (null == deptTotalCost) {
-			projDescComparisonDetail.setDeptTotalCost("");
-		} else {
-			projDescComparisonDetail.setDeptTotalCost(deptTotalCost.toString());
-		}
-		return projDescComparisonDetail;
-	}
 
 	public boolean isAliasDescriptionAlreadyExisting(
 	ProjDescDetail projectDescDetail) {
@@ -222,7 +168,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projectDescDetailList.add(buildProjectDescDetail(row));
+			projectDescDetailList.add(transformer.buildProjectDescDetail(row));
 		}
 		return projectDescDetailList;
 	}
@@ -241,7 +187,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
         for (Map<String, Object> row : rows) {
-            projectDescDetailList.add(buildProjectDescDetail(row));
+            projectDescDetailList.add(transformer.buildProjectDescDetail(row));
         }
         return projectDescDetailList;
     }
@@ -256,7 +202,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projDescComparisonDetailList.add(buildProjDescComparisonDetail(row));
+			projDescComparisonDetailList.add(transformer.buildProjDescComparisonDetail(row));
 		}
 		return projDescComparisonDetailList;
 	}
@@ -268,7 +214,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projectDescDetailList.add(buildProjectDescDetail(row));
+			projectDescDetailList.add(transformer.buildProjectDescDetail(row));
 		}
 		return projectDescDetailList;
 	}
@@ -442,7 +388,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					baseDescName
 			});
 			for (Map < String, Object > map: maps) {
-				baseDescDetail = buildBaseDescDetail(map);
+				baseDescDetail = transformer.buildBaseDescDetail(map);
 			}
 			return baseDescDetail;
 	}
@@ -576,28 +522,9 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(FETCHBASEDESCRIPTIONS + " where category = '" + category + "'");
 		List < ProjDescDetail > projDescDetails = new ArrayList < ProjDescDetail > ();
 		for (Map < String, Object > row: rows) {
-			projDescDetails.add(buildBaseDescDetail(row));
+			projDescDetails.add(transformer.buildBaseDescDetail(row));
 		}
 		return projDescDetails;
-	}
-
-	private ProjDescDetail buildBaseDescDetail(Map < String, Object > row) {
-		ProjDescDetail projDescDetail = new ProjDescDetail();
-		projDescDetail.setBaseDescId((Integer) row.get("BaseDescId"));
-		projDescDetail.setWorkType((String) row.get("WorkType"));
-		BigDecimal quantity = (BigDecimal) row.get("Quantity");
-		projDescDetail.setMetric((String) row.get("Metric"));
-		projDescDetail.setBaseCategory((String) row.get("Category"));
-		projDescDetail.setQuantity(quantity.toString());
-		projDescDetail.setDescription((String) row.get("Description"));
-		projDescDetail.setAliasDescription((String) row.get("BaseDescription"));
-		BigDecimal pricePerQuantity = (BigDecimal) row.get("PricePerQuantity");
-		if (null == pricePerQuantity) {
-			projDescDetail.setPricePerQuantity("");
-		} else {
-			projDescDetail.setPricePerQuantity(pricePerQuantity.toString());
-		}
-		return projDescDetail;
 	}
 
 	@Override
@@ -644,7 +571,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				descId
 		});
 		for (Map < String, Object > map: maps) {
-			baseDescDetail = buildBaseDescDetail(map);
+			baseDescDetail = transformer.buildBaseDescDetail(map);
 		}
 		return baseDescDetail;
 	}
@@ -676,7 +603,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			projDescDetail = buildBaseDescDetail(row);
+			projDescDetail = transformer.buildBaseDescDetail(row);
 		}
 		return projDescDetail;
 	}

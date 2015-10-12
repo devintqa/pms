@@ -1,7 +1,6 @@
 package com.psk.pms.utils;
 
-import com.psk.pms.model.ItemDetailDto;
-import org.apache.commons.collections.Predicate;
+import static org.apache.commons.collections.CollectionUtils.filter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,8 +8,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.collections.CollectionUtils.filter;
-import static org.apache.commons.collections.CollectionUtils.select;
+import org.apache.commons.collections.Predicate;
+
+import com.psk.pms.model.ItemDetailDto;
 
 /**
  * Created by prakashbhanu57 on 10/10/2015.
@@ -32,7 +32,7 @@ public class ItemUtils {
 
     public static List<ItemDetailDto> seperteOutItemsTobeRemoved(Map<String, BigDecimal> materialNameCostMap, List<ItemDetailDto> itemsDetailsOfMaterialType) {
         List<ItemDetailDto> itemsToBeRemoved = new ArrayList<ItemDetailDto>();
-        Iterator itemDetailsIterator = itemsDetailsOfMaterialType.iterator();
+        Iterator<ItemDetailDto> itemDetailsIterator = itemsDetailsOfMaterialType.iterator();
         while (itemDetailsIterator.hasNext()) {
             ItemDetailDto itemDetailDto = (ItemDetailDto) itemDetailsIterator.next();
             if (!materialNameCostMap.containsKey(itemDetailDto.getItemName())) {

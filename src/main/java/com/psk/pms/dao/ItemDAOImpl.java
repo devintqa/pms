@@ -4,6 +4,7 @@ import com.psk.pms.Constants;
 import com.psk.pms.constants.DescriptionType;
 import com.psk.pms.model.*;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,14 @@ import java.util.*;
 
 import static com.psk.pms.dao.PmsMasterQuery.*;
 
-/**
- * Created by prakashbhanu57 on 7/6/2015.
- */
 public class ItemDAOImpl implements ItemDAO {
 
     @Qualifier("jdbcTemplate")
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    ResultTransformer transformer = new ResultTransformer();
+    
     private static final Logger LOGGER = Logger.getLogger(ItemDAOImpl.class);
 
     @Override
@@ -577,7 +577,7 @@ public class ItemDAOImpl implements ItemDAO {
         try {
             List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_LEAD_DETAILS, projectId, subProjectId);
             for (Map<String, Object> row : rows) {
-                leadDetails.add(buildLeadDetail(row));
+                leadDetails.add(transformer.buildLeadDetail(row));
             }
         } catch (Exception e) {
             LOGGER.error("Error occurred while getting lead detail " + e);
@@ -627,31 +627,7 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
 
-    private LeadDetailConfiguration.LeadDetail buildLeadDetail(Map<String, Object> row) {
-        LeadDetailConfiguration.LeadDetail leadDetail = new LeadDetailConfiguration.LeadDetail();
-        Integer leadDetailId = (Integer) row.get("leadDetailId");
-        leadDetail.setLeadDetailId(leadDetailId.toString());
-        String material = (String) row.get("material");
-        leadDetail.setMaterial(material);
-        String sourceOfSupply = (String) row.get("sourceOfSupply");
-        leadDetail.setSourceOfSupply(sourceOfSupply);
-        BigDecimal distance = (BigDecimal) row.get("distance");
-        leadDetail.setDistance(String.valueOf(distance));
-        String unit = (String) row.get("unit");
-        leadDetail.setUnit(unit);
-        leadDetail.setSourceOfSupply(sourceOfSupply);
-        BigDecimal cost = (BigDecimal) row.get("cost");
-        leadDetail.setCost(String.valueOf(cost));
-        BigDecimal ic = (BigDecimal) row.get("ic");
-        leadDetail.setIc(String.valueOf(ic));
-        BigDecimal leadCharges = (BigDecimal) row.get("leadCharges");
-        leadDetail.setLeadCharges(String.valueOf(leadCharges));
-        BigDecimal loadingUnloadingCharges = (BigDecimal) row.get("loadingUnloadingCharges");
-        leadDetail.setLoadingUnloading(String.valueOf(loadingUnloadingCharges));
-        BigDecimal total = (BigDecimal) row.get("total");
-        leadDetail.setTotal(String.valueOf(total));
-        return leadDetail;
-    }
+   
 
     public List<ItemDetailDto> getAllItemsConfiguredToProject(Integer projectId, String descriptionType) {
         LOGGER.info("Fetching descriptionItems for projectId: "+projectId);
@@ -660,32 +636,14 @@ public class ItemDAOImpl implements ItemDAO {
                 " where ProjId = " + projectId + " and SubProjId = 0";
         try {
             List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-            itemDetailDtos = buildItemDetailDao(rows);
+            itemDetailDtos = transformer.buildItemDetailDao(rows);
         } catch (Exception e) {
             LOGGER.error("Failed while retrieving items " + e);
         }
         return itemDetailDtos;
     }
 
-    private List<ItemDetailDto> buildItemDetailDao(List<Map<String, Object>> rows) {
-        List<ItemDetailDto> itemDetailDtos = new ArrayList<ItemDetailDto>();
-        for (Map<String, Object> itemDetail : rows) {
-            ItemDetailDto itemDetailDto = new ItemDetailDto();
-            itemDetailDto.setProjectId((Integer) itemDetail.get("ProjId"));
-            itemDetailDto.setSubProjectId((Integer) itemDetail.get("SubProjId"));
-            itemDetailDto.setItemName((String) itemDetail.get("ItemName"));
-            itemDetailDto.setItemUnit((String) itemDetail.get("ItemUnit"));
-            itemDetailDto.setItemQuantity(Integer.parseInt((String) itemDetail.get("ItemQty")));
-            itemDetailDto.setItemPrice(new BigDecimal((String) itemDetail.get("ItemPrice")));
-            itemDetailDto.setItemCost(new BigDecimal((String) itemDetail.get("ItemCost")));
-            itemDetailDto.setProjectDescId((Integer) itemDetail.get("ProjDescId"));
-            itemDetailDto.setProjectDescSerial((String) itemDetail.get("ProjDescSerial"));
-            itemDetailDto.setProjectDescItemId((Integer) itemDetail.get("DescItemId"));
-            itemDetailDtos.add(itemDetailDto);
-        }
-        return itemDetailDtos;
-    }
-
+   
     public void updatePriceAndCostOfProjectDescItems(final List<ItemDetailDto> itemDetailDtos, String descriptionType) {
         LOGGER.info("Batch updating projectDescriptionItems into database.");
         String UPDATE_PRICE_COST_DESC_ITEMS = "update "+DescriptionType.getDescriptionItemTableName(descriptionType)+" set ItemPrice = ? ,ItemCost = ? where DescItemId = ?";
@@ -726,7 +684,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public Map<String ,BigDecimal> getItemPrices(List<String> itemNames) {
         LOGGER.info("Getting gov prices from item names"+ itemNames.toString());
-        Map<String ,BigDecimal> itemPrices = new HashMap();
+        Map<String ,BigDecimal> itemPrices = new HashMap<String, BigDecimal>();
         String commaSeperatedNames = StringUtils.join(itemNames, ",");
         String sql = "Select itemName , itemPrice from govpricedetail where itemName in ("
                 + commaSeperatedNames + ")";

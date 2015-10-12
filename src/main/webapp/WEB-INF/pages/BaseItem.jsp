@@ -9,10 +9,10 @@
 
 <script>
 
-window.onunload = refreshParent;
-function refreshParent() {
-    window.opener.location.reload();
-}
+	window.onunload = refreshParent;
+	function refreshParent() {
+	    window.opener.location.reload();
+	}
 
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
