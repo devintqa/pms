@@ -9,11 +9,10 @@
 
 <script>
 
-window.onunload = function() {
-    if (window.opener && !window.opener.closed) {
-        window.opener.popUpClosed();
-    }
-};
+window.onunload = refreshParent;
+function refreshParent() {
+    window.opener.location.reload();
+}
 
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
@@ -28,14 +27,20 @@ window.onunload = function() {
 		            	        }, response);
 				},
 				select: function(event, ui) { 
-					 if($('#descType').val() == 'psk'){
-						 ui.item.itemPrice = 0;
-					 }
-			         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
-			         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
-			         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
-			         $(this).focus();
-			         calculateTotalItemCost()
+					if(validateItemNameExistence(ui.item.itemName)){
+				        alert("Item already exists!");
+				        event.preventDefault();
+				        $(this).val('');
+					}else{
+						 if($('#descType').val() == 'psk'){
+							 ui.item.itemPrice = 0;
+						 }
+				         $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val($('#itemType').val());
+				         $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.itemUnit);
+				         $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.itemPrice);
+				         $(this).focus();
+				         calculateTotalItemCost();
+					}
 			    }
 			});
 		});
@@ -58,8 +63,7 @@ window.onunload = function() {
 		var itemTable = document.getElementById('itemTable');
 		var noOfRow = document.getElementById('itemTable').rows.length;
 		if (noOfRow > 2) {
-			var i = row.parentNode.parentNode.rowIndex;
-			document.getElementById('itemTable').deleteRow(i);
+			row.parentNode.parentNode.remove();
 		} else{
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[1].value = '';
@@ -158,6 +162,20 @@ window.onunload = function() {
 		this.itemCost = itemCost;
 		} 
 	
+	function validateItemNameExistence(newItemName){
+		var itemTable = document.getElementById('itemTable');
+		var len = itemTable.rows.length;
+		var exists = false;
+		for (i = 1; i <= len - 1; i++) {
+			var itemName = itemTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
+			if(itemName == newItemName){
+				exists = true;
+				break;
+			}
+		}
+		return exists;
+	}
+	
 	function saveItemDesc() {
 		var itemTable = document.getElementById('itemTable');
 		var itemObjArray = [];
@@ -210,7 +228,7 @@ window.onunload = function() {
 					    buttons: {
 					        "Ok": function () {
 					            $(this).dialog('close');
-					            window.location.reload();
+					            window.location.reload(true);
 					        }
 					    }
 					});

@@ -32,7 +32,7 @@ $(document).ready(function () {
         }
     });
 	  
-	  if ($(subProject).is(":checked")) {
+	  if ($('#subProject').is(":checked")) {
 	  		$("#showProjectNames").show();
 	  		$("#showProjectTypes").hide();
 	  } else{

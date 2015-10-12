@@ -12,10 +12,6 @@
 <script>
 
 
-function popUpClosed() {
-	window.location.reload();
-}
-
 function openBaseDescLoader (baseDescId, employeeId, descType){
 	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId+"&descType="+descType,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }

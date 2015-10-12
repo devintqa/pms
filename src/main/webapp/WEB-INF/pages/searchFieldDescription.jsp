@@ -9,12 +9,7 @@
 <%@include file="Script.jsp" %>
 <%@include file="Utility.jsp" %>
 <script>
-  var windowObjectReference = null;
-
-	function popUpClosed() {
-		window.location.reload();
-	}
-
+ 
   $(document).ready(function () {
         $("#showSearchProjectDesc").hide();
 		$("#aliasProjectName").autocomplete({

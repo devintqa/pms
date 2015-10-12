@@ -9,11 +9,11 @@
 
 <script>
 	
-	window.onunload = function() {
-	    if (window.opener && !window.opener.closed) {
-	        window.opener.popUpClosed();
-	    }
-	};
+	window.onunload = refreshParent;
+	function refreshParent() {
+	    window.opener.location.reload();
+	}
+	
 	$(document).ready(function () {
 		var selector = "input[name = 'itemName']";
 		
@@ -62,8 +62,7 @@
 		var itemTable = document.getElementById('itemTable');
 		var noOfRow = document.getElementById('itemTable').rows.length;
 		if (noOfRow > 2) {
-			var i = row.parentNode.parentNode.rowIndex;
-			document.getElementById('itemTable').deleteRow(i);
+			row.parentNode.parentNode.remove();
 		} else{
 			document.getElementById('itemTable').rows[1].cells[0].getElementsByTagName('input')[0].value = '';
 			document.getElementById('itemTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
@@ -170,6 +169,7 @@
 		this.itemQty = itemQty;
 		this.itemCost = itemCost;
 		} 
+	
 	function validateItemNameExistence(newItemName){
 		var itemTable = document.getElementById('itemTable');
 		var len = itemTable.rows.length;
