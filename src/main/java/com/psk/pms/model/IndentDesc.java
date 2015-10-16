@@ -11,6 +11,7 @@ public class IndentDesc {
 	private String aliasProjDesc;
 	private Double plannedQty;
 	private String metric;
+	private String comments;
 	private String employeeId;
 	private Double totalQty;
 	
@@ -83,6 +84,13 @@ public class IndentDesc {
 		this.totalQty = totalQty;
 	}
 
+	public String getComments() {
+		return comments;
+	}
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
 	public static class ItemDetail {
 
 		public ItemDetail() {
@@ -102,7 +110,24 @@ public class IndentDesc {
 		private String itemUnit;
 		private String itemQty;
 		private String itemPrice;
+		private String indentItemId;
+		private String indentDescId;
 
+		public String getIndentItemId() {
+			return indentItemId;
+		}
+
+		public void setIndentItemId(String indentItemId) {
+			this.indentItemId = indentItemId;
+		}
+
+		public String getIndentDescId() {
+			return indentDescId;
+		}
+
+		public void setIndentDescId(String indentDescId) {
+			this.indentDescId = indentDescId;
+		}
 		public String getItemName() {
 			return itemName;
 		}

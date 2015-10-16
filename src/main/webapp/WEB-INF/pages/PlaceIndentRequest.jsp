@@ -48,10 +48,14 @@
                          buttons: {
                              Ok: function () {
                                  $(this).dialog("close");
+                                
                              }
-                         }
+                         },
+					 close: function( event, ui ) {
+						 window.location = "/pms/emp/myview/"+employeeId;
+					 }
                      });
-					 window.location = "/pms/emp/myview/"+employeeId;
+					
 				}
 			});
         });

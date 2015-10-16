@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.psk.pms.model.Indent;
+import com.psk.pms.model.IndentDesc;
 import com.psk.pms.model.ItemDetailDto;
 import com.psk.pms.model.LeadDetailConfiguration;
 import com.psk.pms.model.ProjDescComparisonDetail;
@@ -204,5 +206,44 @@ public class ResultTransformer {
         }
         return itemDetailDtos;
     }
+
+    Indent buildIndent(Map<String, Object> row) {
+		Indent indent = new Indent();
+		indent.setProjId(row.get("ProjId").toString());
+		indent.setIndentId(row.get("IndentId").toString());	
+		indent.setStatus((String) row.get("Status"));
+		indent.setStartDate((String) row.get("StartDate"));
+		indent.setEndDate((String) row.get("EndDate"));
+		return indent;
+	}
+
+	IndentDesc buildIndentDesc(Map<String, Object> row) {
+		IndentDesc indentDesc = new IndentDesc();
+		indentDesc.setIndentId(row.get("IndentId").toString());
+		indentDesc.setIndentDescId(row.get("IndentDescId").toString());	
+		indentDesc.setProjDescId(row.get("ProjDescId").toString());
+		indentDesc.setMetric((String) row.get("Metric"));
+		indentDesc.setComments((String) row.get("Comments"));
+		if(row.containsKey("AliasDescription")){
+			indentDesc.setAliasProjDesc(row.get("AliasDescription").toString());
+		}
+		BigDecimal qty = (BigDecimal) row.get("Quantity");
+		if(null==qty){
+			qty = new BigDecimal(0);
+		}
+		indentDesc.setPlannedQty(qty.doubleValue());
+		return indentDesc;
+	}
+
+	public IndentDesc.ItemDetail buildIndentDescItem(Map<String, Object> row) {
+		IndentDesc.ItemDetail indentItem = new IndentDesc.ItemDetail();
+		indentItem.setIndentItemId(row.get("IndentItemId").toString());
+		indentItem.setIndentDescId(row.get("IndentDescId").toString());
+		indentItem.setItemName(row.get("ItemName").toString());
+		indentItem.setItemType(row.get("ItemType").toString());	
+		indentItem.setItemUnit(row.get("ItemUnit").toString());
+		indentItem.setItemQty(row.get("ItemQty").toString());
+		return indentItem;
+	}
 
 }

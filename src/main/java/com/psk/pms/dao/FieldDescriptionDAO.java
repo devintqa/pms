@@ -30,4 +30,6 @@ public interface FieldDescriptionDAO {
 
 	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
 
+	Indent getIndent(String indentId);
+
 }

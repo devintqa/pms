@@ -61,7 +61,7 @@
 		          
 		      });
 		         if($('input[name="indentDescription"]:checked').length > 0){
-		         	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&action=edit&projDescs="+projDescs;
+		         	window.location = "/pms/emp/myview/indent/createIndent?employeeId="+employeeId+"&projectId="+projId+"&projDescs="+projDescs;
 		         }else{
 		         	$('#error').text('Please select any description to build indent');
 		         }

@@ -25,9 +25,7 @@ import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ProjectDescriptionService;
 
-/**
- * Created by prakashbhanu57 on 8/18/2015.
- */
+
 @Controller
 public class FieldDescriptionController extends BaseController {
 

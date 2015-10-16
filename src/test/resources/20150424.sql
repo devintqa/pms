@@ -646,6 +646,7 @@ CREATE TABLE `indentdesc` (
   `ProjDescId` int(10) NOT NULL,
   `Quantity` decimal(15,2) NOT NULL,
   `Metric` varchar(30) NOT NULL,
+  `Comments` varchar(200) DEFAULT ' ',
   `IndentDescId` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`IndentDescId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;

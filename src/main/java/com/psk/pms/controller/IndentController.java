@@ -117,13 +117,13 @@ public class IndentController extends BaseController {
 			@RequestParam(value = "employeeId") String employeeId, 
 			@RequestParam(value = "projectId") String projectId, 
 			@RequestParam(value = "projDescs") String projDescs,
-			@RequestParam(value = "action") String action,
+			@RequestParam(required = false, value = "indentId", defaultValue = "0") String indentId,
 			Model model) {
 		String[] projDescId = projDescs.split(",");
 		List<IndentDesc> indentDescList = null;
 		Indent indent = null;
-		if(action.equals("view")){
-
+		if(!indentId.equals("0")){
+			indent = fieldDescriptionService.getIndent(indentId);
 		}else{
 			indent = new Indent();
 			indent.setStartDate(null);
@@ -134,13 +134,16 @@ public class IndentController extends BaseController {
 		}
 		indentDescList = new ArrayList<IndentDesc>();
 		for(int i=0; i<projDescId.length; i++){
-			if(action.equals("view")){
-			}else{
-				IndentDesc indentDesc = getNewIndentDesc(projDescId[i], employeeId, action);
+			if(indentId.equals("0")){
+				IndentDesc indentDesc = getNewIndentDesc(projDescId[i], employeeId, indentId);
 				indentDescList.add(indentDesc);
 			}
 		}
-		indent.setIndentDescList(indentDescList);
+		if(!indentId.equals("0")){
+			indentDescList = indent.getIndentDescList();
+		}else{
+			indent.setIndentDescList(indentDescList);
+		}
 		model.addAttribute("indentDescList",indentDescList);
 		model.addAttribute("indent", indent);
 		model.addAttribute("projId", projectId);
@@ -240,7 +243,7 @@ public class IndentController extends BaseController {
 		return indentItem;
 	}
 	
-	IndentDesc getNewIndentDesc(String projDescId, String employeeId, String action){
+	IndentDesc getNewIndentDesc(String projDescId, String employeeId, String indentId){
 		ProjDescDetail descDetail = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setAliasProjDesc(descDetail.getAliasDescription());
@@ -249,7 +252,7 @@ public class IndentController extends BaseController {
 		indentDesc.setMetric(descDetail.getMetric());
 		indentDesc.setProjDescId(descDetail.getProjDescId().toString());
 		indentDesc.setProjId(descDetail.getProjId().toString());
-		if(action.equals("edit"))
+		if(indentId.equals("0"))
 			indentDesc.setIndentDescId("_");
 		else
 			indentDesc.setIndentDescId(null);

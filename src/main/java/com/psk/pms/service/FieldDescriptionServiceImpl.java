@@ -63,4 +63,9 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 		return fieldDescriptionDAO.getFieldDescDetailList(searchDetail);
 	}
 
+	@Override
+	public Indent getIndent(String indentId) {
+		return fieldDescriptionDAO.getIndent(indentId);
+	}
+
 }

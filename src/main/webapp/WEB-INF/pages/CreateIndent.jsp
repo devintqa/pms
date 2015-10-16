@@ -106,6 +106,7 @@
 			var indentDescArray = [];
 			
 			var indentId = $(this).attr('aria-indent-id');
+			var indentStatus = $(this).attr('aria-indent-status');
 			var projId = $("#projId").val();
 			var employeeId = $("#employeeId").val();
 			var startDate = $('#workStartDate').val();
@@ -117,6 +118,7 @@
 					 var projDescId = $(this).attr('aria-projdesc-id');
 					 var indentDescQty = $("#plannedQty"+projDescId+indentId).val();
 					 var indentDescMetric = $("#metric"+projDescId+indentId).val();
+					 var indentDescComment = $("#comment"+projDescId+indentId).val();
 					 var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
 					 var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
 						for (i = 1; i < tableLength; i++) {
@@ -134,6 +136,7 @@
 						if(indentDescQty){
 							indentDesc["plannedQty"] = indentDescQty;
 							indentDesc["metric"] = indentDescMetric;
+							indentDesc["comments"] = indentDescComment;
 							indentDesc["projDescId"] = projDescId;
 							indentDesc["itemDetails"] = itemObjArray;
 							indentDescArray.push(indentDesc);
@@ -146,23 +149,27 @@
 					indent['indentDescList'] = indentDescArray
 				
 				console.log(JSON.stringify(indent));
-					if(startDate && endDate){
-						$.ajax({
-							type : "POST",
-							url : "saveIndentItem.do",
-							contentType: "application/json",
-							cache : false,
-							data : JSON.stringify(indent),
-							success : function(response) {
-								if(response > 0){
-									window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response+"&status=NEW";
-								}else{
-									alert("Error occured while saving the indent!");
+					if(indentId == '_'){
+						if(startDate && endDate){
+							$.ajax({
+								type : "POST",
+								url : "saveIndentItem.do",
+								contentType: "application/json",
+								cache : false,
+								data : JSON.stringify(indent),
+								success : function(response) {
+									if(response > 0){
+										window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+response+"&status=NEW";
+									}else{
+										$('#error').text('Error occured while saving the indent!');
+									}
 								}
-							}
-						});
+							});
+						}else{
+							$('#error').text('Date field value is missing!');
+						}
 					}else{
-						$('#error').text('Date field value is missing!');
+						window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus;
 					}
 		});
 		
@@ -266,10 +273,10 @@
 					<tr>
 						<td>Start date<span id="colon">:</span>
 						</td>
-						<td><input  class="dateField" id="workStartDate" value=""  placeholder="DD-MM-YYYY"  /></td>
+						<td><input  class="dateField" id="workStartDate" value="${indent.startDate}"  placeholder="DD-MM-YYYY"  /></td>
 						<td>End date<span id="colon">:</span>
 						</td>
-						<td><input  class="dateField" id="workEndDate" value=""  placeholder="DD-MM-YYYY"  /></td>
+						<td><input  class="dateField" id="workEndDate" value="${indent.endDate}"  placeholder="DD-MM-YYYY"  /></td>
 					</tr>
 				</table>
 				</fieldset>
@@ -296,8 +303,12 @@
 									<td><input id="metric${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.metric}" 
 									readonly="readonly" class="inputText" /></td>
 								</tr>
-								<tr><td></td></tr>
-								 
+								<tr>
+									<td>Comment<span id="colon">:</span>
+									</td>
+									<td><input id="comment${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.comments}" 
+									class="inputText" /></td>
+								</tr>
 								<tr><td></td></tr>
 							</table>
 							
@@ -328,18 +339,18 @@
 				</c:forEach>
 				<input type="hidden" value="${indent.projId}" id="projId" />
 				<input type="hidden" value="${indent.employeeId}" id="employeeId" />
-				<c:if test="${indent.indentId eq '_'}">
+				
 					<center>
 					<br>
 					<span style="color: red;" id="error"></span>
 						<table>
 							<tr>
 								<td><input class="saveIndentButton"
-									aria-indent-id="${indent.indentId}" value="Next" type="button" /></td>
+									aria-indent-id="${indent.indentId}" aria-indent-status="${indent.status}"value="Next" type="button" /></td>
 							</tr>
 						</table>
 					</center>
-				</c:if>
+				
 				<table style="display:none;">
 					<tr id="dummyRow">
 						<td></td>

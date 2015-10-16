@@ -97,11 +97,13 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	public Integer saveIndentDescription(final Indent indent) {
 		Integer indentId = 0;
 		try {
-			indentId = insertIndent(indent);
-			
-			for(IndentDesc indentDesc: indent.getIndentDescList()){
-				Integer indentDescId = insertIndentDesc(indentId, indentDesc);
-				insertIndentDescItem(indentDescId, indentDesc.getItemDetails());
+			if(indent.getIndentDescList().size() > 0){
+				indentId = insertIndent(indent);
+				
+				for(IndentDesc indentDesc: indent.getIndentDescList()){
+					Integer indentDescId = insertIndentDesc(indentId, indentDesc);
+					insertIndentDescItem(indentDescId, indentDesc.getItemDetails());
+				}
 			}
 
 		} catch (Exception e) {
@@ -143,8 +145,8 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
 		Integer generatedIndentDescId = null;
 		
-		String indentDescSql = "INSERT INTO IndentDesc (IndentId, ProjDescId, Quantity, Metric)"
-				+ "VALUES (?, ?, ?, ?)";
+		String indentDescSql = "INSERT INTO IndentDesc (IndentId, ProjDescId, Quantity, Metric, Comments)"
+				+ "VALUES (?, ?, ?, ?, ?)";
 
 		Connection connection = jdbcTemplate.getDataSource().getConnection();
 		PreparedStatement preparedStatement = connection.prepareStatement(indentDescSql, Statement.RETURN_GENERATED_KEYS);
@@ -153,6 +155,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		preparedStatement.setString(2, indentDesc.getProjDescId());
 		preparedStatement.setDouble(3, indentDesc.getPlannedQty());
 		preparedStatement.setString(4, indentDesc.getMetric());
+		preparedStatement.setString(5, indentDesc.getComments());
 
 		preparedStatement.executeUpdate();
 		ResultSet keys = preparedStatement.getGeneratedKeys();
@@ -213,21 +216,49 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
 		for (Map < String, Object > row: rows) {
-			indentList.add(buildIndent(row));
+			indentList.add(transformer.buildIndent(row));
 		}
 		return indentList;
 	}
 
-	private Indent buildIndent(Map<String, Object> row) {
-		Indent indent = new Indent();
-		indent.setProjId(row.get("ProjId").toString());
-		indent.setIndentId(row.get("IndentId").toString());	
-		indent.setStatus((String) row.get("Status"));
-		indent.setStartDate((String) row.get("StartDate"));
-		indent.setEndDate((String) row.get("EndDate"));
+	private Indent fetchIndent(String indentId) {
+		String sql = null;
+		if (null!=indentId) {
+			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where indentId='"+indentId+"'";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		Indent indent = transformer.buildIndent(rows.get(0));
 		return indent;
 	}
-
+	
+	private List<IndentDesc> fetchIndentDesc(String indentId) {
+		List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
+		String sql = null;
+		if (null!=indentId) {
+			sql = "SELECT fd.AliasDescription, d.ProjDescId, d.Quantity, d.Metric, d.IndentDescId, d.IndentId, d.Comments from IndentDesc d, fieldprojectdesc fd where fd.ProjDescId = d.ProjDescId and IndentId='"+indentId+"'";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		for(Map < String, Object > row : rows){
+			IndentDesc indentDesc = transformer.buildIndentDesc(row);
+			indentDescList.add(indentDesc);
+		}
+		return indentDescList;
+	}
+	
+	private List<IndentDesc.ItemDetail> fetchIndentDescItem(String indentDescId) {
+		List<IndentDesc.ItemDetail> indentDescItemList = new ArrayList<IndentDesc.ItemDetail>();
+		String sql = null;
+		if (null!=indentDescId) {
+			sql = "SELECT ItemName, ItemType, ItemQty, ItemUnit, IndentItemId, IndentDescId from IndentDescItem where IndentDescId='"+indentDescId+"'";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		for(Map < String, Object > row : rows){
+			IndentDesc.ItemDetail itemDetail = transformer.buildIndentDescItem(row);
+			indentDescItemList.add(itemDetail);
+		}
+		return indentDescItemList;
+	}
+	
 	@Override
 	public String placeIndentRequest(Indent indent) {
 		String status = "";
@@ -282,6 +313,22 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			projectDescDetailList.add(fieldDesc);
 		}
 		return projectDescDetailList;
+	}
+
+	@Override
+	public Indent getIndent(String indentId) {
+		Indent indent = null;
+		List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
+		if(null!=indentId){
+			indent = fetchIndent(indentId);
+		}
+		List<IndentDesc> tmpIndentDescList = fetchIndentDesc(indentId);
+		for(IndentDesc indentDesc : tmpIndentDescList){
+			indentDesc.setItemDetails(fetchIndentDescItem(indentDesc.getIndentDescId()));
+			indentDescList.add(indentDesc);
+		}
+		indent.setIndentDescList(indentDescList);
+		return indent;
 	}
 
 }
