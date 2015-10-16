@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -46,11 +47,11 @@ public class StoreServiceImpl implements StoreService {
     @Override
     @Transactional
     public void saveDispatchedDetail(DispatchDetail dispatchDetail) {
-        dispatchDetail.setSqlDispatchedDate(new Date());
+        dispatchDetail.setSqlDispatchedDate(new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
         storeDetailDAO.saveDispatchedDetails(dispatchDetail, Constants.DISPATCHED);
         deductFromStock(dispatchDetail);
     }
-    
+
     @Override
     @Transactional
     public void saveReturnedDetail(StoreTransactionDetail storeTransactionDetail) {
@@ -77,9 +78,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<String> getItemNamesInStore(String projId) {
-        List<String> stockDetails = storeDetailDAO.getItemNamesInStore(projId);
-        return stockDetails;
+    public List<StockDetail> getItemNamesInStore(String projId, String itemName) {
+        return storeDetailDAO.getItemNamesInStore(projId, itemName);
     }
 
     @Override
@@ -108,13 +108,16 @@ public class StoreServiceImpl implements StoreService {
     }
 
     private void deductFromStock(DispatchDetail dispatchDetail) {
-        int totalQuantity = parseInt(dispatchDetail.getTotalQuantity()) - parseInt(dispatchDetail.getRequestedQuantity());
-        storeDetailDAO.updateStockDetail(dispatchDetail.getProjId(), dispatchDetail.getItemName(), String.valueOf(totalQuantity));
+        List<DispatchDetail.DispatchItems> dispatchItems = dispatchDetail.getDispatchItems();
+        for (DispatchDetail.DispatchItems dispatchItem : dispatchItems) {
+            int totalQuantity = parseInt(dispatchItem.getTotalQuantity()) - parseInt(dispatchItem.getRequestedQuantity());
+            storeDetailDAO.updateStockDetail(dispatchDetail.getProjId(), dispatchItem.getItemName(), String.valueOf(totalQuantity));
+        }
     }
-    
+
     private void returnToStock(StoreTransactionDetail storeTransactionDetail) {
-    	String quantity = getItemQuantityInStock(storeTransactionDetail.getProjId().toString(), storeTransactionDetail.getItemName());
-    	int totalQuantity= Integer.parseInt(quantity) + Integer.parseInt(storeTransactionDetail.getReturnedQuantity());
+        String quantity = getItemQuantityInStock(storeTransactionDetail.getProjId().toString(), storeTransactionDetail.getItemName());
+        int totalQuantity = Integer.parseInt(quantity) + Integer.parseInt(storeTransactionDetail.getReturnedQuantity());
         storeDetailDAO.updateStockDetail(storeTransactionDetail.getProjId(), storeTransactionDetail.getItemName(), String.valueOf(totalQuantity));
     }
 

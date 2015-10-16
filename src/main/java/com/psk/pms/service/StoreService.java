@@ -17,7 +17,7 @@ public interface StoreService {
 
     List<String> getSelectedUser(String teamName, String projectId);
     
-    List<String> getItemNamesInStore(String projId);
+    List<com.psk.pms.model.StockDetail> getItemNamesInStore(String projId, String itemName);
 
     String getItemQuantityInStock(String projId, String itemName);
 

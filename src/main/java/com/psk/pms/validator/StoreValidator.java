@@ -1,5 +1,6 @@
 package com.psk.pms.validator;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -59,32 +60,42 @@ public class StoreValidator extends BaseValidator implements Validator {
 
     }
 
-    public void validate(Object o, Errors errors, String dispatched) throws ValidationException {
+    public void validate(Object o, String dispatched) throws ValidationException {
         DispatchDetail dispatchDetail = (DispatchDetail) o;
         if (dispatchDetail.getProjId() == 0) {
-            errors.rejectValue("projId", "required.projId",
-                    "Please Select Project Name.");
+            throw new ValidationException("Please Select Project Name.");
         }
         if ("--Please Select--".equalsIgnoreCase(dispatchDetail.getItemName())) {
-            errors.rejectValue("itemName", "required.itemName",
-                    "Please select a valid Item Name");
+            throw new ValidationException("Please select a valid Item Name");
         }
-        if (!StringUtils.isNullOrEmpty(dispatchDetail.getRequestedQuantity())) {
-            pattern = Pattern.compile(ID_PATTERN);
-            matcher = pattern.matcher(dispatchDetail.getRequestedQuantity());
-            if (!matcher.matches()) {
-                errors.rejectValue("requestedQuantity", "requestedQuantity.incorrect",
-                        "Enter a numeric value");
-            }
+        List<DispatchDetail.DispatchItems> dispatchItems = dispatchDetail.getDispatchItems();
+        if (null == dispatchItems || dispatchItems.isEmpty()) {
+            throw new ValidationException("There are no items selected to be dispatched");
         }
-        if (!errors.hasErrors()) {
-            int totalQuantity = Integer.parseInt(dispatchDetail.getTotalQuantity());
-            int requestedQuantity = Integer.parseInt(dispatchDetail.getRequestedQuantity());
-            if (totalQuantity == 0) {
-                throw new ValidationException("There are no " + dispatchDetail.getItemName() + " in the store");
-            }
-            if (requestedQuantity > totalQuantity) {
-                throw new ValidationException("Requested Quantity is more than available Quantity");
+
+        if (dispatchItems.size() > 0) {
+            for (DispatchDetail.DispatchItems dispatchItem : dispatchItems) {
+                String requestedQuantity = dispatchItem.getRequestedQuantity();
+                if (dispatchItem.getItemName().isEmpty() || dispatchItem.getTotalQuantity().isEmpty()) {
+                    throw new ValidationException("There are no items selected to be dispatched");
+                }
+                if (requestedQuantity == null || requestedQuantity.isEmpty()) {
+                    throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + "should not be empty");
+                } else {
+                    pattern = Pattern.compile(ID_PATTERN);
+                    matcher = pattern.matcher(dispatchItem.getRequestedQuantity());
+                    if (!matcher.matches()) {
+                        throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + "should be numeric");
+                    }
+                }
+                int totalQuantity = Integer.parseInt(dispatchItem.getTotalQuantity());
+                int requestedItemQuantity = Integer.parseInt(dispatchItem.getRequestedQuantity());
+                if (totalQuantity == 0) {
+                    throw new ValidationException("There are no " + dispatchItem.getItemName() + " in the store");
+                }
+                if (requestedItemQuantity > totalQuantity) {
+                    throw new ValidationException("Requested Quantity of " + dispatchItem.getItemName() + "is more than available Quantity");
+                }
             }
         }
     }

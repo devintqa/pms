@@ -1,29 +1,24 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_STOCK_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_STORE_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_TRANSACTION_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_DISPATCH_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_ITEM_NAMES_STORE;
-import static com.psk.pms.dao.PmsMasterQuery.GET_STOCK_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_STOCK_DETAILS;
+import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.StockDetail;
+import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.StoreTransactionDetail;
+import com.psk.pms.utils.DateFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.psk.pms.model.DispatchDetail;
-import com.psk.pms.model.StockDetail;
-import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.StoreTransactionDetail;
-import com.psk.pms.utils.DateFormatter;
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -86,13 +81,27 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     }
 
 
-
     @Override
-    public void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched) {
-        jdbcTemplate.update(CREATE_TRANSACTION_DETAILS, dispatchDetail.getProjId(), dispatchDetail.getItemName()
-                , dispatchDetail.getSqlDispatchedDate(), dispatchDetail.getFieldUser(), dispatched,dispatchDetail.getRequestedQuantity());
+    public void saveDispatchedDetails(final DispatchDetail dispatchDetail, final String dispatched) {
+        jdbcTemplate.batchUpdate(CREATE_TRANSACTION_DETAILS, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                DispatchDetail.DispatchItems dispatchItem = dispatchDetail.getDispatchItems().get(i);
+                ps.setInt(1, dispatchDetail.getProjId());
+                ps.setString(2, dispatchItem.getItemName());
+                ps.setDate(3, dispatchDetail.getSqlDispatchedDate());
+                ps.setString(4, dispatchDetail.getFieldUser());
+                ps.setString(5, dispatched);
+                ps.setString(6, dispatchItem.getRequestedQuantity());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return dispatchDetail.getDispatchItems().size();
+            }
+        });
     }
-    
+
     @Override
     public void saveReturnedDetails(StoreTransactionDetail storeTransactionDetail, String returned) {
         jdbcTemplate.update(CREATE_TRANSACTION_DETAILS, storeTransactionDetail.getProjId(), storeTransactionDetail.getItemName()
@@ -100,9 +109,17 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     }
 
     @Override
-    public List<String> getItemNamesInStore(String projectId ) {
-        return jdbcTemplate.queryForList(GET_ITEM_NAMES_STORE, new Object[]{projectId}, String.class);
-
+    public List<StockDetail> getItemNamesInStore(String projectId, String itemName) {
+        List<StockDetail> itemNamesInStock = new ArrayList<>();
+        String sql;
+        if (!"".equals(itemName)) {
+            sql = "select * from stockDetail where projectId = '" + projectId + "' and itemName LIKE '%" + itemName + "%'";
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+            for (Map<String, Object> row : rows) {
+                itemNamesInStock.add(buildStockDetails(row));
+            }
+        }
+        return itemNamesInStock;
     }
 
     @Override

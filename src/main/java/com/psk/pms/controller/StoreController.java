@@ -3,6 +3,7 @@ package com.psk.pms.controller;
 import static com.psk.pms.Constants.FIELD;
 import static com.psk.pms.Constants.ITEM_TYPE;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,15 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import com.psk.pms.Constants;
 import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
@@ -74,19 +72,21 @@ public class StoreController extends BaseController {
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getItemNamesInStore.do", method = RequestMethod.GET)
     @ResponseBody
-    public JsonData getItemNamesInStore(HttpServletRequest httpServletRequest) {
+    public List<StockDetail> getItemNamesInStore(HttpServletRequest httpServletRequest) {
+        String projId = httpServletRequest.getParameter("projId");
+        String itemName = httpServletRequest.getParameter("itemName");
         LOGGER.info("getItemNamesInStore for Project :"
-                + httpServletRequest.getParameter("projId"));
-        return getItemAndFieldUser(httpServletRequest);
+                + projId);
+        return storeService.getItemNamesInStore(projId, itemName);
     }
 
-	private JsonData getItemAndFieldUser(HttpServletRequest httpServletRequest) {
-		JsonData jsonData = new JsonData();
-		DispatchDetail dispatchDetail = new DispatchDetail();
+    private JsonData getItemAndFieldUser(HttpServletRequest httpServletRequest) {
+        JsonData jsonData = new JsonData();
+        DispatchDetail dispatchDetail = new DispatchDetail();
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
         String projectId = fetchProjectId(projId, employeeId);
-        List<String> itemNames = storeService.getItemNamesInStore(projectId);
+        List<String> itemNames = new ArrayList<>();
         List<String> fieldUsers = storeService.getSelectedUser(FIELD, projectId);
         if (!itemNames.isEmpty() && !fieldUsers.isEmpty()) {
             fieldUsers.add(0, "--Please Select--");
@@ -104,8 +104,8 @@ public class StoreController extends BaseController {
             jsonData.setData("There are no field users for the project");
         }
         return jsonData;
-	}
-    
+    }
+
     @RequestMapping(value = "/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData getItemNamesInStoreForReturn(HttpServletRequest httpServletRequest) {
@@ -136,7 +136,7 @@ public class StoreController extends BaseController {
         model.addAttribute("aliasProjectList", aliasProjectList);
         return "StoreTransaction";
     }
-    
+
     @RequestMapping(value = "/emp/myview/returnTransaction/{employeeId}", method = RequestMethod.GET)
     public String returnTransaction(@PathVariable String employeeId, Model model) {
         LOGGER.info("Store Controller : buildStoreDetail()");
@@ -147,35 +147,27 @@ public class StoreController extends BaseController {
         model.addAttribute("aliasProjectList", aliasProjectList);
         return "ReturnTransaction";
     }
-    
-    
+
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/saveDispatchedDetail.do", method = RequestMethod.POST)
-    public String saveDispatchedDetail(@ModelAttribute("dispatchDetailForm") DispatchDetail dispatchDetail,
-                                       BindingResult result, Model model, SessionStatus status) {
+    @ResponseBody
+    public String saveDispatchedDetail(@RequestBody DispatchDetail dispatchDetail,
+                                       Model model, SessionStatus status) {
         LOGGER.info("Store Controller : saveDispatchedDetail()");
+        String result = "Dispatched Details saved successfully";
         try {
             Map<String, String> aliasProjectList = getProjectDetails(dispatchDetail.getEmployeeId());
-            String projId = String.valueOf(dispatchDetail.getProjId());
-            List<String> itemNames = storeService.getItemNamesInStore(projId);
-            List<String> fieldUsers = storeService.getSelectedUser(FIELD, projId);
-            fieldUsers.add(0, "--Please Select--");
-            itemNames.add(0, "--Please Select--");
-            model.addAttribute("aliasProjectList", aliasProjectList);
-            model.addAttribute("fieldUsers", fieldUsers);
-            model.addAttribute("itemNames", itemNames);
-            storeValidator.validate(dispatchDetail, result, Constants.DISPATCHED);
-            model.addAttribute("dispatchDetailForm", dispatchDetail);
-            if (result.hasErrors()) {
-                return "StoreTransaction";
-            }
+            ObjectMapper mapper = new ObjectMapper();
+            List<DispatchDetail.DispatchItems> dispatchItemsList = mapper.readValue(dispatchDetail.getDispatchItemsValue(), mapper.getTypeFactory().constructCollectionType(List.class, DispatchDetail.DispatchItems.class));
+            dispatchDetail.setDispatchItems(dispatchItemsList);
+            storeValidator.validate(dispatchDetail, Constants.DISPATCHED);
             storeService.saveDispatchedDetail(dispatchDetail);
             model.addAttribute("successMessage",
                     "Dispatched Details saved successfully");
         } catch (Exception e) {
-            model.addAttribute("errorMessage", e.getMessage());
+            return e.getMessage();
         }
-        return "StoreTransaction";
+        return result;
     }
 
 
@@ -224,6 +216,26 @@ public class StoreController extends BaseController {
         return "ViewDispatchedDetails";
     }
 
+    @RequestMapping(value = "/emp/myview/dispatchTransaction/getFieldUsers.do", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData getFieldUsersForProject(HttpServletRequest httpServletRequest) {
+        LOGGER.info("getFieldUsers for Project :"
+                + httpServletRequest.getParameter("projId"));
+        JsonData jsonData = new JsonData();
+        String projId = httpServletRequest.getParameter("projId");
+        String employeeId = httpServletRequest.getParameter("employeeId");
+        List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
+        Gson gson = new Gson();
+        jsonData.setObject(gson.toJson(fieldUsers));
+        jsonData.setSuccess(true);
+        return jsonData;
+    }
+
+    private List<String> getFieldUsersForProject(String projId, String employeeId) {
+        String projectId = fetchProjectId(projId, employeeId);
+        return storeService.getSelectedUser(FIELD, projectId);
+    }
+
     @RequestMapping(value = "/emp/myview/viewDispatchDetails/getFieldUsers.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData getFieldUsers(HttpServletRequest httpServletRequest) {
@@ -232,8 +244,7 @@ public class StoreController extends BaseController {
         JsonData jsonData = new JsonData();
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
-        String projectId = fetchProjectId(projId, employeeId);
-        List<String> fieldUsers = storeService.getSelectedUser(FIELD, projectId);
+        List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
         Gson gson = new Gson();
         jsonData.setObject(gson.toJson(fieldUsers));
         jsonData.setSuccess(true);

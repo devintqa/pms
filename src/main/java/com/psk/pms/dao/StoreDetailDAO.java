@@ -21,7 +21,7 @@ public interface StoreDetailDAO {
 
     void updateStockDetail(int projId, String itemName, String totalQuantity);
 
-	List<String> getItemNamesInStore(String projId);
+	List<StockDetail> getItemNamesInStore(String projId, String itemName);
 
     void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched);
 
