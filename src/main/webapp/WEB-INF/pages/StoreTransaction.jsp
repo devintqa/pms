@@ -72,7 +72,7 @@
                                             $("#itemNameField").hide();
                                             $("#dispatchDetailTable").hide();
                                             $("#projId").prop('selectedIndex', 0);
-                                            $("#dialog-confirm").html(response.data);
+                                            $("#dialog-confirm").html('No Field Users for the Project who are authoriseed');
                                             $("#dialog-confirm").dialog(
                                                     {
                                                         modal: true,
@@ -120,7 +120,6 @@
 
 
         function saveDispatchedItem() {
-            alert('saveDispatchedItem');
             var itemTable = document.getElementById('dispatchDetailTable');
             var itemObjArray = [];
             var dispatchDetailForm = {};
