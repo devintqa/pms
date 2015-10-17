@@ -73,6 +73,7 @@
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Status</th>
+							<th>View</th>
 						</tr>
 					</thead>
 
@@ -80,13 +81,12 @@
 						<c:if test="${not empty indentList}">
 							<c:forEach var="indent" items="${indentList}">
 								<tr>
-									<td><a href="/pms/emp/myview/indent/createIndent?employeeId=${employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">${indent.indentId}</a>
-									</td>
-									<td><a href="/pms/emp/myview/indent/itemToRequest?employeeId=${employeeId}&indentId=${indent.indentId}&status=${indent.status}">${indent.startDate}
-									${indent.startDate}</a>
-									</td>
+									<td>${indent.indentId}</td>
+									<td>${indent.startDate}</td>
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
+									<td><a href="/pms/emp/myview/indent/createIndent?employeeId=${employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">Detail</a>
+									&nbsp;&nbsp;<a href="/pms/emp/myview/indent/itemToRequest?employeeId=${employeeId}&indentId=${indent.indentId}&status=${indent.status}">Summary</a>
 								</tr>
 							</c:forEach>
 						</c:if>

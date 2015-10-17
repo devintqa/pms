@@ -33,6 +33,9 @@
     padding: 5px 15px;
     }
     
+    .error{
+    	color:red;
+    }
 </style>
 <script>
 	$(document).ready(function() {
@@ -50,6 +53,7 @@
 				   { dateFormat: 'dd-mm-yy'}
 		);
 		
+				 
 		
 		$('.getIndentButton').click(function(){
 			var projDescId = $(this).attr('aria-desc-id');
@@ -101,7 +105,8 @@
 			this.itemQty = itemQty;
 			} 
 		
-		$('.saveIndentButton').click(function(){
+		
+		$('.saveIndentButton').click(function(e){
 			var indent = {};
 			var indentDescArray = [];
 			
@@ -121,6 +126,7 @@
 					 var indentDescComment = $("#comment"+projDescId+indentId).val();
 					 var itemTable = document.getElementById("itemTbl"+projDescId+indentId);
 					 var tableLength = $("#itemTbl"+projDescId+indentId).rowCount();
+					 var hasSteel = false;
 						for (i = 1; i < tableLength; i++) {
 							var new_row = itemTable.rows[i];
 							var itemType = new_row.cells[0].innerHTML;
@@ -128,10 +134,18 @@
 							var itemUnit = new_row.cells[2].innerHTML;
 							var itemQty = new_row.cells[3].innerHTML;
 							
+							if(itemName.toUpperCase() == "STEEL"){
+								hasSteel = true;
+							}
 							var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
 							if(itemType && itemName && itemUnit && itemQty){
 								itemObjArray.push(obj); 
 							}
+						}
+						if(hasSteel && !indentDescComment){
+							var descName = $(this).find('H3').text();
+							$('#error').text('Please specify the steel dimension in comments section under '+descName);
+							throw new Error('save not allowed, as the steel specification not present');
 						}
 						if(indentDescQty){
 							indentDesc["plannedQty"] = indentDescQty;
@@ -149,6 +163,7 @@
 					indent['indentDescList'] = indentDescArray
 				
 				console.log(JSON.stringify(indent));
+					
 					if(indentId == '_'){
 						if(startDate && endDate){
 							$.ajax({
@@ -295,7 +310,7 @@
 									</td>
 									<td><input name="plannedQty" aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" 
 										id="plannedQty${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.plannedQty}" class="inputText" /> 
-										&nbsp; <span style="color:red;" id="error${indentDesc.projDescId}"></span></td>
+										&nbsp; <span class="error" id="error${indentDesc.projDescId}"></span></td>
 								</tr>
 								<tr>
 									<td>Metric<span id="colon">:</span>
@@ -306,7 +321,7 @@
 								<tr>
 									<td>Comment<span id="colon">:</span>
 									</td>
-									<td><input id="comment${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.comments}" 
+									<td><input name="comments" id="comment${indentDesc.projDescId}${indentDesc.indentDescId}" value="${indentDesc.comments}" 
 									class="inputText" /></td>
 								</tr>
 								<tr><td></td></tr>
@@ -342,7 +357,7 @@
 				
 					<center>
 					<br>
-					<span style="color: red;" id="error"></span>
+					<span class="error" id="error"></span>
 						<table>
 							<tr>
 								<td><input class="saveIndentButton"
