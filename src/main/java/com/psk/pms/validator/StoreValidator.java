@@ -12,6 +12,7 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.exception.ValidationException;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.DispatchDetail;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -98,5 +99,16 @@ public class StoreValidator extends BaseValidator implements Validator {
                 }
             }
         }
+    }
+    public void validateReturned(Object o, String returned) throws ValidationException {
+        DispatchDetail returnDetail = (DispatchDetail) o;
+        if (returnDetail.getProjId() == 0) {
+            throw new ValidationException("Please Select Project Name.");
+        }
+        List<DispatchDetail.DispatchItems> returnItems = returnDetail.getDispatchItems();
+        if (null == returnItems || returnItems.isEmpty()) {
+            throw new ValidationException("There are no items selected to be dispatched");
+        }
+
     }
 }

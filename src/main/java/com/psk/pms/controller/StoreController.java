@@ -9,18 +9,27 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.google.gson.Gson;
+import com.psk.pms.Constants;
+import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.JsonData;
+import com.psk.pms.model.StockDetail;
+import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.StoreValidator;
 
@@ -108,10 +117,12 @@ public class StoreController extends BaseController {
 
     @RequestMapping(value = "/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do", method = RequestMethod.GET)
     @ResponseBody
-    public JsonData getItemNamesInStoreForReturn(HttpServletRequest httpServletRequest) {
+    public List<StockDetail> getItemNamesInStoreForReturn(HttpServletRequest httpServletRequest) {
+        String projId = httpServletRequest.getParameter("projId");
+        String itemName = httpServletRequest.getParameter("itemName");
         LOGGER.info("getItemNamesInStore for Project :"
-                + httpServletRequest.getParameter("projId"));
-        return getItemAndFieldUser(httpServletRequest);
+                + projId);
+        return storeService.getItemNamesInStore(projId, itemName);
     }
 
 
@@ -141,9 +152,9 @@ public class StoreController extends BaseController {
     public String returnTransaction(@PathVariable String employeeId, Model model) {
         LOGGER.info("Store Controller : buildStoreDetail()");
         Map<String, String> aliasProjectList = getProjectDetails(employeeId);
-        StoreTransactionDetail storeTransactionDetail = new StoreTransactionDetail();
-        storeTransactionDetail.setEmployeeId(employeeId);
-        model.addAttribute("returnDetailForm", storeTransactionDetail);
+        DispatchDetail dispatchDetail = new DispatchDetail();
+        dispatchDetail.setEmployeeId(employeeId);
+        model.addAttribute("returnDetailForm", dispatchDetail);
         model.addAttribute("aliasProjectList", aliasProjectList);
         return "ReturnTransaction";
     }
@@ -156,7 +167,6 @@ public class StoreController extends BaseController {
         LOGGER.info("Store Controller : saveDispatchedDetail()");
         String result = "Dispatched Details saved successfully";
         try {
-            Map<String, String> aliasProjectList = getProjectDetails(dispatchDetail.getEmployeeId());
             ObjectMapper mapper = new ObjectMapper();
             List<DispatchDetail.DispatchItems> dispatchItemsList = mapper.readValue(dispatchDetail.getDispatchItemsValue(), mapper.getTypeFactory().constructCollectionType(List.class, DispatchDetail.DispatchItems.class));
             dispatchDetail.setDispatchItems(dispatchItemsList);
@@ -171,7 +181,29 @@ public class StoreController extends BaseController {
     }
 
 
-    @RequestMapping(value = "/emp/myview/buildStoreDetail/saveStoreDetail.do", method = RequestMethod.POST)
+
+    @RequestMapping(value = "/emp/myview/returnTransaction/saveReturnedDetail.do", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveReturnedDetail(@RequestBody DispatchDetail retuenDetail,
+                                       Model model, SessionStatus status) {
+        LOGGER.info("Store Controller : saveReturnedDetail()");
+        String result = "Returned Details saved successfully";
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            List<DispatchDetail.DispatchItems> dispatchItemsList = mapper.readValue(retuenDetail.getReturnItemsValue(), mapper.getTypeFactory().constructCollectionType(List.class, DispatchDetail.DispatchItems.class));
+            retuenDetail.setDispatchItems(dispatchItemsList);
+            storeValidator.validateReturned(retuenDetail, Constants.RETURNED);
+            storeService.saveReturnedDetail(retuenDetail);
+            model.addAttribute("successMessage",
+                    "Returned Details saved successfully");
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        return result;
+    }
+
+
+@RequestMapping(value = "/emp/myview/buildStoreDetail/saveStoreDetail.do", method = RequestMethod.POST)
     public String saveStoreDetail(
             @ModelAttribute("storeDetailForm") StoreDetail storeDetail,
             BindingResult result, Model model, SessionStatus status) {
@@ -219,6 +251,21 @@ public class StoreController extends BaseController {
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getFieldUsers.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonData getFieldUsersForProject(HttpServletRequest httpServletRequest) {
+        LOGGER.info("getFieldUsers for Project :"
+                + httpServletRequest.getParameter("projId"));
+        JsonData jsonData = new JsonData();
+        String projId = httpServletRequest.getParameter("projId");
+        String employeeId = httpServletRequest.getParameter("employeeId");
+        List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
+        Gson gson = new Gson();
+        jsonData.setObject(gson.toJson(fieldUsers));
+        jsonData.setSuccess(true);
+        return jsonData;
+    }
+    
+    @RequestMapping(value = "/emp/myview/returnTransaction/getFieldUsersForReturn.do", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonData getFieldUsersForReturn(HttpServletRequest httpServletRequest) {
         LOGGER.info("getFieldUsers for Project :"
                 + httpServletRequest.getParameter("projId"));
         JsonData jsonData = new JsonData();

@@ -3,7 +3,7 @@ package com.psk.pms.dao;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.StoreTransactionDetail;
+import com.psk.pms.model.DispatchDetail;
 
 import java.util.List;
 
@@ -27,5 +27,5 @@ public interface StoreDetailDAO {
 
     List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
     
-    void saveReturnedDetails(StoreTransactionDetail storeTransactionDetail, String returned);
+    void saveReturnedDetails(DispatchDetail dispatchDetail, String returned);
 }

@@ -8,7 +8,7 @@ import java.util.List;
  */
 public class DispatchDetail {
 
-    private int projId;
+    private Integer projId;
     private String employeeId;
     private String itemName;
     private String dispatchItemsValue;
@@ -17,6 +17,12 @@ public class DispatchDetail {
     private String dispatchedDate;
     private Date sqlDispatchedDate;
     private String requestedQuantity;
+    
+    private String returnItemsValue;
+    private String returnedDate;
+    private Date sqlReturnedDate;
+    private String returnedQuantity;
+    
     private List<String> fieldUsers;
     private List<String>items;
     private String description;
@@ -24,11 +30,11 @@ public class DispatchDetail {
 
 
 
-    public int getProjId() {
+    public Integer getProjId() {
         return projId;
     }
 
-    public void setProjId(int projId) {
+	public void setProjId(Integer projId) {
         this.projId = projId;
     }
 
@@ -132,6 +138,8 @@ public class DispatchDetail {
         private String itemName;
         private String totalQuantity;
         private String requestedQuantity;
+        
+        private String returnedQuantity;
 
         public DispatchItems(){
 
@@ -146,7 +154,7 @@ public class DispatchDetail {
             return itemName;
         }
 
-        public void setItemName(String itemName) {
+		public void setItemName(String itemName) {
             this.itemName = itemName;
         }
 
@@ -165,5 +173,46 @@ public class DispatchDetail {
         public void setRequestedQuantity(String requestedQuantity) {
             this.requestedQuantity = requestedQuantity;
         }
+        public String getReturnedQuantity() {
+			return returnedQuantity;
+		}
+		public void setReturnedQuantity(String returnedQuantity) {
+			this.returnedQuantity = returnedQuantity;
+		}
     }
+
+	public String getReturnedDate() {
+		return returnedDate;
+	}
+
+	public void setReturnedDate(String returnedDate) {
+		this.returnedDate = returnedDate;
+	}
+
+	public Date getSqlReturnedDate() {
+		return sqlReturnedDate;
+	}
+
+	public void setSqlReturnedDate(Date sqlReturnedDate) {
+		this.sqlReturnedDate = sqlReturnedDate;
+	}
+
+	public String getReturnedQuantity() {
+		return returnedQuantity;
+	}
+
+	public void setReturnedQuantity(String returnedQuantity) {
+		this.returnedQuantity = returnedQuantity;
+	}
+	
+	public String getReturnItemsValue() {
+		return returnItemsValue;
+	}
+
+	public void setReturnItemsValue(String returnItemsValue) {
+		this.returnItemsValue = returnItemsValue;
+	}
+
+    
+	   
 }
