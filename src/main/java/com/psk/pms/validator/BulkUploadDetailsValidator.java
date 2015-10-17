@@ -1,6 +1,7 @@
 package com.psk.pms.validator;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -26,34 +27,38 @@ public class BulkUploadDetailsValidator {
 
     private void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
             throws BulkUploadException {
-        for (ProjDescDetail projDescDetail : projDescDetails) {
+        Iterator projectDescDetailIterator = projDescDetails.iterator();
+        int rowCount = 2;
+        while (projectDescDetailIterator.hasNext()) {
+            ProjDescDetail projDescDetail = (ProjDescDetail) projectDescDetailIterator.next();
             if (StringUtils.isNullOrEmpty(projDescDetail.getSerialNumber())) {
-                throw new BulkUploadException(SERIALNUMBEREMPTY);
+                throw new BulkUploadException(SERIALNUMBEREMPTY + ROW_NUMBER + rowCount);
             }
             if (StringUtils.isNullOrEmpty(projDescDetail.getWorkType())) {
-                throw new BulkUploadException(WORKTYPEEMPTY);
+                throw new BulkUploadException(WORKTYPEEMPTY + ROW_NUMBER + rowCount);
             }
             if (StringUtils.isNullOrEmpty(projDescDetail.getMetric())) {
-                throw new BulkUploadException(METRIC_IS_EMPTY);
+                throw new BulkUploadException(METRIC_IS_EMPTY + ROW_NUMBER + rowCount);
             }
             if (StringUtils.isNullOrEmpty(projDescDetail.getQuantity())) {
-                throw new BulkUploadException(QUANTITYINFIGEMPTY);
+                throw new BulkUploadException(QUANTITYINFIGEMPTY + ROW_NUMBER + rowCount);
             }
             if (StringUtils.isNullOrEmpty(projDescDetail.getDescription())) {
-                throw new BulkUploadException(DESCEMPTY);
+                throw new BulkUploadException(DESCEMPTY + ROW_NUMBER + rowCount);
             }
             if (StringUtils.isNullOrEmpty(projDescDetail.getAliasDescription())) {
-                throw new BulkUploadException(ALIASDESCEMPTY);
+                throw new BulkUploadException(ALIASDESCEMPTY + ROW_NUMBER + rowCount);
             }
             if (180 < projDescDetail.getAliasDescription().length()) {
-                throw new BulkUploadException(ALIAS_DESCRIPTION_EXCEEDED);
+                throw new BulkUploadException(ALIAS_DESCRIPTION_EXCEEDED + ROW_NUMBER + rowCount);
             }
             if (validateForDecimalValue(projDescDetail.getQuantity())) {
-                throw new BulkUploadException(QUANTITY_SHOULD_BE_NUMBER);
+                throw new BulkUploadException(QUANTITY_SHOULD_BE_NUMBER + ROW_NUMBER + rowCount);
             }
             if (projDescDetail.getQuantity().length() > 15) {
-                throw new BulkUploadException(QUANTITY_LENGTH_EXCEEDED);
+                throw new BulkUploadException(QUANTITY_LENGTH_EXCEEDED + ROW_NUMBER + rowCount);
             }
+            rowCount++;
         }
     }
 
