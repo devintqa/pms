@@ -113,10 +113,10 @@ public class ProjDescDetailValidator extends BaseValidator implements Validator 
 			projectDescDetail.setTotalCost("0");
 		}
 
-		if (projectDescDetail.getAliasDescription().length() > 100) {
+		if (projectDescDetail.getAliasDescription().length() > 180) {
 			errors.rejectValue("aliasDescription",
 					"aliasDescription.incorrect",
-					"Field Should Not Exceed 100 characters");
+					"Field Should Not Exceed 180 characters");
 		}
 
 		if (!"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {

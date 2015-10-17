@@ -38,8 +38,8 @@ public class BaseDescriptionValidator extends BaseValidator implements Validator
                 "required.metric", "Enter Quantity Metric Unit.");
         ProjDescDetail projectDescDetail = (ProjDescDetail) target;
 
-        if (projectDescDetail.getAliasDescription().length() > 100) {
-            errors.rejectValue("aliasDescription", "aliasDescription.incorrect", "Field Should Not Exceed 100 characters");
+        if (projectDescDetail.getAliasDescription().length() > 180) {
+            errors.rejectValue("aliasDescription", "aliasDescription.incorrect", "Field Should Not Exceed 180 characters");
         }
 
         if ( null!=projectDescDetail.getAliasDescription() && !"Y".equalsIgnoreCase(projectDescDetail.getIsUpdate())) {
@@ -49,6 +49,6 @@ public class BaseDescriptionValidator extends BaseValidator implements Validator
                 errors.rejectValue("aliasDescription", "aliasDescription.incorrect", "Base Description Already Found To Be Existing.");
             }
         }
-        
+
     }
 }
