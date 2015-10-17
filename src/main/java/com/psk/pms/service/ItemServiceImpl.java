@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 import static com.psk.pms.Constants.LABOUR;
@@ -75,8 +76,8 @@ public class ItemServiceImpl implements ItemService {
 					}
 				}
 				if (item.getItemName() != null) {
-					item.setItemQty(String.valueOf(itemQty));
-					item.setItemCost(String.valueOf(itemCost));
+					item.setItemQty(String.valueOf(itemQty.setScale(2, RoundingMode.CEILING)));
+					item.setItemCost(String.valueOf(itemCost.setScale(2, RoundingMode.CEILING)));
 					finalItemDetailList.add(item);
 				}
 			}
