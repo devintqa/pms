@@ -3,6 +3,8 @@ package com.psk.pms.validator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.BulkUploadException;
@@ -11,10 +13,9 @@ import com.psk.pms.model.ProjDescDetail;
 
 import static com.psk.pms.Constants.*;
 
-/**
- * Created by prakashbhanu57 on 7/27/2015.
- */
 public class BulkUploadDetailsValidator {
+
+    private final String DECIMAL_PATTERN = "\\d+(?:\\.\\d+)?$";
 
     public void validateExtractedProjectDescriptionDetails(
             List<ProjDescDetail> projDescDetails) throws BulkUploadException {
@@ -32,6 +33,9 @@ public class BulkUploadDetailsValidator {
             if (StringUtils.isNullOrEmpty(projDescDetail.getWorkType())) {
                 throw new BulkUploadException(WORKTYPEEMPTY);
             }
+            if (StringUtils.isNullOrEmpty(projDescDetail.getMetric())) {
+                throw new BulkUploadException(METRIC_IS_EMPTY);
+            }
             if (StringUtils.isNullOrEmpty(projDescDetail.getQuantity())) {
                 throw new BulkUploadException(QUANTITYINFIGEMPTY);
             }
@@ -41,7 +45,22 @@ public class BulkUploadDetailsValidator {
             if (StringUtils.isNullOrEmpty(projDescDetail.getAliasDescription())) {
                 throw new BulkUploadException(ALIASDESCEMPTY);
             }
+            if (180 < projDescDetail.getAliasDescription().length()) {
+                throw new BulkUploadException(ALIAS_DESCRIPTION_EXCEEDED);
+            }
+            if (validateForDecimalValue(projDescDetail.getQuantity())) {
+                throw new BulkUploadException(QUANTITY_SHOULD_BE_NUMBER);
+            }
+            if (projDescDetail.getQuantity().length() > 15) {
+                throw new BulkUploadException(QUANTITY_LENGTH_EXCEEDED);
+            }
         }
+    }
+
+    public boolean validateForDecimalValue(String input) {
+        Pattern pattern = Pattern.compile(DECIMAL_PATTERN);
+        Matcher matcher = pattern.matcher(input);
+        return !matcher.matches();
     }
 
     private void rejectIfSerialNumberIsDuplicated(

@@ -14,9 +14,13 @@ public interface Constants {
 	String SERIALNUMBEREMPTY = "Serial Number can't be Empty";
 	String WORKTYPEEMPTY = "WorkType can't be Empty";
 	String QUANTITYINFIGEMPTY = "Quantity in figures can't be Empty";
+	String METRIC_IS_EMPTY = "Metric can't be Empty";
 	String QUANTITYINUNITEMPTY = "Quantity in Unit can't be Empty";
 	String DESCEMPTY = "Description can't be Empty";
 	String ALIASDESCEMPTY = "Alias description can't be Empty";
+	String ALIAS_DESCRIPTION_EXCEEDED = "Alias description can't be greater than 180 characters";
+	String QUANTITY_SHOULD_BE_NUMBER = "Quantity should be a valid decimal value";
+	String QUANTITY_LENGTH_EXCEEDED ="Quantity can't be more than 15 characters";
 	String SERIALNOTUNIQUE = "Serial numbers are not unique";
 	String ALIASNOTUNIQUE = "AliasDescriptions are not unique";
 	String UPLOADFAILED = "Upload Failed.  ";
