@@ -142,22 +142,21 @@ public class ItemDAOImpl implements ItemDAO {
             }
         });
 
-        long sumItemCost = 0;
+        BigDecimal sumItemCost = new BigDecimal("0");
         for (DescItemDetail.ItemDetail itemDetail : descItemDetail.getItemDetail()) {
-            long itemCost = Double.valueOf(itemDetail.getItemCost()).longValue();
-            sumItemCost = sumItemCost + itemCost;
+            BigDecimal itemCost = new BigDecimal(itemDetail.getItemCost());
+            sumItemCost = sumItemCost.add(itemCost);
         }
         String projectDescEstimate = "SELECT Quantity from " + DescriptionType.getDescriptionTableName(descType) + " WHERE ProjDescId = '" + descItemDetail.getProjDescId() + "'";
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(projectDescEstimate);
 
-        long totalCost = 0;
+        BigDecimal totalCost = new BigDecimal("0");
         for (Map<String, Object> row : rows) {
             BigDecimal quantity = (BigDecimal) row.get("Quantity");
-            long qty = quantity.toBigInteger().longValue();
-            totalCost = sumItemCost * qty;
+            totalCost = sumItemCost.multiply(quantity);
         }
         String updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
-        jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost,
+        jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),
                 descItemDetail.getProjDescId()});
 
         return true;

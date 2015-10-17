@@ -12,6 +12,7 @@ public interface Constants {
 	String EXISTS = "Exists";
 	String DOESNOTEXISTS = "Does not Exists";
 	String SERIALNUMBEREMPTY = "Serial Number can't be Empty";
+	String ROW_NUMBER = ", Please check row number :";
 	String WORKTYPEEMPTY = "WorkType can't be Empty";
 	String QUANTITYINFIGEMPTY = "Quantity in figures can't be Empty";
 	String METRIC_IS_EMPTY = "Metric can't be Empty";
