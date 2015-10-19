@@ -20,7 +20,7 @@ import com.psk.pms.service.SubProjectService;
 public class BaseController {
 
     @Autowired
-    protected ProjectService projectService;
+    protected ProjectService projectService ;
 
     @Autowired
     protected SubProjectService subProjectService;
