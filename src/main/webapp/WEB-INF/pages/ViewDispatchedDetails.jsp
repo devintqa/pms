@@ -9,49 +9,6 @@
     <%@include file="Script.jsp" %>
     <%@include file="Utility.jsp" %>
     <script>
-        $(document).ready(function () {
-            if ($('#projId').val() == 0) {
-                $("#fieldUserRow").hide();
-            }
-            $("#projId").change(function () {
-                var projId = $('#projId').val();
-                var employeeId = $('#employeeId').val();
-                $.ajax({
-                    type: "GET",
-                    url: "getFieldUsers.do",
-                    cache: false,
-                    data: "projId=" + projId + "&employeeId=" + employeeId,
-                    success: function (response) {
-                        if (response.success) {
-                            var obj = jQuery.parseJSON(response.object);
-                            var options = '';
-                            for (var key in obj) {
-                                var attrName = key;
-                                var attrValue = obj[key];
-                                options = options + '<option value="' + attrValue + '">'
-                                        + attrValue + '</option>';
-                            }
-                            $('#fieldUser').html(options);
-                            $("#fieldUserRow").show();
-                        } else {
-                            $("#projId").prop('selectedIndex', 0);
-                            $("#dialog-confirm").html(response.data);
-                            $("#dialog-confirm").dialog({
-                                modal: true,
-                                title: "Warning!",
-                                height: 200,
-                                width: 300,
-                                buttons: {
-                                    Ok: function () {
-                                        $(this).dialog("close");
-                                    }
-                                }
-                            });
-                        }
-                    }
-                });
-            });
-        });
 
     </script>
 </head>
@@ -80,24 +37,6 @@
                             </form:select></td>
                             <td><form:errors path="projId" cssClass="error"/></td>
                         </tr>
-                        <tr id="fieldUserRow">
-                            <td>Field User<span id="colon">:</span>
-                            </td>
-                            <td><form:select path="fieldUser" cssClass="inputText"
-                                             id="fieldUser" items="${fieldUsers}">
-                                <option value="${fieldUser}"
-                                        selected="selected">${fieldUser}</option>
-
-                            </form:select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Recieved Date<span id="colon">:</span>
-                            </td>
-                            <td><form:input path="dispatchedDate" placeholder="DD-MM-YYYY"
-                                            cssClass="inputText"/></td>
-                            <td><form:errors path="dispatchedDate" cssClass="error"/></td>
-                        </tr>
                         <tr></tr>
                     </table>
                     <form:hidden path="employeeId"/>
@@ -118,21 +57,25 @@
         <c:if test="${dispatchDetailsSize gt 0}">
             <h1 style="text-align: center; color: #007399; font-size: 24px;">
                 Dispatched Details</h1>
-            <table id="dispatchDetails" class="gridView">
+            <table id="aggregateItemList" class="gridView">
                 <thead>
                 <tr>
+                    <th>Field User</th>
                     <th>Item Name</th>
-                    <th>Quantity</th>
-                    <th>Type</th>
+                    <th>Dispatched Date</th>
+                    <th>Dispatched Quantity</th>
+                    <th>Returned Quantity</th>
                 </tr>
                 </thead>
                 <tbody>
                 <c:if test="${not empty dispatchDetails}">
                     <c:forEach var="item" items="${dispatchDetails}">
                         <tr>
+                            <td>${item.fieldUser}</td>
                             <td>${item.itemName}</td>
+                            <td>${item.dispatchedDate}</td>
                             <td>${item.requestedQuantity}</td>
-                            <td>${item.description}</td>
+                            <td>${item.requestedQuantity}</td>
                         </tr>
                     </c:forEach>
                 </c:if>

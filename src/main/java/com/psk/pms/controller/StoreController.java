@@ -285,22 +285,6 @@ public class StoreController extends BaseController {
         return storeService.getSelectedUser(FIELD, projectId);
     }
 
-    @RequestMapping(value = "/emp/myview/viewDispatchDetails/getFieldUsers.do", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonData getFieldUsers(HttpServletRequest httpServletRequest) {
-        LOGGER.info("getFieldUsers for Project :"
-                + httpServletRequest.getParameter("projId"));
-        JsonData jsonData = new JsonData();
-        String projId = httpServletRequest.getParameter("projId");
-        String employeeId = httpServletRequest.getParameter("employeeId");
-        List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
-        Gson gson = new Gson();
-        jsonData.setObject(gson.toJson(fieldUsers));
-        jsonData.setSuccess(true);
-        return jsonData;
-    }
-
-
     @RequestMapping(value = "/emp/myview/viewStoreDetails/viewStoreDetails.do", method = RequestMethod.POST)
     public String viewStoreDetails(
             @ModelAttribute("storeDetailForm") StoreDetail storeDetail,
@@ -327,13 +311,11 @@ public class StoreController extends BaseController {
             @ModelAttribute("dispatchDetailForm") DispatchDetail dispatchDetail,
             BindingResult result, Model model, SessionStatus status) {
         Map<String, String> aliasProjectList = populateAliasProjectList(dispatchDetail.getEmployeeId());
-        List<String> fieldUsers = storeService.getSelectedUser(FIELD, String.valueOf(dispatchDetail.getProjId()));
-        model.addAttribute("fieldUsers", fieldUsers);
         model.addAttribute("dispatchDetailForm", dispatchDetail);
         model.addAttribute("aliasProjectList", aliasProjectList);
         if (dispatchDetail.getProjId() == 0) {
             model.addAttribute("errorMessage", "Please select the project");
-            return "ViewStoreDetails";
+            return "ViewDispatchedDetails";
         }
         List<DispatchDetail> dispatchDetails = storeService.getDispatchedDetails(dispatchDetail);
         if (dispatchDetails.size() > 0) {
