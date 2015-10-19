@@ -257,9 +257,11 @@ public class StoreController extends BaseController {
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
         List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
-        Gson gson = new Gson();
-        jsonData.setObject(gson.toJson(fieldUsers));
-        jsonData.setSuccess(true);
+        if(!fieldUsers.isEmpty()) {
+            Gson gson = new Gson();
+            jsonData.setObject(gson.toJson(fieldUsers));
+            jsonData.setSuccess(true);
+        }
         return jsonData;
     }
     
@@ -317,7 +319,6 @@ public class StoreController extends BaseController {
         } else {
             model.addAttribute("errorMessage", "There are no Materials in the Store");
         }
-
         return "ViewStoreDetails";
     }
 
@@ -341,7 +342,6 @@ public class StoreController extends BaseController {
         } else {
             model.addAttribute("errorMessage", "There were no Materials Dispatched from the Store");
         }
-
         return "ViewDispatchedDetails";
     }
 
