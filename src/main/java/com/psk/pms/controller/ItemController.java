@@ -362,7 +362,7 @@ public class ItemController extends BaseController {
     }
 
     private List<String > getLeadConfiguredItemNames(List<LeadDetail> leadDetailList) {
-        List<String > itemNames = new ArrayList<>();
+        List<String> itemNames = new ArrayList<String>();
         for(LeadDetail leadDetail: leadDetailList) {
             itemNames.add(leadDetail.getMaterial());
         }

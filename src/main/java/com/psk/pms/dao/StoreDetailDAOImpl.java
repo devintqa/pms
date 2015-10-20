@@ -136,7 +136,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     @Override
     public List<StockDetail> getItemNamesInStore(String projectId,
                                                  String itemName) {
-        List<StockDetail> itemNamesInStock = new ArrayList<>();
+        List<StockDetail> itemNamesInStock = new ArrayList<StockDetail>();
         String sql;
         if (!"".equals(itemName)) {
             sql = "select * from stockDetail where projectId = '" + projectId

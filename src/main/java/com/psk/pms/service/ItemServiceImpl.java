@@ -351,7 +351,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private List<String> getLeadConfiguredItemNames(List<ItemDetailDto> leadDetailList) {
-        List<String> itemNames = new ArrayList<>();
+        List<String> itemNames = new ArrayList<String>();
         for (ItemDetailDto leadDetail : leadDetailList) {
             itemNames.add(leadDetail.getItemName());
         }

@@ -95,7 +95,7 @@ public class StoreController extends BaseController {
         String projId = httpServletRequest.getParameter("projId");
         String employeeId = httpServletRequest.getParameter("employeeId");
         String projectId = fetchProjectId(projId, employeeId);
-        List<String> itemNames = new ArrayList<>();
+        List<String> itemNames = new ArrayList<String>();
         List<String> fieldUsers = storeService.getSelectedUser(FIELD, projectId);
         if (!itemNames.isEmpty() && !fieldUsers.isEmpty()) {
             fieldUsers.add(0, "--Please Select--");
