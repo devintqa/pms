@@ -190,8 +190,8 @@ public class StoreController extends BaseController {
         String result = "Returned Details saved successfully";
         try {
             ObjectMapper mapper = new ObjectMapper();
-            List<DispatchDetail.DispatchItems> dispatchItemsList = mapper.readValue(retuenDetail.getReturnItemsValue(), mapper.getTypeFactory().constructCollectionType(List.class, DispatchDetail.DispatchItems.class));
-            retuenDetail.setDispatchItems(dispatchItemsList);
+            List<DispatchDetail.DispatchItems> returnedItemsList = mapper.readValue(retuenDetail.getReturnItemsValue(), mapper.getTypeFactory().constructCollectionType(List.class, DispatchDetail.DispatchItems.class));
+            retuenDetail.setDispatchItems(returnedItemsList);
             storeValidator.validateReturned(retuenDetail, Constants.RETURNED);
             storeService.saveReturnedDetail(retuenDetail);
             model.addAttribute("successMessage",

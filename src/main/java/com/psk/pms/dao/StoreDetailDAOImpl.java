@@ -134,20 +134,21 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
     }
 
     @Override
-    public List<StockDetail> getItemNamesInStore(String projectId,
-                                                 String itemName) {
-        List<StockDetail> itemNamesInStock = new ArrayList<StockDetail>();
-        String sql;
-        if (!"".equals(itemName)) {
-            sql = "select * from stockDetail where projectId = '" + projectId
-                    + "' and itemName LIKE '%" + itemName + "%'";
-            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-            for (Map<String, Object> row : rows) {
-                itemNamesInStock.add(buildStockDetails(row));
-            }
-        }
-        return itemNamesInStock;
-    }
+	public List<StockDetail> getItemNamesInStore(String projectId,
+			String itemName) {
+		List<StockDetail> itemNamesInStock = new ArrayList<>();
+		String sql;
+		if (!"".equals(itemName)) {
+			sql = "select s.projectId, s.itemname, s.totalQuantity, sum(d.Quantity) DispatchedQuantity from stockDetail s,"
+					+"dispatchdetail d where s.projectId ='"+ projectId+"'  and s.itemName LIKE '%"+itemName+"%' "
+ 					+"and s.ItemName = d.ItemName and  d.dispatchdesc = 'Dispatched'";
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			for (Map<String, Object> row : rows) {
+				itemNamesInStock.add(buildStockDetails(row));
+			}
+		}
+		return itemNamesInStock;
+	}
 
     @Override
     public void updateStockDetail(int projId, String itemName,
@@ -161,6 +162,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         stockDetail.setItemName((String) row.get("itemName"));
         stockDetail.setProjId((Integer) row.get("projectId"));
         stockDetail.setTotalQuantity((String) row.get("totalQuantity"));
+        stockDetail.setDispatchedQuantity(String.valueOf(row.get("dispatchedQuantity")));
         return stockDetail;
     }
 

@@ -35,7 +35,7 @@
 																			.val();
 																	$
 																			.getJSON(
-																					"/pms/emp/myview/dispatchTransaction/getItemNamesInStore.do",
+																					"/pms/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do",
 																					{
 																						itemName : request.term,
 																						projId : projId
@@ -50,7 +50,7 @@
 																											return {
 																												label : item.itemName,
 																												value : item.itemName,
-																												totalQuantity : item.totalQuantity,
+																												dispatchedQuantity : item.dispatchedQuantity,
 																												projId : item.itemName
 																											};
 																										}))
@@ -74,7 +74,7 @@
 																				.find(
 																						'td:nth-child(2) input')
 																				.val(
-																						ui.item.totalQuantity);
+																						ui.item.dispatchedQuantity);
 																		$(this)
 																				.parents(
 																						'tr:first')
@@ -176,9 +176,9 @@
 		itemName.id += len;
 		itemName.value = '';
 
-		var totalQuantity = new_row.cells[1].getElementsByTagName('input')[0];
-		totalQuantity.id += len;
-		totalQuantity.value = '';
+		var dispatchedQuantity = new_row.cells[1].getElementsByTagName('input')[0];
+		dispatchedQuantity.id += len;
+		dispatchedQuantity.value = '';
 
 		var returnedQuantity = new_row.cells[2].getElementsByTagName('input')[0];
 		returnedQuantity.id += len;
@@ -203,9 +203,9 @@
 		return exists;
 	}
 	
-	function ReturnItems(itemName, totalQuantity, returnedQuantity) {
+	function ReturnItems(itemName, dispatchedQuantity, returnedQuantity) {
 		this.itemName = itemName;
-		this.totalQuantity = totalQuantity;
+		this.dispatchedQuantity = dispatchedQuantity;
 		this.returnedQuantity = returnedQuantity;
 	}
 	
@@ -218,14 +218,14 @@
 		if (1 == len - 1) {
 			var itemName = itemTable.rows[1].cells[0]
 					.getElementsByTagName('input')[0].value;
-			var totalQuantity = itemTable.rows[1].cells[1]
+			var dispatchedQuantity = itemTable.rows[1].cells[1]
 					.getElementsByTagName('input')[0].value;
 			var returnedQuantity = itemTable.rows[1].cells[2]
 					.getElementsByTagName('input')[0].value;
-			var obj = new ReturnItems(itemName, totalQuantity,
+			var obj = new ReturnItems(itemName, dispatchedQuantity,
 					returnedQuantity);
-			if (itemName && totalQuantity && returnedQuantity
-					|| !(itemName && totalQuantity && returnedQuantity)) {
+			if (itemName && dispatchedQuantity && returnedQuantity
+					|| !(itemName && dispatchedQuantity && returnedQuantity)) {
 				itemObjArray.push(obj);
 			} else {
 				err = true;
@@ -234,14 +234,14 @@
 			for (i = 1; i <= len - 1; i++) {
 				var itemName = itemTable.rows[i].cells[0]
 						.getElementsByTagName('input')[0].value;
-				var totalQuantity = itemTable.rows[i].cells[1]
+				var dispatchedQuantity = itemTable.rows[i].cells[1]
 						.getElementsByTagName('input')[0].value;
 				var returnedQuantity = itemTable.rows[i].cells[2]
 						.getElementsByTagName('input')[0].value;
-				var obj = new ReturnItems(itemName, totalQuantity,
+				var obj = new ReturnItems(itemName, dispatchedQuantity,
 						returnedQuantity);
-				if (itemName && totalQuantity && returnedQuantity
-						|| !(itemName && totalQuantity && returnedQuantity)) {
+				if (itemName && dispatchedQuantity && returnedQuantity
+						|| !(itemName && dispatchedQuantity && returnedQuantity)) {
 					itemObjArray.push(obj);
 				} else {
 					err = true;
@@ -286,7 +286,7 @@
 	}
 </script>
 <style>
-.storeDetails {
+.dispatchDetailStyle {
 	width: 200px;
 }
 </style>
@@ -317,7 +317,7 @@
 							</tr>
 							<table id="itemNameField">
 								<tr>
-									<td>Field User<span id="colon">:</span>
+									<td>Field Engineer<span id="colon">:</span>
 									</td>
 									<td><form:select path="fieldUser" cssClass="inputText"
 											id="fieldUser" items="${fieldUsers}">
@@ -343,20 +343,20 @@
 						<thead>
 							<tr>
 								<th width="50px">Item Name</th>
-								<th width="50px">Total Quantity</th>
-								<th width="50px">Requested Quantity</th>
+								<th width="50px">Dispatched Quantity</th>
+								<th width="50px">Returned Quantity</th>
 								<th width="50px">Action</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<td><input class="storeDetails" name="itemName" id="itemName" type="text"
+								<td><input class="dispatchDetailStyle" name="itemName" id="itemName" type="text"
 									placeholder="Enter Item Name" />
-								<td><input class="storeDetails" name="totalQuantity" id="totalQuantity"
+								<td><input class="dispatchDetailStyle" name="dispatchedQuantity" id="dispatchedQuantity"
 									type="text" readonly="true" /></td>
-								<td><input class="storeDetails" name="returnedQuantity" id="returnedQuantity"
+								<td><input class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity"
 									type="text" placeholder="Enter Returned Quantity" /></td>
-								<td><a class="storeDetails" id="deleteItem" onclick="deleteItemRow(this)"> <img
+								<td align="center"><a class="dispatchDetailStyle" id="deleteItem" onclick="deleteItemRow(this)"> <img
 										src="<c:url value="/resources/images/delete.png" />" /></a></td>
 							</tr>
 						</tbody>

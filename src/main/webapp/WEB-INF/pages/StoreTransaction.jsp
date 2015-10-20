@@ -195,6 +195,12 @@
             }
         }
     </script>
+
+<style>
+.dispatchDetailStyle {
+	width: 200px;
+}
+</style>
 </head>
 
 <body>
@@ -218,7 +224,7 @@
                         </tr>
                         <table id="itemNameField">
                             <tr>
-                                <td>Field User<span id="colon">:</span>
+                                <td>Field Engineer<span id="colon">:</span>
                                 </td>
                                 <td><form:select path="fieldUser" cssClass="inputText"
                                                  id="fieldUser" items="${fieldUsers}">
@@ -246,16 +252,16 @@
                         <th width="50px">Item Name</th>
                         <th width="50px">Total Quantity</th>
                         <th width="50px">Requested Quantity</th>
-                        <th>Action</th>
+                        <th width="50px">Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td><input name="itemName" id="itemName" type="text" placeholder="Enter Item Name"/>
-                        <td><input name="totalQuantity" id="totalQuantity" type="text" readonly="true"/></td>
-                        <td><input name="requestedQuantity" id="requestedQuantity" type="text"
+                        <td><input class="dispatchDetailStyle" name="itemName" id="itemName" type="text" placeholder="Enter Item Name"/>
+                        <td><input class="dispatchDetailStyle" name="totalQuantity" id="totalQuantity" type="text" readonly="true"/></td>
+                        <td><input class="dispatchDetailStyle" name="requestedQuantity" id="requestedQuantity" type="text"
                                    placeholder="Enter Requested Quantity"/></td>
-                        <td><a id="deleteItem" onclick="deleteItemRow(this)">
+                        <td align="center"><a class="dispatchDetailStyle" id="deleteItem" onclick="deleteItemRow(this)">
                             <img src="<c:url value="/resources/images/delete.png" />"/></a></td>
                     </tr>
                     </tbody>

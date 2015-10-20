@@ -81,12 +81,12 @@ public class StoreValidator extends BaseValidator implements Validator {
                     throw new ValidationException("There are no items selected to be dispatched");
                 }
                 if (requestedQuantity == null || requestedQuantity.isEmpty()) {
-                    throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + "should not be empty");
+                    throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + " should not be empty");
                 } else {
                     pattern = Pattern.compile(ID_PATTERN);
                     matcher = pattern.matcher(dispatchItem.getRequestedQuantity());
                     if (!matcher.matches()) {
-                        throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + "should be numeric");
+                        throw new ValidationException("Requested quantity of " + dispatchItem.getItemName() + " should be numeric");
                     }
                 }
                 int totalQuantity = Integer.parseInt(dispatchItem.getTotalQuantity());
@@ -95,20 +95,49 @@ public class StoreValidator extends BaseValidator implements Validator {
                     throw new ValidationException("There are no " + dispatchItem.getItemName() + " in the store");
                 }
                 if (requestedItemQuantity > totalQuantity) {
-                    throw new ValidationException("Requested Quantity of " + dispatchItem.getItemName() + "is more than available Quantity");
+                    throw new ValidationException("Requested Quantity of " + dispatchItem.getItemName() + " is more than available Quantity");
                 }
             }
         }
     }
     public void validateReturned(Object o, String returned) throws ValidationException {
-        DispatchDetail returnDetail = (DispatchDetail) o;
-        if (returnDetail.getProjId() == 0) {
-            throw new ValidationException("Please Select Project Name.");
-        }
-        List<DispatchDetail.DispatchItems> returnItems = returnDetail.getDispatchItems();
-        if (null == returnItems || returnItems.isEmpty()) {
-            throw new ValidationException("There are no items selected to be dispatched");
-        }
+    	 DispatchDetail returnDetail = (DispatchDetail) o;
+         if (returnDetail.getProjId() == 0) {
+             throw new ValidationException("Please Select Project Name.");
+         }
+         if ("--Please Select--".equalsIgnoreCase(returnDetail.getItemName())) {
+             throw new ValidationException("Please select a valid Item Name");
+         }
+         List<DispatchDetail.DispatchItems> returnedItems = returnDetail.getDispatchItems();
+         if (null == returnedItems || returnedItems.isEmpty()) {
+             throw new ValidationException("There are no items selected to be Returned");
+         }
 
+         if (returnedItems.size() > 0) {
+             for (DispatchDetail.DispatchItems returnedItem : returnedItems) {
+                 String returnedQuantity = returnedItem.getReturnedQuantity();
+                 if (returnedItem.getItemName().isEmpty() || returnedItem.getDispatchedQuantity().isEmpty()) {
+                     throw new ValidationException("There are no items selected to be Returned");
+                 }
+                 if (returnedQuantity == null || returnedQuantity.isEmpty()) {
+                     throw new ValidationException("Returning quantity of " + returnedItem.getItemName() + " should not be empty");
+                 } else {
+                     pattern = Pattern.compile(ID_PATTERN);
+                     matcher = pattern.matcher(returnedItem.getReturnedQuantity());
+                     if (!matcher.matches()) {
+                         throw new ValidationException("Returned quantity of " + returnedItem.getItemName() + " should be Numeric");
+                     }
+                 }
+                 double totalQuantity = Double.valueOf(returnedItem.getDispatchedQuantity());
+                 double returnedQty = Double.valueOf(returnedItem.getReturnedQuantity());
+                 if (totalQuantity == 0) {
+                     throw new ValidationException("There are no " + returnedItem.getItemName() + " to Return");
+                 }
+                 if (returnedQty > totalQuantity) {
+                     throw new ValidationException("Returned Quantity of " + returnedItem.getItemName() + " is more than Dispatched Quantity");
+                 }
+             }
+         }
     }
+
 }

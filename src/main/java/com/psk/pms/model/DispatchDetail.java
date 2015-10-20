@@ -137,6 +137,7 @@ public class DispatchDetail {
     public static class DispatchItems {
         private String itemName;
         private String totalQuantity;
+        private String dispatchedQuantity;
         private String requestedQuantity;
         
         private String returnedQuantity;
@@ -144,13 +145,21 @@ public class DispatchDetail {
         public DispatchItems(){
 
         }
-        public DispatchItems(String itemName, String totalQuantity, String requestedQuantity) {
+        public DispatchItems(String itemName, String totalQuantity, String requestedQuantity, String dispatchedQuantity) {
             this.itemName = itemName;
             this.totalQuantity = totalQuantity;
             this.requestedQuantity = requestedQuantity;
+            this.dispatchedQuantity = dispatchedQuantity;
         }
+        
 
-        public String getItemName() {
+        public String getDispatchedQuantity() {
+			return dispatchedQuantity;
+		}
+		public void setDispatchedQuantity(String dispatchedQuantity) {
+			this.dispatchedQuantity = dispatchedQuantity;
+		}
+		public String getItemName() {
             return itemName;
         }
 

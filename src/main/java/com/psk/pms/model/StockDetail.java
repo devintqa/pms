@@ -8,6 +8,7 @@ public class StockDetail {
     private int projId;
     private String totalQuantity;
     private String itemName;
+    private String dispatchedQuantity;
 
     public int getProjId() {
         return projId;
@@ -32,4 +33,13 @@ public class StockDetail {
     public void setItemName(String itemName) {
         this.itemName = itemName;
     }
+
+	public String getDispatchedQuantity() {
+		return dispatchedQuantity;
+	}
+
+	public void setDispatchedQuantity(String dispatchedQuantity) {
+		this.dispatchedQuantity = dispatchedQuantity;
+	}
+    
 }
