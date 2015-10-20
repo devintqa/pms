@@ -75,7 +75,7 @@
                             <td>${item.itemName}</td>
                             <td>${item.dispatchedDate}</td>
                             <td>${item.requestedQuantity}</td>
-                            <td>${item.requestedQuantity}</td>
+                            <td>${item.returnedQuantity}</td>
                         </tr>
                     </c:forEach>
                 </c:if>

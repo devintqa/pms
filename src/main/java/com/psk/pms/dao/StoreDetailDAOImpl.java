@@ -1,5 +1,6 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.Constants;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static com.psk.pms.Constants.DISPATCHED;
 import static com.psk.pms.dao.PmsMasterQuery.*;
 
 /**
@@ -180,8 +182,10 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         DispatchDetail dispatchDetail = new DispatchDetail();
         dispatchDetail.setItemName((String) row.get("itemName"));
-        dispatchDetail.setRequestedQuantity((String) row.get("quantity"));
-        dispatchDetail.setDescription((String) row.get("dispatchDesc"));
+        Double dispatchedQty = (Double) row.get("Dispatched_Qty");
+        Double returnedQty = (Double) row.get("Returned_Qty");
+        dispatchDetail.setRequestedQuantity(  String.valueOf(dispatchedQty));
+        dispatchDetail.setReturnedQuantity(  String.valueOf(returnedQty));
         dispatchDetail.setFieldUser((String) row.get("fieldUser"));
         Date recievedDate = (Date) row.get("dispactchedDate");
         dispatchDetail.setDispatchedDate(DateFormatter.getStringDate(recievedDate,

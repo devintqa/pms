@@ -177,7 +177,10 @@ public class PmsMasterQuery {
 
     public static final String CREATE_TRANSACTION_DETAILS = "insert into dispatchdetail(projectId, itemName, dispactchedDate,fieldUser,dispatchDesc,quantity) values (?,?,?,?,?,?)";
 
-    public static final String GET_DISPATCH_DETAILS = "select * from dispatchdetail where projectId = ?";
-
+    public static final String GET_DISPATCH_DETAILS = "SELECT d.fieldUser,d.dispactchedDate,\n" +
+            "  d.ItemName,\n" +
+            "  SUM(CASE WHEN d.dispatchDesc = 'Dispatched' THEN d.quantity ELSE 0 END) AS Dispatched_Qty,\n" +
+            "  SUM(CASE WHEN d.dispatchDesc = 'Returned' THEN d.quantity ELSE 0 END) AS Returned_Qty \n" +
+            "FROM dispatchdetail d where d.projectId=?  group by d.fieldUser, d.itemname,d.dispactchedDate";
 
 }

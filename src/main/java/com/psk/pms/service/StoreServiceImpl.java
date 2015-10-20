@@ -4,6 +4,7 @@ import static java.lang.Integer.parseInt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -63,7 +64,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail) {
-        return storeDetailDAO.getDispatchedDetails(dispatchDetail);
+        return  storeDetailDAO.getDispatchedDetails(dispatchDetail);
     }
 
     @Override

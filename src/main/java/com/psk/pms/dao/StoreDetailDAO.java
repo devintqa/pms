@@ -26,6 +26,6 @@ public interface StoreDetailDAO {
     void saveDispatchedDetails(DispatchDetail dispatchDetail, String dispatched);
 
     List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
-    
+
     void saveReturnedDetails(DispatchDetail dispatchDetail, String returned);
 }
