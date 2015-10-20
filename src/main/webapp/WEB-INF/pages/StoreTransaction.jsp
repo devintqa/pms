@@ -120,7 +120,6 @@
 
 
         function saveDispatchedItem() {
-            alert('saveDispatchedItem');
             var itemTable = document.getElementById('dispatchDetailTable');
             var itemObjArray = [];
             var dispatchDetailForm = {};
