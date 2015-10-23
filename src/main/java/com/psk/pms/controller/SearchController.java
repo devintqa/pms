@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,13 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.SearchDetail;
-import com.psk.pms.model.SubProjectDetail;
 import com.psk.pms.service.DepositDetailService;
 import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ItemService;
@@ -73,6 +68,20 @@ public class SearchController extends BaseController {
         }
         return "SearchProject";
     }
+
+    @RequestMapping(value = "/emp/myview/searchItem/{employeeId}", method = RequestMethod.GET)
+    public String searchItem(@PathVariable String employeeId, Model model) {
+        LOGGER.info("Search Controller : searchProject()");
+        List<Item> items = itemService.fetchItems();
+        if (!items.isEmpty()) {
+            model.addAttribute("items", items);
+        } else {
+            model.addAttribute("noDetailsFound",
+                    "No Items found.");
+        }
+        return "SearchItem";
+    }
+
 
     @RequestMapping(value = "/emp/myview/searchSubProject/{employeeId}", method = RequestMethod.GET)
     public String searchSubProject(@PathVariable String employeeId, Model model) {

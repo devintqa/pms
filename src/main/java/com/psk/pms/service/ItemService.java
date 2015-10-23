@@ -75,4 +75,10 @@ public interface ItemService {
     void updatePricesForAlreadyConfiguredItems(Integer projectId, Map<String, BigDecimal> materialNameCostMap, List<String > materialNames, String descriptionType);
 
     Map<Integer, BigDecimal> getTotalCostOfItemsProjectDescIdForProject(Integer projectId, String descriptionType);
+
+    List<Item> fetchItems();
+
+    void updateItem(Item item);
+
+    void deleteItem(String itemName, String itemType);
 }

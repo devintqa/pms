@@ -16,6 +16,8 @@ public class Item {
 	private List<MultipartFile> files;
 	private String fileName;
 	private String filePath;
+	private String isUpdate;
+
 	
 	public Set<String> getItemNames() {
 		return itemNames;
@@ -89,4 +91,11 @@ public class Item {
 		this.files = files;
 	}
 
+    public String getIsUpdate() {
+        return isUpdate;
+    }
+
+    public void setIsUpdate(String isUpdate) {
+        this.isUpdate = isUpdate;
+    }
 }

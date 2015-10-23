@@ -1,12 +1,17 @@
 package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.ITEM_TYPE;
+import static com.psk.pms.constants.JSPFileNames.BASE_ITEM;
+import static com.psk.pms.constants.JSPFileNames.BUILD_ITEM;
+import static com.psk.pms.constants.JSPFileNames.BUILD_PROJECT;
 import static com.psk.pms.model.LeadDetailConfiguration.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.constants.JSPFileNames;
 import com.psk.pms.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParseException;
@@ -40,6 +45,7 @@ import com.psk.pms.validator.FileUploadValidator;
 import com.psk.pms.validator.ItemValidator;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ItemController extends BaseController {
@@ -71,8 +77,51 @@ public class ItemController extends BaseController {
         Item item = new Item();
         item.setEmployeeId(employeeId);
         model.addAttribute("itemForm", item);
-        return "BuildItem";
+        return BUILD_ITEM;
     }
+
+    @RequestMapping(value = "/emp/myview/updateItem/{employeeId}", method = RequestMethod.GET)
+    public String updateProject(@PathVariable String employeeId,
+                                @RequestParam(value = "itemName", required = true) String itemName,
+                                @RequestParam(value = "itemUnit", required = true) String itemUnit,
+                                @RequestParam(value = "itemType", required = true) String itemType,
+                                Model model) {
+        Item item = new Item();
+        item.setEmployeeId(employeeId);
+        item.setItemName(itemName);
+        item.setItemUnit(itemUnit);
+        item.setItemType(itemType);
+        item.setIsUpdate("Y");
+        model.addAttribute("itemForm", item);
+        return BUILD_ITEM;
+    }
+
+
+    @RequestMapping(value = "/emp/myview/updateItem/createItem.do", method = RequestMethod.POST)
+    public String updateItem(
+            @ModelAttribute("itemForm") Item item,
+            BindingResult result, Model model, SessionStatus status) throws IOException {
+        try {
+            if (StringUtils.isNullOrEmpty(item.getItemUnit())) {
+                model.addAttribute("uploadItemProjectDescriptionFailed", "Item Unit can't be empty.");
+            } else {
+                itemService.updateItem(item);
+                model.addAttribute("itemCreationMessage", "Update of Item is successful.");
+            }
+        } catch (Exception e) {
+            model.addAttribute("uploadItemProjectDescriptionFailed", "Updating the Item failed due to " + e.getMessage());
+        }
+        return BUILD_ITEM;
+    }
+
+    @RequestMapping(value = "/emp/myview/searchItem/deleteItem.do", method = RequestMethod.POST)
+    public void deleteProjectDescriptionDetail(HttpServletRequest request,
+                                               HttpServletResponse response) {
+        String itemName = request.getParameter("itemName");
+        String itemType = request.getParameter("itemType");
+        itemService.deleteItem(itemName, itemType);
+    }
+
 
     @RequestMapping(value = "/emp/myview/buildItem/searchItem.do", method = RequestMethod.GET)
     public
@@ -114,32 +163,28 @@ public class ItemController extends BaseController {
             if (files.size() != 0 && item.isBaseItem()) {
                 if (fileUploadServiceUnsuccessful(item, model)) {
                     item.setBaseItem(true);
-                    return "BuildItem";
+                    return BUILD_ITEM;
                 } else {
                     item.setBaseItem(false);
                     model.addAttribute("itemCreationMessage", "File Upload Successful.");
 
-                    return "BuildItem";
+                    return BUILD_ITEM;
                 }
             } else {
                 isItemSaveSuccessful = itemService.createEditItem(item);
                 if (result.hasErrors() || !isItemSaveSuccessful) {
-                    return "BuildItem";
+                    return BUILD_ITEM;
                 } else {
                     status.setComplete();
                     Employee employee = new Employee();
                     employee.setEmployeeId(item.getEmployeeId());
                     model.addAttribute("employee", employee);
-                    List<String> itemTypes = new ArrayList<String>();
-                    itemTypes.add(item.getItemType());
-                    model.addAttribute("itemTypes", itemTypes);
                     model.addAttribute("itemCreationMessage", "Item Creation Successful.");
-                    return "BuildItem";
+                    return BUILD_ITEM;
                 }
             }
         }
-
-        return "BuildItem";
+        return BUILD_ITEM;
     }
 
     private boolean fileUploadServiceUnsuccessful(Item item, Model model) throws IOException {
@@ -274,7 +319,7 @@ public class ItemController extends BaseController {
         try {
             Map<String, BigDecimal> itemNamePriceMap = getConvertItemListToMap(itemList);
             itemService.updatePriceAndCostForConfiguredItems(projectId, itemNamePriceMap, descIdItemCostMap, Constants.PSK);
-            if(!descIdItemCostMap.isEmpty()){
+            if (!descIdItemCostMap.isEmpty()) {
                 itemService.updateProjectDescriptionWithRecalculatedCost(projectId, descIdItemCostMap);
             }
             boolean status = itemService.configureItemPrice(projectItemConfiguration);
@@ -289,10 +334,10 @@ public class ItemController extends BaseController {
 
     private Map<String, BigDecimal> getConvertItemListToMap(List<ProjectConfiguration.ItemDetail> itemList) {
         Map<String, BigDecimal> itemNamePriceMap = new HashMap<String, BigDecimal>();
-            for (ProjectConfiguration.ItemDetail itemDetail : itemList) {
-                if(!itemDetail.getItemName().isEmpty()) {
-                    itemNamePriceMap.put(itemDetail.getItemName(), new BigDecimal(itemDetail.getItemPrice()));
-                }
+        for (ProjectConfiguration.ItemDetail itemDetail : itemList) {
+            if (!itemDetail.getItemName().isEmpty()) {
+                itemNamePriceMap.put(itemDetail.getItemName(), new BigDecimal(itemDetail.getItemPrice()));
+            }
         }
         return itemNamePriceMap;
     }
@@ -349,21 +394,21 @@ public class ItemController extends BaseController {
     void createOrUpdateLeadDetail(@RequestBody LeadDetailConfiguration leadDetailConfiguration) throws IOException {
         LOGGER.info("method = createOrUpdateLeadDetail()");
         ObjectMapper mapper = new ObjectMapper();
-        Map<String,BigDecimal> materialNameCostMap;
+        Map<String, BigDecimal> materialNameCostMap;
         Integer projectId = leadDetailConfiguration.getProjectId();
         List<LeadDetail> leadDetailList = mapper.readValue(leadDetailConfiguration.getLeadConfiguration(), mapper.getTypeFactory().constructCollectionType(List.class, LeadDetail.class));
         leadDetailConfiguration.setLeadDetails(leadDetailList);
         materialNameCostMap = getConvertLeadDetailListToMap(leadDetailList);
         getLeadConfiguredItemNames(leadDetailList);
-        itemService.updatePricesForAlreadyConfiguredItems(projectId, materialNameCostMap,getLeadConfiguredItemNames(leadDetailList) ,Constants.GOVERNMENT);
-        projectDescService.recalculateProjectPrices(projectId,Constants.GOVERNMENT);
+        itemService.updatePricesForAlreadyConfiguredItems(projectId, materialNameCostMap, getLeadConfiguredItemNames(leadDetailList), Constants.GOVERNMENT);
+        projectDescService.recalculateProjectPrices(projectId, Constants.GOVERNMENT);
         itemService.saveLeadDetails(leadDetailConfiguration);
         LOGGER.info("Save Lead detail success");
     }
 
-    private List<String > getLeadConfiguredItemNames(List<LeadDetail> leadDetailList) {
+    private List<String> getLeadConfiguredItemNames(List<LeadDetail> leadDetailList) {
         List<String> itemNames = new ArrayList<String>();
-        for(LeadDetail leadDetail: leadDetailList) {
+        for (LeadDetail leadDetail : leadDetailList) {
             itemNames.add(leadDetail.getMaterial());
         }
         return itemNames;
@@ -372,7 +417,7 @@ public class ItemController extends BaseController {
     private Map<String, BigDecimal> getConvertLeadDetailListToMap(List<LeadDetail> leadDetails) {
         Map<String, BigDecimal> itemNamePriceMap = new HashMap<String, BigDecimal>();
         for (LeadDetail leadDetail : leadDetails) {
-            if(!leadDetail.getMaterial().isEmpty()) {
+            if (!leadDetail.getMaterial().isEmpty()) {
                 itemNamePriceMap.put(leadDetail.getMaterial(), new BigDecimal(leadDetail.getTotal()));
             }
         }

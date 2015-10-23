@@ -83,4 +83,9 @@ public interface ItemDAO {
 
     Map<String ,BigDecimal> getItemPrices(List<String> itemNames);
 
+    List<Item> getItems();
+
+    void updateItem(Item item);
+
+    void deleteItem(String itemName, String itemType);
 }

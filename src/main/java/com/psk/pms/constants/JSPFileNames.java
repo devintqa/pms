@@ -9,5 +9,6 @@ public class JSPFileNames {
 	public static final String BUILD_DESCRIPTION = "BuildDescription";
 	public static final String BUILD_FIELD_DESCRIPTION = "BuildFieldDescription";
 	public static final String BUILD_PROJECT = "BuildProject";
+	public static final String BUILD_ITEM = "BuildItem";
 
 }

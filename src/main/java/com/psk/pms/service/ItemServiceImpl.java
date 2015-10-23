@@ -35,8 +35,7 @@ public class ItemServiceImpl implements ItemService {
     private static final Logger LOGGER = Logger.getLogger(ItemService.class);
 
     public boolean createEditItem(Item item) {
-        boolean isInsertSuccessful = itemDAO.saveItem(item);
-        return isInsertSuccessful;
+        return itemDAO.saveItem(item);
     }
 
     public boolean isItemAlreadyExisting(String itemName) {
@@ -47,9 +46,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDetail> searchItemName(String itemName, String itemType) {
-        List<ItemDetail> itemsDetail = itemDAO.searchItemName(itemName,
-                itemType);
-        return itemsDetail;
+        return itemDAO.searchItemName(itemName,itemType);
     }
 
 	@Override
@@ -87,8 +84,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Set<String> fetchItemNames() {
-        Set<String> itemNames = itemDAO.fetchItemNames();
-        return itemNames;
+        return itemDAO.fetchItemNames();
     }
 
 
@@ -151,13 +147,11 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDetail> getDescItemNames(Map<String, Object> request) {
-        List<ItemDetail> itemsDetail = itemDAO.getDescItemNames(request);
-        return itemsDetail;
+        return itemDAO.getDescItemNames(request);
     }
 
     public List<String> fetchUniqueItemUnits() {
-        List<String> itemUnits = itemDAO.fetchUniqueItemUnits();
-        return itemUnits;
+        return itemDAO.fetchUniqueItemUnits();
     }
 
     @Override
@@ -180,8 +174,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDetail> getBaseItemNames(Map<String, Object> request) {
-        List<ItemDetail> itemsDetails = itemDAO.getBaseItemNames(request);
-        return itemsDetails;
+        return itemDAO.getBaseItemNames(request);
     }
 
     @Override
@@ -197,8 +190,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<com.psk.pms.model.ProjectConfiguration.ItemDetail> getMissingProjectDescriptionItems(Integer projectId) {
-        List<com.psk.pms.model.ProjectConfiguration.ItemDetail> itemsDetail = itemDAO.getMissingProjectDescriptionItems(projectId);
-        return itemsDetail;
+        return itemDAO.getMissingProjectDescriptionItems(projectId);
     }
 
     @Override
@@ -396,5 +388,20 @@ public class ItemServiceImpl implements ItemService {
             }
         }
         return projectDescIdCostMap;
+    }
+
+    @Override
+    public List<Item> fetchItems() {
+        return itemDAO.getItems();
+    }
+
+    @Override
+    public void updateItem(Item item) {
+        itemDAO.updateItem(item);
+    }
+
+    @Override
+    public void deleteItem(String itemName, String itemType) {
+        itemDAO.deleteItem(itemName,itemType);
     }
 }

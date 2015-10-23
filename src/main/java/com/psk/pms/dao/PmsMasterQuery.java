@@ -183,4 +183,13 @@ public class PmsMasterQuery {
             "  SUM(CASE WHEN d.dispatchDesc = 'Returned' THEN d.quantity ELSE 0 END) AS Returned_Qty \n" +
             "FROM dispatchdetail d where d.projectId=?  group by d.fieldUser, d.itemname,d.dispactchedDate";
 
+
+    public static final String GET_ITEMS= "select * from itemCodes";
+
+    public static final String UPDATE_ITEM = "update itemCodes set itemUnit = ? where itemName= ? and itemType= ?";
+
+    public static final String DELETE_ITEM = "delete from  itemCodes where itemName= ? and itemType= ?";
+
+
+
 }

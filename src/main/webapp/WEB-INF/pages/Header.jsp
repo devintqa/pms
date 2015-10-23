@@ -61,6 +61,9 @@
 						<li><a id="searchPwdProjectDescription"
 							href="/pms/emp/myview/searchBaseDescription/${employeeObj.employeeId}">
 								Base Description </a></li>
+                        <li><a id="searchItem"
+							href="/pms/emp/myview/searchItem/${employeeObj.employeeId}">
+								Item </a></li>
 					</ul></li>
 				<li><a href="#">View</a>
 					<ul>
