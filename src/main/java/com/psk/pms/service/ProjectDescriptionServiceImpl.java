@@ -27,12 +27,15 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 
 	private static final Logger LOGGER = Logger.getLogger(ProjectDescriptionServiceImpl.class);
 
-	public boolean createEditProjDesc(ProjDescDetail projDescDetail) {
+	public void createEditProjDesc(ProjDescDetail projDescDetail) {
 		fillEmptyProjDesValuesWithNull(projDescDetail);
 		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
 		projDescDetail.setLastUpdatedAt(getCurrentDateTime());
-		boolean isInsertSuccessful = projectDescriptionDAO.saveProjDesc(projDescDetail);
-		return isInsertSuccessful;
+		if("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
+			projectDescriptionDAO.updateProjectDescriptionDetail(projDescDetail);
+		}else{
+			projectDescriptionDAO.saveProjDesc(projDescDetail);
+		}
 	}
 
 	private Date getCurrentDateTime() {

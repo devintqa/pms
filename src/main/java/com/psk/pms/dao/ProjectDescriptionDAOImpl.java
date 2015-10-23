@@ -219,53 +219,70 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		return projectDescDetailList;
 	}
 
-	public boolean saveProjDesc(final ProjDescDetail projDescDetail) {
-		String descTable = projDescDetail.getDescType().equalsIgnoreCase(Constants.PSK) ? "projectdesc" : "govprojectdesc";
-		String updateSql = "UPDATE "+descTable+" set WorkType  = ?, Quantity = ?, Metric = ?, Description = ?," + "AliasDescription = ?, PricePerQuantity = ?, TotalCost=?, LastUpdatedBy =?,LastUpdatedAt=? WHERE ProjDescId = ?";
-		String insertSql = null;
 
-		if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
-			if (projDescDetail.isSubProjectDesc()) {
-				insertSql = "INSERT INTO "+descTable+" (ProjId, SubProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy ,LastUpdatedAt) " + "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
-				jdbcTemplate.update(
-				insertSql,
-				new Object[] {
-					projDescDetail.getProjId(),
-					projDescDetail.getSubProjId(),
-					projDescDetail.getSerialNumber(),
-					projDescDetail.getWorkType(),
-					projDescDetail.getQuantity(),
-					projDescDetail.getMetric(),
-					projDescDetail.getDescription(),
-					projDescDetail.getAliasDescription(),
-					projDescDetail.getPricePerQuantity(),
-					projDescDetail.getTotalCost(),
-					projDescDetail.getLastUpdatedBy(),
-					projDescDetail.getLastUpdatedAt()
-				});
-			} else {
-				insertSql = "INSERT INTO "+descTable+" (ProjId, SerialNumber, WorkType, Quantity, Metric, " + "Description, AliasDescription, PricePerQuantity, TotalCost, LastUpdatedBy, LastUpdatedAt) " + "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?,?)";
-				jdbcTemplate.update(
-				insertSql,
-				new Object[] {
-					projDescDetail.getProjId(),
-					projDescDetail.getSerialNumber(),
-					projDescDetail.getWorkType(),
-					projDescDetail.getQuantity(),
-					projDescDetail.getMetric(),
-					projDescDetail.getDescription(),
-					projDescDetail.getAliasDescription(),
-					projDescDetail.getPricePerQuantity(),
-					projDescDetail.getTotalCost(),
-					projDescDetail.getLastUpdatedBy(),
-					projDescDetail.getLastUpdatedAt()
-				});
-			}
-
-		} else {
+	public void updateProjectDescriptionDetail(ProjDescDetail projDescDetail) {
+		LOGGER.info("Updating psk description...");
+		if (DescriptionType.PSK.name().equalsIgnoreCase(projDescDetail.getDescType())) {
+			LOGGER.info("Updating psk description for projectDescriptionId: " + projDescDetail.getAliasDescription());
+			String updateSql = "UPDATE projectdesc set WorkType = ?, Quantity = ?, Metric = ?, Description = ?,"
+					+ "AliasDescription = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
 			jdbcTemplate.update(
-			updateSql,
-			new Object[] {
+					updateSql,
+					projDescDetail.getWorkType(),
+					projDescDetail.getQuantity(),
+					projDescDetail.getMetric(),
+					projDescDetail.getDescription(),
+					projDescDetail.getAliasDescription(),
+					projDescDetail.getLastUpdatedBy(),
+					projDescDetail.getLastUpdatedAt(),
+					projDescDetail.getProjDescId());
+		} else {
+			LOGGER.info("Updating government description for projectDescriptionId: " + projDescDetail.getAliasDescription());
+			String updateSql = "UPDATE govprojectdesc set WorkType = ?, Quantity = ?, Metric = ?, Description = ?,"
+					+ "AliasDescription = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
+			jdbcTemplate.update(
+					updateSql,
+					projDescDetail.getWorkType(),
+					projDescDetail.getQuantity(),
+					projDescDetail.getMetric(),
+					projDescDetail.getDescription(),
+					projDescDetail.getAliasDescription(),
+					projDescDetail.getLastUpdatedBy(),
+					projDescDetail.getLastUpdatedAt(),
+					projDescDetail.getProjDescId());
+		}
+	}
+
+	public void saveProjDesc(final ProjDescDetail projDescDetail) {
+		LOGGER.info("Saving project description for projectDescriptionId:" + projDescDetail.getAliasProjectName());
+		saveProjectDescriptionDetail(projDescDetail);
+		if (projDescDetail.isApplicableForBoth()) {
+			LOGGER.info("Saving government description for projectDescriptionId:" + projDescDetail.getAliasProjectName());
+			saveGovernmentDescriptionDetail(projDescDetail);
+		}
+	}
+
+	public void saveProjectDescriptionDetail(ProjDescDetail projDescDetail) {
+		jdbcTemplate.update(
+				INSERTPROJECTDESCRIPTION,new Object[]{
+				projDescDetail.getAliasProjectName(),
+				projDescDetail.getSubProjId(),
+				projDescDetail.getSerialNumber(),
+				projDescDetail.getWorkType(),
+				projDescDetail.getQuantity(),
+				projDescDetail.getMetric(),
+				projDescDetail.getDescription(),
+				projDescDetail.getAliasDescription(),
+				projDescDetail.getLastUpdatedBy(),
+				projDescDetail.getLastUpdatedAt()});
+	}
+
+	private void saveGovernmentDescriptionDetail(ProjDescDetail projDescDetail) {
+		jdbcTemplate.update(
+				INSERTGOVPROJECTDESCRIPTION,
+				projDescDetail.getAliasProjectName(),
+				projDescDetail.getSubProjId(),
+				projDescDetail.getSerialNumber(),
 				projDescDetail.getWorkType(),
 				projDescDetail.getQuantity(),
 				projDescDetail.getMetric(),
@@ -274,12 +291,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				projDescDetail.getPricePerQuantity(),
 				projDescDetail.getTotalCost(),
 				projDescDetail.getLastUpdatedBy(),
-				projDescDetail.getLastUpdatedAt(),
-				projDescDetail.getProjDescId()
-			});
-		}
-
-		return true;
+				projDescDetail.getLastUpdatedAt());
 	}
 
 	public boolean isSerialNumberAlreadyExisting(
@@ -443,7 +455,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					}
 				}
 			} catch (Exception e) {
-
+				LOGGER.error(e);
 			}
 		}
 	}

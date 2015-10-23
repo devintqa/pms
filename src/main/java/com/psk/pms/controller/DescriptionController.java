@@ -2,15 +2,12 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.METRIC;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.psk.pms.constants.DescriptionType;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -68,9 +65,10 @@ public class DescriptionController extends BaseController {
                                 @RequestParam(value = "type", required = false) String descType,
                                 Model model) {
         ProjDescDetail projDescDetail = null;
+        Map<String, String> aliasProjectList = new HashMap<String, String>();
+        Map<String, String> subAliasProjectList = new HashMap<String, String>();
+
         if (null != descId) {
-            Map<String, String> aliasProjectList = new HashMap<String, String>();
-            Map<String, String> subAliasProjectList = new HashMap<String, String>();
             projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject, descType);
             projDescDetail.setIsUpdate("Y");
             projDescDetail.setEmployeeId(employeeId);
@@ -83,54 +81,60 @@ public class DescriptionController extends BaseController {
                 projDescDetail.setSubProjectDesc(true);
                 model.addAttribute("subAliasProjectList", subAliasProjectList);
             }
-
-            model.addAttribute("projDescForm", projDescDetail);
+        } else {
+            projDescDetail = new ProjDescDetail();
+            projDescDetail.setEmployeeId(employeeId);
+            aliasProjectList.putAll(populateAliasProjectList(employeeId));
+            if (aliasProjectList.size() == 0) {
+                model.addAttribute("noProjectCreated",
+                        "No Project Found To Be Created. Please Create a Project.");
+                return "Welcome";
+            }
+            model.addAttribute("subAliasProjectList", subAliasProjectList);
+            model.addAttribute("aliasProjectList", aliasProjectList);
         }
-
+        model.addAttribute("projDescForm", projDescDetail);
         return "BuildDescription";
     }
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/createProjDesc.do", method = RequestMethod.POST)
     public String saveProjDescAction(@ModelAttribute("projDescForm") ProjDescDetail projDescDetail, BindingResult result, Model model, SessionStatus status) {
-        boolean isProjectSaveSuccessful = false;
-        Map<String, String> aliasProjectList = populateAliasProjectList(projDescDetail.getEmployeeId());
-        projDescDetailValidator.validate(projDescDetail, result);
-        LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
-        if (!result.hasErrors()) {
-            isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
-        }
-        if (result.hasErrors() || !isProjectSaveSuccessful) {
-            model.addAttribute("aliasProjectList", aliasProjectList);
-            model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(),projDescDetail.getEmployeeId()));
-            return "BuildDescription";
-        } else {
-            if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
-                status.setComplete();
-                Employee employee = new Employee();
-                employee.setEmployeeId(projDescDetail.getEmployeeId());
-                model.addAttribute("employee", employee);
-                model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
+        try {
+            Map<String, String> aliasProjectList = populateAliasProjectList(projDescDetail.getEmployeeId());
+            String employeeId = projDescDetail.getEmployeeId();
+            Employee employee = new Employee();
+            employee.setEmployeeId(employeeId);
+            model.addAttribute("employee", employee);
+            projDescDetailValidator.validate(projDescDetail, result);
+            LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
+            if (result.hasErrors()) {
                 model.addAttribute("aliasProjectList", aliasProjectList);
                 model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(), projDescDetail.getEmployeeId()));
                 return "BuildDescription";
             } else {
-                isProjectSaveSuccessful = projectDescriptionService.createEditProjDesc(projDescDetail);
-                String subProjId = null;
-                if (null != projDescDetail.getSubProjId()) {
-                    subProjId = projDescDetail.getSubProjId().toString();
+                projectDescriptionService.createEditProjDesc(projDescDetail);
+                if (!"Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
+                    model.addAttribute("projDescCreationMessage", "Project Description Creation Successful.");
+                    model.addAttribute("aliasProjectList", aliasProjectList);
+                    model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(), projDescDetail.getEmployeeId()));
+                    status.setComplete();
+                    return "BuildDescription";
+                } else {
+                    projDescDetail.setIsUpdate("Y");
+                    projDescDetail.setEmployeeId(employeeId);
+                    aliasProjectList = new HashMap<String, String>();
+                    aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
+                    model.addAttribute("aliasProjectList", aliasProjectList);
+                    model.addAttribute("subAliasProjectList", new ArrayList<String>());
+                    model.addAttribute("projDescForm", projDescDetail);
+                    model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
+                    status.setComplete();
                 }
-                projDescDetail = projectDescriptionService.getProjectDescDetail(projDescDetail.getProjDescId().toString(),
-                        subProjId,
-                        projDescDetail.getDescType());
-                projDescDetail.setIsUpdate("Y");
-                projDescDetail.setEmployeeId(projDescDetail.getEmployeeId());
-                aliasProjectList = new HashMap<String, String>();
-                aliasProjectList.put(projDescDetail.getProjId().toString(), projDescDetail.getAliasProjectName());
-                model.addAttribute("aliasProjectList", aliasProjectList);
-                model.addAttribute("subAliasProjectList", fetchSubAliasProjectList(projDescDetail.getAliasProjectName(), projDescDetail.getEmployeeId()));
-                model.addAttribute("projDescForm", projDescDetail);
-                model.addAttribute("projDescCreationMessage", "Project Description Updated Successfully.");
+                return "BuildDescription";
             }
+        } catch (Exception e) {
+            model.addAttribute("projDescCreationMessage", "Project Description creation failed.");
+            LOGGER.error("project description save failed." + e);
             return "BuildDescription";
         }
     }

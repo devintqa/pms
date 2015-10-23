@@ -27,6 +27,8 @@ public class ProjDescDetail {
 	private Date lastUpdatedAt;
 	private String baseCategory;
 	private String descType;
+	private boolean applicableForBoth;
+
 	public String getMetric() {
 		return metric;
 	}
@@ -211,4 +213,11 @@ public class ProjDescDetail {
 		this.availableQty = availableQty;
 	}
 
+	public boolean isApplicableForBoth() {
+		return applicableForBoth;
+	}
+
+	public void setApplicableForBoth(boolean applicableForBoth) {
+		this.applicableForBoth = applicableForBoth;
+	}
 }

@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ProjectDescriptionService {
 
-	boolean createEditProjDesc(ProjDescDetail projDescDetail);
+	void createEditProjDesc(ProjDescDetail projDescDetail);
 
 	ProjDescDetail getProjectDescDetail(String projDescId, String subProject,String descType);
 	

@@ -2,8 +2,8 @@ package com.psk.pms.builder;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -23,7 +23,7 @@ public class ProjectDescriptionDetailBuilder {
 
 	public List < ProjDescDetail > buildDescDetailList(String saveDirectory, MultipartFile multipartFile) {
 
-		List < ProjDescDetail > detailList = new ArrayList < ProjDescDetail > ();
+		List < ProjDescDetail > detailList = new LinkedList<ProjDescDetail>();
 		try {
 			String path = saveDirectory + multipartFile.getOriginalFilename();
 			File file = new File(path);

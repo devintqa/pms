@@ -371,8 +371,7 @@
 
 
 
-	<form:form id="descItemForm" method="POST" commandName="descItemForm"
-		action="createProjDesc.do">
+	<form:form id="descItemForm" method="POST" commandName="descItemForm">
 
 		<table>
 			<tr>

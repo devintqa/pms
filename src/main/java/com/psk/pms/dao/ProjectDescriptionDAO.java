@@ -12,7 +12,7 @@ import java.util.Set;
  */
 public interface ProjectDescriptionDAO {
 
-	boolean saveProjDesc(ProjDescDetail projDescDetail);
+	void saveProjDesc(ProjDescDetail projDescDetail);
 
 	void deleteProjectDescriptionByProjectId(String descType, Integer projectId);
 
@@ -59,5 +59,7 @@ public interface ProjectDescriptionDAO {
 	void updateProjectDescriptions(List<ProjDescDetail> projDescDetails,String descriptionType);
 
 	List<ProjDescDetail> getProjectDescDetailList(Set<Integer> descItemIds, String descType);
+
+	void updateProjectDescriptionDetail(ProjDescDetail projDescDetail);
 
 }

@@ -34,6 +34,9 @@
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">Base
 								Description</a></li>
+						<li><a id="description"
+                            href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                            Build Description</a></li>
 						<li><a id="createDepositDetail"
 							href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}">Deposit
 								Details</a></li>
@@ -108,6 +111,9 @@
 						<li><a id="BaseProjectDescription"
 							href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Base Description</a></li>
+						<li><a id="description"
+                        	href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+                        		Build Description</a></li>
 						<li><a id="createDepositDetail"
 							href="/pms/emp/myview/buildDepositDetail/${employeeObj.employeeId}">
 								Deposit Details</a></li>

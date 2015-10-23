@@ -93,8 +93,8 @@ public class PmsMasterQuery {
             + "VALUES (?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String INSERTPROJECTDESCRIPTION = "INSERT INTO projectDesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
-            + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) "
-            + "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?, ?, ?)";
+            + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt) "
+            + "VALUES (?, ?, ? , ?, ?, ?, ?, ?, ?)";
 
     public static final String INSERTGOVPROJECTDESCRIPTION = "INSERT INTO govprojectdesc (ProjId, SerialNumber, WorkType, Quantity, Metric, "
             + "Description, AliasDescription, LastUpdatedBy, LastUpdatedAt, PricePerQuantity, TotalCost) "

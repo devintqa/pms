@@ -58,8 +58,11 @@
                 $("#serialNumber").attr("readonly", "readonly");
                 $("#totalCost").attr("readonly", "readonly");
                 $("#pricePerQuantity").attr("readonly", "readonly");
+                $("createForBothRow").hide();
+            }else{
+                $("#pricePerQuantityRow").hide();
+                $("#totalcostRow").hide();
             }
-
         });
     </script>
 
@@ -110,6 +113,10 @@
                             <td><form:errors path="aliasSubProjectName"
                                              cssClass="error"/></td>
                         </tr>
+                        <tr id="createForBothRow">
+                            <td>Create for Government also :<span id="colon">:</span></td>
+                            <td><form:checkbox id="applicableForBoth" path="applicableForBoth" /></td>
+                        </tr>
                         <tr>
                             <td>Serial Number<span id="colon">:</span>
                             </td>
@@ -153,13 +160,13 @@
                                             placeholder="Enter alias description" cssClass="inputText"/></td>
                             <td><form:errors path="aliasDescription" cssClass="error"/></td>
                         </tr>
-                        <tr>
+                        <tr id="pricePerQuantityRow">
                             <td>Price per Quantity<span id="colon">:</span>
                             </td>
                             <td><form:input id="pricePerQuantity" path="pricePerQuantity" cssClass="inputText"/></td>
                             <td><form:errors path="pricePerQuantity" cssClass="error"/></td>
                         </tr>
-                        <tr>
+                        <tr id="totalcostRow">
                             <td>Total Cost<span id="colon">:</span>
                             </td>
                             <td><form:input id="totalCost" path="totalCost" cssClass="inputText"/></td>
@@ -185,15 +192,11 @@
             </center>
             <br>
             <br>
-
         </form:form>
     </div>
-
 </div>
 <footer>
     <jsp:include page="Footer.jsp"/>
 </footer>
 </body>
 </html>
-
-
