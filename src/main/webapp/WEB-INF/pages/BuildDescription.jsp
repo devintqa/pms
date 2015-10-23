@@ -58,7 +58,7 @@
                 $("#serialNumber").attr("readonly", "readonly");
                 $("#totalCost").attr("readonly", "readonly");
                 $("#pricePerQuantity").attr("readonly", "readonly");
-                $("createForBothRow").hide();
+                $("#createForBothRow").hide();
             }else{
                 $("#pricePerQuantityRow").hide();
                 $("#totalcostRow").hide();

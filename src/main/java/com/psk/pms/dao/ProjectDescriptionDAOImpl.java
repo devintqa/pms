@@ -264,9 +264,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 
 	public void saveProjectDescriptionDetail(ProjDescDetail projDescDetail) {
 		jdbcTemplate.update(
-				INSERTPROJECTDESCRIPTION,new Object[]{
-				projDescDetail.getAliasProjectName(),
-				projDescDetail.getSubProjId(),
+				INSERTPROJECTDESCRIPTION, projDescDetail.getAliasProjectName(),
 				projDescDetail.getSerialNumber(),
 				projDescDetail.getWorkType(),
 				projDescDetail.getQuantity(),
@@ -274,22 +272,19 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				projDescDetail.getDescription(),
 				projDescDetail.getAliasDescription(),
 				projDescDetail.getLastUpdatedBy(),
-				projDescDetail.getLastUpdatedAt()});
+				projDescDetail.getLastUpdatedAt());
 	}
 
 	private void saveGovernmentDescriptionDetail(ProjDescDetail projDescDetail) {
 		jdbcTemplate.update(
 				INSERTGOVPROJECTDESCRIPTION,
 				projDescDetail.getAliasProjectName(),
-				projDescDetail.getSubProjId(),
 				projDescDetail.getSerialNumber(),
 				projDescDetail.getWorkType(),
 				projDescDetail.getQuantity(),
 				projDescDetail.getMetric(),
 				projDescDetail.getDescription(),
 				projDescDetail.getAliasDescription(),
-				projDescDetail.getPricePerQuantity(),
-				projDescDetail.getTotalCost(),
 				projDescDetail.getLastUpdatedBy(),
 				projDescDetail.getLastUpdatedAt());
 	}
