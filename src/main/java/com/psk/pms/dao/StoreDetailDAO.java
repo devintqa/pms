@@ -32,4 +32,6 @@ public interface StoreDetailDAO {
 	List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
 
 	void saveReturnedDetails(DispatchDetail dispatchDetail, String returned);
+
+	String validateFieldUserForReturn(String projId, String fieldUser);
 }

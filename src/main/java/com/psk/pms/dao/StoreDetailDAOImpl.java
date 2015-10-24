@@ -243,4 +243,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		return dispatchDetail;
 	}
 
+	@Override
+	public String validateFieldUserForReturn(String projId, String fieldUser) {
+		
+		String sql = "select count(1) from dispatchdetail where projectId = '"+projId+"' and "
+				+ "fieldUser='"+fieldUser+"' and dispatchDesc = 'Dispatched'";
+		Integer result = jdbcTemplate.queryForInt(sql);
+		return result.toString();
+	}
+
 }

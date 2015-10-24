@@ -24,6 +24,8 @@ public interface StoreService {
     List<StockDetail> getStockDetails(int projId);
 
     String getItemQuantityInStock(String projId, String itemName);
+    
+    String validateFieldUserForReturn(String projId, String fieldUser);
 
     void saveDispatchedDetail(DispatchDetail dispatchDetail);
 

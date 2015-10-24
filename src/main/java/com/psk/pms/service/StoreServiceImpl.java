@@ -164,4 +164,9 @@ public class StoreServiceImpl implements StoreService {
 	public void setStoreDetailDAO(StoreDetailDAO storeDetailDAO) {
 		this.storeDetailDAO = storeDetailDAO;
 	}
+
+	@Override
+	public String validateFieldUserForReturn(String projId, String fieldUser) {
+		return storeDetailDAO.validateFieldUserForReturn(projId, fieldUser);
+	}
 }

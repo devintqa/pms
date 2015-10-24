@@ -162,8 +162,67 @@
 														}
 													});
 											$("#itemNameField").show();
-											$("#returnDetailTable").show();
-										});						
+										});		
+						
+						$("#fieldUser")
+						.change(
+								function() {
+									var projId = $('#projId').val();
+									var fieldUser = $('#fieldUser')
+											.val();
+									$
+											.ajax({
+												type : "GET",
+												url : "validateFieldUsersForReturn.do",
+												cache : false,
+												data : "projId="
+														+ projId
+														+ "&fieldUser="
+														+ fieldUser,
+												success : function(
+														response) {
+													if (response.success) {
+														var obj = jQuery
+																.parseJSON(response.object);
+														
+													} else {
+														
+														$("#projId")
+																.prop(
+																		'selectedIndex',
+																		0);
+														$("#returnDetailTable").hide();
+														$("#fieldUser")
+														.prop(
+																'selectedIndex',
+																0);
+														$(
+																"#dialog-confirm")
+																.html(
+																		response.data);
+														$(
+																"#dialog-confirm")
+																.dialog(
+																		{
+																			modal : true,
+																			title : "Warning!",
+																			height : 200,
+																			width : 300,
+																			buttons : {
+																				Ok : function() {
+																					$(
+																							this)
+																							.dialog(
+																									"close");
+																				}
+																			}
+																		});
+													}
+												}
+											});
+									$("#returnDetailTable").show();
+								});						
+
 
 					});
 	function insertReturnDetailRow() {
