@@ -33,12 +33,16 @@
 																	var projId = $(
 																			'#projId')
 																			.val();
+																	var fieldUser = $(
+																	'#fieldUser')
+																	.val();
 																	$
 																			.getJSON(
 																					"/pms/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do",
 																					{
 																						itemName : request.term,
-																						projId : projId
+																						projId : projId,
+																						fieldUser : fieldUser
 																					},
 																					function(
 																							data) {
@@ -128,12 +132,7 @@
 																		.html(
 																				options);
 															} else {
-																$(
-																		"#itemNameField")
-																		.hide();
-																$(
-																		"#dispatchDetailTable")
-																		.hide();
+																
 																$("#projId")
 																		.prop(
 																				'selectedIndex',
@@ -164,7 +163,7 @@
 													});
 											$("#itemNameField").show();
 											$("#returnDetailTable").show();
-										});
+										});						
 
 					});
 	function insertReturnDetailRow() {

@@ -115,14 +115,17 @@ public class StoreController extends BaseController {
     }
 
     @RequestMapping(value = "/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do", method = RequestMethod.GET)
-    @ResponseBody
-    public List<StockDetail> getItemNamesInStoreForReturn(HttpServletRequest httpServletRequest) {
-        String projId = httpServletRequest.getParameter("projId");
-        String itemName = httpServletRequest.getParameter("itemName");
-        LOGGER.info("getItemNamesInStore for Project :"
-                + projId);
-        return storeService.getItemNamesInStore(projId, itemName);
-    }
+	@ResponseBody
+	public List<StockDetail> getItemNamesInStoreForReturn(
+			HttpServletRequest httpServletRequest) {
+		String projId = httpServletRequest.getParameter("projId");
+		String itemName = httpServletRequest.getParameter("itemName");
+		String fieldUser = httpServletRequest.getParameter("fieldUser");
+		LOGGER.info("getItemNamesInStore for Project :" + projId);
+		return storeService.getItemsToReturn(projId, itemName, fieldUser);
+	}
+
+    
 
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getTotalQuantity.do", method = RequestMethod.GET)
@@ -267,19 +270,55 @@ public class StoreController extends BaseController {
     }
     
     @RequestMapping(value = "/emp/myview/returnTransaction/getFieldUsersForReturn.do", method = RequestMethod.GET)
-    @ResponseBody
-    public JsonData getFieldUsersForReturn(HttpServletRequest httpServletRequest) {
-        LOGGER.info("getFieldUsers for Project :"
-                + httpServletRequest.getParameter("projId"));
-        JsonData jsonData = new JsonData();
-        String projId = httpServletRequest.getParameter("projId");
-        String employeeId = httpServletRequest.getParameter("employeeId");
-        List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
-        Gson gson = new Gson();
-        jsonData.setObject(gson.toJson(fieldUsers));
-        jsonData.setSuccess(true);
-        return jsonData;
-    }
+	@ResponseBody
+	public JsonData getFieldUsersForReturn(HttpServletRequest httpServletRequest) {
+		LOGGER.info("getFieldUsers for Project :"
+				+ httpServletRequest.getParameter("projId"));
+		JsonData jsonData = new JsonData();
+		String projId = httpServletRequest.getParameter("projId");
+		String employeeId = httpServletRequest.getParameter("employeeId");
+		List<String> fieldUsers = getFieldUsersForProject(projId, employeeId);
+		Gson gson = new Gson();
+		jsonData.setObject(gson.toJson(fieldUsers));
+		jsonData.setSuccess(true);
+		return jsonData;
+	}
+    
+    @RequestMapping(value = "/emp/myview/viewStockDetails/{employeeId}", method = RequestMethod.GET)
+	public String viewStockDetails(@PathVariable String employeeId, Model model) {
+		LOGGER.info("View Controller : viewStockDetails()");
+		StockDetail stockDetail = new StockDetail();
+		stockDetail.setEmployeeId(employeeId);
+		Map<String, String> aliasProjectList = populateAliasProjectList(employeeId);
+		model.addAttribute("stockDetailForm", stockDetail);
+		model.addAttribute("aliasProjectList", aliasProjectList);
+		return "ViewStockDetails";
+	}
+    
+    @RequestMapping(value = "/emp/myview/viewStockDetails/viewStockDetails.do", method = RequestMethod.POST)
+	public String viewStockDetails(
+			@ModelAttribute("stockDetailForm") StockDetail stockDetail,
+			BindingResult result, Model model, SessionStatus status) {
+		Map<String, String> aliasProjectList = populateAliasProjectList(stockDetail
+				.getEmployeeId());
+		model.addAttribute("stockDetailForm", stockDetail);
+		model.addAttribute("aliasProjectList", aliasProjectList);
+		if (stockDetail.getProjId() == 0) {
+			model.addAttribute("errorMessage", "Please select the project");
+			return "ViewStockDetails";
+		}
+		List<StockDetail> stockDetails = storeService
+				.getStockDetails(stockDetail.getProjId());
+		if (stockDetails.size() > 0) {
+			model.addAttribute("stockDetailsSize", stockDetails.size());
+			model.addAttribute("stockDetails", stockDetails);
+		} else {
+			model.addAttribute("errorMessage",
+					"There are no Materials in the Stock");
+		}
+		return "ViewStockDetails";
+	}
+
 
     private List<String> getFieldUsersForProject(String projId, String employeeId) {
         String projectId = fetchProjectId(projId, employeeId);

@@ -31,172 +31,216 @@ import com.psk.pms.utils.DateFormatter;
  */
 public class StoreDetailDAOImpl implements StoreDetailDAO {
 
-    @Qualifier("jdbcTemplate")
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Qualifier("jdbcTemplate")
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public void saveStoreDetail(StoreDetail storeDetail) {
-        jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
-                storeDetail.getItemType(), storeDetail.getItemName(),
-                storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
-                storeDetail.getRecievedQuantity(),
-                storeDetail.getSqlRecievedDate(), storeDetail.getComments());
-    }
+	@Override
+	public void saveStoreDetail(StoreDetail storeDetail) {
+		jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
+				storeDetail.getItemType(), storeDetail.getItemName(),
+				storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
+				storeDetail.getRecievedQuantity(),
+				storeDetail.getSqlRecievedDate(), storeDetail.getComments());
+	}
 
-    @Override
-    public List<StoreDetail> getStoreDetails(int projId) {
-        List<StoreDetail> storeDetails = new ArrayList<StoreDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-                GET_STORE_DETAILS, projId);
-        for (Map<String, Object> row : rows) {
-            storeDetails.add(buildStoreDetails(row));
-        }
-        return storeDetails;
-    }
+	@Override
+	public List<StoreDetail> getStoreDetails(int projId) {
+		List<StoreDetail> storeDetails = new ArrayList<StoreDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+				GET_STORE_DETAILS, projId);
+		for (Map<String, Object> row : rows) {
+			storeDetails.add(buildStoreDetails(row));
+		}
+		return storeDetails;
+	}
 
-    @Override
-    public void saveStockDetail(StoreDetail storeDetail) {
-        jdbcTemplate.update(CREATE_STOCK_DETAILS, storeDetail.getProjId(),
-                storeDetail.getItemName(), storeDetail.getRecievedQuantity());
-    }
+	@Override
+	public void saveStockDetail(StoreDetail storeDetail) {
+		jdbcTemplate.update(CREATE_STOCK_DETAILS, storeDetail.getProjId(),
+				storeDetail.getItemName(), storeDetail.getRecievedQuantity());
+	}
 
-    @Override
-    public List<StockDetail> getStockDetails(int projId, String itemName) {
-        List<StockDetail> stockDetails = new ArrayList<StockDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-                GET_STOCK_DETAILS, projId, itemName);
-        for (Map<String, Object> row : rows) {
-            stockDetails.add(buildStockDetails(row));
-        }
-        return stockDetails;
-    }
+	@Override
+	public List<StockDetail> getStockDetails(int projId, String itemName) {
+		List<StockDetail> stockDetails = new ArrayList<StockDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+				GET_STOCK_DETAILS, projId, itemName);
+		for (Map<String, Object> row : rows) {
+			stockDetails.add(buildStockDetails(row));
+		}
+		return stockDetails;
+	}
 
-    @Override
-    public List<DispatchDetail> getDispatchedDetails(
-            DispatchDetail dispatchDetail) {
-        List<DispatchDetail> dispatchDetails = new ArrayList<DispatchDetail>();
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(
-                GET_DISPATCH_DETAILS, dispatchDetail.getProjId());
-        for (Map<String, Object> row : rows) {
-            dispatchDetails.add(buildDispatchDetail(row));
-        }
-        return dispatchDetails;
-    }
+	@Override
+	public List<DispatchDetail> getDispatchedDetails(
+			DispatchDetail dispatchDetail) {
+		List<DispatchDetail> dispatchDetails = new ArrayList<DispatchDetail>();
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(
+				GET_DISPATCH_DETAILS, dispatchDetail.getProjId());
+		for (Map<String, Object> row : rows) {
+			dispatchDetails.add(buildDispatchDetail(row));
+		}
+		return dispatchDetails;
+	}
 
-    @Override
-    public void saveDispatchedDetails(final DispatchDetail dispatchDetail,
-                                      final String dispatched) {
-        jdbcTemplate.batchUpdate(CREATE_TRANSACTION_DETAILS,
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i)
-                            throws SQLException {
-                        DispatchDetail.DispatchItems dispatchItem = dispatchDetail
-                                .getDispatchItems().get(i);
-                        ps.setInt(1, dispatchDetail.getProjId());
-                        ps.setString(2, dispatchItem.getItemName());
-                        ps.setDate(3, dispatchDetail.getSqlDispatchedDate());
-                        ps.setString(4, dispatchDetail.getFieldUser());
-                        ps.setString(5, dispatched);
-                        ps.setString(6, dispatchItem.getRequestedQuantity());
-                    }
+	@Override
+	public void saveDispatchedDetails(final DispatchDetail dispatchDetail,
+			final String dispatched) {
+		jdbcTemplate.batchUpdate(CREATE_TRANSACTION_DETAILS,
+				new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						DispatchDetail.DispatchItems dispatchItem = dispatchDetail
+								.getDispatchItems().get(i);
+						ps.setInt(1, dispatchDetail.getProjId());
+						ps.setString(2, dispatchItem.getItemName());
+						ps.setDate(3, dispatchDetail.getSqlDispatchedDate());
+						ps.setString(4, dispatchDetail.getFieldUser());
+						ps.setString(5, dispatched);
+						ps.setString(6, dispatchItem.getRequestedQuantity());
+					}
 
-                    @Override
-                    public int getBatchSize() {
-                        return dispatchDetail.getDispatchItems().size();
-                    }
-                });
-    }
+					@Override
+					public int getBatchSize() {
+						return dispatchDetail.getDispatchItems().size();
+					}
+				});
+	}
 
-    @Override
-    public void saveReturnedDetails(
-            final DispatchDetail dispatchDetail,
-            final String returned) {
-        jdbcTemplate.batchUpdate(CREATE_TRANSACTION_DETAILS,
-                new BatchPreparedStatementSetter() {
-                    @Override
-                    public void setValues(PreparedStatement ps, int i)
-                            throws SQLException {
-                        DispatchDetail.DispatchItems returnItem = dispatchDetail
-                                .getDispatchItems().get(i);
-                        ps.setInt(1, dispatchDetail.getProjId());
-                        ps.setString(2, returnItem.getItemName());
-                        ps.setDate(3,
-                                dispatchDetail.getSqlReturnedDate());
-                        ps.setString(4, dispatchDetail.getFieldUser());
-                        ps.setString(5, returned);
-                        ps.setString(6, returnItem.getReturnedQuantity());
-                    }
+	@Override
+	public void saveReturnedDetails(final DispatchDetail dispatchDetail,
+			final String returned) {
+		jdbcTemplate.batchUpdate(CREATE_TRANSACTION_DETAILS,
+				new BatchPreparedStatementSetter() {
+					@Override
+					public void setValues(PreparedStatement ps, int i)
+							throws SQLException {
+						DispatchDetail.DispatchItems returnItem = dispatchDetail
+								.getDispatchItems().get(i);
+						ps.setInt(1, dispatchDetail.getProjId());
+						ps.setString(2, returnItem.getItemName());
+						ps.setDate(3, dispatchDetail.getSqlReturnedDate());
+						ps.setString(4, dispatchDetail.getFieldUser());
+						ps.setString(5, returned);
+						ps.setString(6, returnItem.getReturnedQuantity());
+					}
 
-                    @Override
-                    public int getBatchSize() {
-                        return dispatchDetail.getDispatchItems().size();
-                    }
-                });
+					@Override
+					public int getBatchSize() {
+						return dispatchDetail.getDispatchItems().size();
+					}
+				});
 
-    }
+	}
 
-    @Override
+	@Override
 	public List<StockDetail> getItemNamesInStore(String projectId,
 			String itemName) {
 		List<StockDetail> itemNamesInStock = new ArrayList<>();
 		String sql;
 		if (!"".equals(itemName)) {
-			sql = "select s.projectId, s.itemname, s.totalQuantity, sum(d.Quantity) DispatchedQuantity from stockDetail s,"
-					+"dispatchdetail d where s.projectId ='"+ projectId+"'  and s.itemName LIKE '%"+itemName+"%' "
- 					+"and s.ItemName = d.ItemName and  d.dispatchdesc = 'Dispatched'";
+			sql = "select s.projectId, s.itemname, s.totalQuantity "
+					+ "from stockDetail s where s.projectId ='" + projectId
+					+ "'  and s.itemName LIKE '%" + itemName + "%' ";
+
 			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 			for (Map<String, Object> row : rows) {
 				itemNamesInStock.add(buildStockDetails(row));
 			}
 		}
+
 		return itemNamesInStock;
 	}
 
-    @Override
-    public void updateStockDetail(int projId, String itemName,
-                                  String totalQuantity) {
-        jdbcTemplate.update(UPDATE_STOCK_DETAILS, totalQuantity, projId,
-                itemName);
-    }
+	@Override
+	public List<StockDetail> getItemsToReturn(String projectId,
+			String itemName, String fieldUser) {
+		List<StockDetail> itemNamesInStock = new ArrayList<>();
+		String sql;
+		if (!"".equals(itemName)) {
+			sql = "select s.projectId, s.itemname, s.totalQuantity, "
+					+ "sum(CASE WHEN d.dispactchedDate = curdate() AND d.dispatchDesc = 'Dispatched' THEN d.Quantity ELSE 0 END) as dispatchedQuantity "
+					+ "from stockDetail s, dispatchdetail d where s.projectId ='"
+					+ projectId + "'  and s.itemName LIKE '%" + itemName
+					+ "%' " + "and s.ItemName = d.ItemName and d.fieldUser='"
+					+ fieldUser + "'";
 
-    private StockDetail buildStockDetails(Map<String, Object> row) {
-        StockDetail stockDetail = new StockDetail();
-        stockDetail.setItemName((String) row.get("itemName"));
-        stockDetail.setProjId((Integer) row.get("projectId"));
-        stockDetail.setTotalQuantity((String) row.get("totalQuantity"));
-        stockDetail.setDispatchedQuantity(String.valueOf(row.get("dispatchedQuantity")));
-        return stockDetail;
-    }
+			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+			for (Map<String, Object> row : rows) {
+				itemNamesInStock.add(buildReturnDetails(row));
+			}
+		}
 
-    private StoreDetail buildStoreDetails(Map<String, Object> row) {
-        StoreDetail detail = new StoreDetail();
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        detail.setItemType((String) row.get("itemType"));
-        detail.setItemName((String) row.get("itemName"));
-        detail.setSupplierName((String) row.get("supplierName"));
-        detail.setRecievedQuantity((String) row.get("quantityRecieved"));
-        Date recievedDate = (Date) row.get("recievedDate");
-        detail.setSqlRecievedDate(recievedDate);
-        detail.setRecievedDate(DateFormatter.getStringDate(recievedDate,
-                formatter));
-        return detail;
-    }
+		return itemNamesInStock;
+	}
 
-    private DispatchDetail buildDispatchDetail(Map<String, Object> row) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        DispatchDetail dispatchDetail = new DispatchDetail();
-        dispatchDetail.setItemName((String) row.get("itemName"));
-        Double dispatchedQty = (Double) row.get("Dispatched_Qty");
-        Double returnedQty = (Double) row.get("Returned_Qty");
-        dispatchDetail.setRequestedQuantity(  String.valueOf(dispatchedQty));
-        dispatchDetail.setReturnedQuantity(  String.valueOf(returnedQty));
-        dispatchDetail.setFieldUser((String) row.get("fieldUser"));
-        Date recievedDate = (Date) row.get("dispactchedDate");
-        dispatchDetail.setDispatchedDate(DateFormatter.getStringDate(recievedDate,
-                formatter));
-        return dispatchDetail;
-    }
+	private StockDetail buildReturnDetails(Map<String, Object> row) {
+		StockDetail stockDetail = new StockDetail();
+		stockDetail.setItemName((String) row.get("itemName"));
+		stockDetail.setProjId((Integer) row.get("projectId"));
+		stockDetail.setDispatchedQuantity(String.valueOf(row
+				.get("dispatchedQuantity")));
+		return stockDetail;
+	}
+
+	@Override
+	public List<StockDetail> getStockDetails(int projId) {
+		List<StockDetail> stockDetails = new ArrayList<StockDetail>();
+		String sql = "select * from stockdetail where projectId ='"+projId+"'";
+		
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		for (Map<String, Object> row : rows) {
+			stockDetails.add(buildStockDetails(row));
+		}
+		return stockDetails;
+	}
+
+	@Override
+	public void updateStockDetail(int projId, String itemName,
+			String totalQuantity) {
+		jdbcTemplate.update(UPDATE_STOCK_DETAILS, totalQuantity, projId,
+				itemName);
+	}
+
+	private StockDetail buildStockDetails(Map<String, Object> row) {
+		StockDetail stockDetail = new StockDetail();
+		stockDetail.setItemName((String) row.get("itemName"));
+		stockDetail.setProjId((Integer) row.get("projectId"));
+		stockDetail.setTotalQuantity((String) row.get("totalQuantity"));
+		stockDetail.setDispatchedQuantity(String.valueOf(row
+				.get("dispatchedQuantity")));
+		return stockDetail;
+	}
+
+	private StoreDetail buildStoreDetails(Map<String, Object> row) {
+		StoreDetail detail = new StoreDetail();
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		detail.setItemType((String) row.get("itemType"));
+		detail.setItemName((String) row.get("itemName"));
+		detail.setSupplierName((String) row.get("supplierName"));
+		detail.setRecievedQuantity((String) row.get("quantityRecieved"));
+		Date recievedDate = (Date) row.get("recievedDate");
+		detail.setSqlRecievedDate(recievedDate);
+		detail.setRecievedDate(DateFormatter.getStringDate(recievedDate,
+				formatter));
+		return detail;
+	}
+
+	private DispatchDetail buildDispatchDetail(Map<String, Object> row) {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+		DispatchDetail dispatchDetail = new DispatchDetail();
+		dispatchDetail.setItemName((String) row.get("itemName"));
+		Double dispatchedQty = (Double) row.get("Dispatched_Qty");
+		Double returnedQty = (Double) row.get("Returned_Qty");
+		dispatchDetail.setRequestedQuantity(String.valueOf(dispatchedQty));
+		dispatchDetail.setReturnedQuantity(String.valueOf(returnedQty));
+		dispatchDetail.setFieldUser((String) row.get("fieldUser"));
+		Date recievedDate = (Date) row.get("dispactchedDate");
+		dispatchDetail.setDispatchedDate(DateFormatter.getStringDate(
+				recievedDate, formatter));
+		return dispatchDetail;
+	}
 
 }

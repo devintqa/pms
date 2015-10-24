@@ -9,8 +9,17 @@ public class StockDetail {
     private String totalQuantity;
     private String itemName;
     private String dispatchedQuantity;
+    private String employeeId;
 
-    public int getProjId() {
+    public String getEmployeeId() {
+		return employeeId;
+	}
+
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
+
+	public int getProjId() {
         return projId;
     }
 

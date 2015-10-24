@@ -167,8 +167,7 @@ public class PmsMasterQuery {
             "VALUES ( ? , ? , ? , ? , ? ,?,?,?)";
 
     public static final String GET_STORE_DETAILS = "select * from storeDetail where projId = ?";
-
-
+    
     public static final String GET_STOCK_DETAILS = "select * from stockDetail where projectId = ? and itemName=?";
 
     public static final String CREATE_STOCK_DETAILS = "insert into stockDetail(projectId, itemName, totalQuantity) values (?,?,?)";

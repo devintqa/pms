@@ -252,7 +252,10 @@
 								Store Details</a></li>
                         <li><a id="viewDispatchDetails"
 							href="/pms/emp/myview/viewDispatchDetails/${employeeObj.employeeId}">
-								Dispatched Details</a></li>
+								Transaction Details</a></li>
+						<li><a id="viewStockDetails"
+							href="/pms/emp/myview/viewStockDetails/${employeeObj.employeeId}">
+								Stock Details</a></li>
 					</ul></li>
 
 				<li><a id="profile"
