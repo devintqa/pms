@@ -27,7 +27,7 @@ public class BulkUploadDetailsValidator {
 
     private void rejectIfEmptyFieldsFound(List<ProjDescDetail> projDescDetails)
             throws BulkUploadException {
-        Iterator projectDescDetailIterator = projDescDetails.iterator();
+        Iterator<ProjDescDetail> projectDescDetailIterator = projDescDetails.iterator();
         int rowCount = 2;
         while (projectDescDetailIterator.hasNext()) {
             ProjDescDetail projDescDetail = (ProjDescDetail) projectDescDetailIterator.next();

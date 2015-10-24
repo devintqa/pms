@@ -4,7 +4,6 @@ import static java.lang.Integer.parseInt;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +19,6 @@ import com.psk.pms.dao.StoreDetailDAO;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.DispatchDetail;
 
 /**
  * Created by Sony on 26-09-2015.

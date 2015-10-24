@@ -276,16 +276,12 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 1 APPROVAL")){
 			return "PENDING LEVEL 2 APPROVAL";
 		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 2 APPROVAL")){
-			return "Pending Purchase";
+			return "PENDING PURCHASE";
 		}else{
 			return null;
 		}
 	}
 	
-//	Map<String, Object> buildDescQtyMap(Map < String, Object > row){
-//		return row;
-//	}
-
 	@Override
 	public Map<String, Object> getRequestedIndentQty(Integer projId) {
 		Map < String, Object > descQty = new HashMap< String, Object>();
@@ -347,7 +343,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Indent> indentList = new ArrayList<Indent>();
 		String sql = null;
 		if (null!=status) {
-			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where Status='"+status+"'";
+			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.ProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"'";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 

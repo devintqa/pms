@@ -26,6 +26,9 @@ public class EmployeeTeamFactory {
 
     @Autowired
     StoreEmployeeTeam storeEmployeeTeam;
+    
+    @Autowired
+    PurchaseEmployeeTeam purchaseEmployeeTeam;
 
 
     public EmployeeTeam getEmployeeTeam(String employeeTeam) {
@@ -37,6 +40,9 @@ public class EmployeeTeamFactory {
         }
         if(STORE.equalsIgnoreCase(employeeTeam)){
             return storeEmployeeTeam;
+        }
+        if(PURCHASE.equalsIgnoreCase(employeeTeam)){
+            return purchaseEmployeeTeam;
         }
         return managementEmployeeTeam;
     }

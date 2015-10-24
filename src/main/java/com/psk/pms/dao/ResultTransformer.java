@@ -214,6 +214,10 @@ public class ResultTransformer {
 		indent.setStatus((String) row.get("Status"));
 		indent.setStartDate((String) row.get("StartDate"));
 		indent.setEndDate((String) row.get("EndDate"));
+		if(row.containsKey("ProjName")){
+			indent.setDescription(row.get("ProjName").toString());
+		}
+		
 		return indent;
 	}
 

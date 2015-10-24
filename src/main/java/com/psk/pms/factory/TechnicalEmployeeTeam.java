@@ -48,10 +48,8 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
     public void performTeamActivity(Model model, String empId) {
     	String indentStatus = "";
     	Employee employee = employeeService.getEmployeeDetails(empId);
-    	if(employee.getEmployeeRole().equals("MANAGER-I")){
+    	if(employee.getEmployeeRole().equalsIgnoreCase("TECHNICAL MANAGER")){
     		indentStatus = "PENDING LEVEL 1 APPROVAL";
-    	}else if(employee.getEmployeeRole().equals("MANAGER-II")){
-    		indentStatus = "PENDING LEVEL 2 APPROVAL";
     	}
         List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList(empId);
         if (!projectDocumentList.isEmpty()) {

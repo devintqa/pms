@@ -1,15 +1,12 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.Constants;
-import com.psk.pms.model.DispatchDetail;
-import com.psk.pms.model.StockDetail;
-import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.DispatchDetail;
-import com.psk.pms.utils.DateFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.JdbcTemplate;
+import static com.psk.pms.dao.PmsMasterQuery.CREATE_STOCK_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.CREATE_STORE_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.CREATE_TRANSACTION_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_DISPATCH_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_STOCK_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_STOCK_DETAILS;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -19,8 +16,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static com.psk.pms.Constants.DISPATCHED;
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.StockDetail;
+import com.psk.pms.model.StoreDetail;
+import com.psk.pms.utils.DateFormatter;
 
 /**
  * Created by Sony on 26-09-2015.

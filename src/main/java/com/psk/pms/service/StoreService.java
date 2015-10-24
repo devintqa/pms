@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.DispatchDetail;
 
 /**
  * Created by Sony on 26-09-2015.
