@@ -13,7 +13,11 @@
     <script>
 
         $(document).ready(function () {
-            $("#itemNameField").hide();
+            if ($('#itemType').val() == '--Please Select--') {
+                $("#itemNameField").hide();
+            } else {
+                $("#itemNameField").show();
+            }
             $("#itemType").change(function () {
                 var itemType = $('#itemType').val();
                 var projId = $('#projId').val();
@@ -96,7 +100,7 @@
                             <td>
                                 <div id="itemNameField"> Item Name
                                     <form:select path="itemName" cssClass="inputText"
-                                                 id="itemName">
+                                                 id="itemName" items="${itemNames}">
 
                                         <option value="${storeDetailForm.itemName}"
                                                 selected="selected">${storeDetailForm.itemName}</option>

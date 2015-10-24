@@ -212,6 +212,8 @@ public class StoreController extends BaseController {
             storeValidator.validate(storeDetail, result);
             model.addAttribute("storeDetailForm", storeDetail);
             model.addAttribute("aliasProjectList", aliasProjectList);
+            List<String> itemNames = itemService.getItemNames(storeDetail.getItemType(), String.valueOf(storeDetail.getProjId()));
+            model.addAttribute("itemNames",itemNames);
             if (result.hasErrors()) {
                 return "BuildStoreDetail";
             }
