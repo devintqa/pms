@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.SearchDetail;
 
 /**
@@ -31,5 +32,7 @@ public interface FieldDescriptionDAO {
 	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
 
 	Indent getIndent(String indentId);
+
+	List<Indent> getIndentListByStatus(String status);
 
 }

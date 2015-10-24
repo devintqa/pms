@@ -262,22 +262,29 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	@Override
 	public String placeIndentRequest(Indent indent) {
 		String status = "";
-		if(indent.getStatus().equalsIgnoreCase("new")){
-			indent.setStatus("PENDING LEVEL 1 APPROVAL");
-			String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
-			Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
-			if(row==1)
-				status = "Indent requested succesfully";
-		}else{
-			status = "Indents in "+indent.getStatus().toLowerCase()+" status is invalid";
-		}
+		indent.setStatus(getNextIndentStatus(indent.getStatus()));
+		String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
+		Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
+		if(row==1)
+			status = "Indent processed succesfully";
 		return status;
 	}
 	
-	Map<String, Object> buildDescQtyMap(Map < String, Object > row){
-		
-		return row;
+	private String getNextIndentStatus(String currentStatus){
+		if(currentStatus.equalsIgnoreCase("NEW")){
+			return "PENDING LEVEL 1 APPROVAL";
+		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 1 APPROVAL")){
+			return "PENDING LEVEL 2 APPROVAL";
+		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 2 APPROVAL")){
+			return "Pending Purchase";
+		}else{
+			return null;
+		}
 	}
+	
+//	Map<String, Object> buildDescQtyMap(Map < String, Object > row){
+//		return row;
+//	}
 
 	@Override
 	public Map<String, Object> getRequestedIndentQty(Integer projId) {
@@ -305,8 +312,12 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		for (Map<String, Object> row : rows) {
 			ProjDescDetail fieldDesc = transformer.buildProjectDescDetail(row);
 			Double totalQty = new Double(fieldDesc.getQuantity());
-			if(null!=indentUsedOnDesc.get(fieldDesc.getProjDescId().toString()))
+			if(null!=indentUsedOnDesc.get(fieldDesc.getProjDescId().toString())){
 				availedDescIndentQtyBigD = (BigDecimal) indentUsedOnDesc.get(fieldDesc.getProjDescId().toString());
+			}
+			else{
+				availedDescIndentQtyBigD  = new BigDecimal(0);
+			}
 			Double availedQty = availedDescIndentQtyBigD.doubleValue();
 			Double availableQty = totalQty - availedQty;
 			fieldDesc.setAvailableQty(availableQty.toString());
@@ -329,6 +340,21 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		}
 		indent.setIndentDescList(indentDescList);
 		return indent;
+	}
+
+	@Override
+	public List<Indent> getIndentListByStatus(String status) {
+		List<Indent> indentList = new ArrayList<Indent>();
+		String sql = null;
+		if (null!=status) {
+			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where Status='"+status+"'";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+
+		for (Map < String, Object > row: rows) {
+			indentList.add(transformer.buildIndent(row));
+		}
+		return indentList;
 	}
 
 }

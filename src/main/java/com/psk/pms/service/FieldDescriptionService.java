@@ -30,4 +30,6 @@ public interface FieldDescriptionService {
 
 	Indent getIndent(String indentId);
 
+	List<Indent> getIndentListByStatus(String status);
+
 }

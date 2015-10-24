@@ -33,11 +33,12 @@
         $("#placeIndentRequest").click(function() {
             var indentId = $('#indentId').val();
             var employeeId = $('#employeeId').val();
+            var indentStatus = $(this).attr('aria-indent-status');
             $.ajax({
 				type : "POST",
 				url : "placeIndentRequest.do",
 				cache : false,
-				data : "indentId="+indentId+"&employeeId="+employeeId,
+				data : "indentId="+indentId+"&employeeId="+employeeId+"&indentStatus="+indentStatus,
 				success : function(response) {
 					 $("#dialog-confirm").html(response);
 					 $("#dialog-confirm").dialog({
@@ -103,8 +104,13 @@
 				<center>
 				
 				<c:if test="${indentStatus eq 'NEW'}">
-					<input class="button" type="button" id="placeIndentRequest" value="Place Request"/>
+					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Place Request"/>
 				</c:if>
+				
+				<c:if test="${(employeeObj.employeeRole eq 'MANAGER-I') or (employeeObj.employeeRole eq 'MANAGER-II')}">
+					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
+				</c:if>
+				
 				</center>
 				<br>
 			</c:if>

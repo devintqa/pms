@@ -1,11 +1,16 @@
 package com.psk.pms.factory;
 
 import com.psk.pms.model.DepositDetail;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.service.DepositDetailService;
+import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.utils.DateFormatter;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -24,9 +29,15 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
 
     @Autowired
     ProjectService projectService;
+    
+    @Autowired
+    EmployeeService employeeService;
 
     @Autowired
     DepositDetailService depositDetailService;
+    
+    @Autowired
+    FieldDescriptionService fieldDescriptionService;
 
     @Autowired
     SubProjectService subProjectService;
@@ -35,8 +46,14 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
 
     @Override
     public void performTeamActivity(Model model, String empId) {
-        List<ProjectDetail> projectDocumentList = projectService
-                .getProjectDocumentList(empId);
+    	String indentStatus = "";
+    	Employee employee = employeeService.getEmployeeDetails(empId);
+    	if(employee.getEmployeeRole().equals("MANAGER-I")){
+    		indentStatus = "PENDING LEVEL 1 APPROVAL";
+    	}else if(employee.getEmployeeRole().equals("MANAGER-II")){
+    		indentStatus = "PENDING LEVEL 2 APPROVAL";
+    	}
+        List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList(empId);
         if (!projectDocumentList.isEmpty()) {
             model.addAttribute("projectDocumentList", projectDocumentList);
         }
@@ -44,6 +61,10 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
         List<DepositDetail> depositDocumentList = getExpiringDepositDetails(depositEndAlertList);
         if (depositDocumentList.size() > 0) {
             model.addAttribute("depositDocumentList", depositDocumentList);
+        }
+        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);
+        if (!indentList.isEmpty()) {
+            model.addAttribute("indentList", indentList);
         }
     }
 

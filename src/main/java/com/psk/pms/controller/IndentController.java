@@ -124,6 +124,7 @@ public class IndentController extends BaseController {
 		Indent indent = null;
 		if(!indentId.equals("0")){
 			indent = fieldDescriptionService.getIndent(indentId);
+			indent.setEmployeeId(employeeId);
 		}else{
 			indent = new Indent();
 			indent.setStartDate(null);
@@ -203,11 +204,13 @@ public class IndentController extends BaseController {
 			Model model) {
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setIndentId(indentId);
+		Employee employee = employeeService.getEmployeeDetails(employeeId);
 		indentDesc.setItemDetails(itemService.getIndentItemForRequest(indentId));
 		model.addAttribute("indentDesc", indentDesc);
 		model.addAttribute("indentItems", indentDesc.getItemDetails());
 		model.addAttribute("indentItemSize", indentDesc.getItemDetails().size());
-		model.addAttribute("employeeId", employeeId);
+		model.addAttribute("employeeId", employee.getEmployeeId());
+		model.addAttribute("employeeObj", employee);
 		model.addAttribute("indentStatus", status);
 		return "PlaceIndentRequest";
 	}
@@ -216,11 +219,12 @@ public class IndentController extends BaseController {
 	@ResponseBody  public String placeIndentRequest(
 			@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "indentId") String indentId,
+			@RequestParam(value = "indentStatus") String indentStatus,
 			Model model) {
 		Indent indent = new Indent();
 		indent.setEmployeeId(employeeId);
 		indent.setIndentId(indentId);
-		indent.setStatus("NEW");
+		indent.setStatus(indentStatus);
 		return fieldDescriptionService.placeIndentRequest(indent);
 	}
 

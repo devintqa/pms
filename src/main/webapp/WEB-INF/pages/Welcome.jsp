@@ -178,6 +178,38 @@
             </tbody>
         </table>
     </c:if>
+    <c:if test="${(employeeObj.employeeRole eq 'MANAGER-I') or (employeeObj.employeeRole eq 'MANAGER-II')}">
+        <h1 style="text-align: center; color: #007399; font-size: 18px;">Indents that require immediate attention</h1>
+			<table id="indentList" class="display">
+				<thead>
+					<tr>
+						<th>Indent No</th>
+						<th>Start Date</th>
+						<th>End Date</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:if test="${not empty indentList}">
+						<c:forEach var="indent" items="${indentList}">
+							<tr>
+								<td>${indent.indentId}</td>
+								<td>${indent.startDate}</td>
+								<td>${indent.endDate}</td>
+								<td>${indent.status}</td>
+								<td><a
+									href="/pms/emp/myview/indent/createIndent?employeeId=${employeeObj.employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">Approve</a>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
+			<br>
+        <br>
+    </c:if>
+    
 </div>
 <footer>
     <jsp:include page="Footer.jsp"/>

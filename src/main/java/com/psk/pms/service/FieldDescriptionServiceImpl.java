@@ -3,16 +3,14 @@ package com.psk.pms.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.psk.pms.dao.FieldDescriptionDAO;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.SearchDetail;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by prakashbhanu57 on 8/18/2015.
- */
 public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 
     @Autowired
@@ -66,6 +64,11 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	@Override
 	public Indent getIndent(String indentId) {
 		return fieldDescriptionDAO.getIndent(indentId);
+	}
+
+	@Override
+	public List<Indent> getIndentListByStatus(String status) {
+		return fieldDescriptionDAO.getIndentListByStatus(status);
 	}
 
 }
