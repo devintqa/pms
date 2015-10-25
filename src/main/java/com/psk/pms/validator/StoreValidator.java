@@ -68,6 +68,9 @@ public class StoreValidator extends BaseValidator implements Validator {
         if ("--Please Select--".equalsIgnoreCase(dispatchDetail.getItemName())) {
             throw new ValidationException("Please select a valid Item Name");
         }
+        if ("--Please Select--".equalsIgnoreCase(dispatchDetail.getFieldUser())) {
+            throw new ValidationException("Please select a Field Engineer");
+        }
         List<DispatchDetail.DispatchItems> dispatchItems = dispatchDetail.getDispatchItems();
         if (null == dispatchItems || dispatchItems.isEmpty()) {
             throw new ValidationException("There are no items selected to be dispatched");
@@ -99,44 +102,48 @@ public class StoreValidator extends BaseValidator implements Validator {
             }
         }
     }
-    public void validateReturned(Object o, String returned) throws ValidationException {
-    	 DispatchDetail returnDetail = (DispatchDetail) o;
-         if (returnDetail.getProjId() == 0) {
-             throw new ValidationException("Please Select Project Name.");
-         }
-         if ("--Please Select--".equalsIgnoreCase(returnDetail.getItemName())) {
-             throw new ValidationException("Please select a valid Item Name");
-         }
-         List<DispatchDetail.DispatchItems> returnedItems = returnDetail.getDispatchItems();
-         if (null == returnedItems || returnedItems.isEmpty()) {
-             throw new ValidationException("There are no items selected to be Returned");
-         }
 
-         if (returnedItems.size() > 0) {
-             for (DispatchDetail.DispatchItems returnedItem : returnedItems) {
-                 String returnedQuantity = returnedItem.getReturnedQuantity();
-                 if (returnedItem.getItemName().isEmpty() || returnedItem.getDispatchedQuantity().isEmpty()) {
-                     throw new ValidationException("There are no items selected to be Returned");
-                 }
-                 if (returnedQuantity == null || returnedQuantity.isEmpty()) {
-                     throw new ValidationException("Returning quantity of " + returnedItem.getItemName() + " should not be empty");
-                 } else {
-                     pattern = Pattern.compile(ID_PATTERN);
-                     matcher = pattern.matcher(returnedItem.getReturnedQuantity());
-                     if (!matcher.matches()) {
-                         throw new ValidationException("Returned quantity of " + returnedItem.getItemName() + " should be Numeric");
-                     }
-                 }
-                 double totalQuantity = Double.valueOf(returnedItem.getDispatchedQuantity());
-                 double returnedQty = Double.valueOf(returnedItem.getReturnedQuantity());
-                 if (totalQuantity == 0) {
-                     throw new ValidationException("There are no " + returnedItem.getItemName() + " Dispatched to Return");
-                 }
-                 if (returnedQty > totalQuantity) {
-                     throw new ValidationException("Returned Quantity of " + returnedItem.getItemName() + " is more than Dispatched Quantity");
-                 }
-             }
-         }
+    public void validateReturned(Object o, String returned) throws ValidationException {
+        DispatchDetail returnDetail = (DispatchDetail) o;
+        if (returnDetail.getProjId() == 0) {
+            throw new ValidationException("Please Select Project Name.");
+        }
+        if ("--Please Select--".equalsIgnoreCase(returnDetail.getItemName())) {
+            throw new ValidationException("Please select a valid Item Name");
+        }
+        if ("--Please Select--".equalsIgnoreCase(returnDetail.getFieldUser())) {
+            throw new ValidationException("Please select a Field Engineer");
+        }
+        List<DispatchDetail.DispatchItems> returnedItems = returnDetail.getDispatchItems();
+        if (null == returnedItems || returnedItems.isEmpty()) {
+            throw new ValidationException("There are no items selected to be Returned");
+        }
+
+        if (returnedItems.size() > 0) {
+            for (DispatchDetail.DispatchItems returnedItem : returnedItems) {
+                String returnedQuantity = returnedItem.getReturnedQuantity();
+                if (returnedItem.getItemName().isEmpty() || returnedItem.getDispatchedQuantity().isEmpty()) {
+                    throw new ValidationException("There are no items selected to be Returned");
+                }
+                if (returnedQuantity == null || returnedQuantity.isEmpty()) {
+                    throw new ValidationException("Returning quantity of " + returnedItem.getItemName() + " should not be empty");
+                } else {
+                    pattern = Pattern.compile(ID_PATTERN);
+                    matcher = pattern.matcher(returnedItem.getReturnedQuantity());
+                    if (!matcher.matches()) {
+                        throw new ValidationException("Returned quantity of " + returnedItem.getItemName() + " should be Numeric");
+                    }
+                }
+                double totalQuantity = Double.valueOf(returnedItem.getDispatchedQuantity());
+                double returnedQty = Double.valueOf(returnedItem.getReturnedQuantity());
+                if (totalQuantity == 0) {
+                    throw new ValidationException("There are no " + returnedItem.getItemName() + " Dispatched to Return");
+                }
+                if (returnedQty > totalQuantity) {
+                    throw new ValidationException("Returned Quantity of " + returnedItem.getItemName() + " is more than Dispatched Quantity");
+                }
+            }
+        }
     }
 
 }
