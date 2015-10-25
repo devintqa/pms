@@ -225,7 +225,7 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 		if (DescriptionType.PSK.name().equalsIgnoreCase(projDescDetail.getDescType())) {
 			LOGGER.info("Updating psk description for projectDescriptionId: " + projDescDetail.getAliasDescription());
 			String updateSql = "UPDATE projectdesc set WorkType = ?, Quantity = ?, Metric = ?, Description = ?,"
-					+ "AliasDescription = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
+					+ "AliasDescription = ?,PricePerQuantity = ? , TotalCost = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
 			jdbcTemplate.update(
 					updateSql,
 					projDescDetail.getWorkType(),
@@ -233,13 +233,15 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					projDescDetail.getMetric(),
 					projDescDetail.getDescription(),
 					projDescDetail.getAliasDescription(),
+					projDescDetail.getPricePerQuantity(),
+					projDescDetail.getTotalCost(),
 					projDescDetail.getLastUpdatedBy(),
 					projDescDetail.getLastUpdatedAt(),
 					projDescDetail.getProjDescId());
 		} else {
 			LOGGER.info("Updating government description for projectDescriptionId: " + projDescDetail.getAliasDescription());
 			String updateSql = "UPDATE govprojectdesc set WorkType = ?, Quantity = ?, Metric = ?, Description = ?,"
-					+ "AliasDescription = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
+					+ "AliasDescription = ? ,PricePerQuantity = ? , TotalCost = ?, LastUpdatedBy = ?, LastUpdatedAt=? WHERE ProjDescId = ?";
 			jdbcTemplate.update(
 					updateSql,
 					projDescDetail.getWorkType(),
@@ -247,6 +249,8 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 					projDescDetail.getMetric(),
 					projDescDetail.getDescription(),
 					projDescDetail.getAliasDescription(),
+					projDescDetail.getPricePerQuantity(),
+					projDescDetail.getTotalCost(),
 					projDescDetail.getLastUpdatedBy(),
 					projDescDetail.getLastUpdatedAt(),
 					projDescDetail.getProjDescId());

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -32,10 +33,19 @@ public class ProjectDescriptionServiceImpl implements ProjectDescriptionService 
 		projDescDetail.setLastUpdatedBy(projDescDetail.getEmployeeId());
 		projDescDetail.setLastUpdatedAt(getCurrentDateTime());
 		if("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())){
+			recalculateProjectDescriptionTotalPrice(projDescDetail);
 			projectDescriptionDAO.updateProjectDescriptionDetail(projDescDetail);
 		}else{
 			projectDescriptionDAO.saveProjDesc(projDescDetail);
 		}
+	}
+
+	private void recalculateProjectDescriptionTotalPrice(ProjDescDetail projDescDetail) {
+		LOGGER.debug("Recalculating project description total .."+projDescDetail.getAliasDescription());
+		BigDecimal newQuantity = new BigDecimal(projDescDetail.getQuantity()).setScale(2, RoundingMode.CEILING);
+		BigDecimal pricePerQuantity = new BigDecimal(projDescDetail.getPricePerQuantity());
+		BigDecimal newTotalCost = newQuantity.multiply(pricePerQuantity).setScale(2, RoundingMode.CEILING);
+		projDescDetail.setTotalCost(newTotalCost.toString());
 	}
 
 	private Date getCurrentDateTime() {

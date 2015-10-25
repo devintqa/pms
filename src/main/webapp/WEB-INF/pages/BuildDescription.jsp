@@ -55,6 +55,8 @@
             ;
 
             if ($('#isUpdate').val() == 'Y') {
+                $("#aliasProjectNameRow").hide();
+                $("#subProjectDescRow").hide();
                 $("#serialNumber").attr("readonly", "readonly");
                 $("#totalCost").attr("readonly", "readonly");
                 $("#pricePerQuantity").attr("readonly", "readonly");
@@ -86,7 +88,7 @@
                 <fieldset style="margin: 1em; text-align: left;">
                     <legend>Project Description</legend>
                     <table>
-                        <tr>
+                        <tr id="aliasProjectNameRow">
                             <td>Alias Project Name <span id="colon">:</span>
                             </td>
                             <td><form:select path="aliasProjectName"
@@ -94,7 +96,7 @@
                             </form:select></td>
                             <td><form:errors path="aliasProjectName" cssClass="error"/></td>
                         </tr>
-                        <tr>
+                        <tr id="subProjectDescRow">
                             <td>Description For Sub Project? :</td>
                             <td><form:checkbox path="subProjectDesc" id="subProjectDesc"/></td>
                             <td><form:errors path="subProjectDesc" cssClass="error"/></td>
