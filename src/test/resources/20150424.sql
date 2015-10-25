@@ -630,7 +630,7 @@ CREATE TABLE `indent` (
   `EndDate` varchar(45) NOT NULL,
   `LastUpdatedBy` varchar(45) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
-  `Status` varchar(15) NOT NULL DEFAULT 'NEW',
+  `Status` varchar(64) NOT NULL DEFAULT 'NEW',
   PRIMARY KEY (`IndentId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 

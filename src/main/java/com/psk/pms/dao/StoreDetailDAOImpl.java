@@ -138,7 +138,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	@Override
 	public List<StockDetail> getItemNamesInStore(String projectId,
 			String itemName) {
-		List<StockDetail> itemNamesInStock = new ArrayList<>();
+		List<StockDetail> itemNamesInStock = new ArrayList<StockDetail>();
 		String sql;
 		if (!"".equals(itemName)) {
 			sql = "select s.projectId, s.itemname, s.totalQuantity "
@@ -157,7 +157,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	@Override
 	public List<StockDetail> getItemsToReturn(String projectId,
 			String itemName, String fieldUser) {
-		List<StockDetail> itemNamesInStock = new ArrayList<>();
+		List<StockDetail> itemNamesInStock = new ArrayList<StockDetail>();
 		String sql;
 		if (!"".equals(itemName)) {
 			sql = "select s.projectId, s.itemname, s.totalQuantity, "
