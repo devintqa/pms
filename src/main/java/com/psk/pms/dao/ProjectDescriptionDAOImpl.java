@@ -346,8 +346,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				ps.setString(7, projDescDetail.getAliasDescription());
 				ps.setString(8, projDescDetail.getLastUpdatedBy());
 				ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
-				ps.setString(10, projDescDetail.getPricePerQuantity());
-				ps.setString(11, projDescDetail.getTotalCost());
 			}
 
 			@Override
@@ -419,8 +417,6 @@ public class ProjectDescriptionDAOImpl implements ProjectDescriptionDAO {
 				ps.setString(7, projDescDetail.getAliasDescription());
 				ps.setString(8, projDescDetail.getLastUpdatedBy());
 				ps.setDate(9, new java.sql.Date(Calendar.getInstance().getTimeInMillis()));
-				ps.setString(10, projDescDetail.getPricePerQuantity());
-				ps.setString(11, projDescDetail.getTotalCost());
 			}
 
 			@Override
