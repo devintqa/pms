@@ -6,7 +6,6 @@ import com.psk.pms.model.ProjectConfiguration.ItemDetail;
 import com.psk.pms.service.ItemService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.service.ProjectService;
-import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.ViewValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +36,6 @@ public class ViewController extends BaseController {
 
     @Autowired
     private ProjectDescriptionService projectDescriptionService;
-
-    @Autowired
-    private StoreService storeService;
 
     @RequestMapping(value = "/emp/myview/viewDetails/{employeeId}", method = RequestMethod.GET)
     public String viewDetails(@PathVariable String employeeId, Model model) {

@@ -690,7 +690,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public List<Item> getItems() {
-        List<Item> items = new ArrayList<>();
+        List<Item> items = new ArrayList<Item>();
         List<Map<String, Object>> itemList = jdbcTemplate.queryForList(GET_ITEMS);
         for (Map<String, Object> row : itemList) {
             items.add(buildItems(row));
