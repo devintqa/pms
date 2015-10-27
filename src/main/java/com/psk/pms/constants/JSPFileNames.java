@@ -10,5 +10,7 @@ public class JSPFileNames {
 	public static final String BUILD_FIELD_DESCRIPTION = "BuildFieldDescription";
 	public static final String BUILD_PROJECT = "BuildProject";
 	public static final String BUILD_ITEM = "BuildItem";
+	public static final String BUILD_SUPPLIER = "BuildSupplier";
+    public static final String SEARCH_SUPPLIER = "SearchSupplier";
 
 }

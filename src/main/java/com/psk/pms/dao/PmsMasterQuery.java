@@ -191,4 +191,17 @@ public class PmsMasterQuery {
 
 
 
+    public static final String GET_SUPPLIER_DETAILS = "select * from supplierdetails";
+
+    public static final String DELETE_SUPPLIER_DETAIL = "delete from supplierdetails where SupplierId = ?";
+
+    public static final String INSERT_SUPPLIER_DETAIL = "insert into supplierdetails ( TINNumber, SupplierName, SupplierAliasName," +
+            "PhoneNumber, Email, SupplierDescription, LastUpdatedBy, LastUpdatedAt) values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    public static final String UPDATE_SUPPLIER_DETAIL = "update supplierdetails set TINNumber = ?, SupplierName = ?,"+
+     "SupplierAliasName = ?, PhoneNumber = ?, Email = ?, SupplierDescription = ?, LastUpdatedBy = ?, LastUpdatedAt = ?"+
+            " where SupplierId = ?";
+
+    public static final String ALIAS_SUPPLIER_NAME_EXIST = "select count(*) from supplierdetails where SupplierAliasName = ?";
+
 }

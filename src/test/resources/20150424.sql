@@ -717,4 +717,20 @@ CREATE TRIGGER SYNC_PROJECT_DESCRIPTION AFTER DELETE on govprojectdesc
 				(projectdesc.AliasDescription = old.AliasDescription);
 END$$
 
+DROP TABLE IF EXISTS `supplierdetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `supplierdetails` (
+  `SupplierId` int(10) NOT NULL AUTO_INCREMENT,
+  `TINNumber` varchar(50) NOT NULL,
+  `SupplierName` varchar(50) DEFAULT NULL,
+  `SupplierAliasName` varchar(30) NOT NULL,
+  `PhoneNumber` varchar(20) NOT NULL,
+  `Email` varchar(50) DEFAULT NULL,
+  `SupplierDescription` text DEFAULT NULL,
+  `LastUpdatedBy` varchar(30) NOT NULL,
+  `LastUpdatedAt` datetime NOT NULL,
+  PRIMARY KEY (`SupplierId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 

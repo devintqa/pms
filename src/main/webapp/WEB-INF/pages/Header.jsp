@@ -219,6 +219,18 @@
 				<li><a id="profile"
 					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
 						Profile</a></li>
+				<li><a href="#">Create</a>
+					<ul>
+						<li><a id="createSupplier"
+							href="/pms/emp/myview/buildSupplier/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+								Supplier </a></li>
+					</ul></li>
+				<li><a href="#">Search</a>
+					<ul>
+						<li><a id="searchSupplier"
+							href="/pms/emp/myview/searchSupplier/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+								Supplier </a></li>
+					</ul></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 

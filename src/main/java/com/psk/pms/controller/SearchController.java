@@ -1,36 +1,26 @@
 package com.psk.pms.controller;
 
-import static com.psk.pms.Constants.GOVERNMENT;
-
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.psk.pms.constants.JSPFileNames;
 import com.psk.pms.model.*;
+import com.psk.pms.model.DescItemDetail.ItemDetail;
+import com.psk.pms.service.*;
+import com.psk.pms.validator.SearchValidator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
-import com.psk.pms.model.DescItemDetail.ItemDetail;
-import com.psk.pms.service.DepositDetailService;
-import com.psk.pms.service.FieldDescriptionService;
-import com.psk.pms.service.ItemService;
-import com.psk.pms.service.ProjectDescriptionService;
-import com.psk.pms.service.SubProjectService;
-import com.psk.pms.validator.SearchValidator;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
+
+import static com.psk.pms.Constants.GOVERNMENT;
 
 @Controller
 public class SearchController extends BaseController {
@@ -52,9 +42,12 @@ public class SearchController extends BaseController {
 
     @Autowired
     ProjectDescriptionService projectDescriptionService;
-    
+
     @Autowired
     FieldDescriptionService fieldDescriptionService;
+
+    @Autowired
+    PurchaseService purchaseService;
 
     @RequestMapping(value = "/emp/myview/searchProject/{employeeId}", method = RequestMethod.GET)
     public String searchProject(@PathVariable String employeeId, Model model) {
@@ -87,7 +80,7 @@ public class SearchController extends BaseController {
     public String searchSubProject(@PathVariable String employeeId, Model model) {
         LOGGER.info("Search Controller : searchSubProject()");
         SearchDetail searchDetail = new SearchDetail();
-       // searchDetail.setEditSubProject(true);
+        // searchDetail.setEditSubProject(true);
         searchDetail.setEmployeeId(employeeId);
         model.addAttribute("searchSubForm", searchDetail);
         return "SearchSubProject";
@@ -106,6 +99,7 @@ public class SearchController extends BaseController {
         model.addAttribute("employeeObj", employee);
         return "SearchProjectDescription";
     }
+
     @RequestMapping(value = "/emp/myview/searchSubProject/searchSubProject.do", method = RequestMethod.GET)
     public
     @ResponseBody
@@ -121,7 +115,7 @@ public class SearchController extends BaseController {
     List<String> getProjects(
             @RequestParam("term") String name, @RequestParam("employeeId") String empId) {
         LOGGER.info("method = getProjectList()");
-       return fetchProjectInfo(name,empId);
+        return fetchProjectInfo(name, empId);
     }
 
     @RequestMapping(value = "/emp/myview/searchProjectDescription/searchSubProject.do", method = RequestMethod.GET)
@@ -157,8 +151,7 @@ public class SearchController extends BaseController {
         return "SearchSubProject";
     }
 
-   
-    
+
     @RequestMapping(value = "/emp/myview/searchProjectDescription/searchProjectDescDetails.do", method = RequestMethod.POST)
     public String searchProjectDescDetail(
             @ModelAttribute("searchProjDescForm") SearchDetail searchDetail,
@@ -326,5 +319,23 @@ public class SearchController extends BaseController {
         model.addAttribute("baseDescriptionList", projDescDetails);
 
         return "SearchBaseDescription";
+    }
+
+    @RequestMapping(value = "/emp/myview/searchSupplier/{employeeId}", method = RequestMethod.GET)
+    public String searchSupplier(@PathVariable String employeeId, Model model) {
+        LOGGER.info("Search Controller : searchSupplier()");
+        List<Supplier> suppliers = purchaseService.fetchSupplierDetails();
+        model.addAttribute("supplierList", suppliers);
+        return JSPFileNames.SEARCH_SUPPLIER;
+    }
+
+    @RequestMapping(value = "/emp/myview/searchSupplier/deleteSupplier.do", method = RequestMethod.POST)
+    public void deleteSupplier(HttpServletRequest request,
+                               HttpServletResponse response) {
+        String supplierId = request.getParameter("supplierId");
+        LOGGER.info("method = deleteSupplier() ,  supplierId : "
+                + supplierId);
+        purchaseService.deleteSupplier(supplierId);
+
     }
 }
