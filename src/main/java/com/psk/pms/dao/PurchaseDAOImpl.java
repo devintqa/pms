@@ -66,7 +66,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<Supplier> fetchSupplierDetails() {
-        List<Supplier> suppliers = new ArrayList<>();
+        List<Supplier> suppliers = new ArrayList<Supplier>();
         LOGGER.info("Fetching all supplier details");
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_SUPPLIER_DETAILS);
         for (Map<String, Object> row : rows) {
