@@ -71,8 +71,8 @@ public class PmsMasterQuery {
             + "FROM projectdesc p INNER JOIN govprojectdesc pp on p.ProjId = pp.ProjId "
             + "and p.AliasDescription = pp.AliasDescription";
 
-	public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric, "
-			+ "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";
+    public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric, "
+            + "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId";
 
     public static final String baseDescDetail = "SELECT BaseDescId, WorkType, Metric, Quantity, PricePerQuantity, LastUpdatedBy, LastUpdatedAt, Description, BaseDescription FROM basedesc";
 
@@ -167,7 +167,7 @@ public class PmsMasterQuery {
             "VALUES ( ? , ? , ? , ? , ? ,?,?,?)";
 
     public static final String GET_STORE_DETAILS = "select * from storeDetail where projId = ?";
-    
+
     public static final String GET_STOCK_DETAILS = "select * from stockDetail where projectId = ? and itemName=?";
 
     public static final String CREATE_STOCK_DETAILS = "insert into stockDetail(projectId, itemName, totalQuantity) values (?,?,?)";
@@ -183,23 +183,22 @@ public class PmsMasterQuery {
             "FROM dispatchdetail d where d.projectId=?  group by d.fieldUser, d.itemname,d.dispactchedDate";
 
 
-    public static final String GET_ITEMS= "select * from itemCodes";
+    public static final String GET_ITEMS = "select * from itemCodes";
 
     public static final String UPDATE_ITEM = "update itemCodes set itemUnit = ? where itemName= ? and itemType= ?";
 
     public static final String DELETE_ITEM = "delete from  itemCodes where itemName= ? and itemType= ?";
 
 
-
     public static final String GET_SUPPLIER_DETAILS = "select * from supplierdetails";
 
     public static final String DELETE_SUPPLIER_DETAIL = "delete from supplierdetails where SupplierId = ?";
 
-    public static final String INSERT_SUPPLIER_DETAIL = "insert into supplierdetails ( TINNumber, SupplierName, SupplierAliasName," +
-            "PhoneNumber, Email, SupplierDescription, LastUpdatedBy, LastUpdatedAt) values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String INSERT_SUPPLIER_DETAIL = "insert into supplierdetails ( TINNumber, Reason,SupplierName, SupplierAliasName," +
+            "PhoneNumber, Email, SupplierDescription, LastUpdatedBy, LastUpdatedAt) values ( ?, ?, ?, ?, ?,?, ?, ?, ?)";
 
-    public static final String UPDATE_SUPPLIER_DETAIL = "update supplierdetails set TINNumber = ?, SupplierName = ?,"+
-     "SupplierAliasName = ?, PhoneNumber = ?, Email = ?, SupplierDescription = ?, LastUpdatedBy = ?, LastUpdatedAt = ?"+
+    public static final String UPDATE_SUPPLIER_DETAIL = "update supplierdetails set TINNumber = ?,Reason =?, SupplierName = ?," +
+            "SupplierAliasName = ?, PhoneNumber = ?, Email = ?, SupplierDescription = ?, LastUpdatedBy = ?, LastUpdatedAt = ?" +
             " where SupplierId = ?";
 
     public static final String ALIAS_SUPPLIER_NAME_EXIST = "select count(*) from supplierdetails where SupplierAliasName = ?";

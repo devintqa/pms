@@ -12,6 +12,7 @@ public class Supplier {
     private String description;
     private String tinNumber;
     private String lastUpdatedBy;
+    private String reason;
     private Date lastUpdatedAt;
     private String isUpdate;
 
@@ -93,5 +94,13 @@ public class Supplier {
 
     public void setIsUpdate(String isUpdate) {
         this.isUpdate = isUpdate;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 }

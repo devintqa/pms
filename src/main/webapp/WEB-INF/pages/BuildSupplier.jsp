@@ -10,31 +10,16 @@
     <%@include file="Script.jsp" %>
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#showSubProject").hide();
-
-            $('#projId').change(function () {
-                $("#showSubProject").hide();
-                $('#subProjectDesc').attr('checked', false);
-            });
-
-            if ($('#subProjectDesc').is(':checked')) {
-                $("#showSubProject").show();
-            }
-            ;
-
-            if ($('#isUpdate').val() == 'Y') {
-                $("#aliasProjectNameRow").hide();
-                $("#subProjectDescRow").hide();
-                $("#serialNumber").attr("readonly", "readonly");
-                $("#totalCost").attr("readonly", "readonly");
-                $("#pricePerQuantity").attr("readonly", "readonly");
-                $("#createForBothRow").hide();
-            }else{
-                $("#pricePerQuantityRow").hide();
-                $("#totalcostRow").hide();
-            }
+        $(document).on("keydown", "input[name = 'tinNumber']", function () {
+            document.getElementById("reason").disabled = $('#tinNumber').val() != '';
         });
+        $(document).on("keydown", "input[name = 'reason']", function () {
+            document.getElementById("tinNumber").disabled = $('#reason').val() != '';
+        });
+        $(document).ready(function () {
+            document.getElementById("reason").disabled = $('#tinNumber').val() != '';
+            document.getElementById("tinNumber").disabled = $('#reason').val() != '';
+        })
     </script>
 
 </head>
@@ -66,8 +51,15 @@
                             <td>TIN Number <span id="colon">:</span>
                             </td>
                             <td><form:input path="tinNumber"
-                                               placeholder="Enter supplier TIN Number" cssClass="inputText"/></td>
+                                            placeholder="Enter supplier TIN Number" cssClass="inputText"/></td>
                             <td><form:errors path="tinNumber" cssClass="error"/></td>
+                        </tr>
+                        <tr>
+                            <td>Reason<span id="colon">:</span>
+                            </td>
+                            <td><form:input path="reason"
+                                            placeholder="Enter Reason" cssClass="inputText"/></td>
+                            <td><form:errors path="reason" cssClass="error"/></td>
                         </tr>
                         <tr>
                             <td>Supplier Name <span id="colon">:</span>

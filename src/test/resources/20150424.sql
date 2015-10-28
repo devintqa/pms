@@ -722,7 +722,8 @@ DROP TABLE IF EXISTS `supplierdetails`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `supplierdetails` (
   `SupplierId` int(10) NOT NULL AUTO_INCREMENT,
-  `TINNumber` varchar(50) NOT NULL,
+  `TINNumber` varchar(50) DEFAULT NULL,
+  `Reason` varchar(50) DEFAULT NULL,
   `SupplierName` varchar(50) DEFAULT NULL,
   `SupplierAliasName` varchar(30) NOT NULL,
   `PhoneNumber` varchar(20) NOT NULL,

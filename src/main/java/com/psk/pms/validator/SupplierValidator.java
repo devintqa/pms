@@ -12,6 +12,8 @@ import org.springframework.validation.Validator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
+
 public class SupplierValidator extends BaseValidator implements Validator {
 
     @Autowired
@@ -30,12 +32,14 @@ public class SupplierValidator extends BaseValidator implements Validator {
         Matcher matcher;
         Supplier supplier = (Supplier) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tinNumber",
-                "required.tinNumber", "Enter Supplier TIN Number");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "aliasName",
                 "required.aliasName", "Enter Supplier Alias Name.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "phoneNumber",
                 "required.phoneNumber", "Enter Supplier Phone Number.");
+
+        if (isNullOrEmpty(supplier.getTinNumber()) && isNullOrEmpty(supplier.getReason())) {
+            errors.rejectValue("tinNumber", "tinNumber.incorrect", "Enter Tin number or Reason for not entering the Tin Number");
+        }
 
         if (!"Y".equalsIgnoreCase(supplier.getIsUpdate())) {
             LOGGER.info("Validating  supplier Alias Name " + supplier.getAliasName());
@@ -45,7 +49,7 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
 
-        if (!StringUtils.isNullOrEmpty(supplier.getPhoneNumber())) {
+        if (!isNullOrEmpty(supplier.getPhoneNumber())) {
             pattern = Pattern.compile(MOBILE_PATTERN);
             matcher = pattern.matcher(supplier.getPhoneNumber());
             if (!matcher.matches()) {
@@ -55,7 +59,7 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
 
-        if (!StringUtils.isNullOrEmpty(supplier.getPhoneNumber())) {
+        if (!isNullOrEmpty(supplier.getPhoneNumber())) {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(supplier.getEmailAddress());
             if (!matcher.matches()) {

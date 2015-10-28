@@ -24,34 +24,34 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     @Override
     public Supplier fetchSupplierDetail(String supplierId) {
         String GET_SUPPLIER_DETAIL = "select * from supplierdetails where SupplierId = " + supplierId;
-        Supplier supplier = (Supplier) jdbcTemplate.queryForObject(GET_SUPPLIER_DETAIL, new RowMapper<Object>() {
+        return (Supplier) jdbcTemplate.queryForObject(GET_SUPPLIER_DETAIL, new RowMapper<Object>() {
             @Override
             public Object mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Supplier supplier = new Supplier();
-                supplier.setSupplierId(rs.getInt(1));
-                supplier.setTinNumber(rs.getString(2));
-                supplier.setName(rs.getString(3));
-                supplier.setAliasName(rs.getString(4));
-                supplier.setPhoneNumber(rs.getString(5));
-                supplier.setEmailAddress(rs.getString(6));
-                supplier.setDescription(rs.getString(7));
+                supplier.setSupplierId(rs.getInt("SupplierId"));
+                supplier.setTinNumber(rs.getString("TINNumber"));
+                supplier.setReason(rs.getString("Reason"));
+                supplier.setName(rs.getString("SupplierName"));
+                supplier.setAliasName(rs.getString("SupplierAliasName"));
+                supplier.setPhoneNumber(rs.getString("PhoneNumber"));
+                supplier.setEmailAddress(rs.getString("Email"));
+                supplier.setDescription(rs.getString("SupplierDescription"));
                 return supplier;
             }
         });
-        return supplier;
     }
 
     @Override
     public void saveSupplierDetail(Supplier supplierDetail) {
         if ("Y".equalsIgnoreCase(supplierDetail.getIsUpdate())) {
             LOGGER.info("updating  supplier details for supplierid:" + supplierDetail.getSupplierId());
-            jdbcTemplate.update(UPDATE_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),
+            jdbcTemplate.update(UPDATE_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),supplierDetail.getReason(),
                     supplierDetail.getName(), supplierDetail.getAliasName(), supplierDetail.getPhoneNumber(),
                     supplierDetail.getEmailAddress(), supplierDetail.getDescription(), supplierDetail.getLastUpdatedBy(),
                     supplierDetail.getLastUpdatedAt(), supplierDetail.getSupplierId());
         } else {
             LOGGER.info("saving new supplier details supplier Nme" + supplierDetail.getAliasName());
-            jdbcTemplate.update(INSERT_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),
+            jdbcTemplate.update(INSERT_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),supplierDetail.getReason(),
                     supplierDetail.getName(), supplierDetail.getAliasName(), supplierDetail.getPhoneNumber(),
                     supplierDetail.getEmailAddress(), supplierDetail.getDescription(), supplierDetail.getLastUpdatedBy(),
                     supplierDetail.getLastUpdatedAt());
@@ -79,6 +79,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         Supplier supplier = new Supplier();
         supplier.setSupplierId((Integer) row.get("SupplierId"));
         supplier.setTinNumber((String) row.get("TINNumber"));
+        supplier.setReason((String) row.get("Reason"));
         supplier.setName((String) row.get("SupplierName"));
         supplier.setAliasName((String) row.get("SupplierAliasName"));
         supplier.setPhoneNumber((String) row.get("PhoneNumber"));

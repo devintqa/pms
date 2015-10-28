@@ -69,9 +69,9 @@ public class PurchaseController {
                 purchaseService.saveSupplierDetail(supplier);
                 model.addAttribute("supplierForm", supplier);
                 if ("Y".equalsIgnoreCase(supplier.getIsUpdate())) {
-                    model.addAttribute("actionMessage", "Successfully saved supplier Details.");
-                } else {
                     model.addAttribute("actionMessage", "Successfully updated supplier Details.");
+                } else {
+                    model.addAttribute("actionMessage", "Successfully saved supplier Details.");
                 }
 
             }
