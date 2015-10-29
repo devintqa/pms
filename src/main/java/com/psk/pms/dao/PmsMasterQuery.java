@@ -163,8 +163,9 @@ public class PmsMasterQuery {
 
     public static final String DEACTIVATE_EXISTING_LEAD_DETAILS = "update projectLeadDetail set active = 0 where projectId = ? and subProjectId = ?";
 
-    public static final String CREATE_STORE_DETAIL = "INSERT INTO storeDetail (ProjId , itemType , itemName , supplierName ,vehicleNo ,quantityRecieved, recievedDate ,comments)\n" +
-            "VALUES ( ? , ? , ? , ? , ? ,?,?,?)";
+
+    public static final String CREATE_STORE_DETAIL = "INSERT INTO storeDetail (ProjId , itemType , itemName , supplierName ,vehicleNo ,quantityRecieved, recievedDate , recievedBy, checkedBy, tripSheetNumber, storeType, comments)\n"
+			+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     public static final String GET_STORE_DETAILS = "select * from storeDetail where projId = ?";
 

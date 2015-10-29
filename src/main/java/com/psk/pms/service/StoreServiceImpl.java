@@ -36,9 +36,7 @@ public class StoreServiceImpl implements StoreService {
 	@Override
 	@Transactional
 	public void saveStoreDetail(StoreDetail storeDetail) {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-		storeDetail.setSqlRecievedDate(getSQLDate(
-				storeDetail.getRecievedDate(), formatter));
+
 		storeDetailDAO.saveStoreDetail(storeDetail);
 		saveStockDetails(storeDetail);
 	}
@@ -149,6 +147,7 @@ public class StoreServiceImpl implements StoreService {
 
 	}
 
+	@SuppressWarnings("unused")
 	private Date getSQLDate(String dateToBeFormatted, SimpleDateFormat formatter) {
 		Date date = null;
 		try {

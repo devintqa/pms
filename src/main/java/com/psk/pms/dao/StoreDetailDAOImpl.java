@@ -37,11 +37,19 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
 	@Override
 	public void saveStoreDetail(StoreDetail storeDetail) {
-		jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
-				storeDetail.getItemType(), storeDetail.getItemName(),
-				storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
+		jdbcTemplate.update(CREATE_STORE_DETAIL, 
+				storeDetail.getProjId(),
+				storeDetail.getItemType(),
+				storeDetail.getItemName(),
+				storeDetail.getSupplierName(),
+				storeDetail.getVehicleNumber(),
 				storeDetail.getRecievedQuantity(),
-				storeDetail.getSqlRecievedDate(), storeDetail.getComments());
+				storeDetail.getRecievedDate(),
+				storeDetail.getRecievedBy(),
+				storeDetail.getCheckedBy(),
+				storeDetail.getTripSheetNumber(),
+				storeDetail.getStoreType(),
+				storeDetail.getComments());
 	}
 
 	@Override
@@ -216,15 +224,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
 	private StoreDetail buildStoreDetails(Map<String, Object> row) {
 		StoreDetail detail = new StoreDetail();
-		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 		detail.setItemType((String) row.get("itemType"));
 		detail.setItemName((String) row.get("itemName"));
 		detail.setSupplierName((String) row.get("supplierName"));
 		detail.setRecievedQuantity((String) row.get("quantityRecieved"));
 		Date recievedDate = (Date) row.get("recievedDate");
 		detail.setSqlRecievedDate(recievedDate);
-		detail.setRecievedDate(DateFormatter.getStringDate(recievedDate,
-				formatter));
+		detail.setRecievedDate(recievedDate.toString());
 		return detail;
 	}
 
@@ -243,6 +249,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		return dispatchDetail;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public String validateFieldUserForReturn(String projId, String fieldUser) {
 		

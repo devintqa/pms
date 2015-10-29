@@ -22,9 +22,13 @@ $(function() {
 	$("#completionDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);
-    $("#recievedDate").datepicker(
-			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
-			);
+    $("#recievedDate").datetimepicker({
+    	controlType: 'select',
+    	dateFormat: 'yy-mm-dd',
+    	timeFormat: 'HH:mm:ss'
+      });
+    
+	
     $("#dispatchedDate").datepicker(
     		 { dateFormat: 'dd-mm-yy' , changeDate:false, changeMonth:false ,changeYear: false , maxDate: new Date() , minDate: 0 } 
     		).datepicker("setDate", new Date());

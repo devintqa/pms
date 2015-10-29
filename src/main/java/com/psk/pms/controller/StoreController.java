@@ -3,7 +3,6 @@ package com.psk.pms.controller;
 import static com.psk.pms.Constants.FIELD;
 import static com.psk.pms.Constants.ITEM_TYPE;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -85,33 +84,6 @@ public class StoreController extends BaseController {
 		String itemName = httpServletRequest.getParameter("itemName");
 		LOGGER.info("getItemNamesInStore for Project :" + projId);
 		return storeService.getItemNamesInStore(projId, itemName);
-	}
-
-	private JsonData getItemAndFieldUser(HttpServletRequest httpServletRequest) {
-		JsonData jsonData = new JsonData();
-		DispatchDetail dispatchDetail = new DispatchDetail();
-		String projId = httpServletRequest.getParameter("projId");
-		String employeeId = httpServletRequest.getParameter("employeeId");
-		String projectId = fetchProjectId(projId, employeeId);
-		List<String> itemNames = new ArrayList<String>();
-		List<String> fieldUsers = storeService
-				.getSelectedUser(FIELD, projectId);
-		if (!itemNames.isEmpty() && !fieldUsers.isEmpty()) {
-			fieldUsers.add(0, "--Please Select--");
-			itemNames.add(0, "--Please Select--");
-			dispatchDetail.setFieldUsers(fieldUsers);
-			dispatchDetail.setItems(itemNames);
-			Gson gson = new Gson();
-			jsonData.setObject(gson.toJson(dispatchDetail));
-			jsonData.setSuccess(true);
-		}
-		if (itemNames.isEmpty()) {
-			jsonData.setData("Items are not present in Store");
-		}
-		if (fieldUsers.isEmpty()) {
-			jsonData.setData("There are no field users for the project");
-		}
-		return jsonData;
 	}
 
 	@RequestMapping(value = "/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do", method = RequestMethod.GET)
@@ -226,6 +198,7 @@ public class StoreController extends BaseController {
 			if (result.hasErrors()) {
 				return "BuildStoreDetail";
 			}
+
 			storeService.saveStoreDetail(storeDetail);
 			model.addAttribute("successMessage",
 					"Store Details saved successfully");
@@ -304,7 +277,7 @@ public class StoreController extends BaseController {
 			jsonData.setObject(gson.toJson(result));
 			jsonData.setSuccess(true);
 		} else {
-			jsonData.setData("Itemps Not dispatched to this Field Engineer to Return");
+			jsonData.setData("No Dispatched Details Found For The Selected Field Engineer");
 			jsonData.setSuccess(false);
 		}
 		return jsonData;

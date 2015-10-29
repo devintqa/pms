@@ -532,10 +532,15 @@ CREATE TABLE `storeDetail` (
   `vehicleNo` varchar(30) NOT NULL,
   `quantityRecieved` varchar(30) NOT NULL,
   `recievedDate` datetime NOT NULL,
+  `recievedBy` VARCHAR(50) NOT NULL,
+  `checkedBy` VARCHAR(50) NOT NULL,
+  `tripSheetNumber` VARCHAR(50)  NOT NULL,
+  `storeType` VARCHAR(15)  NOT NULL,
   `comments` varchar(200) NOT NULL,
   PRIMARY KEY (`storeDetailId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
 
 
 --

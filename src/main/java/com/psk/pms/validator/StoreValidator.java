@@ -48,6 +48,12 @@ public class StoreValidator extends BaseValidator implements Validator {
                 "required.comments", "Enter Comments");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "supplierName",
                 "required.supplierName", "Enter the Supplier Name");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recievedBy",
+                "required.supplierName", "Enter Revieved By Name");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "checkedBy",
+                "required.supplierName", "Enter Checked By Name");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "tripSheetNumber",
+                "required.supplierName", "Enter the TripSheet Number");
 
         if (!StringUtils.isNullOrEmpty(storeDetail.getRecievedQuantity())) {
             pattern = Pattern.compile(ID_PATTERN);
