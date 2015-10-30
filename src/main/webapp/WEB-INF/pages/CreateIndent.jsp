@@ -5,7 +5,7 @@
 <!doctype html>
 <html>
 <head>
-<script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5.js"></script>
+<script src="<c:url value="/resources/js/md5.js" />"></script>
 <script>
 var initDocHash = '';
 function makeHashOnLoad(){
