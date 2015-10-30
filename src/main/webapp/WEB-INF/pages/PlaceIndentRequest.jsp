@@ -29,6 +29,36 @@
                 }
             });
 
+            $("#rejectIndentRequest").click(function() {
+                var indentId = $('#indentId').val();
+                var employeeId = $('#employeeId').val();
+                var indentStatus = 'REJECTED';
+                $.ajax({
+    				type : "POST",
+    				url : "placeIndentRequest.do",
+    				cache : false,
+    				data : "indentId="+indentId+"&employeeId="+employeeId+"&indentStatus="+indentStatus,
+    				success : function(response) {
+    					 $("#dialog-confirm").html(response);
+    					 $("#dialog-confirm").dialog({
+                             modal: true,
+                             title: "Message!",
+                             height: 200,
+                             width: 300,
+                             buttons: {
+                                 Ok: function () {
+                                     $(this).dialog("close");
+                                    
+                                 }
+                             },
+    					 close: function( event, ui ) {
+    						 window.location = "/pms/emp/myview/"+employeeId;
+    					 }
+                         });
+    					
+    				}
+    			});
+            });
         
         $("#placeIndentRequest").click(function() {
             var indentId = $('#indentId').val();
@@ -109,6 +139,8 @@
 				
 				<c:if test="${(employeeObj.employeeRole eq 'Technical Manager') or (employeeObj.employeeRole eq 'General Manager') and (indentStatus ne 'PENDING PURCHASE')}">
 					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
+					
+					<input class="button" aria-indent-status="${indentStatus}" type="button" id="rejectIndentRequest" value="Reject"/>
 				</c:if>
 				
 				</center>

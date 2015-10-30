@@ -34,4 +34,6 @@ public interface FieldDescriptionDAO {
 
 	List<Indent> getIndentListByStatus(String status);
 
+	Integer upateIndentDescription(Indent indent);
+
 }

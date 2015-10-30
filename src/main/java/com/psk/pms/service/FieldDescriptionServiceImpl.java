@@ -33,7 +33,10 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 
 	@Override
 	public Integer saveIndentDescription(Indent indent) {
+		if(indent.getIndentId().equals("0"))
 		 return fieldDescriptionDAO.saveIndentDescription(indent);
+		else
+			return fieldDescriptionDAO.upateIndentDescription(indent);
 	}
 
 	@Override

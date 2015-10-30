@@ -204,7 +204,7 @@
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
 									<td><a
-										href="/pms/emp/myview/indent/createIndent?employeeId=${employeeObj.employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">Approve</a>
+										href="/pms/emp/myview/indent/createIndent?employeeId=${employeeObj.employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}">Approve</a>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -239,7 +239,7 @@
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
 									<td><a
-										href="/pms/emp/myview/indent/createIndent?employeeId=${employeeObj.employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">Approve</a>
+										href="/pms/emp/myview/indent/createIndent?employeeId=${employeeObj.employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}">Approve</a>
 								</tr>
 							</c:forEach>
 						</c:if>

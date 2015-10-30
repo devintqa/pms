@@ -277,6 +277,8 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			return "PENDING LEVEL 2 APPROVAL";
 		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 2 APPROVAL")){
 			return "PENDING PURCHASE";
+		}else if(currentStatus.equalsIgnoreCase("REJECTED")){
+			return currentStatus;
 		}else{
 			return null;
 		}
@@ -287,7 +289,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		Map < String, Object > descQty = new HashMap< String, Object>();
 		String sql = null;
 		if (null!=projId) {
-			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status <> 'NEW') group by projdescid";
+			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status not in ('NEW', 'REJECTED')) group by projdescid";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 		for (Map < String, Object > row: rows) {
@@ -351,6 +353,67 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			indentList.add(transformer.buildIndent(row));
 		}
 		return indentList;
+	}
+
+	@Override
+	public Integer upateIndentDescription(Indent indent) {
+		Integer indentId = new Integer(indent.getIndentId());
+		try {
+			if(indent.getIndentDescList().size() > 0){
+				updateIndent(indent);
+				
+				for(IndentDesc indentDesc: indent.getIndentDescList()){
+					Integer indentDescId = new Integer(indentDesc.getIndentDescId());
+					updateIndentDesc(indentId, indentDesc);
+					updateIndentDescItem(indentDescId, indentDesc.getItemDetails());
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
+		return indentId;
+	}
+
+	private Integer updateIndent(Indent indent) {
+		indent.setStatus(indent.getStatus());
+		String updateIndentStatusSql = "UPDATE Indent set StartDate = ?, EndDate = ?, LastUpdatedBy = ? WHERE IndentId = ?";
+		Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStartDate(), indent.getEndDate(), indent.getEmployeeId(), indent.getIndentId()});
+		return updateStatus;
+	}
+	Integer updateIndentDesc(Integer indentId, IndentDesc indentDesc) throws SQLException{
+		
+		String updateIndentStatusSql = "UPDATE IndentDesc set Quantity = ?, Comments = ? where IndentDescId = ? and IndentId = ?";
+		Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{new Double(indentDesc.getPlannedQty()), indentDesc.getComments(), indentDesc.getIndentDescId(), indentId});
+		
+		return updateStatus;
+	}
+	
+	void updateIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList){
+		
+		jdbcTemplate.update("DELETE FROM IndentDescItem WHERE IndentDescId = ?", indentDescId);
+		
+		String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
+				+ "VALUES (?, ?, ?, ?, ?)";
+		jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
+
+			@Override
+			public void setValues(PreparedStatement ps, int i)
+					throws SQLException {
+				ItemDetail itemDetail = itemDetailList.get(i);
+				ps.setString(1, indentDescId.toString());
+				ps.setString(2, itemDetail.getItemName());
+				ps.setString(3, itemDetail.getItemType());
+				ps.setString(4, itemDetail.getItemQty());
+				ps.setString(5, itemDetail.getItemUnit());
+			}
+
+			@Override
+			public int getBatchSize() {
+				return itemDetailList.size();
+			}
+		});
 	}
 
 }

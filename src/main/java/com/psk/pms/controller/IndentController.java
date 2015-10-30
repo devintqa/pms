@@ -116,7 +116,7 @@ public class IndentController extends BaseController {
 	public String createIndent(
 			@RequestParam(value = "employeeId") String employeeId, 
 			@RequestParam(value = "projectId") String projectId, 
-			@RequestParam(value = "projDescs") String projDescs,
+			@RequestParam(required = false, value = "projDescs", defaultValue = "") String projDescs,
 			@RequestParam(required = false, value = "indentId", defaultValue = "0") String indentId,
 			Model model) {
 		String[] projDescId = projDescs.split(",");
@@ -127,11 +127,10 @@ public class IndentController extends BaseController {
 			indent.setEmployeeId(employeeId);
 		}else{
 			indent = new Indent();
-			indent.setStartDate(null);
-			indent.setEndDate(null);
+			indent.setStatus("NEW");
 			indent.setProjId(projectId);
 			indent.setEmployeeId(employeeId);
-			indent.setIndentId("_");
+			indent.setIndentId(indentId);
 		}
 		indentDescList = new ArrayList<IndentDesc>();
 		for(int i=0; i<projDescId.length; i++){

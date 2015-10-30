@@ -85,7 +85,7 @@
 									<td>${indent.startDate}</td>
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
-									<td><a href="/pms/emp/myview/indent/createIndent?employeeId=${employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}&projDescs=">Detail</a>
+									<td><a href="/pms/emp/myview/indent/createIndent?employeeId=${employeeId}&projectId=${indent.projId}&indentId=${indent.indentId}">Detail</a>
 									&nbsp;&nbsp;<a href="/pms/emp/myview/indent/itemToRequest?employeeId=${employeeId}&indentId=${indent.indentId}&status=${indent.status}">Summary</a>
 								</tr>
 							</c:forEach>
