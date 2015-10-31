@@ -63,8 +63,8 @@ public class SupplierValidator extends BaseValidator implements Validator {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(supplier.getEmailAddress());
             if (!matcher.matches()) {
-                errors.rejectValue("email",
-                        "email.incorrect",
+                errors.rejectValue("emailAddress",
+                        "emailAddress.incorrect",
                         "Enter a correct email Id.");
             }
         }

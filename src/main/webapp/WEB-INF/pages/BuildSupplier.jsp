@@ -41,6 +41,13 @@
                     <legend>Supplier Details</legend>
                     <table>
                         <tr>
+                            <td>Supplier Name <span id="colon">:</span>
+                            </td>
+                            <td><form:textarea id="name" path="name"
+                                               placeholder="Enter supplier name" cssClass="inputText"/></td>
+                            <td><form:errors path="name" cssClass="error"/></td>
+                        </tr>
+                        <tr>
                             <td>Alias Supplier Name <span id="colon">:</span>
                             </td>
                             <td><form:input id="aliasName" path="aliasName"
@@ -57,17 +64,11 @@
                         <tr>
                             <td>Reason<span id="colon">:</span>
                             </td>
-                            <td><form:input path="reason"
-                                            placeholder="Enter Reason" cssClass="inputText"/></td>
+                            <td><form:textarea path="reason"
+                                               placeholder="Enter Reason" cssClass="inputText"/></td>
                             <td><form:errors path="reason" cssClass="error"/></td>
                         </tr>
-                        <tr>
-                            <td>Supplier Name <span id="colon">:</span>
-                            </td>
-                            <td><form:input id="name" path="name"
-                                            placeholder="Enter supplier name" cssClass="inputText"/></td>
-                            <td><form:errors path="name" cssClass="error"/></td>
-                        </tr>
+
                         <tr>
                             <td>Mobile Number <span id="colon">:</span>
                             </td>

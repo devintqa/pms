@@ -69,15 +69,14 @@ public class PurchaseController {
                 purchaseService.saveSupplierDetail(supplier);
                 model.addAttribute("supplierForm", supplier);
                 if ("Y".equalsIgnoreCase(supplier.getIsUpdate())) {
-                    model.addAttribute("actionMessage", "Successfully updated supplier Details.");
+                    model.addAttribute("actionMessage", "Supplier Details updated Successfully");
                 } else {
-                    model.addAttribute("actionMessage", "Successfully saved supplier Details.");
+                    model.addAttribute("actionMessage", "Supplier Details saved Successfully");
                 }
-
             }
         } catch (Exception e) {
             LOGGER.error("Error occurred while saving supplier details");
-            model.addAttribute("actionMessage", "Failed  to save supplier Details."+e.getMessage());
+            model.addAttribute("actionMessage", "Failed  to save supplier Details." + e.getMessage());
             return BUILD_SUPPLIER;
         }
         return BUILD_SUPPLIER;
