@@ -268,20 +268,19 @@ public class StoreController extends BaseController {
 		LOGGER.info("getFieldUsers for Project :"
 				+ httpServletRequest.getParameter("projId"));
 		JsonData jsonData = new JsonData();
+		jsonData.setData("No Dispatched Details Found For The Selected Field Engineer");
 		String projId = httpServletRequest.getParameter("projId");
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		String result = storeService.validateFieldUserForReturn(projId,
 				fieldUser);
-		List<StockDetail> resObject = storeService.getItemsToReturn(projId,fieldUser);
+		List<StockDetail> items = storeService.getItemsToReturn(projId,fieldUser);
 		
 		Gson gson = new Gson();
-		if (Integer.parseInt(result) > 0) {
+		if (Integer.parseInt(result) > 0 && items.size()>0) {
 
-			jsonData.setObject(gson.toJson(resObject));
+			jsonData.setObject(gson.toJson(items));
 			jsonData.setSuccess(true);
-		} else {
-			jsonData.setData("No Dispatched Details Found For The Selected Field Engineer");
-			jsonData.setSuccess(false);
+			
 		}
 		return jsonData;
 	}

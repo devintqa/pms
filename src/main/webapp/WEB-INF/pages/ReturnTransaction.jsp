@@ -174,22 +174,17 @@
 																		.parseJSON(response.object);
 
 																$(function() {
+																	 var trHTML = '';
+																	 $("#returnDetailTable > tbody").html("");
 																	$.each(obj,function(i,item)
 																		{
-																			$('<tr>').append(
-																			$('<td  width="50px" id ="td1">').text(item.itemName),
-																			$('<td  width="50px" id = "td2">').text(item.dispatchedQuantity),
-																			$('<td  width="50px"><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" value="0">'))
-																			.appendTo('#returnDetailTable');
-
+																		trHTML += '<tbody id ="tbodyid"><tr><td>' + item.itemName + '</td><td>' + item.dispatchedQuantity + '</td><td><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" value="0"></td></tr></tbody>';
 																		});
+																	 $('#returnDetailTable').append(trHTML);
 																});
 															} else {
-
-																$("#projId")
-																		.prop(
-																				'selectedIndex',
-																				0);
+																$("#returnDetailTable");
+																
 																$(
 																		"#returnDetailTable")
 																		.hide();
@@ -253,7 +248,7 @@
             	 var itemName = $("#td1").text();
                  var dispatchedQuantity = $("#td2").text();
                  var returnedQuantity = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-                 var obj = new ReturnItems(itemName, totalQuantity, returnedQuantity);
+                 var obj = new ReturnItems(itemName, dispatchedQuantity, returnedQuantity);
                  if (itemName && dispatchedQuantity && returnedQuantity || !(itemName && dispatchedQuantity && returnedQuantity)) {
                      itemObjArray.push(obj);
                  } else {
