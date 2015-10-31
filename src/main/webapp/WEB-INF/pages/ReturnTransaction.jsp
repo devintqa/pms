@@ -178,7 +178,7 @@
 																	 $("#returnDetailTable > tbody").html("");
 																	$.each(obj,function(i,item)
 																		{
-																		trHTML += '<tbody id ="tbodyid"><tr><td>' + item.itemName + '</td><td>' + item.dispatchedQuantity + '</td><td><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" value="0"></td></tr></tbody>';
+																		trHTML += '<tbody id ="tbodyid"><tr><td id = "td1">' + item.itemName + '</td><td  id = "td2">' + item.dispatchedQuantity + '</td><td><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" value="0"></td></tr></tbody>';
 																		});
 																	 $('#returnDetailTable').append(trHTML);
 																});

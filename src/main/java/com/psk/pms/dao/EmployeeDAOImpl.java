@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -46,8 +47,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 sql, String.class, empId);
         return role;
     }
-
+    
+    @Cacheable(value="employeeCache")
     public Employee getEmployeeDetails(String empId) {
+    	System.out.println("calling getEmployeeDetails#"+empId);
         String sql = "SELECT * FROM employee where empId = ?";
         return (Employee) jdbcTemplate.queryForObject(sql, new Object[]{empId}, new EmployeeRowMapper());
     }
