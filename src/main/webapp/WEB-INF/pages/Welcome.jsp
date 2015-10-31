@@ -83,14 +83,16 @@
 										<a
 											href="javascript:manageUser('${signReq.employeeId}', 'enable');"
 											class="userAction">Enable</a> &nbsp;&nbsp;
-                            <a
+                            			<a
 											href="javascript:manageUser('${signReq.employeeId}', 'deny');"
 											class="userAction">Deny</a>
-									</c:if> <c:if test="${listValue.enabled eq '1'}">
+									</c:if> 
+									<c:if test="${listValue.enabled eq '1'}">
 										<a
 											href="javascript:manageUser('${signReq.employeeId}', 'disable');"
 											class="userAction">Disable</a>
-									</c:if></td>
+									</c:if>
+								</td>
 							</tr>
 						</c:forEach>
 					</c:if>
@@ -188,6 +190,7 @@
 					<thead>
 						<tr>
 							<th>Indent No</th>
+							<th>Project</th>
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Status</th>
@@ -200,6 +203,7 @@
 							<c:forEach var="indent" items="${indentList}">
 								<tr>
 									<td>${indent.indentId}</td>
+									<td>${indent.description}</td>
 									<td>${indent.startDate}</td>
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
@@ -223,6 +227,7 @@
 					<thead>
 						<tr>
 							<th>Indent No</th>
+							<th>Project</th>
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Status</th>
@@ -235,6 +240,7 @@
 							<c:forEach var="indent" items="${indentList}">
 								<tr>
 									<td>${indent.indentId}</td>
+									<td>${indent.description}</td>
 									<td>${indent.startDate}</td>
 									<td>${indent.endDate}</td>
 									<td>${indent.status}</td>
