@@ -32,7 +32,7 @@
 															$.getJSON(
 																	"/pms/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do",
 																	{
-						 												itemName : request.term,
+																		itemName : request.term,
 																		projId : projId,
 																		fieldUser : fieldUser
 																	},
@@ -179,7 +179,7 @@
 																			$('<tr>').append(
 																			$('<td  width="50px" id ="td1">').text(item.itemName),
 																			$('<td  width="50px" id = "td2">').text(item.dispatchedQuantity),
-																			$('<td  width="50px"><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" placeholder="Enter Requested Quantity">'))
+																			$('<td  width="50px"><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" value="0">'))
 																			.appendTo('#returnDetailTable');
 
 																		});
@@ -359,8 +359,7 @@
 							<div id="result"
 								style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
 							<br>
-							<td><input class="button" type="button" value="Add"
-								onclick="insertReturnDetailRow()" /></td>
+							
 							<td><input class="button" type="button" value="Submit"
 								onclick="saveReturnedItem()" /></td>
 
