@@ -90,11 +90,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public boolean isAliasSupplierNameAlreadyExist(String aliasSupplierName) {
-        int count = (Integer) jdbcTemplate.queryForObject(ALIAS_SUPPLIER_NAME_EXIST, Integer.class, aliasSupplierName);
-        if (count > 1) {
-            return true;
-        } else {
-            return false;
-        }
+        int count = jdbcTemplate.queryForObject(ALIAS_SUPPLIER_NAME_EXIST, Integer.class, aliasSupplierName);
+        return count > 0;
     }
 }

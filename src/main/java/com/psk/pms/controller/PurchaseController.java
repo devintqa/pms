@@ -77,7 +77,7 @@ public class PurchaseController {
             }
         } catch (Exception e) {
             LOGGER.error("Error occurred while saving supplier details");
-            model.addAttribute("actionMessage", "Failed  to save supplier Details.");
+            model.addAttribute("actionMessage", "Failed  to save supplier Details."+e.getMessage());
             return BUILD_SUPPLIER;
         }
         return BUILD_SUPPLIER;

@@ -59,7 +59,7 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
 
-        if (!isNullOrEmpty(supplier.getPhoneNumber())) {
+        if (!isNullOrEmpty(supplier.getEmailAddress())) {
             pattern = Pattern.compile(EMAIL_PATTERN);
             matcher = pattern.matcher(supplier.getEmailAddress());
             if (!matcher.matches()) {
