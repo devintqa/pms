@@ -263,11 +263,16 @@ public class ItemController extends BaseController {
         descItemDetail.setProjDescId(new Integer(projDescId));
         descItemDetail.setProjDescSerial(projDescSerial);
         descItemDetail.setDescType(descType);
+        ProjDescDetail projDescDetail = null;
+        projDescDetail = projectDescService.getProjectDescDetail(projDescId, null, descType);
         descItemDetail = itemService.getProjectDescriptionItems(descItemDetail);
         if (Constants.GOVERNMENT.equalsIgnoreCase(descType)) {
             ProjectDetail projectDetail = getProjectDocument(projId, employeeId);
             itemService.updateMaterialPriceWithLeadDetailsPrice(descItemDetail.getItemDetail(), projId, subProjId);
             itemService.applyWorkoutPercentage(descItemDetail.getItemDetail(), projectDetail.getWorkoutPercentage());
+        }
+        if(projDescDetail.isConversionFalg()){
+            showItemCostWithItemRate(descItemDetail.getItemDetail(),projDescDetail.getConversionValue());
         }
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(descItemDetail.getItemDetail(), new TypeToken<List<ItemDetail>>() {
@@ -278,11 +283,21 @@ public class ItemController extends BaseController {
         JsonArray jsonArray = element.getAsJsonArray();
         descItemDetail.setDescItemDetail(jsonArray.toString());
         descItemDetail.setEmployeeId(employeeId);
+        descItemDetail.setConversionFlag(projDescDetail.isConversionFalg());
+        descItemDetail.setConversionValue(projDescDetail.getConversionValue());
         model.addAttribute("descItemForm", descItemDetail);
-        ProjDescDetail projDescDetail = null;
-        projDescDetail = projectDescService.getProjectDescDetail(projDescId, null, descType);
         model.addAttribute("projDescForm", projDescDetail);
         return "DescItem";
+    }
+
+    private void showItemCostWithItemRate(List<ItemDetail> itemDetails,String conversionRate) {
+        LOGGER.info("Applying conversion rate before showing");
+        BigDecimal conversionValue = new BigDecimal(conversionRate);
+        for(ItemDetail itemDetail : itemDetails){
+            BigDecimal itemCost = new BigDecimal(itemDetail.getItemCost());
+            BigDecimal convertedValue = itemCost.multiply(conversionValue);
+            itemDetail.setItemCost(convertedValue.toString());
+        }
     }
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/saveProjDescItems.do", method = RequestMethod.POST, consumes = "application/json")
@@ -293,8 +308,21 @@ public class ItemController extends BaseController {
         ObjectMapper mapper = new ObjectMapper();
         List<com.psk.pms.model.DescItemDetail.ItemDetail> itemList = mapper.readValue(descItemDetail.getDescItemDetail(), mapper.getTypeFactory().constructCollectionType(List.class, com.psk.pms.model.DescItemDetail.ItemDetail.class));
         descItemDetail.setItemDetail(itemList);
+        if(descItemDetail.isConversionFlag()){
+            applyConversionForItems(itemList,descItemDetail.getConversionValue());
+        }
         boolean status = itemService.insertProjectDescriptionItems(descItemDetail);
         return status;
+    }
+
+    private void applyConversionForItems(List<ItemDetail> itemList, String conversionRate) {
+        LOGGER.info("Applying conversion rate for items ....");
+        BigDecimal conversionValue = new BigDecimal(conversionRate);
+        for (ItemDetail itemDetail : itemList) {
+            BigDecimal itemCost = new BigDecimal(itemDetail.getItemCost());
+            BigDecimal convertedValue = itemCost.divide(conversionValue);
+            itemDetail.setItemCost(convertedValue.toString());
+        }
     }
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/saveBaseDescItems.do", method = RequestMethod.POST, consumes = "application/json")

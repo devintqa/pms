@@ -27,6 +27,8 @@ public class ProjDescDetail {
 	private Date lastUpdatedAt;
 	private String baseCategory;
 	private String descType;
+    private String conversionValue;
+    private boolean conversionFalg;
 	private boolean applicableForBoth;
 
 	public String getMetric() {
@@ -220,4 +222,20 @@ public class ProjDescDetail {
 	public void setApplicableForBoth(boolean applicableForBoth) {
 		this.applicableForBoth = applicableForBoth;
 	}
+
+    public String getConversionValue() {
+        return conversionValue;
+    }
+
+    public void setConversionValue(String conversionValue) {
+        this.conversionValue = conversionValue;
+    }
+
+    public boolean isConversionFalg() {
+        return conversionFalg;
+    }
+
+    public void setConversionFalg(boolean conversionFalg) {
+        this.conversionFalg = conversionFalg;
+    }
 }

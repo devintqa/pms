@@ -151,10 +151,17 @@ public class ItemDAOImpl implements ItemDAO {
             BigDecimal quantity = (BigDecimal) row.get("Quantity");
             totalCost = sumItemCost.multiply(quantity);
         }
-        String updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
-        jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),
-                descItemDetail.getProjDescId()});
-
+        String updateSql;
+        if(descItemDetail.isConversionFlag()){
+            updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =? , ConversionRate = ? WHERE ProjDescId = ?";
+            BigDecimal conversionRate = new BigDecimal(descItemDetail.getConversionValue());
+            jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),conversionRate.toString(),
+                    descItemDetail.getProjDescId()});
+        }else {
+             updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+            jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),
+                    descItemDetail.getProjDescId()});
+        }
         return true;
     }
 

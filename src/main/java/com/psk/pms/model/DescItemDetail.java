@@ -13,6 +13,8 @@ public class DescItemDetail {
 	private String employeeId;
 	private String descItemDetail;
 	private String itemType;
+    private boolean conversionFlag;
+    private String conversionValue;
 
 	private List<ItemDetail> itemDetail;
 
@@ -96,7 +98,23 @@ public class DescItemDetail {
 		this.descType = descType;
 	}
 
-	public static class     ItemDetail {
+    public boolean isConversionFlag() {
+        return conversionFlag;
+    }
+
+    public void setConversionFlag(boolean conversionFlag) {
+        this.conversionFlag = conversionFlag;
+    }
+
+    public String getConversionValue() {
+        return conversionValue;
+    }
+
+    public void setConversionValue(String conversionValue) {
+        this.conversionValue = conversionValue;
+    }
+
+    public static class     ItemDetail {
 
 		public ItemDetail() {
 
@@ -183,6 +201,8 @@ public class DescItemDetail {
 		public void setLabel(String label) {
 			this.label = label;
 		}
+
+
 	}
 
 }

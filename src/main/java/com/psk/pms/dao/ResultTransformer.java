@@ -159,6 +159,13 @@ public class ResultTransformer {
 			projDescDetail.setTotalCost(totalCost.toString());
 		}
 		projDescDetail.setProjDescId((Integer) row.get("ProjDescId"));
+        BigDecimal  conversionRate = (BigDecimal) row.get("ConversionRate");
+        if(null == conversionRate){
+            projDescDetail.setConversionFalg(false);
+        }else{
+            projDescDetail.setConversionFalg(true);
+            projDescDetail.setConversionValue(conversionRate.toString());
+        }
 		return projDescDetail;
 	}
     

@@ -13,8 +13,11 @@
 	function refreshParent() {
 	    window.opener.location.reload();
 	}
-	
+
 	$(document).ready(function () {
+         if(!$('#conversionFlag').is(":checked")){
+            $('#conversionValueRow').hide();
+         }
 		var selector = "input[name = 'itemName']";
 		
 		$(document).on('keydown.autocomplete', selector, function() {
@@ -54,6 +57,16 @@
       $('#slideClose').click(function(){
     	  	$(this).toggle();
     	  	$('#slideOpen').toggle();
+		});
+
+		$('#conversionFlag').change(function () {
+		    if ($(this).is(":checked")) {
+		        $('#conversionValueRow').show();
+		    }else{
+		        $('#conversionValue').val('');
+		        $('#conversionValueRow').hide();
+		        calculateTotalItemCost();
+		    }
 		});
 	});
 	
@@ -149,7 +162,10 @@
 			if(itemCost){
 				totalItemCost = parseFloat(totalItemCost) + parseFloat(itemCost);
 			}
-			
+		}
+		if($('#conversionFlag').is(":checked")){
+		    var conValue = $('#conversionValue').val();
+		    totalItemCost = totalItemCost / parseInt(conValue) ;
 		}
 		document.getElementById('totalItemCost').value = totalItemCost.toFixed(2);;
 	}
@@ -210,6 +226,12 @@
 		itemDescForm["projDescId"] = document.getElementById('projDescId').value;
 		itemDescForm["projDescSerial"] = document.getElementById('projDescSerial').value;
 		itemDescForm["descType"] = document.getElementById('descType').value;
+		itemDescForm["conversionValue"] = document.getElementById('conversionValue').value;
+		if($("#conversionFlag").is(":checked")){
+		    itemDescForm["conversionFlag"] = true;
+		}else{
+		    itemDescForm["conversionFlag"] = false;
+		}
 		itemDescForm["descItemDetail"] = JSON.stringify(itemObjArray);
 		
 		console.log("data = " + JSON.stringify(itemDescForm));
@@ -424,7 +446,6 @@
 		<form:hidden path="projDescSerial" id="projDescSerial" />
 		<form:hidden path="employeeId" id="employeeId" />
 		<form:hidden path="descType" id="descType" />
-		
 		<p><font size="2" color="red">* - If the grid is empty, please configure the item price in project configuration via sync items </font></p>
 		<table id="itemTable" border="1" class="gridView">
 			<tr>
@@ -450,10 +471,20 @@
 
 		</table>
 		<br>
+        <div>
+        	Conversion Required : <form:checkbox name="conversionFlag"
+        			id="conversionFlag" path="conversionFlag"/>
+        </div>
+        <br>
+		<div id="conversionValueRow">
+        	Conversion Rate : <form:input name="conversionValue"
+        			id="conversionValue" type="text" path="conversionValue"/>
+        </div>
+        <br>
+		<div>
 		Amount : <input name="totalItemCost" readonly="readonly"
 			id="totalItemCost" type="text" />
-		<br>
-
+		</div>
 		<br>
 		<input class="button" type="button" id="addItem" value="Add"
 			onclick="insertItemRow()" />
