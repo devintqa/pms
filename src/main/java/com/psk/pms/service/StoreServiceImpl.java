@@ -82,9 +82,9 @@ public class StoreServiceImpl implements StoreService {
 	}
 
 	@Override
-	public List<StockDetail> getItemsToReturn(String projId, String itemName,
+	public List<StockDetail> getItemsToReturn(String projId,
 			String fieldUser) {
-		return storeDetailDAO.getItemsToReturn(projId, itemName, fieldUser);
+		return storeDetailDAO.getItemsToReturn(projId,  fieldUser);
 	}
 
 	@Override

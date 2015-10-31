@@ -22,7 +22,7 @@ public interface StoreDetailDAO {
 
 	List<StockDetail> getStockDetails(int projId);
 
-	List<StockDetail> getItemsToReturn(String projId, String itemName,
+	List<StockDetail> getItemsToReturn(String projId, 
 			String fieldUser);
 
 	List<StockDetail> getItemNamesInStore(String projId, String itemName);

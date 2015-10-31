@@ -37,19 +37,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 
 	@Override
 	public void saveStoreDetail(StoreDetail storeDetail) {
-		jdbcTemplate.update(CREATE_STORE_DETAIL, 
-				storeDetail.getProjId(),
-				storeDetail.getItemType(),
-				storeDetail.getItemName(),
-				storeDetail.getSupplierName(),
-				storeDetail.getVehicleNumber(),
+		jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
+				storeDetail.getItemType(), storeDetail.getItemName(),
+				storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
 				storeDetail.getRecievedQuantity(),
-				storeDetail.getRecievedDate(),
-				storeDetail.getRecievedBy(),
-				storeDetail.getCheckedBy(),
-				storeDetail.getTripSheetNumber(),
-				storeDetail.getStoreType(),
-				storeDetail.getComments());
+				storeDetail.getRecievedDate(), storeDetail.getRecievedBy(),
+				storeDetail.getCheckedBy(), storeDetail.getTripSheetNumber(),
+				storeDetail.getStoreType(), storeDetail.getComments());
 	}
 
 	@Override
@@ -163,22 +157,20 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	}
 
 	@Override
-	public List<StockDetail> getItemsToReturn(String projectId,
-			String itemName, String fieldUser) {
+	public List<StockDetail> getItemsToReturn(String projectId, String fieldUser) {
 		List<StockDetail> itemNamesInStock = new ArrayList<StockDetail>();
 		String sql;
-		if (!"".equals(itemName)) {
-			sql = "select s.projectId, s.itemname, s.totalQuantity, "
-					+ "sum(CASE WHEN d.dispactchedDate = curdate() AND d.dispatchDesc = 'Dispatched' THEN d.Quantity ELSE 0 END) as dispatchedQuantity "
-					+ "from stockDetail s, dispatchdetail d where s.projectId ='"
-					+ projectId + "'  and s.itemName LIKE '%" + itemName
-					+ "%' " + "and s.ItemName = d.ItemName and d.fieldUser='"
-					+ fieldUser + "'";
 
-			List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-			for (Map<String, Object> row : rows) {
-				itemNamesInStock.add(buildReturnDetails(row));
-			}
+		sql = "select s.projectId, s.itemname, s.totalQuantity, "
+				+ "sum(CASE WHEN d.dispactchedDate = curdate() AND d.dispatchDesc = 'Dispatched' THEN d.Quantity ELSE 0 END)"
+				+ "as dispatchedQuantity "
+				+ "from stockDetail s, dispatchdetail d where s.projectId ='"
+				+ projectId + "' and d.dispactchedDate = curdate()  and s.ItemName = d.ItemName and d.fieldUser='"
+				+ fieldUser + "'  group by ItemName;";
+
+		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+		for (Map<String, Object> row : rows) {
+			itemNamesInStock.add(buildReturnDetails(row));
 		}
 
 		return itemNamesInStock;
@@ -196,8 +188,9 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	@Override
 	public List<StockDetail> getStockDetails(int projId) {
 		List<StockDetail> stockDetails = new ArrayList<StockDetail>();
-		String sql = "select * from stockdetail where projectId ='"+projId+"'";
-		
+		String sql = "select * from stockdetail where projectId ='" + projId
+				+ "'";
+
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		for (Map<String, Object> row : rows) {
 			stockDetails.add(buildStockDetails(row));
@@ -252,9 +245,10 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	@SuppressWarnings("deprecation")
 	@Override
 	public String validateFieldUserForReturn(String projId, String fieldUser) {
-		
-		String sql = "select count(1) from dispatchdetail where projectId = '"+projId+"' and "
-				+ "fieldUser='"+fieldUser+"' and dispatchDesc = 'Dispatched'";
+
+		String sql = "select count(1) from dispatchdetail where projectId = '"
+				+ projId + "' and " + "fieldUser='" + fieldUser
+				+ "' and dispatchDesc = 'Dispatched'";
 		Integer result = jdbcTemplate.queryForInt(sql);
 		return result.toString();
 	}

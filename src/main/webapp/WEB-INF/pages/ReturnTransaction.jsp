@@ -17,48 +17,36 @@
 							$("#itemNameField").hide();
 							$("#returnDetailTable").hide();
 						}
-						
+
 						var selector = "input[name = 'itemName']";
-						$(document)
-								.on(
-										'keydown.autocomplete',
-										selector,
-										function() {
-											$(this)
-													.autocomplete(
+						$(document).on(
+						'keydown.autocomplete',
+							selector,function() {
+							$(this).autocomplete(
+									{
+										source : function(
+											request,response) {
+											var projId = $(
+													'#projId').val();
+											var fieldUser = $('#fieldUser').val();
+															$.getJSON(
+																	"/pms/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do",
+																	{
+																		itemName : request.term,
+																		projId : projId,
+																		fieldUser : fieldUser
+																	},
+													function(data) {response($.map(
+															data,function(item) 
 															{
-																source : function(
-																		request,
-																		response) {
-																	var projId = $(
-																			'#projId')
-																			.val();
-																	var fieldUser = $(
-																	'#fieldUser')
-																	.val();
-																	$
-																			.getJSON(
-																					"/pms/emp/myview/returnTransaction/getItemNamesInStoreForReturn.do",
-																					{
-																						itemName : request.term,
-																						projId : projId,
-																						fieldUser : fieldUser
-																					},
-																					function(
-																							data) {
-																						response($
-																								.map(
-																										data,
-																										function(
-																												item) {
-																											return {
-																												label : item.itemName,
-																												value : item.itemName,
-																												dispatchedQuantity : item.dispatchedQuantity,
-																												projId : item.itemName
-																											};
-																										}))
-																					});
+																return {
+																	label : item.itemName,
+																	value : item.itemName,
+																	dispatchedQuantity : item.dispatchedQuantity,
+																	projId : item.itemName
+																	};
+															}))
+															});
 																},
 																select : function(
 																		event,
@@ -132,7 +120,7 @@
 																		.html(
 																				options);
 															} else {
-																
+
 																$("#projId")
 																		.prop(
 																				'selectedIndex',
@@ -162,153 +150,120 @@
 														}
 													});
 											$("#itemNameField").show();
-										});		
-						
-						$("#fieldUser")
-						.change(
-								function() {
-									var projId = $('#projId').val();
-									var fieldUser = $('#fieldUser')
-											.val();
-									$
-											.ajax({
-												type : "GET",
-												url : "validateFieldUsersForReturn.do",
-												cache : false,
-												data : "projId="
-														+ projId
-														+ "&fieldUser="
-														+ fieldUser,
-												success : function(
-														response) {
-													if (response.success) {
-														var obj = jQuery
-																.parseJSON(response.object);
-														
-													} else {
-														
-														$("#projId")
-																.prop(
-																		'selectedIndex',
-																		0);
-														$("#returnDetailTable").hide();
-														$("#fieldUser")
-														.prop(
-																'selectedIndex',
-																0);
-														$(
-																"#dialog-confirm")
-																.html(
-																		response.data);
-														$(
-																"#dialog-confirm")
-																.dialog(
-																		{
-																			modal : true,
-																			title : "Warning!",
-																			height : 200,
-																			width : 300,
-																			buttons : {
-																				Ok : function() {
-																					$(
-																							this)
-																							.dialog(
-																									"close");
-																				}
-																			}
-																		});
-													}
-												}
-											});
-									$("#returnDetailTable").show();
-								});						
+										});
 
+						$("#fieldUser")
+								.change(
+										function() {
+											var projId = $('#projId').val();
+											var fieldUser = $('#fieldUser')
+													.val();
+											$
+													.ajax({
+														type : "GET",
+														url : "validateFieldUsersForReturn.do",
+														cache : false,
+														data : "projId="
+																+ projId
+																+ "&fieldUser="
+																+ fieldUser,
+														success : function(
+																response) {
+															if (response.success) {
+																var obj = jQuery
+																		.parseJSON(response.object);
+
+																$(function() {
+																	$.each(obj,function(i,item)
+																		{
+																			$('<tr>').append(
+																			$('<td  width="50px" id ="td1">').text(item.itemName),
+																			$('<td  width="50px" id = "td2">').text(item.dispatchedQuantity),
+																			$('<td  width="50px"><input  class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity" type="text" placeholder="Enter Requested Quantity">'))
+																			.appendTo('#returnDetailTable');
+
+																		});
+																});
+															} else {
+
+																$("#projId")
+																		.prop(
+																				'selectedIndex',
+																				0);
+																$(
+																		"#returnDetailTable")
+																		.hide();
+																$("#fieldUser")
+																		.prop(
+																				'selectedIndex',
+																				0);
+																$(
+																		"#dialog-confirm")
+																		.html(
+																				response.data);
+																$(
+																		"#dialog-confirm")
+																		.dialog(
+																				{
+																					modal : true,
+																					title : "Warning!",
+																					height : 200,
+																					width : 300,
+																					buttons : {
+																						Ok : function() {
+																							$(
+																									this)
+																									.dialog(
+																											"close");
+																						}
+																					}
+																				});
+															}
+														}
+													});
+											$("#returnDetailTable").show();
+										});
 
 					});
-	function insertReturnDetailRow() {
-		var returnDetailTable = document.getElementById('returnDetailTable');
-		var new_row = returnDetailTable.rows[1].cloneNode(true);
-		var len = returnDetailTable.rows.length;
 
-		var itemName = new_row.cells[0].getElementsByTagName('input')[0];
-		itemName.id += len;
-		itemName.value = '';
-
-		var dispatchedQuantity = new_row.cells[1].getElementsByTagName('input')[0];
-		dispatchedQuantity.id += len;
-		dispatchedQuantity.value = '';
-
-		var returnedQuantity = new_row.cells[2].getElementsByTagName('input')[0];
-		returnedQuantity.id += len;
-		returnedQuantity.value = '';
-
-		returnDetailTable.appendChild(new_row);
-	}
-
-	function validateItemNameExistence(newItemName) {
-		var itemTable = document.getElementById('returnDetailTable');
-
-		var len = itemTable.rows.length;
-		var exists = false;
-		for (i = 1; i <= len - 1; i++) {
-			var itemName = itemTable.rows[i].cells[0]
-					.getElementsByTagName('input')[0].value;
-			if (itemName == newItemName) {
-				exists = true;
-				break;
-			}
-		}
-		return exists;
-	}
-	
 	function ReturnItems(itemName, dispatchedQuantity, returnedQuantity) {
-		this.itemName = itemName;
-		this.dispatchedQuantity = dispatchedQuantity;
-		this.returnedQuantity = returnedQuantity;
-	}
-	
+        this.itemName = itemName;
+        this.dispatchedQuantity = dispatchedQuantity;
+        this.returnedQuantity = returnedQuantity;
+    }
+
 	function saveReturnedItem() {
 		var itemTable = document.getElementById('returnDetailTable');
 		var itemObjArray = [];
 		var returnDetailForm = {};
 		var len = itemTable.rows.length;
 		var err = null;
-		if (1 == len - 1) {
-			var itemName = itemTable.rows[1].cells[0]
-					.getElementsByTagName('input')[0].value;
-			var dispatchedQuantity = itemTable.rows[1].cells[1]
-					.getElementsByTagName('input')[0].value;
-			var returnedQuantity = itemTable.rows[1].cells[2]
-					.getElementsByTagName('input')[0].value;
-			var obj = new ReturnItems(itemName, dispatchedQuantity,
-					returnedQuantity);
-			if (itemName && dispatchedQuantity && returnedQuantity
-					|| !(itemName && dispatchedQuantity && returnedQuantity)) {
-				itemObjArray.push(obj);
-			} else {
-				err = true;
-			}
-		} else {
-			for (i = 1; i <= len - 1; i++) {
-				var itemName = itemTable.rows[i].cells[0]
-						.getElementsByTagName('input')[0].value;
-				var dispatchedQuantity = itemTable.rows[i].cells[1]
-						.getElementsByTagName('input')[0].value;
-				var returnedQuantity = itemTable.rows[i].cells[2]
-						.getElementsByTagName('input')[0].value;
-				var obj = new ReturnItems(itemName, dispatchedQuantity,
-						returnedQuantity);
-				if (itemName && dispatchedQuantity && returnedQuantity
-						|| !(itemName && dispatchedQuantity && returnedQuantity)) {
-					itemObjArray.push(obj);
-				} else {
-					err = true;
-				}
-			}
-		}
+		 if (1 == len - 1) {
+             var itemName = $("#td1").text();
+             var dispatchedQuantity = $("#td2").text();
+             var returnedQuantity = itemTable.rows[1].cells[2].getElementsByTagName('input')[0].value;
+             var obj = new ReturnItems(itemName, dispatchedQuantity, returnedQuantity);
+             if (itemName && dispatchedQuantity && returnedQuantity || !(itemName && dispatchedQuantity && returnedQuantity)) {
+                 itemObjArray.push(obj);
+             } else {
+                 err = true;
+             }
+         } else {
+             for (i = 1; i <= len - 1; i++) {
+            	 var itemName = $("#td1").text();
+                 var dispatchedQuantity = $("#td2").text();
+                 var returnedQuantity = itemTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
+                 var obj = new ReturnItems(itemName, totalQuantity, returnedQuantity);
+                 if (itemName && dispatchedQuantity && returnedQuantity || !(itemName && dispatchedQuantity && returnedQuantity)) {
+                     itemObjArray.push(obj);
+                 } else {
+                     err = true;
+                 }
+             }
+         }
+                
 		returnDetailForm["returnItemsValue"] = JSON.stringify(itemObjArray);
-		returnDetailForm["employeeId"] = document
-				.getElementById('employeeId').value;
+		returnDetailForm["employeeId"] = document.getElementById('employeeId').value;
 		returnDetailForm["projId"] = document.getElementById('projId').value;
 		returnDetailForm["fieldUser"] = document.getElementById('fieldUser').value;
 		if (err) {
@@ -326,22 +281,6 @@
 			});
 		}
 	}
-
-	function deleteItemRow(row) {
-		var itemTable = document.getElementById('returnDetailTable');
-		var noOfRow = document.getElementById('returnDetailTable').rows.length;
-		if (noOfRow > 2) {
-			var i = row.parentNode.parentNode.rowIndex;
-			document.getElementById('returnDetailTable').deleteRow(i);
-		} else {
-			document.getElementById('returnDetailTable').rows[1].cells[0]
-					.getElementsByTagName('input')[0].value = '';
-			document.getElementById('returnDetailTable').rows[1].cells[1]
-					.getElementsByTagName('input')[0].value = '';
-			document.getElementById('returnDetailTable').rows[1].cells[2]
-					.getElementsByTagName('input')[0].value = '';
-		}
-	}
 </script>
 <style>
 .dispatchDetailStyle {
@@ -355,7 +294,7 @@
 		<jsp:include page="Header.jsp" />
 	</header>
 	<div id="wrapper">
-	
+
 		<div>
 			<form:form method="POST" commandName="returnDetailForm"
 				action="saveReturnedDetail.do">
@@ -402,23 +341,15 @@
 							<tr>
 								<th width="50px">Item Name</th>
 								<th width="50px">Dispatched Quantity</th>
-								<th width="50px">Returned Quantity</th>
-								<th width="50px">Action</th>
+								<th width="50px">Requested Quantity</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td><input class="dispatchDetailStyle" name="itemName" id="itemName" type="text"
-									placeholder="Enter Item Name" />
-								<td><input class="dispatchDetailStyle" name="dispatchedQuantity" id="dispatchedQuantity"
-									type="text" readonly="true" /></td>
-								<td><input class="dispatchDetailStyle" name="returnedQuantity" id="returnedQuantity"
-									type="text" placeholder="Enter Returned Quantity" /></td>
-								<td align="center"><a class="dispatchDetailStyle" id="deleteItem" onclick="deleteItemRow(this)"> <img
-										src="<c:url value="/resources/images/delete.png" />" /></a></td>
-							</tr>
+
 						</tbody>
 					</table>
+
+
 
 					<table>
 						<tr>

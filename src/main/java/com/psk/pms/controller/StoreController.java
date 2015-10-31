@@ -94,7 +94,7 @@ public class StoreController extends BaseController {
 		String itemName = httpServletRequest.getParameter("itemName");
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		LOGGER.info("getItemNamesInStore for Project :" + projId);
-		return storeService.getItemsToReturn(projId, itemName, fieldUser);
+		return storeService.getItemsToReturn(projId,fieldUser);
 	}
 
 	@RequestMapping(value = "/emp/myview/dispatchTransaction/getTotalQuantity.do", method = RequestMethod.GET)
@@ -172,6 +172,7 @@ public class StoreController extends BaseController {
 									DispatchDetail.DispatchItems.class));
 			retuenDetail.setDispatchItems(returnedItemsList);
 			storeValidator.validateReturned(retuenDetail, Constants.RETURNED);
+			
 			storeService.saveReturnedDetail(retuenDetail);
 			model.addAttribute("successMessage",
 					"Returned Details saved successfully");
@@ -271,10 +272,12 @@ public class StoreController extends BaseController {
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		String result = storeService.validateFieldUserForReturn(projId,
 				fieldUser);
+		List<StockDetail> resObject = storeService.getItemsToReturn(projId,fieldUser);
+		
 		Gson gson = new Gson();
 		if (Integer.parseInt(result) > 0) {
 
-			jsonData.setObject(gson.toJson(result));
+			jsonData.setObject(gson.toJson(resObject));
 			jsonData.setSuccess(true);
 		} else {
 			jsonData.setData("No Dispatched Details Found For The Selected Field Engineer");

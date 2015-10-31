@@ -19,7 +19,7 @@ public interface StoreService {
     
     List<StockDetail> getItemNamesInStore(String projId, String itemName);
     
-    List<StockDetail>  getItemsToReturn(String projId, String itemName, String fieldUser);
+    List<StockDetail>  getItemsToReturn(String projId, String fieldUser);
 
     List<StockDetail> getStockDetails(int projId);
 
