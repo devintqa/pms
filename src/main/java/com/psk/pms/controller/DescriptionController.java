@@ -71,7 +71,6 @@ public class DescriptionController extends BaseController {
         ProjDescDetail projDescDetail = null;
         Map<String, String> aliasProjectList = new HashMap<String, String>();
         Map<String, String> subAliasProjectList = new HashMap<String, String>();
-
         if (null != descId) {
             projDescDetail = projectDescriptionService.getProjectDescDetail(descId, subProject, descType);
             projDescDetail.setIsUpdate("Y");
