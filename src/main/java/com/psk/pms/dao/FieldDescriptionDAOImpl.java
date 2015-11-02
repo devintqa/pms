@@ -262,11 +262,14 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	@Override
 	public String placeIndentRequest(Indent indent) {
 		String status = "";
+		
 		indent.setStatus(getNextIndentStatus(indent.getStatus()));
 		String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
 		Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
 		if(row==1)
-			status = "Indent processed succesfully";
+			updateIndentStatusSql = "UPDATE IndentDescItem set IndentItemStatus = ? where IndentDescId in (SELECT IndentDescId from IndentDesc WHERE IndentId = ?)";
+			row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getIndentId()});
+			status = "Indent processed successfully";
 		return status;
 	}
 	
