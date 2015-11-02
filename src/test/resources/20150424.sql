@@ -415,7 +415,7 @@ CREATE TABLE `fieldprojectdesc` (
   `Quantity` decimal(15,2) NOT NULL,
   `Metric` varchar(30) NOT NULL,
   `Description` text NOT NULL,
-  `AliasDescription` varchar(100) NOT NULL,
+  `AliasDescription` varchar(180) NOT NULL,
   `PricePerQuantity` decimal(15,2) DEFAULT NULL,
   `TotalCost` decimal(15,2) DEFAULT NULL,
   `ConversionRate` decimal(15,2) DEFAULT NULL,
