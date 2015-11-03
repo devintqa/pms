@@ -672,6 +672,7 @@ CREATE TABLE `indentdescitem` (
   `ItemQty` varchar(45) DEFAULT '0',
   `ItemUnit` varchar(45) DEFAULT NULL,
   `IndentItemId` int(11) NOT NULL AUTO_INCREMENT,
+  `ItemItemStatus` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`IndentItemId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 --
