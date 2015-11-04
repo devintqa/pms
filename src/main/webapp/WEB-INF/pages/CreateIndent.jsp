@@ -140,6 +140,7 @@ $(document).ready(function() {
         var indentId = $(this).attr('aria-indent-id');
         var indentStatus = $(this).attr('aria-indent-status');
         var projId = $("#projId").val();
+        var projName = $("#projName").val();
         var employeeId = $("#employeeId").val();
         var startDate = $('#workStartDate').val();
         var endDate = $('#workEndDate').val();
@@ -216,7 +217,7 @@ $(document).ready(function() {
                     data: JSON.stringify(indent),
                     success: function(response) {
                         if (response > 0) {
-                            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId=" + employeeId + "&indentId=" + response + "&status=NEW";
+                            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId=" + employeeId + "&indentId=" + response + "&status=NEW"+"&projName="+projName;
                         } else {
                             $('#error').text('Error occured while saving the indent!');
                         }
@@ -224,7 +225,7 @@ $(document).ready(function() {
                 });
                 console.log('if');
             } else {
-		            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus;
+		            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus+"&projName="+projName;
             }
         } else {
                 $('#error').text('Date field value is missing!');

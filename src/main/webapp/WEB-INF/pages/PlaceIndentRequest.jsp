@@ -110,9 +110,11 @@
 				<table id="indentList" class="display">
 					<thead>
 						<tr>
+							<th>Indent Id</th>
 							<th>Item Name</th>
 							<th>Item Type</th>
 							<th>Item Qty</th>
+							<th>Action</th>
 						</tr>
 					</thead>
 
@@ -120,9 +122,12 @@
 						<c:if test="${not empty indentItems}">
 							<c:forEach var="indent" items="${indentItems}">
 								<tr>
+									<td>${indentDesc.indentId}</td>
 									<td>${indent.itemName}</td>
 									<td>${indent.itemType}</td>
 									<td>${indent.itemQty}</td>
+									<td><a > Supplier Detail
+                           </a></td>
 								</tr>
 							</c:forEach>
 						</c:if>
