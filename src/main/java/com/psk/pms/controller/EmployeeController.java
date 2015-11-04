@@ -106,10 +106,11 @@ public class EmployeeController {
     @RequestMapping(value = "/emp/logout", method = RequestMethod.GET)
     public String logoutForm(@ModelAttribute("employeeObj") Employee employee,
                              Model model) {
-        employee.setEmployeeTeam("");
+    	
+    	employee = new Employee();
+//        employee.setEmployeeTeam(null);
         model.addAttribute("employeeObj", employee);
-        Employee newEmployee = new Employee();
-        model.addAttribute("employeeForm", newEmployee);
+        model.addAttribute("employeeForm", employee);
         return "SignIn";
     }
 

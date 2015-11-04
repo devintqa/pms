@@ -12,7 +12,7 @@
 		maxEntriesLocalDisk="1000" 
 		eternal="false" 
 		diskSpoolBufferSizeMB="20"
-		timeToIdleSeconds="300" timeToLiveSeconds="600"
+		timeToIdleSeconds="180" timeToLiveSeconds="180"
 		memoryStoreEvictionPolicy="LFU" 
 		transactionalMode="off">
 		<persistence strategy="localTempSwap" />

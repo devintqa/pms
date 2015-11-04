@@ -17,7 +17,6 @@
 	});
 </script>
 </head>
-
 <div class="navigation">
 	<ul class="nav">
 		<c:choose>
