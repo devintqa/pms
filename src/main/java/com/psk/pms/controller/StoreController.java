@@ -91,7 +91,6 @@ public class StoreController extends BaseController {
 	public List<StockDetail> getItemNamesInStoreForReturn(
 			HttpServletRequest httpServletRequest) {
 		String projId = httpServletRequest.getParameter("projId");
-		String itemName = httpServletRequest.getParameter("itemName");
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		LOGGER.info("getItemNamesInStore for Project :" + projId);
 		return storeService.getItemsToReturn(projId,fieldUser);

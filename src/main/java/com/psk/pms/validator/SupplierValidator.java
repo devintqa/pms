@@ -1,6 +1,5 @@
 package com.psk.pms.validator;
 
-import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.Supplier;
 import com.psk.pms.service.PurchaseService;
 import org.apache.log4j.Logger;
