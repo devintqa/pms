@@ -120,8 +120,8 @@ public class IndentController extends BaseController {
 			@RequestParam(required = false, value = "indentId", defaultValue = "0") String indentId,
 			Model model) {
 		String[] projDescId = projDescs.split(",");
-		List<IndentDesc> indentDescList = null;
-		Indent indent = null;
+		List<IndentDesc> indentDescList;
+		Indent indent;
 		if(!indentId.equals("0")){
 			indent = fieldDescriptionService.getIndent(indentId);
 			indent.setEmployeeId(employeeId);
@@ -200,12 +200,14 @@ public class IndentController extends BaseController {
 			@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "indentId") String indentId,
 			@RequestParam(value = "status") String status,
+			@RequestParam(value = "projName") String projName,
 			Model model) {
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setIndentId(indentId);
 		Employee employee = employeeService.getEmployeeDetails(employeeId);
 		indentDesc.setItemDetails(itemService.getIndentItemForRequest(indentId));
 		model.addAttribute("indentDesc", indentDesc);
+		model.addAttribute("projName", projName);
 		model.addAttribute("indentItems", indentDesc.getItemDetails());
 		model.addAttribute("indentItemSize", indentDesc.getItemDetails().size());
 		model.addAttribute("employeeId", employee.getEmployeeId());

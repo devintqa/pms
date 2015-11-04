@@ -106,7 +106,7 @@
 			<form:form id="indentDesc" method="POST" commandName="indentDesc" action="placeIndentRequest.do">
 	
 			<c:if test="${indentItemSize gt 0}">
-				<h1 style="text-align: center; color: #007399; font-size: 24px;">Indent Item Details</h1>
+				<h1 style="text-align: center; color: #007399; font-size: 24px;">${projName} Indent Item Details</h1>
 				<table id="indentList" class="display">
 					<thead>
 						<tr>
