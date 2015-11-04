@@ -23,7 +23,8 @@ import com.psk.pms.service.ProjectService;
 @Component
 public class ManagementEmployeeTeam implements EmployeeTeam {
 
-	@Autowired
+    public static final String GENERAL_MANAGER = "GENERAL MANAGER";
+    @Autowired
 	ProjectService projectService;
 
 	@Autowired
@@ -37,7 +38,7 @@ public class ManagementEmployeeTeam implements EmployeeTeam {
 	public void performTeamActivity(Model model, String empId) {
 		String indentStatus = "";
 		Employee employee = employeeService.getEmployeeDetails(empId);
-		if(employee.getEmployeeRole().equalsIgnoreCase("GENERAL MANAGER")){
+		if(GENERAL_MANAGER.equalsIgnoreCase(employee.getEmployeeRole())){
 			indentStatus = "PENDING LEVEL 2 APPROVAL";
 		}
 		List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);

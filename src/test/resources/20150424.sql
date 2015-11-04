@@ -418,6 +418,7 @@ CREATE TABLE `fieldprojectdesc` (
   `AliasDescription` varchar(100) NOT NULL,
   `PricePerQuantity` decimal(15,2) DEFAULT NULL,
   `TotalCost` decimal(15,2) DEFAULT NULL,
+  `ConversionRate` decimal(15,2) DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
   `LastUpdatedAt` datetime NOT NULL,
   `ProjDescId` int(10) NOT NULL AUTO_INCREMENT,

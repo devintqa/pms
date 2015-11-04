@@ -27,6 +27,7 @@ import java.util.Map;
 @Component
 public class TechnicalEmployeeTeam implements EmployeeTeam {
 
+    public static final String TECHNICAL_MANAGER = "TECHNICAL MANAGER";
     @Autowired
     ProjectService projectService;
     
@@ -48,7 +49,7 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
     public void performTeamActivity(Model model, String empId) {
     	String indentStatus = "";
     	Employee employee = employeeService.getEmployeeDetails(empId);
-    	if(employee.getEmployeeRole().equalsIgnoreCase("TECHNICAL MANAGER")){
+    	if(TECHNICAL_MANAGER.equalsIgnoreCase(employee.getEmployeeRole())){
     		indentStatus = "PENDING LEVEL 1 APPROVAL";
     	}
         List<ProjectDetail> projectDocumentList = projectService.getProjectDocumentList(empId);
