@@ -64,7 +64,7 @@ public class AuthorisationController {
         }
         List<Permission> permissions = authorisationService.getPermissionList(teamName, projectId);
         if (permissions.isEmpty()) {
-            jsonData.setData("No Employees present.Please select another Team");
+            jsonData.setData("No Employees Found To Be Configured For The Selected Team.");
             return jsonData;
         }
         buildJsonData(jsonData, permissions, employeeId, model);

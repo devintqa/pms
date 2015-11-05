@@ -23,7 +23,7 @@ public class ViewValidator extends BaseValidator implements Validator {
 
         if(!(viewDetail.isProjectItemDescription() || viewDetail.isSearchAggregateItemDetails()
                 ||viewDetail.isSearchComparisonData() || viewDetail.isViewProjectItemPrice())){
-            errors.rejectValue("showSearchItemDesc", "required.showSearchItemDesc","Please select a valid view option");
+            errors.rejectValue("viewProjectItemPrice", "required.viewProjectItemPrice","Please select a valid view option.");
         }
 
         if(viewDetail.isProjectItemDescription() && viewDetail.getItemType().equalsIgnoreCase("--Please Select--")){

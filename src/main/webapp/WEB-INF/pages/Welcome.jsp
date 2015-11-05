@@ -44,7 +44,7 @@
 	</header>
 	<div id="wrapper">
 		<div>
-			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeId}&nbsp!</h3>
+			<h3 id="welcomeMessage">Welcome, ${employeeObj.employeeFName}&nbsp!</h3>
 			<h4 id="welcomeRole">Role: ${employeeObj.employeeRole}</h4>
 
 			<h2
