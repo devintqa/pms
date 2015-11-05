@@ -82,48 +82,7 @@ $(document).ready(function() {
     });
 
 
-    $('.getIndentButton').click(function() {
-        var projDescId = $(this).attr('aria-desc-id');
-        var indentId = $(this).attr('aria-indent-id');
-        var indentQty = $("#plannedArea" + projDescId + indentId).val();
-
-        var itemTable = document.getElementById("itemTbl" + projDescId + indentId);
-        var tableLength = itemTable.rows.length;
-
-        $.ajax({
-            type: "GET",
-            url: "getIndentItem",
-            contentType: "application/json",
-            cache: false,
-            data: "projDescId=" + projDescId + "&indentQty=" + indentQty,
-            success: function(response) {
-
-                while (itemTable.rows.length > 1) {
-                    itemTable.deleteRow(tableLength - 1);
-                    tableLength--;
-                }
-
-                for (i = 0; i < response.length; i++) {
-
-                    var new_row = itemTable.insertRow(0);
-                    var cell1 = new_row.insertCell(0);
-                    var cell2 = new_row.insertCell(1);
-                    var cell3 = new_row.insertCell(2);
-                    var cell4 = new_row.insertCell(3);
-                    var cell5 = new_row.insertCell(4);
-
-                    new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
-                    new_row.cells[1].innerHTML = response[i].itemName;
-                    new_row.cells[2].innerHTML = response[i].itemUnit;
-                    new_row.cells[3].innerHTML = response[i].itemQty;
-                    new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
-
-                    itemTable.appendChild(new_row);
-                }
-            }
-        });
-
-    });
+    
 
     function ItemDetail(itemType, itemName, itemUnit, itemQty) {
         this.itemType = itemType;
@@ -163,30 +122,27 @@ $(document).ready(function() {
             tmp = CryptoJS.MD5(tmp);
             currentDocHash = currentDocHash + tmp;
 
-            var hasSteel = false;
             for (i = 1; i < tableLength; i++) {
                 var new_row = itemTable.rows[i];
                 var itemType = new_row.cells[0].innerHTML;
-                var itemName = new_row.cells[1].innerHTML;
                 var itemUnit = new_row.cells[2].innerHTML;
                 var itemQty = new_row.cells[3].innerHTML;
-
-                if (itemName.toUpperCase() == "STEEL") {
-                    hasSteel = true;
+                var itemName = new_row.cells[1].innerHTML;
+                
+                if (new_row.cells[1].getElementsByTagName('select')[0]) {
+                    var itemName = new_row.cells[1].getElementsByTagName('select')[0].value;
                 }
+                
                 var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
                 if (itemType && itemName && itemUnit && itemQty) {
                     itemObjArray.push(obj);
                 }
                 
             }
-            if (hasSteel && !indentDescComment) {
-                var descName = $(this).find('H3').text();
-                $('#error').text('Please specify the steel dimension in comments section under ' + descName);
-                throw new Error('save not allowed, as the steel specification not present');
-            }
+            
             console.log("itemObjArray="+JSON.stringify(itemObjArray));
             console.log("indentDescQty="+indentDescQty);
+            
             if (indentDescQty) {
                 indentDesc["plannedQty"] = indentDescQty;
                 indentDesc["metric"] = indentDescMetric;
@@ -282,7 +238,12 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
                                 var cell5 = new_row.insertCell(4);
 
                                 new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
-                                new_row.cells[1].innerHTML = response[i].itemName;
+                               
+                                if(response[i].itemName.toUpperCase() == "STEEL"){
+                                	new_row.cells[1].innerHTML = document.getElementById('dummyDrop').outerHTML;
+                                }else{
+                                	 new_row.cells[1].innerHTML = response[i].itemName;
+                                }
                                 new_row.cells[2].innerHTML = response[i].itemUnit;
                                 new_row.cells[3].innerHTML = response[i].itemQty;
                                 new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
@@ -434,18 +395,20 @@ function deleteItemRow(row) {
 						</tr>
 					</table>
 					</center>
-				
-				<table style="display:none;">
-					<tr id="dummyRow">
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td><a id="deleteItem" onclick="deleteItemRow(this)"> <img
-								src="<c:url value="/resources/images/delete.png" />" />
-						</a></td>
-					</tr>
-				</table>
+					
+					<div id="dummyDropWrapper" style="display:none;">
+						<select id="dummyDrop">
+							<option value="Steel 8MM">Steel 8MM</option>
+							<option value="Steel 10MM">Steel 10MM</option>
+							<option value="Steel 12MM">Steel 12MM</option>
+							<option value="Steel 16MM">Steel 16MM</option>
+							<option value="Steel 20MM">Steel 20MM</option>
+							<option value="Steel 25MM">Steel 25MM</option>
+							<option value="Steel 32MM">Steel 32MM</option>
+							<option value="Binding Wire">Binding Wire</option>
+						</select>
+					</div>
+
 			</form:form>
 
 		</div>
