@@ -88,7 +88,7 @@
                         + "&teamName=" + teamName + "&toDeAuthorize=" + ausers,
                 success: function (response) {
                     if (response.success) {
-                        $("#dialog-confirm").html("Saved successfully");
+                        $("#dialog-confirm").html("Project Authorization Successful.");
                         $("#dialog-confirm").dialog({
                             modal: true,
                             title: "Warning!",
