@@ -37,8 +37,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     public int getEmployeeLoginDetails(String userName, String password) {
         String sql = "SELECT COUNT(*) FROM employee where empId = ? and empPassword = ?";
-        int total = jdbcTemplate.queryForObject(sql, Integer.class, new Object[]{userName, password});
-        return total;
+        return jdbcTemplate.queryForObject(sql, Integer.class, userName, password);
     }
 
     public String getUserRole(String empId) {
@@ -47,18 +46,17 @@ public class EmployeeDAOImpl implements EmployeeDAO {
                 sql, String.class, empId);
         return role;
     }
-    
-    @Cacheable(value="employeeCache")
+
+
     public Employee getEmployeeDetails(String empId) {
-    	System.out.println("calling getEmployeeDetails#"+empId);
+        System.out.println("calling getEmployeeDetails#" + empId);
         String sql = "SELECT * FROM employee where empId = ?";
         return (Employee) jdbcTemplate.queryForObject(sql, new Object[]{empId}, new EmployeeRowMapper());
     }
 
     public int isEmployeeExisting(String userName) {
         String sql = "SELECT COUNT(*) FROM employee where empId = ? and enabled =" + Constants.ENABLE_EMPLOYEE_ACCESS;
-        int total = jdbcTemplate.queryForObject(sql, Integer.class, new Object[]{userName});
-        return total;
+        return jdbcTemplate.queryForObject(sql, Integer.class, userName);
     }
 
     public boolean signupEmployee(Employee employee) {
@@ -78,8 +76,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         String sql2 = "INSERT INTO userroles" +
                 "(empId, userRole) " +
                 "VALUES (?, ?)";
-        jdbcTemplate.update(sql2, new Object[]{employee.getEmployeeId(), "ROLE_USER"});
-
+        jdbcTemplate.update(sql2, employee.getEmployeeId(), "ROLE_USER");
         return true;
     }
 
@@ -214,7 +211,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public List<String> getAvailableEmployees(String teamName, String projectId) {
-        return jdbcTemplate.queryForList(GET_AVAILABLE_EMPLOYEES, String.class,new Object[]{teamName,projectId,teamName});
+        return jdbcTemplate.queryForList(GET_AVAILABLE_EMPLOYEES, String.class, new Object[]{teamName, projectId, teamName});
     }
 
     @Override
@@ -250,7 +247,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 
     @Override
     public List<String> getSelectedEmployees(String teamName, String projectId) {
-        return jdbcTemplate.queryForList(GET_SELECTED_EMPLOYEES, String.class,new Object[]{teamName,projectId});
+        return jdbcTemplate.queryForList(GET_SELECTED_EMPLOYEES, String.class, new Object[]{teamName, projectId});
     }
 
     @Override

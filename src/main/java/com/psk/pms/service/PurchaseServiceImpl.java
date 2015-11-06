@@ -2,9 +2,11 @@ package com.psk.pms.service;
 
 
 import com.psk.pms.dao.PurchaseDAO;
+import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,6 +25,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public Supplier fetchSupplierDetails(String supplierId) {
         return purchaseDAO.fetchSupplierDetail(supplierId);
+    }
+
+    @Override
+    public List<Supplier> fetchSupplierDetail(String supplierAliasName) {
+        return purchaseDAO.fetchSupplierDetails(supplierAliasName);
     }
 
     @Override
@@ -45,6 +52,19 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public List<Supplier> fetchSupplierDetails() {
         return purchaseDAO.fetchSupplierDetails();
+    }
+
+
+    @Override
+    @Transactional
+    public void saveSupplierQuoteDetails(QuoteDetails quoteDetails) {
+        purchaseDAO.deleteSupplierQuoteDetails(quoteDetails.getProjName(),quoteDetails.getItemType(),quoteDetails.getItemName());
+        purchaseDAO.saveSupplierQuoteDetails(quoteDetails);
+    }
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
+       return purchaseDAO.getSupplierQuoteDetails(projName,itemType,itemName);
     }
 
     private Date getCurrentDateTime() {

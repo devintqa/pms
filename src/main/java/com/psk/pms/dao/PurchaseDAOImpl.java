@@ -1,11 +1,14 @@
 package com.psk.pms.dao;
 
+import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,13 +48,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     public void saveSupplierDetail(Supplier supplierDetail) {
         if ("Y".equalsIgnoreCase(supplierDetail.getIsUpdate())) {
             LOGGER.info("updating  supplier details for supplierid:" + supplierDetail.getSupplierId());
-            jdbcTemplate.update(UPDATE_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),supplierDetail.getReason(),
+            jdbcTemplate.update(UPDATE_SUPPLIER_DETAIL, supplierDetail.getTinNumber(), supplierDetail.getReason(),
                     supplierDetail.getName(), supplierDetail.getAliasName(), supplierDetail.getPhoneNumber(),
                     supplierDetail.getEmailAddress(), supplierDetail.getDescription(), supplierDetail.getLastUpdatedBy(),
                     supplierDetail.getLastUpdatedAt(), supplierDetail.getSupplierId());
         } else {
             LOGGER.info("saving new supplier details supplier Nme" + supplierDetail.getAliasName());
-            jdbcTemplate.update(INSERT_SUPPLIER_DETAIL, supplierDetail.getTinNumber(),supplierDetail.getReason(),
+            jdbcTemplate.update(INSERT_SUPPLIER_DETAIL, supplierDetail.getTinNumber(), supplierDetail.getReason(),
                     supplierDetail.getName(), supplierDetail.getAliasName(), supplierDetail.getPhoneNumber(),
                     supplierDetail.getEmailAddress(), supplierDetail.getDescription(), supplierDetail.getLastUpdatedBy(),
                     supplierDetail.getLastUpdatedAt());
@@ -75,6 +78,21 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         return suppliers;
     }
 
+    @Override
+    public List<Supplier> fetchSupplierDetails(String supplierName) {
+        List<Supplier> suppliers = new ArrayList<Supplier>();
+        LOGGER.info("Fetching all supplier details " + supplierName);
+        String sql;
+        if (!"".equalsIgnoreCase(supplierName)) {
+            sql = "select * from supplierdetails where SupplierAliasName LIKE '%" + supplierName + "%'";
+            List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+            for (Map<String, Object> row : rows) {
+                suppliers.add(buildSupplierDetails(row));
+            }
+        }
+        return suppliers;
+    }
+
     private Supplier buildSupplierDetails(Map<String, Object> row) {
         Supplier supplier = new Supplier();
         supplier.setSupplierId((Integer) row.get("SupplierId"));
@@ -92,5 +110,53 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     public boolean isAliasSupplierNameAlreadyExist(String aliasSupplierName) {
         int count = jdbcTemplate.queryForObject(ALIAS_SUPPLIER_NAME_EXIST, Integer.class, aliasSupplierName);
         return count > 0;
+    }
+
+    @Override
+    public void saveSupplierQuoteDetails(final QuoteDetails quoteDetails) {
+        jdbcTemplate.batchUpdate(CREATE_QUOTE_DETAILS, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                QuoteDetails.SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
+                ps.setString(1, quoteDetails.getProjName());
+                ps.setString(2, quoteDetails.getItemName());
+                ps.setString(3, quoteDetails.getItemType());
+                ps.setString(4, supplierQuoteDetails.getSupplierAliasName());
+                ps.setString(5, supplierQuoteDetails.getEmailAddress());
+                ps.setString(6, supplierQuoteDetails.getPhoneNumber());
+                ps.setString(7, supplierQuoteDetails.getQuotedPrice());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return quoteDetails.getSupplierQuoteDetails().size();
+            }
+        });
+    }
+
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
+        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<>();
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_SUPPLIER_QUOTE_DETAILS, projName, itemType, itemName);
+        for (Map<String, Object> row : rows) {
+            supplierQuoteDetails.add(buildSupplierQuoteDetails(row));
+        }
+        return supplierQuoteDetails;
+    }
+
+    @Override
+    public void deleteSupplierQuoteDetails(String projName, String itemType, String itemName) {
+        jdbcTemplate.update(DELETE_SUPPLIER_QUOTE_DETAILS,projName,itemType,itemName);
+    }
+
+    private QuoteDetails.SupplierQuoteDetails buildSupplierQuoteDetails(Map<String, Object> row) {
+        QuoteDetails.SupplierQuoteDetails supplierQuoteDetail = new QuoteDetails.SupplierQuoteDetails();
+        supplierQuoteDetail.setSupplierAliasName((String) row.get("SupplierAliasName"));
+        supplierQuoteDetail.setEmailAddress((String) row.get("emailAddress"));
+        supplierQuoteDetail.setPhoneNumber((String) row.get("PhoneNumber"));
+        Object quotePrice = row.get("quotePrice");
+        supplierQuoteDetail.setQuotedPrice( quotePrice.toString());
+        return supplierQuoteDetail;
     }
 }
