@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -398,7 +397,7 @@ function deleteItemRow(row) {
 					</center>
 					
 					<div id="dummyDropWrapper" style="display:none;">
-						<select id="dummyDrop">
+						<select id="dummyDrop" class="inputText">
 							<option value="Steel 8MM">Steel 8MM</option>
 							<option value="Steel 10MM">Steel 10MM</option>
 							<option value="Steel 12MM">Steel 12MM</option>
