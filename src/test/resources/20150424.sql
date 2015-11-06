@@ -744,3 +744,22 @@ CREATE TABLE `supplierdetails` (
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
+
+--
+-- Table structure for table `supplierQuoteDetails`
+--
+
+DROP TABLE IF EXISTS `supplierQuoteDetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `supplierQuoteDetails` (
+  `supplierQuoteDetailId` int(11) NOT NULL AUTO_INCREMENT,
+  `AliasProjName` varchar(50) NOT NULL,
+  `ItemName` varchar(45) DEFAULT NULL,
+  `ItemType` varchar(45) DEFAULT NULL,
+  `SupplierAliasName` varchar(30) NOT NULL,
+  `emailAddress` varchar(50) DEFAULT NULL,
+  `PhoneNumber` varchar(20) NOT NULL,
+  `quotePrice` decimal(15,2) DEFAULT NULL,
+  PRIMARY KEY (`supplierQuoteDetailId`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

@@ -126,7 +126,7 @@
 									<td>${indent.itemName}</td>
 									<td>${indent.itemType}</td>
 									<td>${indent.itemQty}</td>
-									<td><a > Supplier Detail
+									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&itemType=${indent.itemType}"> Supplier Quote Detail
                            </a></td>
 								</tr>
 							</c:forEach>

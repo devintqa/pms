@@ -1,5 +1,9 @@
 package com.psk.pms.validator;
 
+import com.mysql.jdbc.StringUtils;
+import com.psk.exception.ValidationException;
+import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 import com.psk.pms.service.PurchaseService;
 import org.apache.log4j.Logger;
@@ -8,6 +12,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +22,9 @@ public class SupplierValidator extends BaseValidator implements Validator {
 
     @Autowired
     PurchaseService purchaseService;
+
+    private Pattern pattern;
+    private Matcher matcher;
 
     private static final Logger LOGGER = Logger.getLogger(SupplierValidator.class);
 
@@ -65,6 +73,30 @@ public class SupplierValidator extends BaseValidator implements Validator {
                 errors.rejectValue("emailAddress",
                         "emailAddress.incorrect",
                         "Enter a correct email Id.");
+            }
+        }
+    }
+
+    public void validate(QuoteDetails quoteDetails) throws ValidationException {
+        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
+        if (null == supplierQuoteDetails || supplierQuoteDetails.isEmpty()) {
+            throw new ValidationException("There are no Quote Details to be saved");
+        }
+        for (QuoteDetails.SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
+            if (supplierQuoteDetail.getSupplierAliasName().isEmpty() || supplierQuoteDetail.getEmailAddress().isEmpty()) {
+                throw new ValidationException("There are no Quote Details to be saved");
+            }
+            if (supplierQuoteDetail.getQuotedPrice().isEmpty()) {
+                throw new ValidationException("Quote price is not available for " + supplierQuoteDetail.getSupplierAliasName());
+            }
+            if (!StringUtils.isNullOrEmpty(supplierQuoteDetail.getQuotedPrice())) {
+                pattern = Pattern.compile(AMOUNT_PATTERN);
+                matcher = pattern.matcher(supplierQuoteDetail.getQuotedPrice());
+                if (!matcher.matches()) {
+                    throw new ValidationException("Enter a numeric value and only a single dot is allowed for Quote Price field");
+                } else if (supplierQuoteDetail.getQuotedPrice().length() > 15) {
+                    throw new ValidationException("Quote price Field must not exceed 15 characters for " + supplierQuoteDetail.getSupplierAliasName());
+                }
             }
         }
     }

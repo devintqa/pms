@@ -91,7 +91,7 @@
                         $("#dialog-confirm").html("Project Authorization Successful.");
                         $("#dialog-confirm").dialog({
                             modal: true,
-                            title: "Warning!",
+                            title: "Success!",
                             height: 200,
                             width: 350,
                             buttons: {

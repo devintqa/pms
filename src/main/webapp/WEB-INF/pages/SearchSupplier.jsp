@@ -64,7 +64,7 @@
 							<th>Supplier Name</th>
 							<th>TIN No</th>
 							<th>Phone Number</th>
-							<th>Supplier Address</th>
+							<th>Supplier Email Address</th>
 							<th>Action</th>
 						</tr>
 					</thead>
