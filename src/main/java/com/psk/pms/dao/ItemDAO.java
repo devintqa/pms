@@ -79,6 +79,8 @@ public interface ItemDAO {
 
     void updatePriceAndCostOfProjectDescItems(List<ItemDetailDto> itemDetailDtos,String descriptiontype);
 
+	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId);
+
 	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId);
 
     Map<String ,BigDecimal> getItemPrices(List<String> itemNames);

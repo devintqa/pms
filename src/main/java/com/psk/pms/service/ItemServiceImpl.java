@@ -314,9 +314,14 @@ public class ItemServiceImpl implements ItemService {
         projectDescriptionDAO.updateProjectDescriptions(projDescDetails,Constants.PSK);
     }
 
-	@Override
+    @Override
 	public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId) {
 		return itemDAO.getIndentItemForRequest(indentId);
+	}
+	
+	@Override
+	public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId) {
+		return itemDAO.getIndentItemForRequestView(projId);
 	}
 
     @Override

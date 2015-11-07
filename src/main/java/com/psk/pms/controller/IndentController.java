@@ -194,18 +194,39 @@ public class IndentController extends BaseController {
 	@ResponseBody public Integer saveIndentItem(@RequestBody Indent indent) {
 		return fieldDescriptionService.saveIndentDescription(indent);
 	}
-
+	
 	@RequestMapping(value = "/emp/myview/indent/itemToRequest", method = RequestMethod.GET)
 	public String getIndentItemForRequest(
 			@RequestParam(value = "employeeId") String employeeId,
 			@RequestParam(value = "indentId") String indentId,
+			@RequestParam(value = "status") String status,
+
+			Model model) {
+		IndentDesc indentDesc = new IndentDesc();
+		indentDesc.setIndentId(indentId);
+		Employee employee = employeeService.getEmployeeDetails(employeeId);
+		indentDesc.setItemDetails(itemService.getIndentItemForRequest(indentId));
+		model.addAttribute("indentDesc", indentDesc);
+		model.addAttribute("indentItems", indentDesc.getItemDetails());
+		model.addAttribute("indentItemSize", indentDesc.getItemDetails().size());
+		model.addAttribute("employeeId", employee.getEmployeeId());
+		model.addAttribute("employeeObj", employee);
+		model.addAttribute("indentStatus", status);
+		return "PlaceIndentRequest";
+	}
+
+	@RequestMapping(value = "/emp/myview/indent/itemToRequestView", method = RequestMethod.GET)
+	public String getIndentItemForRequestView(
+			@RequestParam(value = "employeeId") String employeeId,
+			@RequestParam(value = "indentId") String indentId,
+			@RequestParam(value = "projId") String projId,
 			@RequestParam(value = "status") String status,
 			@RequestParam(value = "projName") String projName,
 			Model model) {
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setIndentId(indentId);
 		Employee employee = employeeService.getEmployeeDetails(employeeId);
-		indentDesc.setItemDetails(itemService.getIndentItemForRequest(indentId));
+		indentDesc.setItemDetails(itemService.getIndentItemForRequestView(projId));
 		model.addAttribute("indentDesc", indentDesc);
 		model.addAttribute("projName", projName);
 		model.addAttribute("indentItems", indentDesc.getItemDetails());

@@ -274,7 +274,7 @@
 							<tr>
 								<td>${indent.description}</td>
 								<td>${indent.status}</td>
-								<td><a href="/pms/emp/myview/indent/itemToRequest?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&status=${indent.status}&projName=${indent.description}">View</a></td>
+								<td><a href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">View</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

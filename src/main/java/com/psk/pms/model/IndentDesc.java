@@ -112,6 +112,7 @@ public class IndentDesc {
 		private String itemPrice;
 		private String indentItemId;
 		private String indentDescId;
+		private String indentList;
 
 		public String getIndentItemId() {
 			return indentItemId;
@@ -128,6 +129,15 @@ public class IndentDesc {
 		public void setIndentDescId(String indentDescId) {
 			this.indentDescId = indentDescId;
 		}
+		
+		public String getIndentList() {
+			return indentList;
+		}
+
+		public void setIndentList(String indentList) {
+			this.indentList = indentList;
+		}
+
 		public String getItemName() {
 			return itemName;
 		}

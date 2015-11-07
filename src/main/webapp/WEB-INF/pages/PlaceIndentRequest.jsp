@@ -114,7 +114,10 @@
 							<th>Item Name</th>
 							<th>Item Type</th>
 							<th>Item Qty</th>
-							<th>Action</th>
+							<c:if test="${(employeeObj.employeeTeam eq 'Purchase')}">
+								<th>Action</th>
+							</c:if>
+							
 						</tr>
 					</thead>
 
@@ -122,12 +125,22 @@
 						<c:if test="${not empty indentItems}">
 							<c:forEach var="indent" items="${indentItems}">
 								<tr>
-									<td>${indentDesc.indentId}</td>
+									<c:choose>
+										<c:when  test="${(employeeObj.employeeTeam eq 'Purchase')}">
+											<td>${indent.indentList}</td>
+										</c:when>
+										<c:otherwise>
+											<td>${indentDesc.indentId}</td>
+										</c:otherwise>
+									</c:choose>
 									<td>${indent.itemName}</td>
 									<td>${indent.itemType}</td>
 									<td>${indent.itemQty}</td>
+									<c:if test="${(employeeObj.employeeTeam eq 'Purchase')}">
 									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&itemType=${indent.itemType}"> Supplier Quote Detail
-                           </a></td>
+                           				</a>
+                           			</td>
+                           			</c:if>
 								</tr>
 							</c:forEach>
 						</c:if>
