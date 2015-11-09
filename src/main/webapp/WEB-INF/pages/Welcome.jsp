@@ -219,6 +219,8 @@
 			</c:if>
 		</c:if>
 
+role -- ${employeeObj.employeeTeam}
+
 		<c:if test="${employeeObj.employeeTeam eq 'Management'}">
 			<c:if test="${employeeObj.employeeRole eq 'General Manager'}">
 				<h1 style="text-align: center; color: #007399; font-size: 18px;">Indents
