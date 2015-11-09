@@ -68,9 +68,10 @@ public interface ItemService {
     void updatePriceAndCostForConfiguredItems(Integer projectId, Map<String, BigDecimal> itemDetails, Map<Integer , BigDecimal> descIdItemCostMap ,String descriptionType);
 
     void updateProjectDescriptionWithRecalculatedCost(Integer projId, Map<Integer, BigDecimal> descIdItemCostMap);
+    
+    List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId);    
 
-	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(
-			String indentId);
+	List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId);
 
     void updatePricesForAlreadyConfiguredItems(Integer projectId, Map<String, BigDecimal> materialNameCostMap, List<String > materialNames, String descriptionType);
 
