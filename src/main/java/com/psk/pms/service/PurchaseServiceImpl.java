@@ -14,6 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
+
 
 public class PurchaseServiceImpl implements PurchaseService {
 
@@ -57,9 +59,13 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     @Transactional
-    public void saveSupplierQuoteDetails(QuoteDetails quoteDetails) {
-        purchaseDAO.deleteSupplierQuoteDetails(quoteDetails.getProjName(),quoteDetails.getItemType(),quoteDetails.getItemName());
-        purchaseDAO.saveSupplierQuoteDetails(quoteDetails);
+    public void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status) {
+        purchaseDAO.deleteSupplierQuoteDetails(quoteDetails.getProjName(), quoteDetails.getItemType(), quoteDetails.getItemName());
+        purchaseDAO.saveSupplierQuoteDetails(quoteDetails, status);
+        if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
+            Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
+            purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
+        }
     }
 
     @Override

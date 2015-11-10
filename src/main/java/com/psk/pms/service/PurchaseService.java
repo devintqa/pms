@@ -19,7 +19,7 @@ public interface PurchaseService {
 
     List<Supplier> fetchSupplierDetail(String supplierAliasName);
 
-    void saveSupplierQuoteDetails(QuoteDetails quoteDetails);
+    void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status);
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
 }

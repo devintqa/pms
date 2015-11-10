@@ -113,7 +113,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     }
 
     @Override
-    public void saveSupplierQuoteDetails(final QuoteDetails quoteDetails) {
+    public void saveSupplierQuoteDetails(final QuoteDetails quoteDetails, final String status) {
         jdbcTemplate.batchUpdate(CREATE_QUOTE_DETAILS, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
@@ -125,6 +125,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                 ps.setString(5, supplierQuoteDetails.getEmailAddress());
                 ps.setString(6, supplierQuoteDetails.getPhoneNumber());
                 ps.setString(7, supplierQuoteDetails.getQuotedPrice());
+                ps.setString(8, status);
             }
 
             @Override
@@ -150,11 +151,24 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         jdbcTemplate.update(DELETE_SUPPLIER_QUOTE_DETAILS,projName,itemType,itemName);
     }
 
+    @Override
+    public void updateIndentDescStatus(String status, String itemName, String itemType, Integer projectId) {
+     jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS,status,itemName,itemType,projectId);
+    }
+
+
+    @Override
+    public Integer getProjectId(String projName) {
+        String sql= "select projId from project where aliasProjName=?";
+       return jdbcTemplate.queryForObject(sql,new Object[]{projName},Integer.class);
+    }
+
     private QuoteDetails.SupplierQuoteDetails buildSupplierQuoteDetails(Map<String, Object> row) {
         QuoteDetails.SupplierQuoteDetails supplierQuoteDetail = new QuoteDetails.SupplierQuoteDetails();
         supplierQuoteDetail.setSupplierAliasName((String) row.get("SupplierAliasName"));
         supplierQuoteDetail.setEmailAddress((String) row.get("emailAddress"));
         supplierQuoteDetail.setPhoneNumber((String) row.get("PhoneNumber"));
+        supplierQuoteDetail.setSupplierQuoteStatus((String) row.get("supplierQuoteStatus"));
         Object quotePrice = row.get("quotePrice");
         supplierQuoteDetail.setQuotedPrice( quotePrice.toString());
         return supplierQuoteDetail;

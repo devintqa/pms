@@ -761,5 +761,6 @@ CREATE TABLE `supplierQuoteDetails` (
   `emailAddress` varchar(50) DEFAULT NULL,
   `PhoneNumber` varchar(20) NOT NULL,
   `quotePrice` decimal(15,2) DEFAULT NULL,
+  `supplierQuoteStatus` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`supplierQuoteDetailId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;

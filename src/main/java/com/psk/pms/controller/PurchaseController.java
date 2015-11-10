@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
+import com.psk.exception.ValidationException;
 import com.psk.pms.Constants;
-import com.psk.pms.constants.JSPFileNames;
 import com.psk.pms.model.*;
 import com.psk.pms.service.PurchaseService;
 import com.psk.pms.validator.SupplierValidator;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.psk.pms.Constants.*;
 import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
 import static com.psk.pms.constants.JSPFileNames.SUPPLIER_QUOTE_DETAILS;
 
@@ -95,22 +96,26 @@ public class PurchaseController {
 
     @RequestMapping(value = "/emp/myview/supplierQuoteDetails/{projName}", method = RequestMethod.GET)
     public String supplierQuoteDetails(@PathVariable String projName,
-                                 @RequestParam(value = "itemName", required = true) String itemName,
-                                 @RequestParam(value = "itemType", required = true) String itemType,
-                                 Model model) {
+                                       @RequestParam(value = "itemName", required = true) String itemName,
+                                       @RequestParam(value = "itemType", required = true) String itemType,
+                                       @RequestParam(value = "status", required = true) String status,
+                                       Model model) {
         LOGGER.info("Supplier detail update page for supplierId." + itemName);
-        QuoteDetails quoteDetails =new QuoteDetails();
-        model.addAttribute("itemName",itemName);
-        model.addAttribute("projName",projName);
-        model.addAttribute("itemType",itemType);
+        QuoteDetails quoteDetails = new QuoteDetails();
+        model.addAttribute("itemName", itemName);
+        model.addAttribute("projName", projName);
+        model.addAttribute("itemType", itemType);
         List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = purchaseService.getSupplierQuoteDetails(projName, itemType, itemName);
+        if(status.equalsIgnoreCase(Constants.PURCHASE_PENDING_APPROVAL)){
+            quoteDetails.setSubmittedForApproval("Y");
+        }
         quoteDetails.setSupplierQuoteDetails(supplierQuoteDetails);
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierQuoteDetails, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
         }.getType());
         JsonArray jsonArray = element.getAsJsonArray();
         quoteDetails.setQuoteDetailsValue(jsonArray.toString());
-        model.addAttribute("quoteDetailsForm",quoteDetails);
+        model.addAttribute("quoteDetailsForm", quoteDetails);
         return SUPPLIER_QUOTE_DETAILS;
     }
 
@@ -125,27 +130,58 @@ public class PurchaseController {
 
     @RequestMapping(value = "/emp/myview/supplierQuoteDetails/saveQuoteDetails.do", method = RequestMethod.POST)
     @ResponseBody
-    public String saveDispatchedDetail(
+    public JsonData saveQuoteDetails(
             @RequestBody QuoteDetails quoteDetails, Model model,
             SessionStatus status) {
-        LOGGER.info("Store Controller : saveDispatchedDetail()");
+        JsonData jsonData = new JsonData();
+        LOGGER.info("Store Controller : saveQuoteDetails()");
         String result = "Quote Details saved successfully";
         try {
-            ObjectMapper mapper = new ObjectMapper();
-            List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = mapper
-                    .readValue(
-                            quoteDetails.getQuoteDetailsValue(),
-                            mapper.getTypeFactory().constructCollectionType(
-                                    List.class,
-                                    QuoteDetails.SupplierQuoteDetails.class));
-            quoteDetails.setSupplierQuoteDetails(supplierQuoteDetails);
-            supplierValidator.validate(quoteDetails);
-            purchaseService.saveSupplierQuoteDetails(quoteDetails);
+            validateAndStoreQuoteDetails(quoteDetails, PENDING_PURCHASE);
             model.addAttribute("successMessage",
                     "Quote Details saved successfully");
         } catch (Exception e) {
-            return e.getMessage();
+            jsonData.setData(e.getMessage());
+            return jsonData;
         }
-        return result;
+        jsonData.setSuccess(true);
+        jsonData.setData(result);
+        return jsonData;
+    }
+
+
+    @RequestMapping(value = "/emp/myview/supplierQuoteDetails/submitForApproval.do", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonData submitForApproval(
+            @RequestBody QuoteDetails quoteDetails, Model model,
+            SessionStatus status) {
+        JsonData jsonData = new JsonData();
+        LOGGER.info("Store Controller : submitForApproval()");
+        String result = "Submitted for Approval";
+        try {
+            quoteDetails.setSubmittedForApproval("Y");
+            validateAndStoreQuoteDetails(quoteDetails, PURCHASE_PENDING_APPROVAL);
+            model.addAttribute("successMessage",
+                    "Submitted for Approval");
+        } catch (Exception e) {
+            jsonData.setData(e.getMessage());
+            return jsonData;
+        }
+        jsonData.setSuccess(true);
+        jsonData.setData(result);
+        return jsonData;
+    }
+
+    private void validateAndStoreQuoteDetails(QuoteDetails quoteDetails, String status) throws java.io.IOException, ValidationException {
+        ObjectMapper mapper = new ObjectMapper();
+        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = mapper
+                .readValue(
+                        quoteDetails.getQuoteDetailsValue(),
+                        mapper.getTypeFactory().constructCollectionType(
+                                List.class,
+                                QuoteDetails.SupplierQuoteDetails.class));
+        quoteDetails.setSupplierQuoteDetails(supplierQuoteDetails);
+        supplierValidator.validate(quoteDetails);
+        purchaseService.saveSupplierQuoteDetails(quoteDetails, status);
     }
 }

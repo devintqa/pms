@@ -11,6 +11,7 @@ public class QuoteDetails {
     private String projName;
     private String itemType;
     private String quoteDetailsValue;
+    private String submittedForApproval;
     private List<SupplierQuoteDetails> supplierQuoteDetails;
 
     public Integer getProjId() {
@@ -35,6 +36,14 @@ public class QuoteDetails {
 
     public void setItemType(String itemType) {
         this.itemType = itemType;
+    }
+
+    public String getSubmittedForApproval() {
+        return submittedForApproval;
+    }
+
+    public void setSubmittedForApproval(String submittedForApproval) {
+        this.submittedForApproval = submittedForApproval;
     }
 
     public List<SupplierQuoteDetails> getSupplierQuoteDetails() {
@@ -66,6 +75,7 @@ public class QuoteDetails {
         private String emailAddress;
         private String phoneNumber;
         private String quotedPrice;
+        private String supplierQuoteStatus;
 
         public SupplierQuoteDetails() {
 
@@ -108,6 +118,14 @@ public class QuoteDetails {
 
         public void setQuotedPrice(String quotedPrice) {
             this.quotedPrice = quotedPrice;
+        }
+
+        public String getSupplierQuoteStatus() {
+            return supplierQuoteStatus;
+        }
+
+        public void setSupplierQuoteStatus(String supplierQuoteStatus) {
+            this.supplierQuoteStatus = supplierQuoteStatus;
         }
     }
 }
