@@ -252,6 +252,33 @@
 				</table>
 				<br>
 				<br>
+				
+				<h1 style="text-align: center; color: #007399; font-size: 18px;">Supplier Details
+					that require immediate attention</h1>
+				<table id="supplierList" class="display">
+					<thead>
+						<tr>
+							<th>Project</th>
+							<th>Status</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+
+					<tbody>
+						<c:if test="${not empty supplierList}">
+							<c:forEach var="supplier" items="${supplierList}">
+								<tr>
+									<td>${supplier.aliasProjName}</td>
+									<td>${supplier.supplierQuoteStatus}</td>
+									<td><a
+										href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">Approve</a>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
 			</c:if>
 		</c:if>
 

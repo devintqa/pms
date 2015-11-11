@@ -70,4 +70,5 @@ public interface Constants {
     String PURCHASE_PENDING_APPROVAL= "PENDING APPROVAL";
     String PENDING_PURCHASE= "PENDING PURCHASE";
     String NEW= "New";
+    String PENDING_LEVEL_2_APPROVAL = "PENDING LEVEL 2 APPROVAL";
 }

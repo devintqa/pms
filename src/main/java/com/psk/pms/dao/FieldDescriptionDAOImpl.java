@@ -37,6 +37,7 @@ import com.psk.pms.model.Indent;
 import com.psk.pms.model.IndentDesc;
 import com.psk.pms.model.IndentDesc.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.SearchDetail;
 
 
@@ -374,6 +375,20 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 			indentList.add(transformer.buildIndent(row));
 		}
 		return indentList;
+	}
+	
+	@Override
+	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
+		List<SupplierQuoteDetails> supplierList = new ArrayList<SupplierQuoteDetails>();
+		String sql = null;
+		if (null!=status) {
+			sql = "select AliasProjName, supplierquotestatus from supplierquotedetails where supplierquotestatus ='"+status+"' group by AliasProjName";
+		} 
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		for (Map < String, Object > row: rows) {
+			supplierList.add(transformer.buildSupplierList(row));
+		}
+		return supplierList;
 	}
 
 	@Override

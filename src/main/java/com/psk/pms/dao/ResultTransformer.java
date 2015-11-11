@@ -13,6 +13,7 @@ import com.psk.pms.model.LeadDetailConfiguration;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 
 public class ResultTransformer {
 
@@ -226,6 +227,14 @@ public class ResultTransformer {
 		}
 		
 		return indent;
+	}
+    
+    SupplierQuoteDetails buildSupplierList(Map<String, Object> row) {
+    	SupplierQuoteDetails supplierList = new SupplierQuoteDetails();
+    	supplierList.setAliasProjName(row.get("aliasProjName").toString());
+    	supplierList.setSupplierQuoteStatus(row.get("supplierquotestatus").toString());
+		
+		return supplierList;
 	}
 
 	IndentDesc buildIndentDesc(Map<String, Object> row) {

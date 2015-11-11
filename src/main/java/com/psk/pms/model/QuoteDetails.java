@@ -76,8 +76,17 @@ public class QuoteDetails {
         private String phoneNumber;
         private String quotedPrice;
         private String supplierQuoteStatus;
+        private String aliasProjName;
 
-        public SupplierQuoteDetails() {
+        public String getAliasProjName() {
+			return aliasProjName;
+		}
+
+		public void setAliasProjName(String aliasProjName) {
+			this.aliasProjName = aliasProjName;
+		}
+
+		public SupplierQuoteDetails() {
 
         }
 

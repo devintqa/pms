@@ -215,9 +215,7 @@
 				<li><a id="emphome"
 					href="/pms/emp/myview/${employeeObj.employeeId}" class="active">Home</a>
 				</li>
-				<li><a id="profile"
-					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
-						Profile</a></li>
+				
 				<li><a href="#">Create</a>
 					<ul>
 						<li><a id="createSupplier"
@@ -230,6 +228,10 @@
 							href="/pms/emp/myview/searchSupplier/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
 								Supplier </a></li>
 					</ul></li>
+					
+					<li><a id="profile"
+					href="/pms/emp/myview/details/edit/${employeeObj.employeeId}">Update
+						Profile</a></li>
 				<li><a id="logout"
 					href="${pageContext.request.contextPath}/logout">Logout</a></li>
 

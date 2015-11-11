@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import com.psk.pms.Constants;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Employee;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ProjectService;
@@ -37,13 +39,19 @@ public class ManagementEmployeeTeam implements EmployeeTeam {
 	@Override
 	public void performTeamActivity(Model model, String empId) {
 		String indentStatus = "";
+		String supplierStatus = "";
 		Employee employee = employeeService.getEmployeeDetails(empId);
 		if(GENERAL_MANAGER.equalsIgnoreCase(employee.getEmployeeRole())){
-			indentStatus = "PENDING LEVEL 2 APPROVAL";
+			indentStatus = Constants.PENDING_LEVEL_2_APPROVAL;
+			supplierStatus = Constants.PURCHASE_PENDING_APPROVAL;
 		}
 		List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);
+		List<SupplierQuoteDetails> supplierList = fieldDescriptionService.getSupplierByStatus(supplierStatus);
 		if (!indentList.isEmpty()) {
 			model.addAttribute("indentList", indentList);
+		}
+		if (!supplierList.isEmpty()) {
+			model.addAttribute("supplierList", supplierList);
 		}
 	}
 

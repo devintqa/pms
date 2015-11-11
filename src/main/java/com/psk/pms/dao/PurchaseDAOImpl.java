@@ -159,7 +159,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public Integer getProjectId(String projName) {
-        String sql= "select projId from project where aliasProjName=?";
+        String sql= "select projId from project where projName=?";
        return jdbcTemplate.queryForObject(sql,new Object[]{projName},Integer.class);
     }
 

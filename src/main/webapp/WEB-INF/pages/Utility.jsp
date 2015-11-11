@@ -603,3 +603,39 @@
     });
 </script>
 
+<script>
+    $(function() {
+
+        var table = $('#supplierList').DataTable({
+        	"scrollY":        "500px",
+            "scrollCollapse": true,
+            "paging": false
+        });
+
+        $("#supplierList_columnUl").on('change', 'input:checkbox', function(e) {
+            var columnName = $(this).attr('name');
+
+            var isColumnStatusChecked = $(this).is(":checked")
+            if (!isColumnStatusChecked) {
+                $(this).attr('value', 'hidden');
+            } else {
+                $(this).attr('value', '');
+            }
+            
+            $("div[id*=supplierList_wrapper] table").each(function() {
+               console.log(this);
+             })
+             
+            var tables = $("div[id*=supplierList_wrapper] table");
+            if(tables.length > 0){
+	            $(tables[0]).find('th').each(function(index, item) {
+	            	 if (columnName == item.innerHTML) {
+	                     $('table[id*=supplierList] tr').find("th:eq(" + index + "), td:eq(" + index + ")").toggle();
+	                     $(this).toggle();
+	                 }
+	            });
+            }
+        });
+    });
+</script>
+
