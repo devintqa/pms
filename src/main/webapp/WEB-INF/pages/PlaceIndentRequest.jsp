@@ -114,6 +114,7 @@
 							<th>Item Name</th>
 							<th>Item Type</th>
 							<th>Item Qty</th>
+							<th>Item Status</th>
 							<c:if test="${(employeeObj.employeeTeam eq 'Purchase')}">
 								<th>Action</th>
 							</c:if>
@@ -136,8 +137,9 @@
 									<td>${indent.itemName}</td>
 									<td>${indent.itemType}</td>
 									<td>${indent.itemQty}</td>
+									<td>${indent.indentStatus}</td>
 									<c:if test="${(employeeObj.employeeTeam eq 'Purchase')}">
-									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&itemType=${indent.itemType}"> Supplier Quote Detail
+									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&itemType=${indent.itemType}&status=${indent.indentStatus}"> Supplier Quote Detail
                            				</a>
                            			</td>
                            			</c:if>

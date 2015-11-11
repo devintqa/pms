@@ -113,6 +113,7 @@ public class IndentDesc {
 		private String indentItemId;
 		private String indentDescId;
 		private String indentList;
+        private String indentStatus;
 
 		public String getIndentItemId() {
 			return indentItemId;
@@ -177,6 +178,14 @@ public class IndentDesc {
 		public void setItemType(String itemType) {
 			this.itemType = itemType;
 		}
-	}
+
+        public String getIndentStatus() {
+            return indentStatus;
+        }
+
+        public void setIndentStatus(String indentStatus) {
+            this.indentStatus = indentStatus;
+        }
+    }
 
 }

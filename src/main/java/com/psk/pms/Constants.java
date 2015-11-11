@@ -66,5 +66,8 @@ public interface Constants {
 
     String AUTHORIZE = "authorize";
 	String REQUESTED_FOR = "baseDescription";
-	
+
+    String PURCHASE_PENDING_APPROVAL= "PENDING APPROVAL";
+    String PENDING_PURCHASE= "PENDING PURCHASE";
+    String NEW= "New";
 }
