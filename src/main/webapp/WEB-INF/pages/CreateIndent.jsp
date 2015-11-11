@@ -160,6 +160,7 @@ $(document).ready(function() {
         indent["endDate"] = endDate;
         indent['indentDescList'] = indentDescArray;
         indent['indentId'] = indentId;
+        indent['status'] = indentStatus;
         console.log(currentDocHash);
         console.log(JSON.stringify(indent));
 
@@ -173,7 +174,7 @@ $(document).ready(function() {
                     data: JSON.stringify(indent),
                     success: function(response) {
                         if (response > 0) {
-                        	window.location = "/pms/emp/myview/indent/itemToRequest?employeeId=" + employeeId + "&indentId=" + response + "&projId="+projId+"&status=NEW";
+                        	window.location = "/pms/emp/myview/indent/itemToRequest?employeeId=" + employeeId + "&indentId=" + response + "&projId=" + projId + "&status=" +indentStatus
                         } else {
                             $('#error').text('Error occured while saving the indent!');
                         }
@@ -194,6 +195,7 @@ $(document).ready(function() {
 
 $(document).on("keyup", "input[name = 'plannedQty']", function() {
 
+	var userRole = $("#userRole").val();
     var valid = /^\d+(\.\d{0,2})?$/.test(this.value);
     var val = this.value;
     if (!valid) {
@@ -206,13 +208,14 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
 
         var itemTable = document.getElementById("itemTbl" + projDescId + indentDescId);
         var tableLength = itemTable.rows.length;
+       
 
         $.ajax({
             type: "GET",
             url: "validateIndentDescQty",
             contentType: "application/json",
             cache: false,
-            data: "projDescId=" + projDescId + "&indentQty=" + indentQty,
+            data: "projDescId=" + projDescId + "&indentQty=" + indentQty + "&role=" +userRole,
             success: function(response) {
                 if (response == 'valid') {
                     $('#error' + projDescId).text('');
@@ -391,7 +394,7 @@ function deleteItemRow(row) {
 										aria-indent-status="${indent.status}" value="Next"
 										type="button" />
 								</c:if>
-								
+								<input type="hidden" value="${employeeObj.employeeRole}" id="userRole"/>
 								</td>
 						</tr>
 					</table>

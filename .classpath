@@ -65,6 +65,5 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/Srividya/.m2/repository/net/sf/ehcache/ehcache/2.9.0/ehcache-2.9.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

@@ -168,12 +168,13 @@ public class IndentController extends BaseController {
 	@ResponseBody public String validateIndentDescQty(
 			@RequestParam(value = "indentQty") String indentDescQty,
 			@RequestParam(value = "projDescId") String projDescId,
+			@RequestParam(value="role") String userRole,
 			Model model) {
 		String validation = "valid";
 		BigDecimal availedDescIndentQtyBigD = new BigDecimal(0);
 		Double askingIndentQty = new Double(indentDescQty);
 		ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
-		Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId());
+		Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId(), userRole);
 		Double fixedProjDescQty = new Double(projDesc.getQuantity());
 		if(askingIndentQty <= fixedProjDescQty){
 			if(availedDescIndentQty.size() > 0 && null!=availedDescIndentQty.get(projDescId))

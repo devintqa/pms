@@ -24,7 +24,7 @@ public interface FieldDescriptionService {
 
 	String placeIndentRequest(Indent indent);
 
-	Map<String, Object> getRequestedIndentQty(Integer projId);
+	Map<String, Object> getRequestedIndentQty(Integer projId, String userRole);
 
 	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
 

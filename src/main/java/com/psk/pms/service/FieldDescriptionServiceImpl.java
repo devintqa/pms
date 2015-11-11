@@ -55,8 +55,8 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	}
 
 	@Override
-	public Map<String, Object> getRequestedIndentQty(Integer projId) {
-		return fieldDescriptionDAO.getRequestedIndentQty(projId);
+	public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
+		return fieldDescriptionDAO.getRequestedIndentQty(projId, userRole);
 	}
 
 	@Override
