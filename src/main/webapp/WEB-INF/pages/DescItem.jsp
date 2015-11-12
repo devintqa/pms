@@ -486,10 +486,12 @@
 			id="totalItemCost" type="text" />
 		</div>
 		<br>
-		<input class="button" type="button" id="addItem" value="Add"
-			onclick="insertItemRow()" />
-		<input class="button" type="button" id="saveDesc" value="Save"
-			onclick="saveItemDesc()" />
+		<c:if test="${(employee.employeeRole ne 'Site Manager')}">
+			<input class="button" type="button" id="addItem" value="Add"
+				onclick="insertItemRow()" />
+			<input class="button" type="button" id="saveDesc" value="Save"
+				onclick="saveItemDesc()" />
+		</c:if>
 	</form:form>
 	<div id="dialog-confirm"></div>
 </body>

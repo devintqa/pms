@@ -285,8 +285,10 @@ public class ItemController extends BaseController {
         descItemDetail.setEmployeeId(employeeId);
         descItemDetail.setConversionFlag(projDescDetail.isConversionFalg());
         descItemDetail.setConversionValue(projDescDetail.getConversionValue());
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
         model.addAttribute("descItemForm", descItemDetail);
         model.addAttribute("projDescForm", projDescDetail);
+        model.addAttribute("employee", employee);
         return "DescItem";
     }
 

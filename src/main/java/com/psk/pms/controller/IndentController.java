@@ -262,7 +262,7 @@ public class IndentController extends BaseController {
 			item.setItemPrice(detail.getItemPrice());
 			item.setItemType(detail.getItemType());
 			item.setItemUnit(detail.getItemUnit());
-			Integer itemQty = new Integer(detail.getItemQty());
+			double itemQty = new Double(detail.getItemQty());
 			double requiredItemQty = itemQty * indentQty;
 			item.setItemQty(new Double(requiredItemQty).toString());
 			indentItem.add(item);
