@@ -157,7 +157,7 @@
 					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Place Request"/>
 				</c:if>
 				
-				<c:if test="${(employeeObj.employeeRole eq 'Technical Manager') or (employeeObj.employeeRole eq 'General Manager') and (indentStatus ne 'PENDING PURCHASE')}">
+				<c:if test="${(employeeObj.employeeRole eq 'Technical Manager' and employeeObj.employeeTeam eq 'Technical') or (employeeObj.employeeRole eq 'General Manager' and employeeObj.employeeTeam eq 'Management') and (indentStatus ne 'PENDING PURCHASE' and indentStatus ne 'REJECTED')}">
 					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
 					
 					<input class="button" aria-indent-status="${indentStatus}" type="button" id="rejectIndentRequest" value="Reject"/>
