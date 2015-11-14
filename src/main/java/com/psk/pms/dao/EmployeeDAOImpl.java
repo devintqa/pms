@@ -47,7 +47,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
         return role;
     }
 
-
+    @Cacheable(value="employeeCache")
     public Employee getEmployeeDetails(String empId) {
         System.out.println("calling getEmployeeDetails#" + empId);
         String sql = "SELECT * FROM employee where empId = ?";

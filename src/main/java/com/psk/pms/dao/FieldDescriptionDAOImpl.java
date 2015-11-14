@@ -270,7 +270,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		if(row==1)
 			updateIndentStatusSql = "UPDATE IndentDescItem set IndentItemStatus = ? where IndentDescId in (SELECT IndentDescId from IndentDesc WHERE IndentId = ?)";
 			row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getIndentId()});
-			status = "Indent processed successfully";
+			status = "Indent successfully processed for "+indent.getStatus();
 		return status;
 	}
 	
