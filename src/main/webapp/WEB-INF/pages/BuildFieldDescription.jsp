@@ -52,7 +52,7 @@
         });
         function confirmOverwriteOfFieldData(projectId, subProjectId) {
             if (0 == projectId || ($('#subProjectDesc').is(':checked') && 0 == subProjectId)) {
-                $("#dialog-confirm").html("Please Select Alias Project/SubProjecct Name");
+                $("#dialog-confirm").html("Please Select Alias Project/SubProject Name");
                 $("#dialog-confirm").dialog({
                     modal: true,
                     title: "Warning!",
@@ -72,7 +72,7 @@
                 data: "projectId=" + projectId + '&subProjectId=' + subProjectId,
                 success: function (response) {
                     if (response == "NotExist") {
-                        $("#dialog-confirm").html("Description Data doesn't Exist for Selected Alias Project/SubProjecct Name");
+                        $("#dialog-confirm").html("Description Data doesn't Exist for Selected Alias Project/SubProject");
                         $("#dialog-confirm").dialog({
                             modal: true,
                             title: "Warning!",
@@ -88,7 +88,7 @@
                     }
                     if (response == "AlreadyExist") {
                         $("#dialog-confirm")
-                                .html("Description Already Exist for Selected Alias Project/SubProjecct Name, Do you want to Overwrite ??");
+                                .html("Description Already Exist for Selected Alias Project/SubProject, Do you want to Overwrite ??");
                         $("#dialog-confirm").dialog({
                             resizable: false,
                             modal: true,
@@ -102,7 +102,7 @@
                                         url: 'createFieldDescription.do',
                                         data: "projectId=" + projectId + '&subProjectId=' + subProjectId,
                                         success: function (response) {
-                                            $("#dialog-confirm").html("Success fully created field description Data");
+                                            $("#dialog-confirm").html("Field Description Data Creation Successful.");
                                             $("#dialog-confirm").dialog({
                                                 modal: true,
                                                 title: "Success!",
