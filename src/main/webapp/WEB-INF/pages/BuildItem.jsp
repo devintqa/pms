@@ -38,7 +38,7 @@
                             success: function (response) {
                                 if (response) {
                                     $("#dialog-confirm")
-                                            .html("Description Already Exist for Selected Alias Project/SubProjecct Name, Do you want to Overwrite ??");
+                                            .html("Description Already Exist for Selected Alias Project/SubProject, Do you want to Overwrite ??");
                                     $("#dialog-confirm").dialog({
                                         resizable: false,
                                         modal: true,
