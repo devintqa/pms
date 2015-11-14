@@ -173,19 +173,23 @@ public class IndentController extends BaseController {
 		String validation = "valid";
 		BigDecimal availedDescIndentQtyBigD = new BigDecimal(0);
 		Double askingIndentQty = new Double(indentDescQty);
-		ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
-		Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId(), userRole);
-		Double fixedProjDescQty = new Double(projDesc.getQuantity());
-		if(askingIndentQty <= fixedProjDescQty){
-			if(availedDescIndentQty.size() > 0 && null!=availedDescIndentQty.get(projDescId))
-				availedDescIndentQtyBigD = (BigDecimal) availedDescIndentQty.get(projDescId);
-			Double sumOfQty = availedDescIndentQtyBigD.doubleValue() + askingIndentQty;
-			Double qtyAvailable = fixedProjDescQty - availedDescIndentQtyBigD.doubleValue();
-			if(sumOfQty >  fixedProjDescQty){
-				validation = "Quantity requested is more than the available limit of "+qtyAvailable;
+		if(askingIndentQty > 0){
+			ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
+			Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId(), userRole);
+			Double fixedProjDescQty = new Double(projDesc.getQuantity());
+			if(askingIndentQty <= fixedProjDescQty){
+				if(availedDescIndentQty.size() > 0 && null!=availedDescIndentQty.get(projDescId))
+					availedDescIndentQtyBigD = (BigDecimal) availedDescIndentQty.get(projDescId);
+				Double sumOfQty = availedDescIndentQtyBigD.doubleValue() + askingIndentQty;
+				Double qtyAvailable = fixedProjDescQty - availedDescIndentQtyBigD.doubleValue();
+				if(sumOfQty >  fixedProjDescQty){
+					validation = "Quantity requested is more than the available limit of "+qtyAvailable;
+				}
+			}else{
+				validation = "Quantity cannot be more than the fixed description limit";
 			}
 		}else{
-			validation = "Quantity cannot be more than the fixed description limit";
+			validation = "Quantity cannot be zero";
 		}
 		return validation;
 	}

@@ -92,7 +92,7 @@ $(document).ready(function() {
     }
 
 
-    $('.saveIndentButton').click(function() {
+    $('.saveIndentButton').click(function(e) {
         var indent = {};
         var indentDescArray = [];
 
@@ -152,6 +152,9 @@ $(document).ready(function() {
                 indentDesc["indentDescId"] = indentDescId;
                 indentDesc["itemDetails"] = itemObjArray;
                 indentDescArray.push(indentDesc);
+            }else{
+            	 e.stopImmediatePropagation();
+            	 throw "Indent quantity is null";
             }
         });
         indent["projId"] = projId;
@@ -180,7 +183,6 @@ $(document).ready(function() {
                         }
                     }
                 });
-                console.log('if');
             } else {
 		            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus;
             }
@@ -257,8 +259,8 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
                         }
                     });
                 } else {
+                	$("#plannedQty"+projDescId+indentDescId).val('');
                     $('#error' + projDescId).text(response);
-                    val = '';
                     while (itemTable.rows.length > 1) {
                         itemTable.deleteRow(tableLength - 1);
                         tableLength--;

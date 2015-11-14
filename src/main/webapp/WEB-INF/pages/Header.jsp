@@ -63,6 +63,9 @@
                         <li><a id="searchItem"
 							href="/pms/emp/myview/searchItem/${employeeObj.employeeId}">
 								Item </a></li>
+						<li><a id="searchIndent"
+							href="/pms/emp/myview/indent/search_${employeeObj.employeeId}?team=${employeeObj.employeeTeam}">
+								Indent </a></li>
 					</ul></li>
 				<li><a href="#">View</a>
 					<ul>
