@@ -8,6 +8,7 @@ import java.util.List;
 public class QuoteDetails {
     private Integer projId;
     private String itemName;
+    private String itemQty;
     private String projName;
     private String itemType;
     private String quoteDetailsValue;
@@ -69,6 +70,14 @@ public class QuoteDetails {
     public void setQuoteDetailsValue(String quoteDetailsValue) {
         this.quoteDetailsValue = quoteDetailsValue;
     }
+    
+    public String getItemQty() {
+		return itemQty;
+	}
+
+	public void setItemQty(String itemQty) {
+		this.itemQty = itemQty;
+	}
 
     public static class SupplierQuoteDetails {
         private String supplierAliasName;
@@ -77,8 +86,36 @@ public class QuoteDetails {
         private String quotedPrice;
         private String supplierQuoteStatus;
         private String aliasProjName;
+        private String itemName;
+        private String itemQty;
+        private String itemType;
+        
 
-        public String getAliasProjName() {
+        public String getItemType() {
+			return itemType;
+		}
+
+		public void setItemType(String itemType) {
+			this.itemType = itemType;
+		}
+
+		public String getItemName() {
+			return itemName;
+		}
+
+		public void setItemName(String itemName) {
+			this.itemName = itemName;
+		}
+
+		public String getItemQty() {
+			return itemQty;
+		}
+
+		public void setItemQty(String itemQty) {
+			this.itemQty = itemQty;
+		}
+
+		public String getAliasProjName() {
 			return aliasProjName;
 		}
 
@@ -137,4 +174,5 @@ public class QuoteDetails {
             this.supplierQuoteStatus = supplierQuoteStatus;
         }
     }
+	
 }

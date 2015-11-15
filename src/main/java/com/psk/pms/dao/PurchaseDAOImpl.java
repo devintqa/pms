@@ -120,12 +120,13 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                 QuoteDetails.SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
                 ps.setString(1, quoteDetails.getProjName());
                 ps.setString(2, quoteDetails.getItemName());
-                ps.setString(3, quoteDetails.getItemType());
-                ps.setString(4, supplierQuoteDetails.getSupplierAliasName());
-                ps.setString(5, supplierQuoteDetails.getEmailAddress());
-                ps.setString(6, supplierQuoteDetails.getPhoneNumber());
-                ps.setString(7, supplierQuoteDetails.getQuotedPrice());
-                ps.setString(8, status);
+                ps.setString(3, quoteDetails.getItemQty());
+                ps.setString(4, quoteDetails.getItemType());
+                ps.setString(5, supplierQuoteDetails.getSupplierAliasName());
+                ps.setString(6, supplierQuoteDetails.getEmailAddress());
+                ps.setString(7, supplierQuoteDetails.getPhoneNumber());
+                ps.setString(8, supplierQuoteDetails.getQuotedPrice());
+                ps.setString(9, status);
             }
 
             @Override
@@ -133,6 +134,25 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                 return quoteDetails.getSupplierQuoteDetails().size();
             }
         });
+    }
+    
+    @Override
+    public void updateSupplierDetails(final QuoteDetails quoteDetails, final String status) {
+    	jdbcTemplate.batchUpdate(UPDATE_SUPPLIER_QUOTE_DETAILS, new BatchPreparedStatementSetter() {
+    		@Override
+    		public void setValues(PreparedStatement ps, int i) throws SQLException {
+    			QuoteDetails.SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
+    			ps.setString(1, supplierQuoteDetails.getItemQty());
+    			ps.setString(2, status);
+    			ps.setString(3, supplierQuoteDetails.getItemName());
+    			ps.setString(4, supplierQuoteDetails.getSupplierAliasName());
+    		}
+    		
+    		@Override
+    		public int getBatchSize() {
+    			return quoteDetails.getSupplierQuoteDetails().size();
+    		}
+    	});
     }
 
 

@@ -100,4 +100,27 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
     }
+    
+    public void validateSupplier(QuoteDetails quoteDetails) throws ValidationException {
+        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
+        if (null == supplierQuoteDetails || supplierQuoteDetails.isEmpty()) {
+            throw new ValidationException("There are no Supplier Details to Approve");
+        }
+        for (QuoteDetails.SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
+            if (supplierQuoteDetail.getSupplierAliasName().isEmpty()) {
+                throw new ValidationException("There are no Supplier Details to Approve");
+            }
+            if (StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
+                
+                    throw new ValidationException("Enter Approving Quantity");
+            }
+            if (!StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
+                pattern = Pattern.compile(AMOUNT_PATTERN);
+                matcher = pattern.matcher(supplierQuoteDetail.getItemQty());
+                if (!matcher.matches()) {
+                    throw new ValidationException("Enter a numeric value and only a single dot is allowed for Approving Quantity field");
+                } 
+            }
+        }
+    }
 }

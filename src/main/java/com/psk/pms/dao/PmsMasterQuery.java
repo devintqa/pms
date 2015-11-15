@@ -204,8 +204,8 @@ public class PmsMasterQuery {
 
     public static final String ALIAS_SUPPLIER_NAME_EXIST = "select count(*) from supplierdetails where SupplierAliasName = ?";
 
-    public static final String CREATE_QUOTE_DETAILS = "insert into supplierQuoteDetails(AliasProjName, itemName, ItemType," +
-            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,supplierQuoteStatus) values (?,?,?,?,?,?,?,?)";
+    public static final String CREATE_QUOTE_DETAILS = "insert into supplierQuoteDetails(AliasProjName, itemName, itemQty, ItemType," +
+            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,supplierQuoteStatus) values (?,?,?,?,?,?,?,?,?)";
 
     public static final String GET_SUPPLIER_QUOTE_DETAILS = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
 
@@ -213,5 +213,7 @@ public class PmsMasterQuery {
 
     public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus ='PENDING PURCHASE'" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
+    
+    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?  where ItemName = ? and  SupplierAliasName = ?";
 
 }
