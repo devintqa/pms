@@ -259,6 +259,8 @@
 					<thead>
 						<tr>
 							<th>Project</th>
+							<th>Item Name</th>
+							<th>Item Quantity</th>
 							<th>Status</th>
 							<th>Action</th>
 						</tr>
@@ -269,9 +271,11 @@
 							<c:forEach var="supplier" items="${supplierList}">
 								<tr>
 									<td>${supplier.aliasProjName}</td>
+									<td>${supplier.itemName}</td>
+									<td>${supplier.itemQty}</td>
 									<td>${supplier.supplierQuoteStatus}</td>
-									<td><a
-										href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">Approve</a>
+									<td>
+										<a href="/pms/emp/myview/supplierQuoteDetails/${supplier.aliasProjName}?itemName=${supplier.itemName}&itemQty=${supplier.itemQty}&employeeId=${employeeObj.employeeId}&itemType=${supplier.itemType}&status=${supplier.supplierQuoteStatus}">Approve</a>
 								</tr>
 							</c:forEach>
 						</c:if>

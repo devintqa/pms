@@ -67,6 +67,17 @@ public class PurchaseServiceImpl implements PurchaseService {
             purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
         }
     }
+    
+    @Override
+    @Transactional
+    public void updateSupplierDetails(QuoteDetails quoteDetails, String status) {
+    	
+    	if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
+    		//Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
+    		//purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
+    		purchaseDAO.updateSupplierDetails(quoteDetails, status);
+    	}
+    }
 
     @Override
     public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {

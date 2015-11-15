@@ -20,6 +20,8 @@ public interface PurchaseDAO {
     boolean isAliasSupplierNameAlreadyExist(String aliasSupplierName);
 
     void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status);
+    
+    void updateSupplierDetails(QuoteDetails quoteDetails, String status);
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
 
