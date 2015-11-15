@@ -54,11 +54,10 @@
 
     }
 
-    function deleteProjectDescription(projectDescriptionAlias,
-        projectDescriptionId, projectDescriptionType) {
-
-        $("#dialog-confirm").html(
-            projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
+    function deleteProjectDescription(deleteLink, projectDescriptionAlias, projectDescriptionId, projectDescriptionType) {
+    	var currentRow = $(deleteLink).closest("tr");
+    	
+        $("#dialog-confirm").html(projectDescriptionAlias + " : Deletion Operation!, Please confirm to proceed");
 
         // Define the Dialog and its properties.
         $("#dialog-confirm")
@@ -72,10 +71,9 @@
                     "Yes": function() {
                         $
                             .ajax({
-                                url: 'deleteProjectDescription.do',
+                                url: 'deleteProjectDescription',
                                 data: "projectDescriptionId=" + projectDescriptionId + "&projectDescriptionType=" + projectDescriptionType,
                                 success: function(response) {
-                                    location.reload();
                                     console.log("Successfully deleted row ");
                                 },
                                 error: function(err) {
@@ -83,10 +81,10 @@
                                 }
                             });
                         $(this).dialog('close');
+                        currentRow.remove();
                     },
                     "No": function() {
                         $(this).dialog('close');
-
                     }
                 }
             });
@@ -194,10 +192,9 @@
 									<td>${projDesc.totalCost}</td>
 									<td><a
 										href="/pms/emp/myview/buildProjectDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&project=${projDesc.projId}&subproject=${projDesc.subProjId}&desc=${projDesc.projDescId}&type=${searchProjDescForm.searchOn}&action=edit"
-										class="userAction">Update</a> <strong> / </strong> <a
-										id="deleteRow"
-										href="javascript:deleteProjectDescription('${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descType}');"
-										style="color: red"> Delete</a></td>
+										class="userAction">Update</a> <strong> / </strong> 
+										<a id="deleteRow"
+										onclick="javascript:deleteProjectDescription(this,'${projDesc.aliasDescription}', '${projDesc.projDescId}', '${projDesc.descType}');" style="color: red; cursor: pointer;"> Delete</a></td>
 								</tr>
 							</c:forEach>
 						</c:if>

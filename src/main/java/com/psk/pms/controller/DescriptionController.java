@@ -142,14 +142,14 @@ public class DescriptionController extends BaseController {
         }
     }
 
-    @RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription.do", method = RequestMethod.POST)
-    public void deleteProjectDescriptionDetail(HttpServletRequest request,
-                                               HttpServletResponse response) {
-        String projectDescriptionId = request.getParameter("projectDescriptionId");
-        String projectDescriptionType = request.getParameter("projectDescriptionType");
-        LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
-        projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId, projectDescriptionType);
+    @RequestMapping(value = "/emp/myview/searchProjectDescription/deleteProjectDescription", method = RequestMethod.GET)
+    @ResponseBody
+    public void deleteProjectDescriptionDetail(@RequestParam(value = "projectDescriptionId") String projectDescriptionId,
+    										   @RequestParam(value="projectDescriptionType") String projectDescriptionType) {
+    	LOGGER.info("Deleting project description ,projectDescriptionId : " + projectDescriptionId);
+    	projectDescriptionService.deleteProjectDescriptionDetail(projectDescriptionId, projectDescriptionType);
     }
+   
 
     @RequestMapping(value = "/emp/myview/buildProjectDesc/getSubAliasProject.do", method = RequestMethod.GET)
     @ResponseBody

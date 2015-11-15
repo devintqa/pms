@@ -16,10 +16,11 @@ function openBaseDescLoader (baseDescId, employeeId, descType){
 	  windowObjectReference = window.open("/pms/emp/myview/buildBaseDesc/loadBaseDescItems.do?baseDescId="+baseDescId+"&employeeId="+employeeId+"&descType="+descType,'winname','directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=no,width=1200,height=700');
 }
 
-function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
-	$("#dialog-confirm").html(
-			aliasDescription
-					+ " : Deletion Operation!, Please confirm to proceed");
+function deleteBaseDescription(deleteLink, aliasDescription, baseDescriptionId ) {
+	console.log(deleteLink);
+	var currentRow = $(deleteLink).closest("tr");
+	console.log(currentRow);
+	$("#dialog-confirm").html(aliasDescription	+ " : Deletion Operation!, Please confirm to proceed");
 	$("#dialog-confirm").dialog({
 		resizable : false,
 		modal : true,
@@ -33,7 +34,6 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 					url : 'deleteGlobalProjectDescription.do',
 					data : "aliasDescription=" + aliasDescription,
 					success : function(response) {
-						location.reload();
 						console.log("Successfully deleted row ");
 					},
 					error : function(err) {
@@ -41,12 +41,10 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 					}
 				});
 				$(this).dialog('close');
-				window.location.reload();
-
+				currentRow.remove();
 			},
 			"No" : function() {
 				$(this).dialog('close');
-
 			}
 		}
 	});
@@ -117,8 +115,8 @@ function deleteBaseDescription(aliasDescription,baseDescriptionId ) {
 									href="/pms/emp/myview/buildBaseDesc/${employeeObj.employeeId}?team=${employeeObj.employeeTeam}&desc=${globalDescription.baseDescId}&action=edit"
 									class="userAction">Update</a> <strong> / </strong> <a
 									id="deleteRow"
-									href="javascript:deleteBaseDescription('${globalDescription.aliasDescription}','${globalDescription.baseDescId}');"
-									style="color: red"> Delete</a></td>
+									onclick="javascript:deleteBaseDescription(this,'${globalDescription.aliasDescription}','${globalDescription.baseDescId}');"
+									style="color: red; cursor: pointer;"> Delete</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
