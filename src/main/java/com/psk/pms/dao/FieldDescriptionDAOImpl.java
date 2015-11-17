@@ -367,7 +367,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Indent> indentList = new ArrayList<Indent>();
 		String sql = null;
 		if (null!=status) {
-			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.ProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"' group by i.projId";
+			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"' group by i.projId";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
