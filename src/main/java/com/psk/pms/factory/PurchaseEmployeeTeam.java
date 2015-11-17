@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
+import com.psk.pms.Constants;
 import com.psk.pms.model.DepositDetail;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.FieldDescriptionService;
 
@@ -24,10 +26,13 @@ public class PurchaseEmployeeTeam implements EmployeeTeam {
 
 	@Override
 	public void performTeamActivity(Model model, String empId) {
-		String indentStatus = "PENDING PURCHASE";
-		List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);
+		List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE);
+		List<SupplierQuoteDetails> purchaseList = fieldDescriptionService.getPurchaseListByStatus(Constants.APPROVED);
 		if (!indentList.isEmpty()) {
 			model.addAttribute("indentList", indentList);
+		}
+		if (!purchaseList.isEmpty()) {
+			model.addAttribute("purchaseList", purchaseList);
 		}
 	}
 

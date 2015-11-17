@@ -13,11 +13,11 @@ import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
  */
 public interface FieldDescriptionDAO {
 
-    boolean isFieldDescriptionDetailsExistsForProject(int projectId);
+	boolean isFieldDescriptionDetailsExistsForProject(int projectId);
 
-    boolean isFieldDescriptionDetailsExistsForSubProject(int projectId);
+	boolean isFieldDescriptionDetailsExistsForSubProject(int projectId);
 
-    void createFieldDescription(int projectId,int subProjectId);
+	void createFieldDescription(int projectId, int subProjectId);
 
 	Integer saveIndentDescription(Indent indent);
 
@@ -34,7 +34,9 @@ public interface FieldDescriptionDAO {
 	Indent getIndent(String indentId);
 
 	List<Indent> getIndentListByStatus(String status);
-	
+
+	List<SupplierQuoteDetails> getPurchaseListByStatus(String status);
+
 	List<SupplierQuoteDetails> getSupplierByStatus(String status);
 
 	Integer upateIndentDescription(Indent indent);

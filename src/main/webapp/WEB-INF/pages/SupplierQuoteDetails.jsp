@@ -14,7 +14,7 @@
 $(document).ready(
 
         function () {
-var employeeId = $('#employeeId').val();
+
             if ($('#submittedForApproval').val() == 'Y') {
                 $('#submitedForApproval').hide();
                 $("#supplierQuoteDetailsTable").find("input,button,textarea,select,a").attr("disabled", "disabled");
@@ -61,65 +61,70 @@ var employeeId = $('#employeeId').val();
           	  $('#error').text('');
             });
               
-  		 $("#approveBtn").click(function() {
-  			
-			 var supplierDetails = [];
-			 var dispatchDetailForm = {};
-  		     var supplierAliasName = '';
-  		     var itemName = '';
-  		     var approvedQty = '';
-			var supplierQuoteTable = document.getElementById('supplierQuoteDetailsTable');
-    		var len = supplierQuoteTable.rows.length;
-			len = len - 1;
-			for(var i = 1; i<=len; i++) {
-				if (supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].checked){
-					var supplierAliasName = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
-                	var approvedQty = supplierQuoteTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
-  		       		var itemName = document.getElementById('itemName').innerHTML.trim();
-  		      		var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty);
-  		      	  	supplierDetails.push(obj);
-				}
-			}
-  		     dispatchDetailForm["quoteDetailsValue"] = JSON.stringify(supplierDetails);
-  		      
-  		         if($('input[name="supplierDetail"]:checked').length > 0){
-  		         	$.ajax({
-  		              type: "POST",
-  		              url: "supplierApproval.do",
-  		              contentType: "application/json",
-  		              cache: false,
-  		              data: JSON.stringify(dispatchDetailForm),
-  		              success: function (response) {
-  		            	  
+  		$("#approveBtn").click(function() {
+	var employee = $('#employeeId').val();
+	var projId = $('#projId').val();
+	 var supplierDetails = [];
+	 var dispatchDetailForm = {};
+	     var supplierAliasName = '';
+	     var itemName = '';
+	     var approvedQty = '';
+	var supplierQuoteTable = document.getElementById('supplierQuoteDetailsTable');
+	var len = supplierQuoteTable.rows.length;
+	len = len - 1;
+	for(var i = 1; i<=len; i++) {
+		if (supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].checked){
+				var supplierAliasName = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
+       			var approvedQty = supplierQuoteTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
+	       		var itemName = document.getElementById('itemName').innerHTML.trim();
+				var itemType = document.getElementById('itemType').innerHTML.trim();
+	      		var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType);
+	      	  	supplierDetails.push(obj);
+		}
+	}
+	     dispatchDetailForm["quoteDetailsValue"] = JSON.stringify(supplierDetails);
+	     dispatchDetailForm["projName"] = document.getElementById('projName').innerHTML.trim();
+	     dispatchDetailForm["itemType"] = document.getElementById('itemType').innerHTML.trim();
+	     dispatchDetailForm["itemName"] = document.getElementById('itemName').innerHTML.trim();
+	      
+	         if($('input[name="supplierDetail"]:checked').length > 0){
+	         	$.ajax({
+	              type: "POST",
+	              url: "supplierApproval.do",
+	              contentType: "application/json",
+	              cache: false,
+	              data: JSON.stringify(dispatchDetailForm),
+	              success: function (response) {
+	            	  
 
-  		                if (response.success) {
-  		                	$("#dialog-confirm").html(response.data);
-  		                	$("#dialog-confirm").dialog({
-  		                         modal: true,
-  		                         title: "Message!",
-  		                         height: 200,
-  		                         width: 300,
-  		                         buttons: {
-  		                             Ok: function () {
-  		                                 $(this).dialog("close");
-  		                                
-  		                             }
-  		                         },
-  							 close: function( event, ui ) {
-  							 }
-  		                     });
-  							
-  		                } else {
-  		                	 $('#result').html(response.data);
-  		                }
-  		               
- 				}
-  		          });
-  		         }else{
-  		         	 $('#result').text('Please select any Supplier to Approve');
-  		         }
-  		    
-  		});
+	                if (response.success) {
+	                	$("#dialog-confirm").html(response.data);
+	                	$("#dialog-confirm").dialog({
+	                         modal: true,
+	                         title: "Message!",
+	                         height: 200,
+	                         width: 300,
+	                         buttons: {
+	                             Ok: function () {
+	                                 $(this).dialog("close");
+	                                
+	                             }
+	                         },
+						 close: function( event, ui ) {
+						 }
+	                     });
+						
+	                } else {
+	                	 $('#result').html(response.data);
+	                }
+	               
+		}
+	          });
+	         }else{
+	         	 $('#result').text('Please select any Supplier to Approve');
+	         }
+	    
+	});
         	
    });
 function insertSupplierDetailRow() {
@@ -153,10 +158,11 @@ function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quot
     this.phoneNumber = phoneNumber;
     this.quotedPrice = quotedPrice;
 }
-function SupplierDetails(supplierAliasName, itemName, approvedQty) {
+function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType) {
     this.supplierAliasName = supplierAliasName;
     this.itemName = itemName;
     this.itemQty = approvedQty;
+	this.itemType = itemType;
 }
 
 
@@ -199,6 +205,8 @@ function getTableData() {
     dispatchDetailForm["employeeId"] = $('#employeeId').val();
     return {dispatchDetailForm: dispatchDetailForm, err: err};
 }
+
+
 
 
 function saveQuotePriceDetails() {
@@ -452,7 +460,6 @@ function statusApproved() {
                         <c:choose>
 					    	<c:when test="${employeeObj.employeeRole eq 'General Manager'}">
 					    		<td><input id="approveBtn" class="button" type="button" value="Approve" /></td>
-                        		<td><input id="rejectBtn" class="button" type="button" value="Reject"/></td>
 					    	</c:when>    
 					    	<c:otherwise>
                         		<td><input class="button" type="button" value="Add" onclick="insertSupplierDetailRow()"/></td>

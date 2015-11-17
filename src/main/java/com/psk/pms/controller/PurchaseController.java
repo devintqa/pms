@@ -197,7 +197,7 @@ public class PurchaseController {
         String result = "Supplier Approved";
         try {
             quoteDetails.setSubmittedForApproval("Y");
-            updateSupplierDetails(quoteDetails, "Approved");
+            updateSupplierDetails(quoteDetails, Constants.APPROVED);
             model.addAttribute("successMessage",
             		"Supplier Approved");
         } catch (Exception e) {e.printStackTrace();

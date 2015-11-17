@@ -172,8 +172,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     }
 
     @Override
-    public void updateIndentDescStatus(String status, String itemName, String itemType, Integer projectId) {
-     jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS,status,itemName,itemType,projectId);
+    public void updateIndentDescStatus(String status, String itemName, String itemType, String fromStatus, Integer projectId) {
+     jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS,status,itemName,itemType,fromStatus,projectId);
     }
 
 

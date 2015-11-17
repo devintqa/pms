@@ -1,9 +1,11 @@
 package com.psk.pms.service;
 
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.PurchaseDAO;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +66,7 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseDAO.saveSupplierQuoteDetails(quoteDetails, status);
         if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
             Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
-            purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
+            purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(),  Constants.PENDING_PURCHASE, projectId);
         }
     }
     
@@ -73,8 +75,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateSupplierDetails(QuoteDetails quoteDetails, String status) {
     	
     	if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
-    		//Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
-    		//purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
+    		Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
+    		purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), Constants.PURCHASE_PENDING_APPROVAL, projectId);
     		purchaseDAO.updateSupplierDetails(quoteDetails, status);
     	}
     }

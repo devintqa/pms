@@ -211,7 +211,7 @@ public class PmsMasterQuery {
 
     public static final String DELETE_SUPPLIER_QUOTE_DETAILS = "delete from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
 
-    public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus ='PENDING PURCHASE'" +
+    public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus =?" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
     
     public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?  where ItemName = ? and  SupplierAliasName = ?";

@@ -33,6 +33,8 @@ public interface FieldDescriptionService {
 
 	List<Indent> getIndentListByStatus(String status);
 	
+	List<SupplierQuoteDetails> getPurchaseListByStatus(String status);
+	
 	List<SupplierQuoteDetails> getSupplierByStatus(String status);
 
 }

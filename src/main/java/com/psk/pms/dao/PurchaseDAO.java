@@ -27,7 +27,7 @@ public interface PurchaseDAO {
 
     void deleteSupplierQuoteDetails(String projName, String itemType, String itemName);
 
-    void updateIndentDescStatus(String status, String itemName, String itemType, Integer projectId);
+    void updateIndentDescStatus(String status, String itemName, String itemType, String fromStatus, Integer projectId);
 
     Integer getProjectId(String projName);
 }

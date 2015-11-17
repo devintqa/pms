@@ -76,6 +76,11 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	}
 	
 	@Override
+	public List<SupplierQuoteDetails> getPurchaseListByStatus(String status) {
+		return fieldDescriptionDAO.getPurchaseListByStatus(status);
+	}
+	
+	@Override
 	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
 		return fieldDescriptionDAO.getSupplierByStatus(status);
 	}

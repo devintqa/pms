@@ -312,6 +312,34 @@
 			</table>
 			<br>
 			<br>
+			
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">Approved Purchases
+				that require immediate attention</h1>
+			<table id="purchaseList" class="display">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Item Name</th>
+						<th>Item Quantity</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:if test="${not empty purchaseList}">
+						<c:forEach var="purchaseItem" items="${purchaseList}">
+							<tr>
+								<td>${purchaseItem.aliasProjName}</td>
+								<td>${purchaseItem.itemName}</td>
+								<td>${purchaseItem.itemQty}</td>
+								<td>${purchaseItem.supplierQuoteStatus}</td>
+								<td><a href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">View</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
 		</c:if>
 	</div>
 	<footer>
