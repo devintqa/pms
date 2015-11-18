@@ -9,6 +9,7 @@ public class SearchDetail {
 	private String searchOn;
 	private String searchUnder;
     private String employeeId;
+    private String role;
 
 	public String getAliasProjectName() {
 		return aliasProjectName;
@@ -65,4 +66,12 @@ public class SearchDetail {
     public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 }

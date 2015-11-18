@@ -39,4 +39,6 @@ public interface FieldDescriptionDAO {
 
 	Integer upateIndentDescription(Indent indent);
 
+	Map<String, String> isActiveIndentExistForDescription(String projId);
+
 }

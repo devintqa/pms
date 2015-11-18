@@ -365,36 +365,39 @@ function deleteItemRow(row) {
 				
 					<center>
 					<br>
-					<span class="error" id="error"></span>
+					<span class="error" id="error">${error}</span>
 						<table>
 
 						<tr>
-							<td><c:if
-									test="${(employeeObj.employeeRole ne 'Technical Manager') and (employeeObj.employeeRole ne 'General Manager') and (indent.status eq 'NEW')}">
-									<input class="saveIndentButton"
-										aria-indent-id="${indent.indentId}"
-										aria-indent-status="${indent.status}" value="Next"
-										type="button" />
-								</c:if> <c:if
-									test="${(employeeObj.employeeRole ne 'Technical Manager') and (employeeObj.employeeRole ne 'General Manager') and (indent.status ne 'NEW')}">
-									<input class="viewIndentButton"
-										aria-indent-id="${indent.indentId}"
-										aria-indent-status="${indent.status}" value="Next"
-										type="button" />
-								</c:if>
+							<td>
+							<c:if test="${not empty indent.status}">
 								<c:if
-									test="${(employeeObj.employeeRole eq 'Technical Manager') and ((indent.status ne 'NEW') and (indent.status ne 'PENDING LEVEL 2 APPROVAL'))}">
-									<input class="saveIndentButton"
-										aria-indent-id="${indent.indentId}"
-										aria-indent-status="${indent.status}" value="Next"
-										type="button" />
-								</c:if>
-								<c:if
-									test="${(employeeObj.employeeRole eq 'General Manager') and ((indent.status ne 'NEW') and (indent.status ne 'PENDING LEVEL 1 APPROVAL'))}">
-									<input class="saveIndentButton"
-										aria-indent-id="${indent.indentId}"
-										aria-indent-status="${indent.status}" value="Next"
-										type="button" />
+										test="${(employeeObj.employeeRole ne 'Technical Manager') and (employeeObj.employeeRole ne 'General Manager') and (indent.status eq 'NEW')}">
+										<input class="saveIndentButton"
+											aria-indent-id="${indent.indentId}"
+											aria-indent-status="${indent.status}" value="Next"
+											type="button" />
+									</c:if> <c:if
+										test="${(employeeObj.employeeRole ne 'Technical Manager') and (employeeObj.employeeRole ne 'General Manager') and (indent.status ne 'NEW')}">
+										<input class="viewIndentButton"
+											aria-indent-id="${indent.indentId}"
+											aria-indent-status="${indent.status}" value="Next"
+											type="button" />
+									</c:if>
+									<c:if
+										test="${(employeeObj.employeeRole eq 'Technical Manager') and ((indent.status ne 'NEW') and (indent.status ne 'PENDING LEVEL 2 APPROVAL'))}">
+										<input class="saveIndentButton"
+											aria-indent-id="${indent.indentId}"
+											aria-indent-status="${indent.status}" value="Next"
+											type="button" />
+									</c:if>
+									<c:if
+										test="${(employeeObj.employeeRole eq 'General Manager') and ((indent.status ne 'NEW') and (indent.status ne 'PENDING LEVEL 1 APPROVAL'))}">
+										<input class="saveIndentButton"
+											aria-indent-id="${indent.indentId}"
+											aria-indent-status="${indent.status}" value="Next"
+											type="button" />
+									</c:if>
 								</c:if>
 								<input type="hidden" value="${employeeObj.employeeRole}" id="userRole"/>
 								</td>

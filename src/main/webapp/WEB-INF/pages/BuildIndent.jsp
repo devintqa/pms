@@ -106,6 +106,7 @@
 							</td>
 						</tr>
 					</table>
+					 <form:hidden path="role"/>
 					<span id="error" style="color:red;"></span>
 				</center>
 				<br>

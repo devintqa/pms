@@ -2,6 +2,7 @@ package com.psk.pms.controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ import com.psk.pms.model.IndentDesc;
 import com.psk.pms.model.SearchDetail;
 import com.psk.pms.model.IndentDesc.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
+import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.FieldDescriptionService;
 import com.psk.pms.service.ProjectDescriptionService;
 import com.psk.pms.validator.SearchValidator;
@@ -38,6 +40,9 @@ public class IndentController extends BaseController {
 
 	@Autowired
 	private FieldDescriptionService fieldDescriptionService;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	@Autowired
 	private SearchValidator searchValidator;
@@ -45,11 +50,12 @@ public class IndentController extends BaseController {
 	@RequestMapping(value = "/emp/myview/indent/{employeeId}", method = RequestMethod.GET)
 	public String searchDescriptionForIndenting(@PathVariable String employeeId, @RequestParam("team") String team,
 			Model model) {
-		Employee employee = new Employee();
+		Employee employee = employeeService.getEmployeeDetails(employeeId);
 		employee.setEmployeeId(employeeId);
 		employee.setEmployeeTeam(team);
 		SearchDetail searchDetail = new SearchDetail();
 		searchDetail.setEmployeeId(employeeId);
+		searchDetail.setRole(employee.getEmployeeRole());
 		model.addAttribute("searchProjDescForm", searchDetail);
 		model.addAttribute("employeeObj", employee);
 		return "BuildIndent";
@@ -122,6 +128,16 @@ public class IndentController extends BaseController {
 		String[] projDescId = projDescs.split(",");
 		List<IndentDesc> indentDescList;
 		Indent indent;
+		Map<String, String> validation  = validateDescForIndent(projectId, projDescId);
+		if(validation.size() > 0){
+			String errorString = "";
+			for (String descId : validation.keySet()){
+				errorString = errorString.concat(validation.get(descId).concat("<br>"));
+			}
+			model.addAttribute("error", errorString);
+			model.addAttribute("indent", new Indent());
+			return "CreateIndent";
+		}
 		if(!indentId.equals("0")){
 			indent = fieldDescriptionService.getIndent(indentId);
 			indent.setEmployeeId(employeeId);
@@ -152,6 +168,17 @@ public class IndentController extends BaseController {
 		return "CreateIndent";
 	}
 
+	Map<String, String> validateDescForIndent(String projId, String[] projDescIds){
+		Map<String, String> validation = new HashMap<String, String>();
+		Map<String, String> isActiveDescription = fieldDescriptionService.isActiveIndentExistForDescription(projId);
+		for(String descId: projDescIds){
+			if(isActiveDescription.containsKey(descId)){
+				validation.put(descId, isActiveDescription.get(descId));
+			}
+		}
+		return validation;
+	}
+		
 	@RequestMapping(value = "/emp/myview/indent/getIndentItem", method = RequestMethod.GET)
 	@ResponseBody public List<ItemDetail> getIndentItem(
 			@RequestParam(value = "indentQty") String indentQty,

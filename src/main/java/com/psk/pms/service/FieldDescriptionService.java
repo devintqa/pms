@@ -35,4 +35,6 @@ public interface FieldDescriptionService {
 	
 	List<SupplierQuoteDetails> getSupplierByStatus(String status);
 
+	Map<String, String> isActiveIndentExistForDescription(String projId);
+
 }
