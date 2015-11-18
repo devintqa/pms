@@ -171,11 +171,12 @@ public class IndentController extends BaseController {
 	Map<String, String> validateDescForIndent(String projId, String[] projDescIds){
 		Map<String, String> validation = new HashMap<String, String>();
 		Map<String, String> isActiveDescription = fieldDescriptionService.isActiveIndentExistForDescription(projId);
-		for(String descId: projDescIds){
-			if(isActiveDescription.containsKey(descId)){
-				validation.put(descId, isActiveDescription.get(descId));
+		if(null!=isActiveDescription && isActiveDescription.size() > 0)
+			for(String descId: projDescIds){
+				if(isActiveDescription.containsKey(descId)){
+					validation.put(descId, isActiveDescription.get(descId));
+				}
 			}
-		}
 		return validation;
 	}
 		

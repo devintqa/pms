@@ -406,10 +406,10 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	
 	@Override
 	public Map<String, String> isActiveIndentExistForDescription(String projId){
-		String sql = "select i.IndentId, i.ProjDescId, f.AliasDescription from indentdesc i, fieldprojectdesc f where i.indentId in (select indentId from indent where projid='"+projId+"' and status  in ('PENDING LEVEL 1 APPROVAL')) and i.ProjDescId = f.ProjDescId";
+		String sql = "select i.IndentId, i.ProjDescId, f.AliasDescription from indentdesc i, fieldprojectdesc f where i.indentId in (select indentId from indent where projid='"+projId+"' and status  in ('PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL')) and i.ProjDescId = f.ProjDescId";
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 		Map<String, String> activeIndent= null;
-		if(rows.size() > 1){
+		if(rows.size() > 0){
 			activeIndent = new HashMap<String, String>();
 		}
 		for (Map < String, Object > row: rows) {
