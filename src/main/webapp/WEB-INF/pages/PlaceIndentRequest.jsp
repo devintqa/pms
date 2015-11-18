@@ -152,16 +152,25 @@
 				<input type="hidden" id="indentId" value="${indentDesc.indentId}"/>
 				<input type="hidden" id="employeeId" value="${employeeId}"/>
 				<center>
-				
-				<c:if test="${indentStatus eq 'NEW'}">
-					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Place Request"/>
-				</c:if>
-				
-				<c:if test="${(employeeObj.employeeRole eq 'Technical Manager' and employeeObj.employeeTeam eq 'Technical') or (employeeObj.employeeRole eq 'General Manager' and employeeObj.employeeTeam eq 'Management') and (indentStatus ne 'PENDING PURCHASE' and indentStatus ne 'REJECTED')}">
-					<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
 					
-					<input class="button" aria-indent-status="${indentStatus}" type="button" id="rejectIndentRequest" value="Reject"/>
-				</c:if>
+					<c:if test="${indentStatus eq 'NEW'}">
+						<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Place Request"/>
+					</c:if>
+					
+					<c:if test="${(employeeObj.employeeRole eq 'Technical Manager' and employeeObj.employeeTeam eq 'Technical')}">
+						<c:if test="${indentStatus eq 'PENDING LEVEL 1 APPROVAL'}">
+							<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
+							<input class="button" aria-indent-status="${indentStatus}" type="button" id="rejectIndentRequest" value="Reject"/>
+						</c:if>
+						
+					</c:if>
+					
+					<c:if test="${(employeeObj.employeeRole eq 'General Manager' and employeeObj.employeeTeam eq 'Management')}">
+						<c:if test="${indentStatus eq 'PENDING LEVEL 2 APPROVAL'}">
+							<input class="button" aria-indent-status="${indentStatus}" type="button" id="placeIndentRequest" value="Approve"/>
+							<input class="button" aria-indent-status="${indentStatus}" type="button" id="rejectIndentRequest" value="Reject"/>
+						</c:if>
+					</c:if>
 				
 				</center>
 				<br>
