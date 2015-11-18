@@ -234,7 +234,7 @@ public class ItemDAOImpl implements ItemDAO {
             LOGGER.info("Into getProjectData() " + isEditSubProject + " Sub Project Id" + projectConfiguration.getSubProjId());
             sql = "Select * from " + DescriptionType.getDescriptionItemTableName(descType) + " where SubProjId = " + projectConfiguration.getSubProjId();
         } else {
-            sql = "Select  p1.projId, p1.itemname, p1.itemunit, p1.itemprice, p1.ItemCost,p1.ItemQty, p2.Quantity  from " + DescriptionType.getDescriptionItemTableName(descType) + " p1, " + DescriptionType.getDescriptionTableName(descType) + " p2 where p1.ProjId = " + projectConfiguration.getProjId() + " and p1.ProjDescSerial = p2.SerialNumber";
+            sql = "Select  p1.projId, p1.itemname, p1.itemunit, p1.itemprice, p1.ItemCost,p1.ItemQty, p2.Quantity  from " + DescriptionType.getDescriptionItemTableName(descType) + " p1, " + DescriptionType.getDescriptionTableName(descType) + " p2 where p1.ProjId = " + projectConfiguration.getProjId() + " and p1.ProjDescId = p2.ProjDescId";
         }
         List<DescItemDetail.ItemDetail> itemDetailList = new ArrayList<DescItemDetail.ItemDetail>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
