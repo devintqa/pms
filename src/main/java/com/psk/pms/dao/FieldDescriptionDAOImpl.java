@@ -377,39 +377,6 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		return indentList;
 	}
 	
-	
-	@Override
-	public List<SupplierQuoteDetails> getPurchaseListByStatus(String status) {
-		List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
-		String sql = null;
-		if (null!=status) {
-			sql = "select AliasProjName,itemname, sum(ItemQty) as itemQty, ItemType, supplierquotestatus from "
-					+"supplierquotedetails where supplierquotestatus ='Approved' group by ItemName;";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			purchaseList.add(transformer.buildSupplierList(row));
-		}
-		return purchaseList;
-	}
-	
-	@Override
-	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
-		List<SupplierQuoteDetails> supplierList = new ArrayList<SupplierQuoteDetails>();
-		String sql = null;
-		if (null!=status) {
-			sql = "SELECT p.projName as aliasProjName, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty, idi.indentitemstatus as supplierquotestatus FROM indentdescitem idi,"
-					+ "indentdesc id, indent i, project p where idi.indentDescId = id.indentdescid and idi.indentitemstatus ='"+status+"'"
-					+ "and id.IndentId = i.indentid group by idi.ItemName";
-	} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-		for (Map < String, Object > row: rows) {
-			supplierList.add(transformer.buildSupplierList(row));
-		}
-		return supplierList;
-	}
-
 	@Override
 	public Integer upateIndentDescription(Indent indent) {
 		Integer indentId = new Integer(indent.getIndentId());

@@ -334,7 +334,7 @@
 								<td>${purchaseItem.itemName}</td>
 								<td>${purchaseItem.itemQty}</td>
 								<td>${purchaseItem.supplierQuoteStatus}</td>
-								<td><a href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">View</a></td>
+  								<td><a href="/pms/emp/myview/viewSupplierDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}">View</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

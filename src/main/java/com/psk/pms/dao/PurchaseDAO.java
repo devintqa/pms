@@ -30,4 +30,10 @@ public interface PurchaseDAO {
     void updateIndentDescStatus(String status, String itemName, String itemType, String fromStatus, Integer projectId);
 
     Integer getProjectId(String projName);
+
+    List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status);
+
+    List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status);
+
+    List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
 }

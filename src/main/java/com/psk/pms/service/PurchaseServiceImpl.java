@@ -86,6 +86,22 @@ public class PurchaseServiceImpl implements PurchaseService {
        return purchaseDAO.getSupplierQuoteDetails(projName,itemType,itemName);
     }
 
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status) {
+        return purchaseDAO.getPurchaseListByStatus(status);
+    }
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
+        return purchaseDAO.getPurchaseSupplierDetails(projName,itemName,status);
+    }
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
+        return purchaseDAO.getSupplierByStatus(supplierStatus);
+    }
+
     private Date getCurrentDateTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.getTimeInMillis();
