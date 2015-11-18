@@ -17,27 +17,25 @@ public interface FieldDescriptionDAO {
 
     boolean isFieldDescriptionDetailsExistsForSubProject(int projectId);
 
-    void createFieldDescription(int projectId,int subProjectId);
+    void createFieldDescription(int projectId, int subProjectId);
 
-	Integer saveIndentDescription(Indent indent);
+    Integer saveIndentDescription(Indent indent);
 
-	ProjDescDetail getPskFieldProjectDescription(String projDescId);
+    ProjDescDetail getPskFieldProjectDescription(String projDescId);
 
-	List<Indent> getIndentList(SearchDetail searchDetail);
+    List<Indent> getIndentList(SearchDetail searchDetail);
 
-	String placeIndentRequest(Indent indent);
+    String placeIndentRequest(Indent indent);
 
-	Map<String, Object> getRequestedIndentQty(Integer projId, String userRole);
+    Map<String, Object> getRequestedIndentQty(Integer projId, String userRole);
 
-	List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
+    List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail);
 
-	Indent getIndent(String indentId);
+    Indent getIndent(String indentId);
 
-	List<Indent> getIndentListByStatus(String status);
-	
-	List<SupplierQuoteDetails> getSupplierByStatus(String status);
+    List<Indent> getIndentListByStatus(String status);
 
-	Integer upateIndentDescription(Indent indent);
+    Integer upateIndentDescription(Indent indent);
 
 	Map<String, String> isActiveIndentExistForDescription(String projId);
 

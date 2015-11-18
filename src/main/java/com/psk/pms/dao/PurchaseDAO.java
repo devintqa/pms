@@ -20,12 +20,20 @@ public interface PurchaseDAO {
     boolean isAliasSupplierNameAlreadyExist(String aliasSupplierName);
 
     void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status);
+    
+    void updateSupplierDetails(QuoteDetails quoteDetails, String status);
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
 
     void deleteSupplierQuoteDetails(String projName, String itemType, String itemName);
 
-    void updateIndentDescStatus(String status, String itemName, String itemType, Integer projectId);
+    void updateIndentDescStatus(String status, String itemName, String itemType, String fromStatus, Integer projectId);
 
     Integer getProjectId(String projName);
+
+    List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status);
+
+    List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status);
+
+    List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
 }

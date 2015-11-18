@@ -139,7 +139,7 @@
 									<td>${indent.itemQty}</td>
 									<td>${indent.indentStatus}</td>
 									<c:if test="${(employeeObj.employeeTeam eq 'Purchase')}">
-									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&itemType=${indent.itemType}&status=${indent.indentStatus}"> Supplier Quote Detail
+									<td><a href="/pms/emp/myview/supplierQuoteDetails/${projName}?itemName=${indent.itemName}&employeeId=${employeeObj.employeeId}&itemQty=${indent.itemQty}&itemType=${indent.itemType}&status=${indent.indentStatus}"> Supplier Quote Detail
                            				</a>
                            			</td>
                            			</c:if>

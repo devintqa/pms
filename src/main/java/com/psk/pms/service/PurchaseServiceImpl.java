@@ -1,9 +1,11 @@
 package com.psk.pms.service;
 
 
+import com.psk.pms.Constants;
 import com.psk.pms.dao.PurchaseDAO;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,13 +66,40 @@ public class PurchaseServiceImpl implements PurchaseService {
         purchaseDAO.saveSupplierQuoteDetails(quoteDetails, status);
         if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
             Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
-            purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
+            purchaseDAO.updateIndentDescStatus(PURCHASE_PENDING_APPROVAL, quoteDetails.getItemName(), quoteDetails.getItemType(),  Constants.PENDING_PURCHASE, projectId);
         }
+    }
+    
+    @Override
+    @Transactional
+    public void updateSupplierDetails(QuoteDetails quoteDetails, String status) {
+    	
+    	if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
+    		Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
+    		purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), Constants.PURCHASE_PENDING_APPROVAL, projectId);
+    		purchaseDAO.updateSupplierDetails(quoteDetails, status);
+    	}
     }
 
     @Override
     public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
        return purchaseDAO.getSupplierQuoteDetails(projName,itemType,itemName);
+    }
+
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status) {
+        return purchaseDAO.getPurchaseListByStatus(status);
+    }
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
+        return purchaseDAO.getPurchaseSupplierDetails(projName,itemName,status);
+    }
+
+    @Override
+    public List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
+        return purchaseDAO.getSupplierByStatus(supplierStatus);
     }
 
     private Date getCurrentDateTime() {

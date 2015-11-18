@@ -259,6 +259,8 @@
 					<thead>
 						<tr>
 							<th>Project</th>
+							<th>Item Name</th>
+							<th>Item Quantity</th>
 							<th>Status</th>
 							<th>Action</th>
 						</tr>
@@ -269,9 +271,11 @@
 							<c:forEach var="supplier" items="${supplierList}">
 								<tr>
 									<td>${supplier.aliasProjName}</td>
+									<td>${supplier.itemName}</td>
+									<td>${supplier.itemQty}</td>
 									<td>${supplier.supplierQuoteStatus}</td>
-									<td><a
-										href="/pms/emp/myview/indent/itemToRequestView?employeeId=${employeeObj.employeeId}&indentId=${indent.indentId}&projId=${indent.projId}&status=${indent.status}&projName=${indent.description}">Approve</a>
+									<td>
+										<a href="/pms/emp/myview/supplierQuoteDetails/${supplier.aliasProjName}?itemName=${supplier.itemName}&itemQty=${supplier.itemQty}&employeeId=${employeeObj.employeeId}&itemType=${supplier.itemType}&status=${supplier.supplierQuoteStatus}">Approve</a>
 								</tr>
 							</c:forEach>
 						</c:if>
@@ -308,6 +312,34 @@
 			</table>
 			<br>
 			<br>
+			
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">Approved Purchases
+				that require immediate attention</h1>
+			<table id="purchaseList" class="display">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Item Name</th>
+						<th>Item Quantity</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:if test="${not empty purchaseList}">
+						<c:forEach var="purchaseItem" items="${purchaseList}">
+							<tr>
+								<td>${purchaseItem.aliasProjName}</td>
+								<td>${purchaseItem.itemName}</td>
+								<td>${purchaseItem.itemQty}</td>
+								<td>${purchaseItem.supplierQuoteStatus}</td>
+  								<td><a href="/pms/emp/myview/viewSupplierDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}">View</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
 		</c:if>
 	</div>
 	<footer>

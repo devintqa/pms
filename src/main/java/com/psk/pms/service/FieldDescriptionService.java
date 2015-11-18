@@ -32,8 +32,6 @@ public interface FieldDescriptionService {
 	Indent getIndent(String indentId);
 
 	List<Indent> getIndentListByStatus(String status);
-	
-	List<SupplierQuoteDetails> getSupplierByStatus(String status);
 
 	Map<String, String> isActiveIndentExistForDescription(String projId);
 

@@ -13,6 +13,7 @@ import com.psk.pms.model.LeadDetailConfiguration;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
+import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 
 public class ResultTransformer {
@@ -222,8 +223,8 @@ public class ResultTransformer {
 		indent.setStatus((String) row.get("Status"));
 		indent.setStartDate((String) row.get("StartDate"));
 		indent.setEndDate((String) row.get("EndDate"));
-		if(row.containsKey("ProjName")){
-			indent.setDescription(row.get("ProjName").toString());
+		if(row.containsKey("aliasProjName")){
+			indent.setDescription(row.get("aliasProjName").toString());
 		}
 		
 		return indent;
@@ -231,9 +232,11 @@ public class ResultTransformer {
     
     SupplierQuoteDetails buildSupplierList(Map<String, Object> row) {
     	SupplierQuoteDetails supplierList = new SupplierQuoteDetails();
+    	supplierList.setItemQty(row.get("itemQty").toString());
+    	supplierList.setItemName(row.get("itemName").toString());
+    	supplierList.setItemType(row.get("itemType").toString());
     	supplierList.setAliasProjName(row.get("aliasProjName").toString());
     	supplierList.setSupplierQuoteStatus(row.get("supplierquotestatus").toString());
-		
 		return supplierList;
 	}
 

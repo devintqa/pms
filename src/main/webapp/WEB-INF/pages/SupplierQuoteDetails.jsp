@@ -12,10 +12,14 @@
 
 <script>
 $(document).ready(
+
         function () {
+
             if ($('#submittedForApproval').val() == 'Y') {
                 $('#submitedForApproval').hide();
                 $("#supplierQuoteDetailsTable").find("input,button,textarea,select,a").attr("disabled", "disabled");
+                $("#supplierQuoteDetailsTable").find("input:checkbox").attr("disabled", false);
+                $("#approvedQty").attr("disabled", false);
                 $("#deleteItem").hide();
             }
             $('#Submit').hide();
@@ -48,7 +52,81 @@ $(document).ready(
                     }
                 });
             });
-        });
+            <c:if test="${employeeObj.employeeRole eq 'General Manager'}">
+        		$('#approveBtn, #rejectBtn').attr("disabled", false);
+        		$('#submitedForApproval').show();
+        	</c:if>
+        	
+        	$('input[name="supplierDetail"]').change(function(){
+          	  $('#error').text('');
+            });
+              
+  		$("#approveBtn").click(function() {
+	var employee = $('#employeeId').val();
+	var projId = $('#projId').val();
+	 var supplierDetails = [];
+	 var dispatchDetailForm = {};
+	     var supplierAliasName = '';
+	     var itemName = '';
+	     var approvedQty = '';
+	var supplierQuoteTable = document.getElementById('supplierQuoteDetailsTable');
+	var len = supplierQuoteTable.rows.length;
+	len = len - 1;
+	for(var i = 1; i<=len; i++) {
+		if (supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].checked){
+				var supplierAliasName = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
+       			var approvedQty = supplierQuoteTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
+	       		var itemName = document.getElementById('itemName').innerHTML.trim();
+				var itemType = document.getElementById('itemType').innerHTML.trim();
+	      		var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType);
+	      	  	supplierDetails.push(obj);
+		}
+	}
+	     dispatchDetailForm["quoteDetailsValue"] = JSON.stringify(supplierDetails);
+	     dispatchDetailForm["projName"] = document.getElementById('projName').innerHTML.trim();
+	     dispatchDetailForm["itemType"] = document.getElementById('itemType').innerHTML.trim();
+	     dispatchDetailForm["itemName"] = document.getElementById('itemName').innerHTML.trim();
+	      
+	         if($('input[name="supplierDetail"]:checked').length > 0){
+	         	$.ajax({
+	              type: "POST",
+	              url: "supplierApproval.do",
+	              contentType: "application/json",
+	              cache: false,
+	              data: JSON.stringify(dispatchDetailForm),
+	              success: function (response) {
+	            	  
+
+	                if (response.success) {
+	                	$("#dialog-confirm").html(response.data);
+	                	$("#dialog-confirm").dialog({
+	                         modal: true,
+	                         title: "Message!",
+	                         height: 200,
+	                         width: 300,
+	                         buttons: {
+	                             Ok: function () {
+	                                 $(this).dialog("close");
+	                                
+	                             }
+	                         },
+						 close: function( event, ui ) {
+						 }
+	                     });
+						
+	                } else {
+	                	 $('#result').html(response.data);
+	                }
+	               
+		}
+	          });
+	         }else{
+	         	 $('#result').text('Please select any Supplier to Approve');
+	         }
+	    
+	});
+        	
+   });
 function insertSupplierDetailRow() {
     var supplierQuoteDetailsTable = document.getElementById('supplierQuoteDetailsTable');
     var new_row = supplierQuoteDetailsTable.rows[1].cloneNode(true);
@@ -79,6 +157,12 @@ function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quot
     this.emailAddress = emailAddress;
     this.phoneNumber = phoneNumber;
     this.quotedPrice = quotedPrice;
+}
+function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType) {
+    this.supplierAliasName = supplierAliasName;
+    this.itemName = itemName;
+    this.itemQty = approvedQty;
+	this.itemType = itemType;
 }
 
 
@@ -117,8 +201,12 @@ function getTableData() {
     dispatchDetailForm["projName"] = document.getElementById('projName').innerHTML.trim();
     dispatchDetailForm["itemType"] = document.getElementById('itemType').innerHTML.trim();
     dispatchDetailForm["itemName"] = document.getElementById('itemName').innerHTML.trim();
+    dispatchDetailForm["itemQty"] = document.getElementById('itemQty').innerHTML.trim();
+    dispatchDetailForm["employeeId"] = $('#employeeId').val();
     return {dispatchDetailForm: dispatchDetailForm, err: err};
 }
+
+
 
 
 function saveQuotePriceDetails() {
@@ -202,21 +290,24 @@ function fillSupplierQuoteDetails() {
 function fillSupplierQuoteDetail(item) {
     var row = document.getElementById('supplierQuoteDetailsTable').rows[1].cloneNode(true);
     var len = document.getElementById('supplierQuoteDetailsTable').rows.length;
-
-    var supplierAliasName = row.cells[0].getElementsByTagName('input')[0];
+    var i = 0;
+    <c:if test="${employeeObj.employeeRole eq 'General Manager'}">
+    	i = 1;
+    </c:if>
+    var supplierAliasName = row.cells[i].getElementsByTagName('input')[0];
     supplierAliasName.id += len;
     supplierAliasName.value = item.supplierAliasName;
     ;
-
-    var emailAddress = row.cells[1].getElementsByTagName('input')[0];
+	i++;
+    var emailAddress = row.cells[i].getElementsByTagName('input')[0];
     emailAddress.id += len;
     emailAddress.value = item.emailAddress;
-
-    var phoneNumber = row.cells[2].getElementsByTagName('input')[0];
+    i++;
+    var phoneNumber = row.cells[i].getElementsByTagName('input')[0];
     phoneNumber.id += len;
     phoneNumber.value = item.phoneNumber;
-
-    var quotedPrice = row.cells[3].getElementsByTagName('input')[0];
+    i++;
+    var quotedPrice = row.cells[i].getElementsByTagName('input')[0];
     quotedPrice.id += len;
     if (item.quotedPrice)
         quotedPrice.value = item.quotedPrice;
@@ -236,6 +327,33 @@ function deleteItemRow(row) {
         document.getElementById('supplierQuoteDetailsTable').rows[1].cells[1].getElementsByTagName('input')[0].value = '';
         document.getElementById('supplierQuoteDetailsTable').rows[1].cells[2].getElementsByTagName('input')[0].value = '';
         document.getElementById('supplierQuoteDetailsTable').rows[1].cells[3].getElementsByTagName('input')[0].value = '';
+    }
+}
+
+function statusApproved() {
+    var __ret = getTableData();
+    var dispatchDetailForm = __ret.dispatchDetailForm;
+    var err = __ret.err;
+    if (err) {
+        alert("Please make sure that all the required fields are entered.");
+    } else {
+        $.ajax({
+            type: "POST",
+            url: "submitForApproval.do",
+            contentType: "application/json",
+            cache: false,
+            data: JSON.stringify(dispatchDetailForm),
+            success: function (response) {
+                if (response.success) {
+                    $('#submitedForApproval').hide();
+                    $("#supplierQuoteDetailsTable").find("input,button,textarea,select").attr("disabled", "disabled");
+                    $("#deleteItem").hide();
+                } else {
+                    $('#submitedForApproval').show();
+                }
+                $('#result').html(response.data);
+            }
+        });
     }
 }
 </script>
@@ -279,6 +397,11 @@ function deleteItemRow(row) {
                             </td>
                             <td id="itemName" class="tdStyle">${itemName}</td>
                         </tr>
+                        <tr>
+                            <td>Item Quantity<span id="colon">:</span>
+                            </td>
+                            <td id="itemQty" class="tdStyle">${itemQty}</td>
+                        </tr>
                         <tr></tr>
                     </table>
                 </fieldset>
@@ -286,6 +409,10 @@ function deleteItemRow(row) {
                 <table id="supplierQuoteDetailsTable" class="gridView">
                     <thead>
                     <tr>
+                    	 <c:if test="${employeeObj.employeeRole eq 'General Manager'}">
+                    	 <th width="50px">Select</th>
+					    </c:if>
+                    	
                         <th width="50px">Supplier Alias Name</th>
                         <th width="50px">Email Address</th>
                         <th width="50px">Phone Number</th>
@@ -295,20 +422,32 @@ function deleteItemRow(row) {
                     </thead>
                     <tbody>
                     <tr>
+					    <c:if test="${employeeObj.employeeRole eq 'General Manager'}">
+					       <td><input type="checkbox" name="supplierDetail" id = "supplierDetail" /></td>
+					    </c:if>    
+
                         <td><input class="quoteDetailStyle" name="supplierAliasName" id="supplierAliasName" type="text"
-                                   placeholder="Enter Supplier Name"/>
+                                   placeholder="Enter Supplier Name"/></td>
                         <td><input class="quoteDetailStyle" name="totalQuantity" id="emailAddress" type="text"
                                    readonly="true"/></td>
                         <td><input class="quoteDetailStyle" name="totalQuantity" id="phoneNumber" type="text"
                                    readonly="true"/></td>
                         <td><input class="quoteDetailStyle" name="quotedPrice" id="quotedPrice" type="text"
                                    placeholder="Enter Quoted Price"/></td>
-                        <td align="center" ><a class="quoteDetailStyle" id="deleteItem"  onclick="deleteItemRow(this)">
+                                   
+                        <c:choose>
+					    <c:when test="${employeeObj.employeeRole eq 'General Manager'}">
+					       <td><input class="quoteDetailStyle" name="approvedQty" id="approvedQty" type="text"
+                                   placeholder="Enter Approving Quantity"/></td>
+					    </c:when>    
+					    <c:otherwise>
+					        <td align="center" ><a class="quoteDetailStyle" id="deleteItem"  onclick="deleteItemRow(this)">
                             <img src="<c:url value="/resources/images/delete.png" />"/></a></td>
+					    </c:otherwise>
+						</c:choose>
                     </tr>
                     </tbody>
                 </table>
-
 
                 <table id="submitedForApproval">
                     <tr>
@@ -318,10 +457,17 @@ function deleteItemRow(row) {
                         <div id="result"
                              style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
                         <br>
-                        <td><input class="button" type="button" value="Add" onclick="insertSupplierDetailRow()"/></td>
-                        <td><input class="button" type="button" value="Save" onclick="saveQuotePriceDetails()"/></td>
-                        <td id="Submit"><input class="button" type="button" value="Submit For Approval"
+                        <c:choose>
+					    	<c:when test="${employeeObj.employeeRole eq 'General Manager'}">
+					    		<td><input id="approveBtn" class="button" type="button" value="Approve" /></td>
+					    	</c:when>    
+					    	<c:otherwise>
+                        		<td><input class="button" type="button" value="Add" onclick="insertSupplierDetailRow()"/></td>
+                        		<td><input class="button" type="button" value="Save" onclick="saveQuotePriceDetails()"/></td>
+                        		<td id="Submit"><input class="button" type="button" value="Submit For Approval"
                                                onclick="submitForApproval()"/></td>
+                        	</c:otherwise>
+						</c:choose>            
                         <td></td>
                     </tr>
                 </table>

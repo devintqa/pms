@@ -13,5 +13,6 @@ public class JSPFileNames {
 	public static final String BUILD_SUPPLIER = "BuildSupplier";
     public static final String SEARCH_SUPPLIER = "SearchSupplier";
     public static final String SUPPLIER_QUOTE_DETAILS = "SupplierQuoteDetails";
+    public static final String VIEW_SUPPLIER_QUOTE_DETAILS = "ViewSupplierQuoteDetails";
 
 }

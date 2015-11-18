@@ -373,7 +373,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Indent> indentList = new ArrayList<Indent>();
 		String sql = null;
 		if (null!=status) {
-			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.ProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"'";
+			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"' group by i.projId";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
@@ -383,20 +383,6 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		return indentList;
 	}
 	
-	@Override
-	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
-		List<SupplierQuoteDetails> supplierList = new ArrayList<SupplierQuoteDetails>();
-		String sql = null;
-		if (null!=status) {
-			sql = "select AliasProjName, supplierquotestatus from supplierquotedetails where supplierquotestatus ='"+status+"' group by AliasProjName";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-		for (Map < String, Object > row: rows) {
-			supplierList.add(transformer.buildSupplierList(row));
-		}
-		return supplierList;
-	}
-
 	@Override
 	public Integer upateIndentDescription(Indent indent) {
 		Integer indentId = new Integer(indent.getIndentId());

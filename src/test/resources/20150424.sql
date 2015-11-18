@@ -757,6 +757,7 @@ CREATE TABLE `supplierQuoteDetails` (
   `AliasProjName` varchar(50) NOT NULL,
   `ItemName` varchar(45) DEFAULT NULL,
   `ItemType` varchar(45) DEFAULT NULL,
+  `ItemQty` varchar(20) DEFAULT NULL,
   `SupplierAliasName` varchar(30) NOT NULL,
   `emailAddress` varchar(50) DEFAULT NULL,
   `PhoneNumber` varchar(20) NOT NULL,

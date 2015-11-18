@@ -75,10 +75,10 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 		return fieldDescriptionDAO.getIndentListByStatus(status);
 	}
 	
-	@Override
-	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
-		return fieldDescriptionDAO.getSupplierByStatus(status);
-	}
+//	@Override
+//	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
+//		return fieldDescriptionDAO.getSupplierByStatus(status);
+//	}
 	
 	@Override
 	public Map<String, String> isActiveIndentExistForDescription(String projId){
