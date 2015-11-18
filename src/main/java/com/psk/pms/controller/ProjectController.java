@@ -111,10 +111,12 @@ public class ProjectController extends BaseController {
             status.setComplete();
             Employee employee = new Employee();
             employee.setEmployeeId(projectDetail.getEmployeeId());
-            ProjectDetail projDetail = new ProjectDetail();
-            projDetail.setEmployeeId(projectDetail.getEmployeeId());
-            projDetail.setWorkoutPercentage(BigDecimal.ZERO);
-            model.addAttribute("projectForm", projDetail);
+            if(!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())){
+                ProjectDetail projDetail = new ProjectDetail();
+                projDetail.setEmployeeId(projectDetail.getEmployeeId());
+                projDetail.setWorkoutPercentage(BigDecimal.ZERO);
+                model.addAttribute("projectForm", projDetail);
+            }
             model.addAttribute("employee", employee);
             model.addAttribute("aliasProjectList", aliasProjectList);
             model.addAttribute("projectCreationMessage", message);
