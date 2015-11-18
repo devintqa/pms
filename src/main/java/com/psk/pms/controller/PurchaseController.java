@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 import com.psk.exception.ValidationException;
 import com.psk.pms.Constants;
+import com.psk.pms.constants.JSPFileNames;
 import com.psk.pms.model.*;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.PurchaseService;
@@ -26,6 +27,7 @@ import java.util.List;
 import static com.psk.pms.Constants.*;
 import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
 import static com.psk.pms.constants.JSPFileNames.SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.constants.JSPFileNames.VIEW_SUPPLIER_QUOTE_DETAILS;
 
 @Controller
 public class PurchaseController {
@@ -125,13 +127,30 @@ public class PurchaseController {
         }.getType());
         JsonArray jsonArray = element.getAsJsonArray();
         quoteDetails.setQuoteDetailsValue(jsonArray.toString());
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("projName", projName);
-        model.addAttribute("itemType", itemType);
-        model.addAttribute("itemQty", itemQty);
         model.addAttribute("employeeobj", employee);
         model.addAttribute("quoteDetailsForm", quoteDetails);
         return SUPPLIER_QUOTE_DETAILS;
+    }
+
+
+
+    @RequestMapping(value = "/emp/myview/viewSupplierDetails/{projName}", method = RequestMethod.GET)
+    public String viewSupplierQuoteDetails(@PathVariable String projName,
+                                       @RequestParam(value = "itemName", required = true) String itemName,
+                                       Model model) {
+        LOGGER.info("Supplier detail update page for supplierId." + itemName);
+        QuoteDetails quoteDetails = new QuoteDetails();
+        model.addAttribute("itemName", itemName);
+        model.addAttribute("projName", projName);
+        List<QuoteDetails.SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseSupplierDetails(projName,itemName,APPROVED);
+        quoteDetails.setSupplierQuoteDetails(purchaseList);
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(purchaseList, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
+        }.getType());
+        JsonArray jsonArray = element.getAsJsonArray();
+        quoteDetails.setQuoteDetailsValue(jsonArray.toString());
+        model.addAttribute("quoteDetailsForm", quoteDetails);
+        return VIEW_SUPPLIER_QUOTE_DETAILS;
     }
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getSupplierDetails.do", method = RequestMethod.GET)

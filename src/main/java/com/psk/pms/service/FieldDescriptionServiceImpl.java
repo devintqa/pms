@@ -32,57 +32,47 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
         fieldDescriptionDAO.createFieldDescription(projectId, subProjectId);
     }
 
-	@Override
-	public Integer saveIndentDescription(Indent indent) {
-		if(indent.getIndentId().equals("0"))
-		 return fieldDescriptionDAO.saveIndentDescription(indent);
-		else
-			return fieldDescriptionDAO.upateIndentDescription(indent);
-	}
+    @Override
+    public Integer saveIndentDescription(Indent indent) {
+        if (indent.getIndentId().equals("0"))
+            return fieldDescriptionDAO.saveIndentDescription(indent);
+        else
+            return fieldDescriptionDAO.upateIndentDescription(indent);
+    }
 
-	@Override
-	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
-		return fieldDescriptionDAO.getPskFieldProjectDescription(projDescId);
-	}
+    @Override
+    public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
+        return fieldDescriptionDAO.getPskFieldProjectDescription(projDescId);
+    }
 
-	@Override
-	public List<Indent> getIndentList(SearchDetail searchDetail) {
-		return fieldDescriptionDAO.getIndentList(searchDetail);
-	}
+    @Override
+    public List<Indent> getIndentList(SearchDetail searchDetail) {
+        return fieldDescriptionDAO.getIndentList(searchDetail);
+    }
 
-	@Override
-	public String placeIndentRequest(Indent indent) {
-		return fieldDescriptionDAO.placeIndentRequest(indent);
-	}
+    @Override
+    public String placeIndentRequest(Indent indent) {
+        return fieldDescriptionDAO.placeIndentRequest(indent);
+    }
 
-	@Override
-	public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
-		return fieldDescriptionDAO.getRequestedIndentQty(projId, userRole);
-	}
+    @Override
+    public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
+        return fieldDescriptionDAO.getRequestedIndentQty(projId, userRole);
+    }
 
-	@Override
-	public List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail) {
-		return fieldDescriptionDAO.getFieldDescDetailList(searchDetail);
-	}
+    @Override
+    public List<ProjDescDetail> getFieldDescDetailList(SearchDetail searchDetail) {
+        return fieldDescriptionDAO.getFieldDescDetailList(searchDetail);
+    }
 
-	@Override
-	public Indent getIndent(String indentId) {
-		return fieldDescriptionDAO.getIndent(indentId);
-	}
+    @Override
+    public Indent getIndent(String indentId) {
+        return fieldDescriptionDAO.getIndent(indentId);
+    }
 
-	@Override
-	public List<Indent> getIndentListByStatus(String status) {
-		return fieldDescriptionDAO.getIndentListByStatus(status);
-	}
-	
-	@Override
-	public List<SupplierQuoteDetails> getPurchaseListByStatus(String status) {
-		return fieldDescriptionDAO.getPurchaseListByStatus(status);
-	}
-	
-	@Override
-	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
-		return fieldDescriptionDAO.getSupplierByStatus(status);
-	}
+    @Override
+    public List<Indent> getIndentListByStatus(String status) {
+        return fieldDescriptionDAO.getIndentListByStatus(status);
+    }
 
 }
