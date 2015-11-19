@@ -206,7 +206,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         if (null != status) {
             sql = "select * from supplierquotedetails where supplierQuoteStatus= ?\n" +
                     "and AliasProjName in (select aliasProjName from project where projId in\n" +
-                    " (select projectId from authoriseproject where empId = ?)) group by itemName";
+                    " (select projectId from authoriseproject where empId = ?)) group by AliasProjName,itemName";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
 
@@ -247,7 +247,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
-        List<SupplierQuoteDetails> supplierList = new ArrayList<SupplierQuoteDetails>();
+        List<SupplierQuoteDetails> supplierList = new ArrayList<>();
         String sql = null;
         if (null != supplierStatus) {
             sql = "SELECT p.aliasProjName, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty, idi.indentitemstatus as supplierquotestatus FROM indentdescitem idi,"
