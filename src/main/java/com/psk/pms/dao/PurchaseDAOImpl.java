@@ -249,8 +249,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         String sql = null;
         if (null != supplierStatus) {
             sql = "SELECT p.aliasProjName, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty, idi.indentitemstatus as supplierquotestatus FROM indentdescitem idi,"
-                    + "indentdesc id, indent i, project p where idi.indentDescId = id.indentdescid and idi.indentitemstatus ='" + supplierStatus + "'"
-                    + "and id.IndentId = i.indentid group by idi.ItemName";
+                    + "indentdesc id, indent i, project p where idi.indentDescId = id.indentdescid and p.ProjId= i.ProjId and idi.indentitemstatus ='" + supplierStatus + "'"
+                    + "and id.IndentId = i.indentid group by idi.ItemName,p.ProjId";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map<String, Object> row : rows) {

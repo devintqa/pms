@@ -341,7 +341,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 				availedDescIndentQtyBigD  = new BigDecimal(0);
 			}
 			Double availedQty = availedDescIndentQtyBigD.doubleValue();
-			Double availableQty = new Double(0);
+			Double availableQty = (double) 0;
 			if(availedQty <= totalQty){
 				availableQty = totalQty - availedQty;
 			}
