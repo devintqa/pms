@@ -61,7 +61,7 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
         if (depositDocumentList.size() > 0) {
             model.addAttribute("depositDocumentList", depositDocumentList);
         }
-        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);
+        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus, empId);
         System.out.println("indentList"+indentList.size());
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);

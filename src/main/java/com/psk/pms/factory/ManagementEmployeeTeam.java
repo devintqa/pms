@@ -49,7 +49,7 @@ public class ManagementEmployeeTeam implements EmployeeTeam {
             indentStatus = Constants.PENDING_LEVEL_2_APPROVAL;
             supplierStatus = Constants.PURCHASE_PENDING_APPROVAL;
         }
-        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus);
+        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus, empId);
         List<SupplierQuoteDetails> supplierList = purchaseService.getSupplierByStatus(supplierStatus);
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);

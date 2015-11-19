@@ -216,4 +216,6 @@ public class PmsMasterQuery {
     
     public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?  where ItemName = ? and  SupplierAliasName = ?";
 
+
+    public static final String GET_SUPPLIER_DETAIL = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=? and supplierAliasName =?";
 }

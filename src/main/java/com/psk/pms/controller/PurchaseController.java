@@ -153,6 +153,28 @@ public class PurchaseController {
         return VIEW_SUPPLIER_QUOTE_DETAILS;
     }
 
+
+    @RequestMapping(value = "/emp/myview/viewPurchaseDetails/{projName}", method = RequestMethod.GET)
+    public String viewPurchaseDetails(@PathVariable String projName,
+                                       @RequestParam(value = "itemName", required = true) String itemName,
+                                       @RequestParam(value = "itemType", required = true) String itemType,
+                                       @RequestParam(value = "supplierName", required = true) String supplierName,
+                                       Model model) {
+        LOGGER.info("Supplier detail update page for supplierId." + itemName);
+        QuoteDetails quoteDetails = new QuoteDetails();
+        model.addAttribute("itemName", itemName);
+        model.addAttribute("projName", projName);
+        QuoteDetails.SupplierQuoteDetails purchaseList = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
+
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(purchaseList, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
+        }.getType());
+        JsonArray jsonArray = element.getAsJsonArray();
+        quoteDetails.setQuoteDetailsValue(jsonArray.toString());
+        model.addAttribute("quoteDetailsForm", quoteDetails);
+        return VIEW_SUPPLIER_QUOTE_DETAILS;
+    }
+
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getSupplierDetails.do", method = RequestMethod.GET)
     @ResponseBody
     public List<Supplier> getItemNamesInStore(

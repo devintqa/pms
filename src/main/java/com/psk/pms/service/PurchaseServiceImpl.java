@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
+import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 
 
 public class PurchaseServiceImpl implements PurchaseService {
@@ -82,24 +83,29 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
+    public List<SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
        return purchaseDAO.getSupplierQuoteDetails(projName,itemType,itemName);
     }
 
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status) {
-        return purchaseDAO.getPurchaseListByStatus(status);
+    public List<SupplierQuoteDetails> getPurchaseListByStatus(String status, String empId) {
+        return purchaseDAO.getPurchaseListByStatus(status,empId);
     }
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
+    public List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
         return purchaseDAO.getPurchaseSupplierDetails(projName,itemName,status);
     }
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
+    public List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
         return purchaseDAO.getSupplierByStatus(supplierStatus);
+    }
+
+    @Override
+    public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName) {
+        return purchaseDAO.getSupplierDetails(projName,itemName,itemType,supplierName);
     }
 
     private Date getCurrentDateTime() {

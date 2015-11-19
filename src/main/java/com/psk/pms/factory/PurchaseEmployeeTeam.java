@@ -32,8 +32,8 @@ public class PurchaseEmployeeTeam implements EmployeeTeam {
 
     @Override
     public void performTeamActivity(Model model, String empId) {
-        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE);
-        List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(APPROVED);
+        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE,empId);
+        List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(APPROVED,empId);
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);
         }
