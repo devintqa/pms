@@ -319,9 +319,9 @@
 				<thead>
 					<tr>
 						<th>Project</th>
+						<th>Supplier Name</th>
+						<th>Item Type</th>
 						<th>Item Name</th>
-						<th>Item Quantity</th>
-						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -331,10 +331,10 @@
 						<c:forEach var="purchaseItem" items="${purchaseList}">
 							<tr>
 								<td>${purchaseItem.aliasProjName}</td>
+								<td>${purchaseItem.supplierAliasName}</td>
+								<td>${purchaseItem.itemType}</td>
 								<td>${purchaseItem.itemName}</td>
-								<td>${purchaseItem.itemQty}</td>
-								<td>${purchaseItem.supplierQuoteStatus}</td>
-  								<td><a href="/pms/emp/myview/viewSupplierDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}">View</a></td>
+  								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}&itemType=${purchaseItem.itemType}&supplierName=${purchaseItem.supplierAliasName}">Purchase Details</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

@@ -50,27 +50,9 @@ public class ItemDAOImpl implements ItemDAO {
         return itemsDetail;
     }
 
-    public Map<String, String> getDescItemCodes(String itemCode,
-                                                String itemType, String project) {
-        Map<String, String> descItems = new LinkedHashMap<String, String>();
-        String sql;
-        List<Map<String, Object>> rows = null;
-        if ("" != itemCode) {
-            sql = "select itemNo, itemName, itemUnit from itemcodes where itemType = '" + itemType + "' and itemName LIKE '%" + itemCode + "%'";
-            rows = jdbcTemplate.queryForList(sql);
-        }
-        for (Map<String, Object> row : rows) {
-            descItems.put(String.valueOf(row.get("itemNo")), (String) row.get("itemName"));
-        }
-        return descItems;
-    }
-
     public boolean isItemAlreadyExisting(String itemName) {
         String sql = "SELECT COUNT(*) FROM itemcodes where itemName = ?";
-        int total = jdbcTemplate.queryForObject(sql, Integer.class,
-                new Object[]{
-                        itemName
-                });
+        int total = jdbcTemplate.queryForObject(sql, Integer.class,itemName);
         if (total == 0) {
             return false;
         }
@@ -152,15 +134,15 @@ public class ItemDAOImpl implements ItemDAO {
             totalCost = sumItemCost.multiply(quantity);
         }
         String updateSql;
-        if(descItemDetail.isConversionFlag()){
+        if (descItemDetail.isConversionFlag()) {
             updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =? , ConversionRate = ? WHERE ProjDescId = ?";
             BigDecimal conversionRate = new BigDecimal(descItemDetail.getConversionValue());
-            jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),conversionRate.toString(),
-                    descItemDetail.getProjDescId()});
-        }else {
-             updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
-            jdbcTemplate.update(updateSql, new Object[]{sumItemCost, totalCost.toString(),
-                    descItemDetail.getProjDescId()});
+            jdbcTemplate.update(updateSql, sumItemCost, totalCost.toString(), conversionRate.toString(),
+                    descItemDetail.getProjDescId());
+        } else {
+            updateSql = "UPDATE " + DescriptionType.getDescriptionTableName(descType) + " set PricePerQuantity = ?, TotalCost =?  WHERE ProjDescId = ?";
+            jdbcTemplate.update(updateSql, sumItemCost, totalCost.toString(),
+                    descItemDetail.getProjDescId());
         }
         return true;
     }
@@ -275,9 +257,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public void deleteItemByProjectId(Integer projectId) {
         LOGGER.info("method = deleteItemByProjectId()");
-        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYPROJECTID, new Object[]{
-                projectId
-        });
+        int noOfrowsDeleted = jdbcTemplate.update(DELETEPROJDESCITEMBYPROJECTID, projectId);
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
@@ -300,9 +280,7 @@ public class ItemDAOImpl implements ItemDAO {
     public void deleteItemByProjectDescItemId(Integer projectDescItemId, String descriptionType) {
         LOGGER.info("method = deleteItemByProjectDescriptionItemId()");
         String query = "DELETE FROM " + DescriptionType.getDescriptionItemTableName(descriptionType) + " WHERE DescItemId = ?";
-        int noOfrowsDeleted = jdbcTemplate.update(query, new Object[]{
-                projectDescItemId
-        });
+        int noOfrowsDeleted = jdbcTemplate.update(query, projectDescItemId);
         LOGGER.info("No of rows deleted :" + noOfrowsDeleted);
     }
 
@@ -325,7 +303,7 @@ public class ItemDAOImpl implements ItemDAO {
             itemDetail.setLabel((String) row.get("itemName"));
             itemDetail.setItemName((String) row.get("itemName"));
             itemDetail.setItemUnit((String) row.get("itemUnit"));
-            itemDetail.setItemPrice(((BigDecimal) row.get("itemPrice")).toString());
+            itemDetail.setItemPrice(row.get("itemPrice").toString());
             itemDetail.setItemType(itemType);
             itemsDetail.add(itemDetail);
         }
@@ -451,18 +429,16 @@ public class ItemDAOImpl implements ItemDAO {
     @Override
     public List<String> getItemNames() {
         String PROJECT_ITEM_NAMES = "select distinct(itemName) from itemCodes;";
-        List<String> types = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES,
+        return jdbcTemplate.queryForList(PROJECT_ITEM_NAMES,
                 String.class);
-        return types;
     }
 
     @Override
     public List<String> getItemNames(String itemType, String projectId) {
         String PROJECT_ITEM_NAMES = "select distinct(itemName) from pskpricedetail where itemType=? and projectId=? ";
-        List<String> itemNames = jdbcTemplate.queryForList(PROJECT_ITEM_NAMES, new Object[]{
+        return jdbcTemplate.queryForList(PROJECT_ITEM_NAMES, new Object[]{
                 itemType, projectId
         }, String.class);
-        return itemNames;
 
     }
 
@@ -505,7 +481,7 @@ public class ItemDAOImpl implements ItemDAO {
     public void updateBaseDescTotalItemCost(long totalItemsCost, Integer baseDescId) {
         LOGGER.info("updating total Item Cost(PricePerQuantity) in BaseDesc" + baseDescId);
         String updateSql = "UPDATE basedesc set PricePerQuantity = ? where Category = '" + Constants.GOVERNMENT + "' and BaseDescId = '" + baseDescId + "'";
-        jdbcTemplate.update(updateSql, new Object[]{totalItemsCost});
+        jdbcTemplate.update(updateSql, totalItemsCost);
     }
 
     @Override
@@ -663,7 +639,7 @@ public class ItemDAOImpl implements ItemDAO {
                     }
                 });
     }
-    
+
     @Override
     public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequest(String indentId) {
         List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<com.psk.pms.model.IndentDesc.ItemDetail>();
@@ -684,13 +660,14 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId) {
-        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<com.psk.pms.model.IndentDesc.ItemDetail>();
-        String indentItemToRequestSql = "SELECT cast(group_concat(i.IndentId  ORDER BY i.IndentId ASC)as char) as IndentList,idi.indentitemstatus, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty FROM indentdescitem idi,"
-        								+"indentdesc id, indent i where idi.indentDescId = id.indentdescid and idi.indentitemstatus in ('PENDING PURCHASE','PENDING APPROVAL')"
-        									+"and id.IndentId = i.indentid group by idi.ItemName,idi.indentitemstatus";
+        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<>();
+        String indentItemToRequestSql = "SELECT cast(group_concat(i.IndentId  ORDER BY i.IndentId ASC)as char) as \n" +
+                "IndentList,idi.indentitemstatus, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty FROM project p,\n" +
+                "indentdescitem idi,indentdesc id, indent i where idi.indentDescId = id.indentdescid and p.projId = i.projId and idi.indentitemstatus in \n" +
+                "('PENDING PURCHASE','PENDING APPROVAL') and p.projId=? and  id.IndentId = i.indentid group by idi.ItemName,idi.indentitemstatus;";
         List<Map<String, Object>> rows = null;
         System.out.println(indentItemToRequestSql);
-        rows = jdbcTemplate.queryForList(indentItemToRequestSql);
+        rows = jdbcTemplate.queryForList(indentItemToRequestSql,projId);
         for (Map<String, Object> row : rows) {
             com.psk.pms.model.IndentDesc.ItemDetail itemDetail = new com.psk.pms.model.IndentDesc.ItemDetail();
             itemDetail.setItemName((String) row.get("ItemName"));
@@ -737,11 +714,11 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public void updateItem(Item item) {
-        jdbcTemplate.update(UPDATE_ITEM,item.getItemUnit(),item.getItemName(),item.getItemType());
+        jdbcTemplate.update(UPDATE_ITEM, item.getItemUnit(), item.getItemName(), item.getItemType());
     }
 
     @Override
     public void deleteItem(String itemName, String itemType) {
-        jdbcTemplate.update(DELETE_ITEM,itemName,itemType);
+        jdbcTemplate.update(DELETE_ITEM, itemName, itemType);
     }
 }

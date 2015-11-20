@@ -13,7 +13,6 @@ import com.psk.pms.model.LeadDetailConfiguration;
 import com.psk.pms.model.ProjDescComparisonDetail;
 import com.psk.pms.model.ProjDescDetail;
 import com.psk.pms.model.ProjectDetail;
-import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 
 public class ResultTransformer {

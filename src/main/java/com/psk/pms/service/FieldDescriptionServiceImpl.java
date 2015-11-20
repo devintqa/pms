@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.psk.pms.dao.FieldDescriptionDAO;
 import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.SearchDetail;
 
 
@@ -37,7 +36,7 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 		if(indent.getIndentId().equals("0"))
 		 return fieldDescriptionDAO.saveIndentDescription(indent);
 		else
-			return fieldDescriptionDAO.upateIndentDescription(indent);
+			return fieldDescriptionDAO.updateIndentDescription(indent);
 	}
 
 	@Override
@@ -71,15 +70,10 @@ public class FieldDescriptionServiceImpl implements FieldDescriptionService {
 	}
 
 	@Override
-	public List<Indent> getIndentListByStatus(String status) {
-		return fieldDescriptionDAO.getIndentListByStatus(status);
+	public List<Indent> getIndentListByStatus(String status, String empId) {
+		return fieldDescriptionDAO.getIndentListByStatus(status,empId);
 	}
-	
-//	@Override
-//	public List<SupplierQuoteDetails> getSupplierByStatus(String status) {
-//		return fieldDescriptionDAO.getSupplierByStatus(status);
-//	}
-	
+
 	@Override
 	public Map<String, String> isActiveIndentExistForDescription(String projId){
 		return fieldDescriptionDAO.isActiveIndentExistForDescription(projId);

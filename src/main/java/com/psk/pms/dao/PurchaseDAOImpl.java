@@ -1,22 +1,38 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.QuoteDetails;
-import com.psk.pms.model.Supplier;
+import static com.psk.pms.dao.PmsMasterQuery.ALIAS_SUPPLIER_NAME_EXIST;
+import static com.psk.pms.dao.PmsMasterQuery.CREATE_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.INSERT_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_INDENT_DESC_STATUS;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_DETAILS;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 
-import java.math.BigDecimal;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import static com.psk.pms.dao.PmsMasterQuery.*;
+import com.mysql.jdbc.StringUtils;
+import com.psk.pms.model.QuoteDetails;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.Supplier;
 
 public class PurchaseDAOImpl implements PurchaseDAO {
 
@@ -120,7 +136,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         jdbcTemplate.batchUpdate(CREATE_QUOTE_DETAILS, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                QuoteDetails.SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
+                SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
                 ps.setString(1, quoteDetails.getProjName());
                 ps.setString(2, quoteDetails.getItemName());
                 ps.setString(3, quoteDetails.getItemQty());
@@ -144,11 +160,29 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         jdbcTemplate.batchUpdate(UPDATE_SUPPLIER_QUOTE_DETAILS, new BatchPreparedStatementSetter() {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
-                QuoteDetails.SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
+                SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            	Date temp = null;
+
+            	try {
+            		if(null != quoteDetails.getTentativeDeliveryDate() )
+            		{
+            			String dateInString = quoteDetails.getTentativeDeliveryDate();
+            			java.util.Date date = formatter.parse(dateInString);
+                		temp = new java.sql.Date(date.getTime());
+            		}   
+           		
+            	} catch (ParseException e) {
+            		e.printStackTrace();
+            	}
+                              
                 ps.setString(1, supplierQuoteDetails.getItemQty());
                 ps.setString(2, status);
-                ps.setString(3, supplierQuoteDetails.getItemName());
-                ps.setString(4, supplierQuoteDetails.getSupplierAliasName());
+                ps.setDate(3, temp);
+                ps.setString(4, StringUtils.isNullOrEmpty(quoteDetails.getComments())?null:quoteDetails.getComments());
+                ps.setString(5, supplierQuoteDetails.getItemName());
+                ps.setString(6, supplierQuoteDetails.getSupplierAliasName());
+                
             }
 
             @Override
@@ -160,8 +194,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
-        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<>();
+    public List<SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
+        List<SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_SUPPLIER_QUOTE_DETAILS, projName, itemType, itemName);
         for (Map<String, Object> row : rows) {
             supplierQuoteDetails.add(buildSupplierQuoteDetails(row));
@@ -186,8 +220,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         return jdbcTemplate.queryForObject(sql, new Object[]{projName}, Integer.class);
     }
 
-    private QuoteDetails.SupplierQuoteDetails buildSupplierQuoteDetails(Map<String, Object> row) {
-        QuoteDetails.SupplierQuoteDetails supplierQuoteDetail = new QuoteDetails.SupplierQuoteDetails();
+    private SupplierQuoteDetails buildSupplierQuoteDetails(Map<String, Object> row) {
+        SupplierQuoteDetails supplierQuoteDetail = new SupplierQuoteDetails();
         supplierQuoteDetail.setSupplierAliasName((String) row.get("SupplierAliasName"));
         supplierQuoteDetail.setEmailAddress((String) row.get("emailAddress"));
         supplierQuoteDetail.setPhoneNumber((String) row.get("PhoneNumber"));
@@ -199,17 +233,18 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status) {
-        List<QuoteDetails.SupplierQuoteDetails> purchaseList = new ArrayList<QuoteDetails.SupplierQuoteDetails>();
+    public List<SupplierQuoteDetails> getPurchaseListByStatus(String status, String empId) {
+        List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
         String sql = null;
         if (null != status) {
-            sql = "select * from "
-                    + "supplierquotedetails where supplierquotestatus = ?  group by ItemName";
+            sql = "select * from supplierquotedetails where supplierQuoteStatus= ?\n" +
+                    "and AliasProjName in (select aliasProjName from project where projId in\n" +
+                    " (select projectId from authoriseproject where empId = ?)) group by SupplierAliasName";
         }
-        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status);
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
 
         for (Map<String, Object> row : rows) {
-            QuoteDetails.SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
+            SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
             supplier.setEmailAddress((String) row.get("emailAddress"));
             supplier.setPhoneNumber((String) row.get("PhoneNumber"));
             BigDecimal quotePrice = (BigDecimal) row.get("quotePrice");
@@ -222,8 +257,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
-        List<QuoteDetails.SupplierQuoteDetails> purchaseList = new ArrayList<>();
+    public List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
+        List<SupplierQuoteDetails> purchaseList = new ArrayList<>();
         String sql = null;
         if (null != status) {
             sql = "select * from supplierquotedetails where AliasProjName = ? and itemName= ? and supplierQuoteStatus =?";
@@ -231,7 +266,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, projName, itemName, status);
 
         for (Map<String, Object> row : rows) {
-            QuoteDetails.SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
+            SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
             supplier.setEmailAddress((String) row.get("emailAddress"));
             supplier.setPhoneNumber((String) row.get("PhoneNumber"));
             BigDecimal quotePrice = (BigDecimal) row.get("quotePrice");
@@ -244,18 +279,26 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
 
     @Override
-    public List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
-        List<QuoteDetails.SupplierQuoteDetails> supplierList = new ArrayList<QuoteDetails.SupplierQuoteDetails>();
+    public List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
+        List<SupplierQuoteDetails> supplierList = new ArrayList<>();
         String sql = null;
         if (null != supplierStatus) {
             sql = "SELECT p.aliasProjName, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty, idi.indentitemstatus as supplierquotestatus FROM indentdescitem idi,"
-                    + "indentdesc id, indent i, project p where idi.indentDescId = id.indentdescid and idi.indentitemstatus ='" + supplierStatus + "'"
-                    + "and id.IndentId = i.indentid group by idi.ItemName";
+                    + "indentdesc id, indent i, project p where idi.indentDescId = id.indentdescid and p.ProjId= i.ProjId and idi.indentitemstatus ='" + supplierStatus + "'"
+                    + "and id.IndentId = i.indentid group by idi.ItemName,p.ProjId";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
         for (Map<String, Object> row : rows) {
             supplierList.add(transformer.buildSupplierList(row));
         }
         return supplierList;
+    }
+
+    @Override
+    public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName) {
+        Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL, projName, itemType, itemName, supplierName);
+            QuoteDetails.SupplierQuoteDetails detail = buildSupplierQuoteDetails(rows);
+            detail.setItemQty(rows.get("itemQty").toString());
+        return detail;
     }
 }

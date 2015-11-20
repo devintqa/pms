@@ -167,145 +167,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		return generatedIndentDescId;
 	}
 	
-	void insertIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList){
-		String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
-				+ "VALUES (?, ?, ?, ?, ?)";
-		jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
-
-			@Override
-			public void setValues(PreparedStatement ps, int i)
-					throws SQLException {
-				ItemDetail itemDetail = itemDetailList.get(i);
-				ps.setString(1, indentDescId.toString());
-				ps.setString(2, itemDetail.getItemName());
-				ps.setString(3, itemDetail.getItemType());
-				ps.setString(4, itemDetail.getItemQty());
-				ps.setString(5, itemDetail.getItemUnit());
-			}
-
-			@Override
-			public int getBatchSize() {
-				return itemDetailList.size();
-			}
-		});
-	}
-
-	@Override
-	public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
-		String sql = null;
-		if (!StringUtils.isNullOrEmpty(projDescId)) {
-			sql = projDescDetail + " FROM "+ DescriptionType.getDescriptionTableName(Constants.FIELD) +" as d WHERE d.ProjDescId = " + projDescId;
-		} 
-		System.out.println(sql);
-		ProjDescDetail projDescDetail = null;
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			projDescDetail = transformer.buildProjectDescDetail(row);
-		}
-		return projDescDetail;
-	}
-	
-	@Override
-	public List<Indent> getIndentList(SearchDetail searchDetail) {
-		List<Indent> indentList = new ArrayList<Indent>();
-		String sql = null;
-		if (null!=searchDetail.getProjId()) {
-			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where ProjId='"+searchDetail.getProjId()+"'";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-
-		for (Map < String, Object > row: rows) {
-			indentList.add(transformer.buildIndent(row));
-		}
-		return indentList;
-	}
-
-	private Indent fetchIndent(String indentId) {
-		String sql = null;
-		if (null!=indentId) {
-			sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where indentId='"+indentId+"'";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-		Indent indent = transformer.buildIndent(rows.get(0));
-		return indent;
-	}
-	
-	private List<IndentDesc> fetchIndentDesc(String indentId) {
-		List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
-		String sql = null;
-		if (null!=indentId) {
-			sql = "SELECT fd.AliasDescription, d.ProjDescId, d.Quantity, d.Metric, d.IndentDescId, d.IndentId, d.Comments from IndentDesc d, fieldprojectdesc fd where fd.ProjDescId = d.ProjDescId and IndentId='"+indentId+"'";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-		for(Map < String, Object > row : rows){
-			IndentDesc indentDesc = transformer.buildIndentDesc(row);
-			indentDescList.add(indentDesc);
-		}
-		return indentDescList;
-	}
-	
-	private List<IndentDesc.ItemDetail> fetchIndentDescItem(String indentDescId) {
-		List<IndentDesc.ItemDetail> indentDescItemList = new ArrayList<IndentDesc.ItemDetail>();
-		String sql = null;
-		if (null!=indentDescId) {
-			sql = "SELECT ItemName, ItemType, ItemQty, ItemUnit, IndentItemId, IndentDescId from IndentDescItem where IndentDescId='"+indentDescId+"'";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
-		for(Map < String, Object > row : rows){
-			IndentDesc.ItemDetail itemDetail = transformer.buildIndentDescItem(row);
-			indentDescItemList.add(itemDetail);
-		}
-		return indentDescItemList;
-	}
-	
-	@Override
-	public String placeIndentRequest(Indent indent) {
-		String status = "";
-		
-		indent.setStatus(getNextIndentStatus(indent.getStatus()));
-		String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
-		Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
-		if(row==1)
-			updateIndentStatusSql = "UPDATE IndentDescItem set IndentItemStatus = ? where IndentDescId in (SELECT IndentDescId from IndentDesc WHERE IndentId = ?)";
-			row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getIndentId()});
-			status = "Indent successfully processed for "+indent.getStatus();
-		return status;
-	}
-	
-	private String getNextIndentStatus(String currentStatus){
-		if(currentStatus.equalsIgnoreCase("NEW")){
-			return "PENDING LEVEL 1 APPROVAL";
-		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 1 APPROVAL")){
-			return "PENDING LEVEL 2 APPROVAL";
-		}else if(currentStatus.equalsIgnoreCase("PENDING LEVEL 2 APPROVAL")){
-			return "PENDING PURCHASE";
-		}else if(currentStatus.equalsIgnoreCase("REJECTED")){
-			return currentStatus;
-		}else{
-			return null;
-		}
-	}
-	
-	private String getIndentStatusFilterByRole(String role){
-		if(role == null){
-			return "'NEW', 'REJECTED'";
-		}else if(role.equalsIgnoreCase("No Role Tagged")){
-			return "'NEW', 'REJECTED'";
-		}else if(role.isEmpty()){
-			return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
-		}else if(role.equalsIgnoreCase("SITE MANAGER")){
-			return "'NEW', 'PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL', 'PENDING PURCHASE'";
-		}else if(role.equalsIgnoreCase("GENERAL MANAGER")){
-			return "'PENDING PURCHASE'";
-		}else if(role.equalsIgnoreCase("TECHNICAL MANAGER")){
-			return "'PENDING LEVEL 2 APPROVAL', 'PENDING PURCHASE'";
-		}else{
-			return null;
-		}
-	}
-	
-	@Override
+		@Override
 	public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
 		Map < String, Object > descQty = new HashMap< String, Object>();
 		String status = getIndentStatusFilterByRole(userRole);
@@ -365,112 +227,252 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		return projectDescDetailList;
 	}
 
-	@Override
-	public Indent getIndent(String indentId) {
-		Indent indent = null;
-		List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
-		if(null!=indentId){
-			indent = fetchIndent(indentId);
-		}
-		List<IndentDesc> tmpIndentDescList = fetchIndentDesc(indentId);
-		for(IndentDesc indentDesc : tmpIndentDescList){
-			indentDesc.setItemDetails(fetchIndentDescItem(indentDesc.getIndentDescId()));
-			indentDescList.add(indentDesc);
-		}
-		indent.setIndentDescList(indentDescList);
-		return indent;
-	}
+    void insertIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList) {
+        String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
+                + "VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
 
-	@Override
-	public List<Indent> getIndentListByStatus(String status) {
-		List<Indent> indentList = new ArrayList<Indent>();
-		String sql = null;
-		if (null!=status) {
-			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"'";
-		} 
-		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+            @Override
+            public void setValues(PreparedStatement ps, int i)
+                    throws SQLException {
+                ItemDetail itemDetail = itemDetailList.get(i);
+                ps.setString(1, indentDescId.toString());
+                ps.setString(2, itemDetail.getItemName());
+                ps.setString(3, itemDetail.getItemType());
+                ps.setString(4, itemDetail.getItemQty());
+                ps.setString(5, itemDetail.getItemUnit());
+            }
 
-		for (Map < String, Object > row: rows) {
-			indentList.add(transformer.buildIndent(row));
-		}
-		return indentList;
-	}
-	
-	@Override
-	public Integer upateIndentDescription(Indent indent) {
-		Integer indentId = new Integer(indent.getIndentId());
-		try {
-			if(indent.getIndentDescList().size() > 0){
-				updateIndent(indent);
-				
-				for(IndentDesc indentDesc: indent.getIndentDescList()){
-					Integer indentDescId = new Integer(indentDesc.getIndentDescId());
-					updateIndentDesc(indentId, indentDesc);
-					updateIndentDescItem(indentDescId, indentDesc.getItemDetails());
-				}
-			}
+            @Override
+            public int getBatchSize() {
+                return itemDetailList.size();
+            }
+        });
+    }
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-		return indentId;
-	}
-	
-	@Override
-	public Map<String, String> isActiveIndentExistForDescription(String projId){
-		String sql = "select i.IndentId, i.ProjDescId, f.AliasDescription from indentdesc i, fieldprojectdesc f where i.indentId in (select indentId from indent where projid='"+projId+"' and status  in ('PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL')) and i.ProjDescId = f.ProjDescId";
-		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-		Map<String, String> activeIndent= null;
-		if(rows.size() > 0){
-			activeIndent = new HashMap<String, String>();
-		}
-		for (Map < String, Object > row: rows) {
-			activeIndent.put(row.get("ProjDescId").toString(), row.get("AliasDescription").toString() + " has active indent:" +row.get("IndentId").toString());
-		}
-		return activeIndent;
-	}
+    @Override
+    public ProjDescDetail getPskFieldProjectDescription(String projDescId) {
+        String sql = null;
+        if (!StringUtils.isNullOrEmpty(projDescId)) {
+            sql = projDescDetail + " FROM " + DescriptionType.getDescriptionTableName(Constants.FIELD) + " as d WHERE d.ProjDescId = " + projDescId;
+        }
+        System.out.println(sql);
+        ProjDescDetail projDescDetail = null;
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
-	private Integer updateIndent(Indent indent) {
-		indent.setStatus(indent.getStatus());
-		String updateIndentStatusSql = "UPDATE Indent set StartDate = ?, EndDate = ?, LastUpdatedBy = ? WHERE IndentId = ?";
-		Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStartDate(), indent.getEndDate(), indent.getEmployeeId(), indent.getIndentId()});
-		return updateStatus;
-	}
-	
-	Integer updateIndentDesc(Integer indentId, IndentDesc indentDesc) throws SQLException{
-		
-		String updateIndentStatusSql = "UPDATE IndentDesc set Quantity = ?, Comments = ? where IndentDescId = ? and IndentId = ?";
-		Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{new Double(indentDesc.getPlannedQty()), indentDesc.getComments(), indentDesc.getIndentDescId(), indentId});
-		
-		return updateStatus;
-	}
-	
-	void updateIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList){
-		
-		jdbcTemplate.update("DELETE FROM IndentDescItem WHERE IndentDescId = ?", indentDescId);
-		
-		String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
-				+ "VALUES (?, ?, ?, ?, ?)";
-		jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
+        for (Map<String, Object> row : rows) {
+            projDescDetail = transformer.buildProjectDescDetail(row);
+        }
+        return projDescDetail;
+    }
 
-			@Override
-			public void setValues(PreparedStatement ps, int i)
-					throws SQLException {
-				ItemDetail itemDetail = itemDetailList.get(i);
-				ps.setString(1, indentDescId.toString());
-				ps.setString(2, itemDetail.getItemName());
-				ps.setString(3, itemDetail.getItemType());
-				ps.setString(4, itemDetail.getItemQty());
-				ps.setString(5, itemDetail.getItemUnit());
-			}
+    @Override
+    public List<Indent> getIndentList(SearchDetail searchDetail) {
+        List<Indent> indentList = new ArrayList<Indent>();
+        String sql = null;
+        if (null != searchDetail.getProjId()) {
+            sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where ProjId='" + searchDetail.getProjId() + "'";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
 
-			@Override
-			public int getBatchSize() {
-				return itemDetailList.size();
-			}
-		});
-	}
+        for (Map<String, Object> row : rows) {
+            indentList.add(transformer.buildIndent(row));
+        }
+        return indentList;
+    }
+
+    private Indent fetchIndent(String indentId) {
+        String sql = null;
+        if (null != indentId) {
+            sql = "SELECT IndentId, StartDate, EndDate, Status, ProjId from Indent where indentId='" + indentId + "'";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        Indent indent = transformer.buildIndent(rows.get(0));
+        return indent;
+    }
+
+    private List<IndentDesc> fetchIndentDesc(String indentId) {
+        List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
+        String sql = null;
+        if (null != indentId) {
+            sql = "SELECT fd.AliasDescription, d.ProjDescId, d.Quantity, d.Metric, d.IndentDescId, d.IndentId, d.Comments from IndentDesc d, fieldprojectdesc fd where fd.ProjDescId = d.ProjDescId and IndentId='" + indentId + "'";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> row : rows) {
+            IndentDesc indentDesc = transformer.buildIndentDesc(row);
+            indentDescList.add(indentDesc);
+        }
+        return indentDescList;
+    }
+
+    private List<IndentDesc.ItemDetail> fetchIndentDescItem(String indentDescId) {
+        List<IndentDesc.ItemDetail> indentDescItemList = new ArrayList<IndentDesc.ItemDetail>();
+        String sql = null;
+        if (null != indentDescId) {
+            sql = "SELECT ItemName, ItemType, ItemQty, ItemUnit, IndentItemId, IndentDescId from IndentDescItem where IndentDescId='" + indentDescId + "'";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> row : rows) {
+            IndentDesc.ItemDetail itemDetail = transformer.buildIndentDescItem(row);
+            indentDescItemList.add(itemDetail);
+        }
+        return indentDescItemList;
+    }
+
+    @Override
+    public String placeIndentRequest(Indent indent) {
+        String status = "";
+
+        indent.setStatus(getNextIndentStatus(indent.getStatus()));
+        String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
+        Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
+        if (row == 1)
+            updateIndentStatusSql = "UPDATE IndentDescItem set IndentItemStatus = ? where IndentDescId in (SELECT IndentDescId from IndentDesc WHERE IndentId = ?)";
+        row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getIndentId()});
+        status = "Indent successfully processed for " + indent.getStatus();
+        return status;
+    }
+
+    private String getNextIndentStatus(String currentStatus) {
+        if (currentStatus.equalsIgnoreCase("NEW")) {
+            return "PENDING LEVEL 1 APPROVAL";
+        } else if (currentStatus.equalsIgnoreCase("PENDING LEVEL 1 APPROVAL")) {
+            return "PENDING LEVEL 2 APPROVAL";
+        } else if (currentStatus.equalsIgnoreCase("PENDING LEVEL 2 APPROVAL")) {
+            return "PENDING PURCHASE";
+        } else if (currentStatus.equalsIgnoreCase("REJECTED")) {
+            return currentStatus;
+        } else {
+            return null;
+        }
+    }
+
+    private String getIndentStatusFilterByRole(String role) {
+        if (role == null) {
+            return "'NEW', 'REJECTED'";
+        } else if (role.equalsIgnoreCase("No Role Tagged")) {
+            return "'NEW', 'REJECTED'";
+        } else if (role.isEmpty()) {
+            return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
+        } else if (role.equalsIgnoreCase("SITE MANAGER")) {
+            return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
+        } else if (role.equalsIgnoreCase("GENERAL MANAGER")) {
+            return "'NEW', 'REJECTED', 'PENDING LEVEL 2 APPROVAL'";
+        } else if (role.equalsIgnoreCase("TECHNICAL MANAGER")) {
+            return "'NEW', 'REJECTED', 'PENDING LEVEL 1 APPROVAL'";
+        } else {
+            return null;
+        }
+    }
+
+
+    @Override
+    public Indent getIndent(String indentId) {
+        Indent indent = null;
+        List<IndentDesc> indentDescList = new ArrayList<IndentDesc>();
+        if (null != indentId) {
+            indent = fetchIndent(indentId);
+        }
+        List<IndentDesc> tmpIndentDescList = fetchIndentDesc(indentId);
+        for (IndentDesc indentDesc : tmpIndentDescList) {
+            indentDesc.setItemDetails(fetchIndentDescItem(indentDesc.getIndentDescId()));
+            indentDescList.add(indentDesc);
+        }
+        indent.setIndentDescList(indentDescList);
+        return indent;
+    }
+
+    @Override
+    public List<Indent> getIndentListByStatus(String status, String empId) {
+        List<Indent> indentList = new ArrayList<Indent>();
+        String sql = null;
+        if (null != status) {
+            sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where" +
+                    " i.ProjId = p.ProjId and i.Status= ? and p.projId in (select projectId from authoriseproject where empId = ?)";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
+
+        for (Map<String, Object> row : rows) {
+            indentList.add(transformer.buildIndent(row));
+        }
+        return indentList;
+    }
+
+    @Override
+    public Integer updateIndentDescription(Indent indent) {
+        Integer indentId = new Integer(indent.getIndentId());
+        try {
+            if (indent.getIndentDescList().size() > 0) {
+                updateIndent(indent);
+
+                for (IndentDesc indentDesc : indent.getIndentDescList()) {
+                    Integer indentDescId = new Integer(indentDesc.getIndentDescId());
+                    updateIndentDesc(indentId, indentDesc);
+                    updateIndentDescItem(indentDescId, indentDesc.getItemDetails());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
+        return indentId;
+    }
+
+    @Override
+    public Map<String, String> isActiveIndentExistForDescription(String projId) {
+        String sql = "select i.IndentId, i.ProjDescId, f.AliasDescription from indentdesc i, fieldprojectdesc f where i.indentId in (select indentId from indent where projid='" + projId + "' and status  in ('PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL')) and i.ProjDescId = f.ProjDescId";
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        Map<String, String> activeIndent = null;
+        if (rows.size() > 0) {
+            activeIndent = new HashMap<String, String>();
+        }
+        for (Map<String, Object> row : rows) {
+            activeIndent.put(row.get("ProjDescId").toString(), row.get("AliasDescription").toString() + " has active indent:" + row.get("IndentId").toString());
+        }
+        return activeIndent;
+    }
+
+    private Integer updateIndent(Indent indent) {
+        indent.setStatus(indent.getStatus());
+        String updateIndentStatusSql = "UPDATE Indent set StartDate = ?, EndDate = ?, LastUpdatedBy = ? WHERE IndentId = ?";
+        Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStartDate(), indent.getEndDate(), indent.getEmployeeId(), indent.getIndentId()});
+        return updateStatus;
+    }
+
+    Integer updateIndentDesc(Integer indentId, IndentDesc indentDesc) throws SQLException {
+
+        String updateIndentStatusSql = "UPDATE IndentDesc set Quantity = ?, Comments = ? where IndentDescId = ? and IndentId = ?";
+        Integer updateStatus = jdbcTemplate.update(updateIndentStatusSql, new Object[]{new Double(indentDesc.getPlannedQty()), indentDesc.getComments(), indentDesc.getIndentDescId(), indentId});
+
+        return updateStatus;
+    }
+
+    void updateIndentDescItem(final Integer indentDescId, final List<IndentDesc.ItemDetail> itemDetailList) {
+
+        jdbcTemplate.update("DELETE FROM IndentDescItem WHERE IndentDescId = ?", indentDescId);
+
+        String indentDescItemSql = "INSERT INTO IndentDescItem (IndentDescId, ItemName, ItemType, ItemQty, ItemUnit)"
+                + "VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(indentDescItemSql, new BatchPreparedStatementSetter() {
+
+            @Override
+            public void setValues(PreparedStatement ps, int i)
+                    throws SQLException {
+                ItemDetail itemDetail = itemDetailList.get(i);
+                ps.setString(1, indentDescId.toString());
+                ps.setString(2, itemDetail.getItemName());
+                ps.setString(3, itemDetail.getItemType());
+                ps.setString(4, itemDetail.getItemQty());
+                ps.setString(5, itemDetail.getItemUnit());
+            }
+
+            @Override
+            public int getBatchSize() {
+                return itemDetailList.size();
+            }
+        });
+    }
 
 }
 

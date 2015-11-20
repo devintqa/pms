@@ -5,6 +5,8 @@ import com.psk.pms.model.Supplier;
 
 import java.util.List;
 
+import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+
 public interface PurchaseDAO {
 
     Supplier fetchSupplierDetail(String supplierId);
@@ -23,7 +25,7 @@ public interface PurchaseDAO {
     
     void updateSupplierDetails(QuoteDetails quoteDetails, String status);
 
-    List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
+    List<SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
 
     void deleteSupplierQuoteDetails(String projName, String itemType, String itemName);
 
@@ -31,9 +33,12 @@ public interface PurchaseDAO {
 
     Integer getProjectId(String projName);
 
-    List<QuoteDetails.SupplierQuoteDetails> getPurchaseListByStatus(String status);
+    List<SupplierQuoteDetails> getPurchaseListByStatus(String status, String empId);
 
-    List<QuoteDetails.SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status);
+    List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status);
 
-    List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
+    List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
+
+    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName);
+
 }
