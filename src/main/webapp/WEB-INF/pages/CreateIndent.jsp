@@ -144,7 +144,7 @@ $(document).ready(function() {
             console.log("itemObjArray="+JSON.stringify(itemObjArray));
             console.log("indentDescQty="+indentDescQty);
             
-            if (indentDescQty) {
+            if (indentDescQty && indentDescQty > 0) {
                 indentDesc["plannedQty"] = indentDescQty;
                 indentDesc["metric"] = indentDescMetric;
                 indentDesc["comments"] = indentDescComment;
@@ -154,6 +154,7 @@ $(document).ready(function() {
                 indentDescArray.push(indentDesc);
             }else{
             	 e.stopImmediatePropagation();
+            	 $('#error').text('Indent quantity cannot be zero');
             	 throw "Indent quantity is null";
             }
         });

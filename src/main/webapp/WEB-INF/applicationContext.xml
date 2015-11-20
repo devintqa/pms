@@ -17,7 +17,7 @@
 	<bean id="employeeDAO" class="com.psk.pms.dao.EmployeeDAOImpl">
 	</bean>
 
-	<cache:annotation-driven cache-manager="cacheManager" />
+<!-- 	<cache:annotation-driven cache-manager="cacheManager" /> -->
 	<bean id="ehCacheManagerFactory"
 		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
 		p:configLocation="classpath:ehcache.xml" p:shared="true" />

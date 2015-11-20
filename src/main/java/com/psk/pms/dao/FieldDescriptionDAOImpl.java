@@ -37,7 +37,6 @@ import com.psk.pms.model.Indent;
 import com.psk.pms.model.IndentDesc;
 import com.psk.pms.model.IndentDesc.ItemDetail;
 import com.psk.pms.model.ProjDescDetail;
-import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.SearchDetail;
 
 
@@ -296,11 +295,11 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		}else if(role.isEmpty()){
 			return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
 		}else if(role.equalsIgnoreCase("SITE MANAGER")){
-			return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
+			return "'NEW', 'PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL', 'PENDING PURCHASE'";
 		}else if(role.equalsIgnoreCase("GENERAL MANAGER")){
-			return "'NEW', 'REJECTED', 'PENDING LEVEL 2 APPROVAL'";
+			return "'PENDING PURCHASE'";
 		}else if(role.equalsIgnoreCase("TECHNICAL MANAGER")){
-			return "'NEW', 'REJECTED', 'PENDING LEVEL 1 APPROVAL'";
+			return "'PENDING LEVEL 2 APPROVAL', 'PENDING PURCHASE'";
 		}else{
 			return null;
 		}
@@ -312,7 +311,21 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		String status = getIndentStatusFilterByRole(userRole);
 		String sql = null;
 		if (null!=projId) {
-			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status not in ("+status+")) group by projdescid";
+			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status in ("+status+")) group by projdescid";
+		} 
+		System.out.println(sql);
+		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
+		for (Map < String, Object > row: rows) {
+			descQty.put(row.get("projdescid").toString(), row.get("qty"));
+		}
+		return descQty;
+	}
+	
+	public Map<String, Object> getDescriptionQtyUsedAsIndent(Integer projId, String userRole) {
+		Map < String, Object > descQty = new HashMap< String, Object>();
+		String sql = null;
+		if (null!=projId) {
+			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status in ('PENDING LEVEL 1 APPROVAL','PENDING LEVEL 2 APPROVAL','PENDING PURCHASE')) group by projdescid";
 		} 
 		System.out.println(sql);
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
@@ -330,7 +343,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<ProjDescDetail> projectDescDetailList = new ArrayList<ProjDescDetail>();
 		BigDecimal availedDescIndentQtyBigD  = new BigDecimal(0); 
 		List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
-		Map<String, Object> indentUsedOnDesc = getRequestedIndentQty(searchDetail.getProjId(), searchDetail.getRole());
+		Map<String, Object> indentUsedOnDesc = getDescriptionQtyUsedAsIndent(searchDetail.getProjId(), searchDetail.getRole());
 		for (Map<String, Object> row : rows) {
 			ProjDescDetail fieldDesc = transformer.buildProjectDescDetail(row);
 			Double totalQty = new Double(fieldDesc.getQuantity());
@@ -373,7 +386,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		List<Indent> indentList = new ArrayList<Indent>();
 		String sql = null;
 		if (null!=status) {
-			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"' group by i.projId";
+			sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where i.ProjId = p.ProjId and i.Status='"+status+"'";
 		} 
 		List < Map < String, Object >> rows = jdbcTemplate.queryForList(sql);
 
