@@ -37,6 +37,9 @@ $(function() {
    		 { dateFormat: 'dd-mm-yy' , changeDate:false, changeMonth:false ,changeYear: false , maxDate: new Date() , minDate: 0 } 
    		).datepicker("setDate", new Date());
     
+    $("#tentativeDeliveryDate").datepicker(
+			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
+			);	    
 	$("#depositEndDate").datepicker(
 			   { dateFormat: 'dd-mm-yy' , changeDate:true, changeMonth:true ,changeYear: true }
 			);	

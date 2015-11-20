@@ -8,10 +8,13 @@ import com.psk.exception.ValidationException;
 import com.psk.pms.Constants;
 import com.psk.pms.constants.JSPFileNames;
 import com.psk.pms.model.*;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.PurchaseService;
 import com.psk.pms.validator.SupplierValidator;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +25,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.psk.pms.Constants.*;
@@ -164,16 +169,19 @@ public class PurchaseController {
         QuoteDetails quoteDetails = new QuoteDetails();
         model.addAttribute("itemName", itemName);
         model.addAttribute("projName", projName);
-        QuoteDetails.SupplierQuoteDetails purchaseList = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
+        quoteDetails.setProjName(projName);
+        quoteDetails.setItemName(itemName);
+        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
 
         Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(purchaseList, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
+        JsonElement element = gson.toJsonTree(supplierDetails, new TypeToken<QuoteDetails.SupplierQuoteDetails>() {
         }.getType());
-        JsonArray jsonArray = element.getAsJsonArray();
-        quoteDetails.setQuoteDetailsValue(jsonArray.toString());
+        quoteDetails.setQuoteDetailsValue(element.toString());
+        model.addAttribute("supplierDetails", supplierDetails);
         model.addAttribute("quoteDetailsForm", quoteDetails);
         return VIEW_SUPPLIER_QUOTE_DETAILS;
     }
+    
 
     @RequestMapping(value = "/emp/myview/dispatchTransaction/getSupplierDetails.do", method = RequestMethod.GET)
     @ResponseBody
@@ -249,6 +257,40 @@ public class PurchaseController {
         jsonData.setData(result);
         return jsonData;
     }
+    
+	@RequestMapping(value = "/emp/myview/viewPurchaseDetails/savePurchaseDetails.do", method = RequestMethod.POST)
+	public String savePurchaseDetails(
+			@ModelAttribute("quoteDetailsForm") QuoteDetails quoteDetailsForm,
+			Model model, BindingResult result, SessionStatus status)
+			throws JsonParseException, JsonMappingException, IOException {
+
+		try {
+			quoteDetailsForm.setSubmittedForApproval("A");
+	            model.addAttribute("successMessage",
+	            		"Supplier Approved");
+	            ObjectMapper mapper = new ObjectMapper();
+	            SupplierQuoteDetails supplierQuoteDetails = mapper.readValue(quoteDetailsForm.getQuoteDetailsValue(), SupplierQuoteDetails.class);
+	        	
+	        	
+			quoteDetailsForm.setSupplierQuoteDetails(Arrays.asList(supplierQuoteDetails));
+			purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
+//			if ("Y".equalsIgnoreCase(supplier.getIsUpdate())) {
+//				model.addAttribute("actionMessage",
+//						"Supplier Details updated Successfully");
+//			} else {
+//				model.addAttribute("actionMessage",
+//						"Supplier Details saved Successfully");
+//
+//			}
+		} catch (Exception e) {
+			LOGGER.error("Error occurred while saving supplier details");
+			model.addAttribute("actionMessage",
+					"Failed  to save supplier Details." + e.getMessage());
+			return VIEW_SUPPLIER_QUOTE_DETAILS;
+		}
+
+		return VIEW_SUPPLIER_QUOTE_DETAILS;
+	}
 
     private void validateAndStoreQuoteDetails(QuoteDetails quoteDetails, String status) throws java.io.IOException, ValidationException {
         ObjectMapper mapper = new ObjectMapper();

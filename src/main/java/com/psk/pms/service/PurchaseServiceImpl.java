@@ -76,8 +76,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateSupplierDetails(QuoteDetails quoteDetails, String status) {
     	
     	if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
+    		
     		Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
     		purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), Constants.PURCHASE_PENDING_APPROVAL, projectId);
+    		purchaseDAO.updateSupplierDetails(quoteDetails, status);
+    	}
+    	else if ("A".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
+    		Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
+    		//purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), Constants.PURCHASE_PENDING_APPROVAL, projectId);
     		purchaseDAO.updateSupplierDetails(quoteDetails, status);
     	}
     }

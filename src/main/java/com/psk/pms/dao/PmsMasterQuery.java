@@ -214,7 +214,8 @@ public class PmsMasterQuery {
     public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus =?" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
     
-    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?  where ItemName = ? and  SupplierAliasName = ?";
+    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?, tentativeDeliveryDate = ?, "+
+    		"comments = ? where ItemName = ? and  SupplierAliasName = ?";
 
 
     public static final String GET_SUPPLIER_DETAIL = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=? and supplierAliasName =?";
