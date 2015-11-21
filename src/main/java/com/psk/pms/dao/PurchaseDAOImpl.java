@@ -161,28 +161,28 @@ public class PurchaseDAOImpl implements PurchaseDAO {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 SupplierQuoteDetails supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails().get(i);
-                SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
-            	Date temp = null;
+                SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                Date temp = null;
 
-            	try {
-            		if(null != quoteDetails.getTentativeDeliveryDate() )
-            		{
-            			String dateInString = quoteDetails.getTentativeDeliveryDate();
-            			java.util.Date date = formatter.parse(dateInString);
-                		temp = new java.sql.Date(date.getTime());
-            		}   
-           		
-            	} catch (ParseException e) {
-            		e.printStackTrace();
-            	}
-                              
+                try {
+                    if (null != quoteDetails.getTentativeDeliveryDate()) {
+                        String dateInString = quoteDetails.getTentativeDeliveryDate();
+                        java.util.Date date = formatter.parse(dateInString);
+                        temp = new java.sql.Date(date.getTime());
+                    }
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 ps.setString(1, supplierQuoteDetails.getItemQty());
                 ps.setString(2, status);
                 ps.setDate(3, temp);
-                ps.setString(4, StringUtils.isNullOrEmpty(quoteDetails.getComments())?null:quoteDetails.getComments());
-                ps.setString(5, supplierQuoteDetails.getItemName());
+                ps.setString(4, StringUtils.isNullOrEmpty(quoteDetails.getComments()) ? null : quoteDetails.getComments());
+                ps.setString(5, quoteDetails.getItemName());
                 ps.setString(6, supplierQuoteDetails.getSupplierAliasName());
-                
+                ps.setString(7, quoteDetails.getProjName());
+
             }
 
             @Override
@@ -297,8 +297,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
     @Override
     public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName) {
         Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL, projName, itemType, itemName, supplierName);
-            QuoteDetails.SupplierQuoteDetails detail = buildSupplierQuoteDetails(rows);
-            detail.setItemQty(rows.get("itemQty").toString());
+        QuoteDetails.SupplierQuoteDetails detail = buildSupplierQuoteDetails(rows);
+        detail.setItemQty(rows.get("itemQty").toString());
         return detail;
     }
 }

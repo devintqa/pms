@@ -40,7 +40,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                 "CommencementDate = ?, CompletedDate = ?, AgreementPeriod = ? ,LastUpdatedBy = ?,LastUpdatedAt = ? ,workoutPercentage=?, workLocation = ? WHERE ProjId = ?";
 
         if (!"Y".equalsIgnoreCase(projectDetail.getIsUpdate())) {
-            jdbcTemplate.update(createSql, new Object[]{projectDetail.getProjectName(),
+            jdbcTemplate.update(createSql, projectDetail.getProjectName(),
                     projectDetail.getAliasName(),
                     projectDetail.getAliasProjectNameForSubProj(),
                     projectDetail.getProjectType(),
@@ -64,13 +64,9 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getLastUpdatedBy(),
                     projectDetail.getLastUpdatedAt(),
                     projectDetail.getWorkoutPercentage(),
-                    projectDetail.getWorkLocation()
-
-
-            });
+                    projectDetail.getWorkLocation());
         } else {
-            jdbcTemplate.update(updateSql, new Object[]{
-                    projectDetail.getProjectType(),
+            jdbcTemplate.update(updateSql, projectDetail.getProjectType(),
                     projectDetail.getAgreementNo(),
                     projectDetail.getCerNo(),
                     projectDetail.getAmount(),
@@ -92,8 +88,7 @@ public class ProjectDAOImpl implements ProjectDAO {
                     projectDetail.getLastUpdatedAt(),
                     projectDetail.getWorkoutPercentage(),
                     projectDetail.getWorkLocation(),
-                    projectDetail.getProjId()
-            });
+                    projectDetail.getProjId());
         }
         return true;
     }
