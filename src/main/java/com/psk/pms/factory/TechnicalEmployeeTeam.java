@@ -11,6 +11,7 @@ import com.psk.pms.service.ProjectService;
 import com.psk.pms.service.SubProjectService;
 import com.psk.pms.utils.DateFormatter;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -26,6 +27,8 @@ import java.util.Map;
  */
 @Component
 public class TechnicalEmployeeTeam implements EmployeeTeam {
+	
+	 private static final Logger LOGGER = Logger.getLogger(TechnicalEmployeeTeam.class);
 
     public static final String TECHNICAL_MANAGER = "TECHNICAL MANAGER";
     @Autowired
@@ -62,7 +65,7 @@ public class TechnicalEmployeeTeam implements EmployeeTeam {
             model.addAttribute("depositDocumentList", depositDocumentList);
         }
         List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(indentStatus, empId);
-        System.out.println("indentList"+indentList.size());
+        LOGGER.info("Technical Team:indentList"+indentList.size());
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);
         }
