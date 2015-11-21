@@ -417,7 +417,7 @@ function statusApproved() {
                         <th width="50px">Email Address</th>
                         <th width="50px">Phone Number</th>
                         <th width="50px">Quoted Price</th>
-                        <th width="50px">Action</th>
+                        <th width="50px">Approval Quantity</th>
                     </tr>
                     </thead>
                     <tbody>
