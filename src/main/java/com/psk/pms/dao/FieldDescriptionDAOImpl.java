@@ -170,7 +170,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 		@Override
 	public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
 		Map < String, Object > descQty = new HashMap< String, Object>();
-		String status = getIndentStatusFilterByRole(userRole);
+		String status = "'NEW', 'PENDING PURCHASE'";
 		String sql = null;
 		if (null!=projId) {
 			sql = "select sum(quantity) as qty, projdescid from indentdesc where indentId in (select indentId from indent where projid='"+projId+"' and status in ("+status+")) group by projdescid";
@@ -347,23 +347,23 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
         }
     }
 
-    private String getIndentStatusFilterByRole(String role) {
-        if (role == null) {
-            return "'NEW', 'REJECTED'";
-        } else if (role.equalsIgnoreCase("No Role Tagged")) {
-            return "'NEW', 'REJECTED'";
-        } else if (role.isEmpty()) {
-            return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
-        } else if (role.equalsIgnoreCase("SITE MANAGER")) {
-            return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
-        } else if (role.equalsIgnoreCase("GENERAL MANAGER")) {
-            return "'NEW', 'REJECTED', 'PENDING LEVEL 2 APPROVAL'";
-        } else if (role.equalsIgnoreCase("TECHNICAL MANAGER")) {
-            return "'NEW', 'REJECTED', 'PENDING LEVEL 1 APPROVAL'";
-        } else {
-            return null;
-        }
-    }
+//    private String getIndentStatusFilterByRole(String role) {
+//        if (role == null) {
+//            return "'NEW', 'REJECTED'";
+//        } else if (role.equalsIgnoreCase("No Role Tagged")) {
+//            return "'NEW', 'REJECTED'";
+//        } else if (role.isEmpty()) {
+//            return "'NEW', 'REJECTED', 'PENDING PURCHASE'";
+//        } else if (role.equalsIgnoreCase("SITE MANAGER")) {
+//            return "'NEW', 'PENDING PURCHASE'";
+//        } else if (role.equalsIgnoreCase("GENERAL MANAGER")) {
+//            return "'NEW', 'PENDING PURCHASE'";
+//        } else if (role.equalsIgnoreCase("TECHNICAL MANAGER")) {
+//            return "'NEW', 'PENDING PURCHASE'";
+//        } else {
+//            return null;
+//        }
+//    }
 
 
     @Override
