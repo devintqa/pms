@@ -275,7 +275,7 @@ public class PurchaseController {
             quoteDetailsForm.setSupplierQuoteDetails(Arrays.asList(supplierQuoteDetails));
             purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
             model.addAttribute("actionMessage",
-                    "Supplier Details saved Successfully");
+                    "Purchase Indent raised Successfully");
 
 
         } catch (Exception e) {
