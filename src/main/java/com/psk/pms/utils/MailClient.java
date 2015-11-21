@@ -65,7 +65,7 @@ public class MailClient {
 			mailSender.send(message);
 		} catch (MessagingException e) {
 			LOGGER.error("Error in sending mail to the user :" + userName);
-			LOGGER.error("Error :" + e.getMessage());
+			LOGGER.error("Error in sending mail", e);
 		}
 	}
 
