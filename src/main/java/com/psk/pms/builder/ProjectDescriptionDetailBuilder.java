@@ -76,7 +76,7 @@ public class ProjectDescriptionDetailBuilder {
 			}
 			fileInputStream.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.error("Error while building the project description details", e);
 		}
 		return detailList;
 	}
