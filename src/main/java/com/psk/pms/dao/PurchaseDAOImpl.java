@@ -195,7 +195,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName) {
-        List<SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<>();
+        List<SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<SupplierQuoteDetails>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_SUPPLIER_QUOTE_DETAILS, projName, itemType, itemName);
         for (Map<String, Object> row : rows) {
             supplierQuoteDetails.add(buildSupplierQuoteDetails(row));
@@ -258,7 +258,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
-        List<SupplierQuoteDetails> purchaseList = new ArrayList<>();
+        List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
         String sql = null;
         if (null != status) {
             sql = "select * from supplierquotedetails where AliasProjName = ? and itemName= ? and supplierQuoteStatus =?";
@@ -280,7 +280,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus) {
-        List<SupplierQuoteDetails> supplierList = new ArrayList<>();
+        List<SupplierQuoteDetails> supplierList = new ArrayList<SupplierQuoteDetails>();
         String sql = null;
         if (null != supplierStatus) {
             sql = "SELECT p.aliasProjName, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty, idi.indentitemstatus as supplierquotestatus FROM indentdescitem idi,"
