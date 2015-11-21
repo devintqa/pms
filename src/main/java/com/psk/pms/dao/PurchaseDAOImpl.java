@@ -234,7 +234,6 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     @Override
     public List<SupplierQuoteDetails> getPurchaseListByStatus(String status, String empId) {
-        List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
         String sql = null;
         if (null != status) {
             sql = "select * from supplierquotedetails where supplierQuoteStatus= ?\n" +
@@ -242,30 +241,23 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                     " (select projectId from authoriseproject where empId = ?)) group by SupplierAliasName";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
-
-        for (Map<String, Object> row : rows) {
-            SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
-            supplier.setEmailAddress((String) row.get("emailAddress"));
-            supplier.setPhoneNumber((String) row.get("PhoneNumber"));
-            BigDecimal quotePrice = (BigDecimal) row.get("quotePrice");
-            supplier.setQuotedPrice(String.valueOf(quotePrice));
-            supplier.setSupplierAliasName((String) row.get("supplierAliasName"));
-            purchaseList.add(supplier);
-        }
-        return purchaseList;
+        return buildPurchaseDetails(rows);
     }
 
 
     @Override
-    public List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {
-        List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
+    public List<SupplierQuoteDetails> getPurchaseSupplierDetails(String projName, String itemName, String status) {        
         String sql = null;
         if (null != status) {
             sql = "select * from supplierquotedetails where AliasProjName = ? and itemName= ? and supplierQuoteStatus =?";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, projName, itemName, status);
-
-        for (Map<String, Object> row : rows) {
+        return buildPurchaseDetails(rows);       
+    }
+    
+    private List<SupplierQuoteDetails> buildPurchaseDetails(List<Map<String, Object>> rows){
+    	List<SupplierQuoteDetails> purchaseList = new ArrayList<SupplierQuoteDetails>();
+    	for (Map<String, Object> row : rows) {
             SupplierQuoteDetails supplier = transformer.buildSupplierList(row);
             supplier.setEmailAddress((String) row.get("emailAddress"));
             supplier.setPhoneNumber((String) row.get("PhoneNumber"));
