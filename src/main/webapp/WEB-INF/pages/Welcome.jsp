@@ -334,7 +334,7 @@
 								<td>${purchaseItem.supplierAliasName}</td>
 								<td>${purchaseItem.itemType}</td>
 								<td>${purchaseItem.itemName}</td>
-  								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}&itemType=${purchaseItem.itemType}&supplierName=${purchaseItem.supplierAliasName}">Purchase Details</a></td>
+  								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}&itemType=${purchaseItem.itemType}&supplierName=${purchaseItem.supplierAliasName}&employeeId=${employeeObj.employeeId}">Purchase Details</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

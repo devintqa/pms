@@ -325,10 +325,10 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 
         indent.setStatus(getNextIndentStatus(indent.getStatus()));
         String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? WHERE IndentId = ?";
-        Integer row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getEmployeeId(), indent.getIndentId()});
+        Integer row = jdbcTemplate.update(updateIndentStatusSql, indent.getStatus(), indent.getEmployeeId(), indent.getIndentId());
         if (row == 1)
             updateIndentStatusSql = "UPDATE IndentDescItem set IndentItemStatus = ? where IndentDescId in (SELECT IndentDescId from IndentDesc WHERE IndentId = ?)";
-        row = jdbcTemplate.update(updateIndentStatusSql, new Object[]{indent.getStatus(), indent.getIndentId()});
+        row = jdbcTemplate.update(updateIndentStatusSql, indent.getStatus(), indent.getIndentId());
         status = "Indent successfully processed for " + indent.getStatus();
         return status;
     }

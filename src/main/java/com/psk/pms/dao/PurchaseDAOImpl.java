@@ -1,17 +1,5 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.ALIAS_SUPPLIER_NAME_EXIST;
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_QUOTE_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_QUOTE_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_QUOTE_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.INSERT_SUPPLIER_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_INDENT_DESC_STATUS;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_DETAILS;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -33,6 +21,8 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.Supplier;
+
+import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class PurchaseDAOImpl implements PurchaseDAO {
 
@@ -292,5 +282,25 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         QuoteDetails.SupplierQuoteDetails detail = buildSupplierQuoteDetails(rows);
         detail.setItemQty(rows.get("itemQty").toString());
         return detail;
+    }
+
+    @Override
+    public void updateIndentDescStatusForPurchase(String indentStatus, String itemName, String itemType, Integer projectId) {
+        jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS_FOR_PURCHASE, indentStatus, itemName, itemType, projectId);
+    }
+
+
+    @Override
+    public boolean isPendingPurchase(String projName) {
+        String sql = "select count(*) from indentdescitem where IndentDescId in (select IndentDescId from indentdesc where IndentId in (\n" +
+                "select IndentId from indent where ProjId in (select ProjId from project where AliasProjName= ?))) and IndentItemStatus not in ('PURCHASED')";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projName) != 0;
+    }
+
+
+    @Override
+    public void updateIndentStatus(String status, Date todayDate, String employeeId, Integer projectId) {
+        String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? ,LastUpdatedAt = ? WHERE projId = ?";
+        jdbcTemplate.update(updateIndentStatusSql,status,employeeId,todayDate,projectId);
     }
 }

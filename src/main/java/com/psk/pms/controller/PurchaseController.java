@@ -138,7 +138,7 @@ public class PurchaseController {
     }
 
 
-    @RequestMapping(value = "/emp/myview/viewSupplierDetails/{projName}", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/emp/myview/viewSupplierDetails/{projName}", method = RequestMethod.GET)
     public String viewSupplierQuoteDetails(@PathVariable String projName,
                                            @RequestParam(value = "itemName", required = true) String itemName,
                                            Model model) {
@@ -156,20 +156,21 @@ public class PurchaseController {
         model.addAttribute("quoteDetailsForm", quoteDetails);
         return VIEW_SUPPLIER_QUOTE_DETAILS;
     }
-
+*/
 
     @RequestMapping(value = "/emp/myview/viewPurchaseDetails/{projName}", method = RequestMethod.GET)
     public String viewPurchaseDetails(@PathVariable String projName,
                                       @RequestParam(value = "itemName", required = true) String itemName,
                                       @RequestParam(value = "itemType", required = true) String itemType,
                                       @RequestParam(value = "supplierName", required = true) String supplierName,
+                                      @RequestParam(value = "employeeId", required = true) String employeeId,
                                       Model model) {
         LOGGER.info("Supplier detail update page for supplierId." + itemName);
         QuoteDetails quoteDetails = new QuoteDetails();
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("projName", projName);
         quoteDetails.setProjName(projName);
         quoteDetails.setItemName(itemName);
+        quoteDetails.setItemType(itemType);
+        quoteDetails.setEmployeeId(employeeId);
         QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
 
         Gson gson = new Gson();

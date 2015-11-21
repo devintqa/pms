@@ -3,6 +3,7 @@ package com.psk.pms.dao;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 
+import java.sql.Date;
 import java.util.List;
 
 import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
@@ -41,4 +42,9 @@ public interface PurchaseDAO {
 
     SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName);
 
+    void updateIndentDescStatusForPurchase(String indentStatus, String itemName, String itemType, Integer projectId);
+
+    boolean isPendingPurchase(String projName);
+
+    void updateIndentStatus(String purchased, Date todayDate, String employeeId, Integer projectId);
 }

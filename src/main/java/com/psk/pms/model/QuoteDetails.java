@@ -18,6 +18,7 @@ public class QuoteDetails {
 	private String tentativeDeliveryDate;
 	private Date sqlTentativeDeliveryDate;
 	private String comments;
+    private String employeeId;
 	
 	public String getTentativeDeliveryDate() {
 		return tentativeDeliveryDate;
@@ -110,10 +111,15 @@ public class QuoteDetails {
 		this.itemQty = itemQty;
 	}
 
+    public String getEmployeeId() {
+        return employeeId;
+    }
 
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
 
-	
-	public static class SupplierQuoteDetails {
+    public static class SupplierQuoteDetails {
 		private String supplierAliasName;
 		private String emailAddress;
 		private String phoneNumber;

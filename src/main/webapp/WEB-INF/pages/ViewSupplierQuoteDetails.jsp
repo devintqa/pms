@@ -106,6 +106,8 @@
 				<form:hidden path="quoteDetailsValue" id="quoteDetailsValue" />
 				<form:hidden path="projName" id="projName" />
 				<form:hidden path="itemName" id="itemName" />
+				<form:hidden path="itemType" id="itemType" />
+				<form:hidden path="employeeId" id="employeeId" />
 				<form:hidden path="submittedForApproval" id="submittedForApproval" />
 
 				<center>
