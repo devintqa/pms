@@ -303,4 +303,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         String updateIndentStatusSql = "UPDATE Indent set Status = ?, LastUpdatedBy = ? ,LastUpdatedAt = ? WHERE projId = ?";
         jdbcTemplate.update(updateIndentStatusSql,status,employeeId,todayDate,projectId);
     }
+
+    @Override
+    public boolean isTinNumberExists(String tinNumber) {
+        String sql = "select count(*) from supplierdetails where TINNumber = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, tinNumber) != 0;
+    }
 }

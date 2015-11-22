@@ -125,6 +125,11 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseDAO.getSupplierDetails(projName, itemName, itemType, supplierName);
     }
 
+    @Override
+    public boolean isTinNumberExists(String tinNumber) {
+        return purchaseDAO.isTinNumberExists(tinNumber);
+    }
+
     private Date getCurrentDateTime() {
         Calendar calendar = Calendar.getInstance();
         calendar.getTimeInMillis();

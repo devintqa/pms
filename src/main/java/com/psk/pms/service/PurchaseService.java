@@ -35,4 +35,5 @@ public interface PurchaseService {
 
     SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName);
 
+    boolean isTinNumberExists(String tinNumber);
 }

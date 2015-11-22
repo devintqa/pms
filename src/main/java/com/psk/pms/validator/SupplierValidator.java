@@ -48,6 +48,14 @@ public class SupplierValidator extends BaseValidator implements Validator {
             errors.rejectValue("tinNumber", "tinNumber.incorrect", "Enter Tin number or Reason for not entering the Tin Number");
         }
 
+        if (!StringUtils.isNullOrEmpty(supplier.getTinNumber())) {
+            boolean tinNumberExists = purchaseService.isTinNumberExists(supplier.getTinNumber());
+            if (tinNumberExists) {
+                errors.rejectValue("tinNumber", "tinNumber.incorrect", "Tin number already exist");
+            }
+
+        }
+
         if (!"Y".equalsIgnoreCase(supplier.getIsUpdate())) {
             LOGGER.info("Validating  supplier Alias Name " + supplier.getAliasName());
             boolean isAliasDescriptionAlreadyExisting = purchaseService.isAliasSupplierNameAlreadyExist(supplier.getAliasName());
@@ -100,7 +108,7 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
     }
-    
+
     public void validateSupplier(QuoteDetails quoteDetails) throws ValidationException {
         List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
         if (null == supplierQuoteDetails || supplierQuoteDetails.isEmpty()) {
@@ -111,15 +119,15 @@ public class SupplierValidator extends BaseValidator implements Validator {
                 throw new ValidationException("There are no Supplier Details to Approve");
             }
             if (StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
-                
-                    throw new ValidationException("Enter Approving Quantity");
+
+                throw new ValidationException("Enter Approving Quantity");
             }
             if (!StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
                 pattern = Pattern.compile(AMOUNT_PATTERN);
                 matcher = pattern.matcher(supplierQuoteDetail.getItemQty());
                 if (!matcher.matches()) {
                     throw new ValidationException("Enter a numeric value and only a single dot is allowed for Approving Quantity field");
-                } 
+                }
             }
         }
     }

@@ -47,4 +47,6 @@ public interface PurchaseDAO {
     boolean isPendingPurchase(String projName);
 
     void updateIndentStatus(String purchased, Date todayDate, String employeeId, Integer projectId);
+
+    boolean isTinNumberExists(String tinNumber);
 }
