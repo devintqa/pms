@@ -17,5 +17,16 @@
 		transactionalMode="off">
 		<persistence strategy="localTempSwap" />
 	</cache>
+	
+	<cache name="masterTableCache" 
+		maxEntriesLocalHeap="100"
+		maxEntriesLocalDisk="100" 
+		eternal="false" 
+		diskSpoolBufferSizeMB="20"
+		timeToIdleSeconds="86400" timeToLiveSeconds="86400"
+		memoryStoreEvictionPolicy="LFU" 
+		transactionalMode="off">
+		<persistence strategy="localTempSwap" />
+	</cache>
 
 </ehcache>

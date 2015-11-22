@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.psk.pms.model.ProjectDetail;
@@ -202,6 +203,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     }
 
     @Override
+    @Cacheable(value="masterTableCache")
     public List<String> getDropDownValues(String type) {
         LOGGER.info("method = getDropDownValues for type " + type);
         List<String> values = new ArrayList<String>();
