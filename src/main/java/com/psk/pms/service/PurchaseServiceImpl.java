@@ -58,19 +58,19 @@ public class PurchaseServiceImpl implements PurchaseService {
     public void updateSupplierDetails(QuoteDetails quoteDetails, String status) {
         Integer projectId = purchaseDAO.getProjectId(quoteDetails.getProjName());
         if ("Y".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
-            purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), Constants.PURCHASE_PENDING_APPROVAL, projectId);
+            purchaseDAO.updateIndentDescStatus(status, quoteDetails.getItemName(), quoteDetails.getItemType(), PURCHASE_PENDING_APPROVAL, projectId);
             purchaseDAO.updateSupplierDetails(quoteDetails, status);
         } else if ("A".equalsIgnoreCase(quoteDetails.getSubmittedForApproval())) {
             purchaseDAO.updateSupplierDetails(quoteDetails, status);
             String indentStatus = getIndentStatus(quoteDetails);
             purchaseDAO.updateIndentDescStatusForPurchase(indentStatus, quoteDetails.getItemName(), quoteDetails.getItemType(), projectId);
             boolean pendingPurchase = purchaseDAO.isPendingPurchase(quoteDetails.getProjName());
-            if(!pendingPurchase){
+            if (!pendingPurchase) {
                 java.sql.Date todayDate = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-                purchaseDAO.updateIndentStatus(Constants.PURCHASED,todayDate,quoteDetails.getEmployeeId(),projectId);
+                purchaseDAO.updateIndentStatus(Constants.PURCHASED, todayDate, quoteDetails.getEmployeeId(), projectId);
             }
         }
-       }
+    }
 
 
     @Override
@@ -126,6 +126,14 @@ public class PurchaseServiceImpl implements PurchaseService {
     @Override
     public boolean isTinNumberExists(String tinNumber) {
         return purchaseDAO.isTinNumberExists(tinNumber);
+    }
+
+    @Override
+    @Transactional
+    public void rejectSuppliers(String projName, String itemType, String itemName) {
+        purchaseDAO.deleteSupplierQuoteDetails(projName, itemType, itemName);
+        Integer projectId = purchaseDAO.getProjectId(projName);
+        purchaseDAO.updateIndentDescStatus(PENDING_PURCHASE, itemName, itemType, PURCHASE_PENDING_APPROVAL, projectId);
     }
 
     private Date getCurrentDateTime() {

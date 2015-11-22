@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -126,6 +127,7 @@ public class PurchaseController {
             quoteDetails.setSubmittedForApproval("Y");
         }
         quoteDetails.setSupplierQuoteDetails(supplierQuoteDetails);
+        quoteDetails.setEmployeeId(employeeId);
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierQuoteDetails, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
         }.getType());
@@ -226,11 +228,10 @@ public class PurchaseController {
             validateAndStoreQuoteDetails(quoteDetails, PURCHASE_PENDING_APPROVAL);
             model.addAttribute("successMessage",
                     "Submitted for Approval");
+            jsonData.setSuccess(true);
         } catch (Exception e) {
-            jsonData.setData(e.getMessage());
-            return jsonData;
+            result = e.getMessage();
         }
-        jsonData.setSuccess(true);
         jsonData.setData(result);
         return jsonData;
     }
@@ -241,7 +242,7 @@ public class PurchaseController {
             @RequestBody QuoteDetails quoteDetails, Model model,
             SessionStatus status) {
         JsonData jsonData = new JsonData();
-        LOGGER.info("Store Controller : submitForApproval()");
+        LOGGER.info("Purchase Controller : submitForApproval()");
         String result = "Supplier Approved";
         try {
             quoteDetails.setSubmittedForApproval("Y");
@@ -254,6 +255,27 @@ public class PurchaseController {
             return jsonData;
         }
         jsonData.setSuccess(true);
+        jsonData.setData(result);
+        return jsonData;
+    }
+
+
+    @RequestMapping(value = "/emp/myview/supplierQuoteDetails/rejectApproval.do", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonData rejectApproval(
+            HttpServletRequest request, HttpServletResponse response) {
+        JsonData jsonData = new JsonData();
+        String projName = request.getParameter("projName");
+        String itemType = request.getParameter("itemType");
+        String itemName = request.getParameter("itemName");
+        LOGGER.info("Purchase Controller : rejectApproval()");
+        String result = "Supplier Details rejected successfully";
+        try {
+            purchaseService.rejectSuppliers(projName, itemType, itemName);
+            jsonData.setSuccess(true);
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
         jsonData.setData(result);
         return jsonData;
     }
