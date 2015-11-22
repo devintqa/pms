@@ -660,7 +660,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId) {
-        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<>();
+        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<com.psk.pms.model.IndentDesc.ItemDetail>();
         String indentItemToRequestSql = "SELECT cast(group_concat(i.IndentId  ORDER BY i.IndentId ASC)as char) as \n" +
                 "IndentList,idi.indentitemstatus, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty FROM project p,\n" +
                 "indentdescitem idi,indentdesc id, indent i where idi.indentDescId = id.indentdescid and p.projId = i.projId and idi.indentitemstatus in \n" +

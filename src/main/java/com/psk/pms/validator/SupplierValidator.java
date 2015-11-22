@@ -2,7 +2,6 @@ package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.ValidationException;
-import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 import com.psk.pms.service.PurchaseService;

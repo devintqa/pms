@@ -5,8 +5,6 @@ import com.psk.pms.Constants;
 import com.psk.pms.dao.PurchaseDAO;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
