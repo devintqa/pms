@@ -285,21 +285,21 @@ public class PurchaseController {
             @ModelAttribute("quoteDetailsForm") QuoteDetails quoteDetailsForm,
             Model model, BindingResult result, SessionStatus status)
             throws JsonParseException, JsonMappingException, IOException {
-
         try {
             model.addAttribute("quoteDetailsForm", quoteDetailsForm);
             quoteDetailsForm.setSubmittedForApproval("A");
-            model.addAttribute("successMessage",
-                    "Supplier Approved");
+            supplierValidator.validate(quoteDetailsForm, result, "SAVE");
             ObjectMapper mapper = new ObjectMapper();
             SupplierQuoteDetails supplierQuoteDetails = mapper.readValue(quoteDetailsForm.getQuoteDetailsValue(), SupplierQuoteDetails.class);
             model.addAttribute("supplierDetails", supplierQuoteDetails);
             quoteDetailsForm.setSupplierQuoteDetails(Arrays.asList(supplierQuoteDetails));
-            purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
-            model.addAttribute("actionMessage",
-                    "Purchase Indent raised Successfully");
-
-
+            if (!result.hasErrors()) {
+                model.addAttribute("actionMessage",
+                        "Purchase Indent raised Successfully");
+                purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
+            } else {
+                return VIEW_SUPPLIER_QUOTE_DETAILS;
+            }
         } catch (Exception e) {
             LOGGER.error("Error occurred while saving supplier details");
             model.addAttribute("actionMessage",

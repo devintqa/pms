@@ -7,6 +7,7 @@ import com.psk.pms.model.Supplier;
 import com.psk.pms.service.PurchaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -129,5 +130,12 @@ public class SupplierValidator extends BaseValidator implements Validator {
                 }
             }
         }
+    }
+
+    public void validate(QuoteDetails quoteDetailsForm, BindingResult result, String save) {
+        ValidationUtils.rejectIfEmptyOrWhitespace(result, "tentativeDeliveryDate",
+                "required.tentativeDeliveryDate", "Enter Tentative Delivery Date");
+        ValidationUtils.rejectIfEmptyOrWhitespace(result, "comments",
+                "required.comments", "Enter Comments");
     }
 }

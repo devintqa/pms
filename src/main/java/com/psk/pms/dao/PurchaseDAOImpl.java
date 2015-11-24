@@ -228,7 +228,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         if (null != status) {
             sql = "select * from supplierquotedetails where supplierQuoteStatus= ?\n" +
                     "and AliasProjName in (select aliasProjName from project where projId in\n" +
-                    " (select projectId from authoriseproject where empId = ?)) group by SupplierAliasName";
+                    " (select projectId from authoriseproject where empId = ?))";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
         return buildPurchaseDetails(rows);
