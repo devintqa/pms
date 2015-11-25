@@ -33,7 +33,7 @@ public interface PurchaseService {
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
 
-    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName);
+    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName, String brandName);
 
     boolean isTinNumberExists(String tinNumber);
 

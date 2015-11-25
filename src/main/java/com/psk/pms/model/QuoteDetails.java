@@ -7,109 +7,108 @@ import java.util.List;
  * Created by Sony on 05-11-2015.
  */
 public class QuoteDetails {
-	private Integer projId;
-	private String itemName;
-	private String itemQty;
-	private String projName;
-	private String itemType;
-	private String quoteDetailsValue;
-	private String submittedForApproval;
-	private List<SupplierQuoteDetails> supplierQuoteDetails;
-	private String tentativeDeliveryDate;
-	private Date sqlTentativeDeliveryDate;
-	private String comments;
+    private Integer projId;
+    private String itemName;
+    private String itemQty;
+    private String projName;
+    private String itemType;
+    private String quoteDetailsValue;
+    private String submittedForApproval;
+    private List<SupplierQuoteDetails> supplierQuoteDetails;
+    private String tentativeDeliveryDate;
+    private Date sqlTentativeDeliveryDate;
+    private String comments;
     private String employeeId;
-	
-	public String getTentativeDeliveryDate() {
-		return tentativeDeliveryDate;
-	}
 
-	public void setTentativeDeliveryDate(String tentativeDeliveryDate) {
-		this.tentativeDeliveryDate = tentativeDeliveryDate;
-	}
+    public String getTentativeDeliveryDate() {
+        return tentativeDeliveryDate;
+    }
 
-	public Date getSqlTentativeDeliveryDate() {
-		return sqlTentativeDeliveryDate;
-	}
+    public void setTentativeDeliveryDate(String tentativeDeliveryDate) {
+        this.tentativeDeliveryDate = tentativeDeliveryDate;
+    }
 
-	public void setSqlTentativeDeliveryDate(Date sqlTentativeDeliveryDate) {
-		this.sqlTentativeDeliveryDate = sqlTentativeDeliveryDate;
-	}
+    public Date getSqlTentativeDeliveryDate() {
+        return sqlTentativeDeliveryDate;
+    }
 
-	public String getComments() {
-		return comments;
-	}
+    public void setSqlTentativeDeliveryDate(Date sqlTentativeDeliveryDate) {
+        this.sqlTentativeDeliveryDate = sqlTentativeDeliveryDate;
+    }
 
-	public void setComments(String comments) {
-		this.comments = comments;
-	}
+    public String getComments() {
+        return comments;
+    }
 
-	
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
 
-	public Integer getProjId() {
-		return projId;
-	}
 
-	public void setProjId(Integer projId) {
-		this.projId = projId;
-	}
+    public Integer getProjId() {
+        return projId;
+    }
 
-	public String getItemName() {
-		return itemName;
-	}
+    public void setProjId(Integer projId) {
+        this.projId = projId;
+    }
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
+    public String getItemName() {
+        return itemName;
+    }
 
-	public String getItemType() {
-		return itemType;
-	}
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-	public void setItemType(String itemType) {
-		this.itemType = itemType;
-	}
+    public String getItemType() {
+        return itemType;
+    }
 
-	public String getSubmittedForApproval() {
-		return submittedForApproval;
-	}
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
+    }
 
-	public void setSubmittedForApproval(String submittedForApproval) {
-		this.submittedForApproval = submittedForApproval;
-	}
+    public String getSubmittedForApproval() {
+        return submittedForApproval;
+    }
 
-	public List<SupplierQuoteDetails> getSupplierQuoteDetails() {
-		return supplierQuoteDetails;
-	}
+    public void setSubmittedForApproval(String submittedForApproval) {
+        this.submittedForApproval = submittedForApproval;
+    }
 
-	public void setSupplierQuoteDetails(
-			List<SupplierQuoteDetails> supplierQuoteDetails) {
-		this.supplierQuoteDetails = supplierQuoteDetails;
-	}
+    public List<SupplierQuoteDetails> getSupplierQuoteDetails() {
+        return supplierQuoteDetails;
+    }
 
-	public String getProjName() {
-		return projName;
-	}
+    public void setSupplierQuoteDetails(
+            List<SupplierQuoteDetails> supplierQuoteDetails) {
+        this.supplierQuoteDetails = supplierQuoteDetails;
+    }
 
-	public void setProjName(String projName) {
-		this.projName = projName;
-	}
+    public String getProjName() {
+        return projName;
+    }
 
-	public String getQuoteDetailsValue() {
-		return quoteDetailsValue;
-	}
+    public void setProjName(String projName) {
+        this.projName = projName;
+    }
 
-	public void setQuoteDetailsValue(String quoteDetailsValue) {
-		this.quoteDetailsValue = quoteDetailsValue;
-	}
+    public String getQuoteDetailsValue() {
+        return quoteDetailsValue;
+    }
 
-	public String getItemQty() {
-		return itemQty;
-	}
+    public void setQuoteDetailsValue(String quoteDetailsValue) {
+        this.quoteDetailsValue = quoteDetailsValue;
+    }
 
-	public void setItemQty(String itemQty) {
-		this.itemQty = itemQty;
-	}
+    public String getItemQty() {
+        return itemQty;
+    }
+
+    public void setItemQty(String itemQty) {
+        this.itemQty = itemQty;
+    }
 
     public String getEmployeeId() {
         return employeeId;
@@ -120,100 +119,110 @@ public class QuoteDetails {
     }
 
     public static class SupplierQuoteDetails {
-		private String supplierAliasName;
-		private String emailAddress;
-		private String phoneNumber;
-		private String quotedPrice;
-		private String supplierQuoteStatus;
-		private String aliasProjName;
-		private String itemName;
-		private String itemQty;
-		private String itemType;
-		
+        private String supplierAliasName;
+        private String emailAddress;
+        private String phoneNumber;
+        private String quotedPrice;
+        private String supplierQuoteStatus;
+        private String aliasProjName;
+        private String itemName;
+        private String itemQty;
+        private String itemType;
+        private String brandName;
 
-		public String getItemType() {
-			return itemType;
-		}
 
-		public void setItemType(String itemType) {
-			this.itemType = itemType;
-		}
+        public String getItemType() {
+            return itemType;
+        }
 
-		public String getItemName() {
-			return itemName;
-		}
+        public void setItemType(String itemType) {
+            this.itemType = itemType;
+        }
 
-		public void setItemName(String itemName) {
-			this.itemName = itemName;
-		}
+        public String getItemName() {
+            return itemName;
+        }
 
-		public String getItemQty() {
-			return itemQty;
-		}
+        public void setItemName(String itemName) {
+            this.itemName = itemName;
+        }
 
-		public void setItemQty(String itemQty) {
-			this.itemQty = itemQty;
-		}
+        public String getItemQty() {
+            return itemQty;
+        }
 
-		public String getAliasProjName() {
-			return aliasProjName;
-		}
+        public void setItemQty(String itemQty) {
+            this.itemQty = itemQty;
+        }
 
-		public void setAliasProjName(String aliasProjName) {
-			this.aliasProjName = aliasProjName;
-		}
+        public String getAliasProjName() {
+            return aliasProjName;
+        }
 
-		public SupplierQuoteDetails() {
+        public void setAliasProjName(String aliasProjName) {
+            this.aliasProjName = aliasProjName;
+        }
 
-		}
+        public SupplierQuoteDetails() {
 
-		public SupplierQuoteDetails(String supplierAliasName,
-				String emailAddress, String phoneNumber, String quotedPrice) {
-			this.supplierAliasName = supplierAliasName;
-			this.emailAddress = emailAddress;
-			this.phoneNumber = phoneNumber;
-			this.quotedPrice = quotedPrice;
-		}
+        }
 
-		public String getSupplierAliasName() {
-			return supplierAliasName;
-		}
+        public SupplierQuoteDetails(String supplierAliasName,
+                                    String emailAddress, String phoneNumber, String quotedPrice) {
+            this.supplierAliasName = supplierAliasName;
+            this.emailAddress = emailAddress;
+            this.phoneNumber = phoneNumber;
+            this.quotedPrice = quotedPrice;
+        }
 
-		public void setSupplierAliasName(String supplierAliasName) {
-			this.supplierAliasName = supplierAliasName;
-		}
+        public String getSupplierAliasName() {
+            return supplierAliasName;
+        }
 
-		public String getEmailAddress() {
-			return emailAddress;
-		}
+        public void setSupplierAliasName(String supplierAliasName) {
+            this.supplierAliasName = supplierAliasName;
+        }
 
-		public void setEmailAddress(String emailAddress) {
-			this.emailAddress = emailAddress;
-		}
+        public String getEmailAddress() {
+            return emailAddress;
+        }
 
-		public String getPhoneNumber() {
-			return phoneNumber;
-		}
+        public void setEmailAddress(String emailAddress) {
+            this.emailAddress = emailAddress;
+        }
 
-		public void setPhoneNumber(String phoneNumber) {
-			this.phoneNumber = phoneNumber;
-		}
+        public String getPhoneNumber() {
+            return phoneNumber;
+        }
 
-		public String getQuotedPrice() {
-			return quotedPrice;
-		}
+        public void setPhoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+        }
 
-		public void setQuotedPrice(String quotedPrice) {
-			this.quotedPrice = quotedPrice;
-		}
+        public String getQuotedPrice() {
+            return quotedPrice;
+        }
 
-		public String getSupplierQuoteStatus() {
-			return supplierQuoteStatus;
-		}
+        public void setQuotedPrice(String quotedPrice) {
+            this.quotedPrice = quotedPrice;
+        }
 
-		public void setSupplierQuoteStatus(String supplierQuoteStatus) {
-			this.supplierQuoteStatus = supplierQuoteStatus;
-		}
-	}
+        public String getSupplierQuoteStatus() {
+            return supplierQuoteStatus;
+        }
+
+        public void setSupplierQuoteStatus(String supplierQuoteStatus) {
+            this.supplierQuoteStatus = supplierQuoteStatus;
+        }
+
+        public String getBrandName() {
+            return brandName;
+        }
+
+        public void setBrandName(String brandName) {
+            this.brandName = brandName;
+        }
+
+    }
 
 }

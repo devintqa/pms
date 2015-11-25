@@ -165,6 +165,7 @@ public class PurchaseController {
                                       @RequestParam(value = "itemType", required = true) String itemType,
                                       @RequestParam(value = "supplierName", required = true) String supplierName,
                                       @RequestParam(value = "employeeId", required = true) String employeeId,
+                                      @RequestParam(value = "brandName" ) String brandName,
                                       Model model) {
         LOGGER.info("Supplier detail update page for supplierId." + itemName);
         QuoteDetails quoteDetails = new QuoteDetails();
@@ -172,7 +173,7 @@ public class PurchaseController {
         quoteDetails.setItemName(itemName);
         quoteDetails.setItemType(itemType);
         quoteDetails.setEmployeeId(employeeId);
-        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
+        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName,brandName);
 
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierDetails, new TypeToken<QuoteDetails.SupplierQuoteDetails>() {

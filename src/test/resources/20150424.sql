@@ -736,6 +736,7 @@ CREATE TABLE `supplierdetails` (
   `SupplierName` text DEFAULT NULL,
   `SupplierAliasName` varchar(30) NOT NULL,
   `PhoneNumber` varchar(20) NOT NULL,
+  `SupplierType` varchar(20) NOT NULL,
   `Email` varchar(50) DEFAULT NULL,
   `SupplierDescription` text DEFAULT NULL,
   `LastUpdatedBy` varchar(30) NOT NULL,
@@ -763,6 +764,7 @@ CREATE TABLE `supplierQuoteDetails` (
   `PhoneNumber` varchar(20) NOT NULL,
   `quotePrice` decimal(15,2) DEFAULT NULL,
   `supplierQuoteStatus` varchar(45) DEFAULT NULL,
+  `brandName` varchar(45) DEFAULT NULL,
   `tentativeDeliveryDate` datetime DEFAULT NULL,
   `comments` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`supplierQuoteDetailId`)

@@ -135,7 +135,5 @@ public class SupplierValidator extends BaseValidator implements Validator {
     public void validate(QuoteDetails quoteDetailsForm, BindingResult result, String save) {
         ValidationUtils.rejectIfEmptyOrWhitespace(result, "tentativeDeliveryDate",
                 "required.tentativeDeliveryDate", "Enter Tentative Delivery Date");
-        ValidationUtils.rejectIfEmptyOrWhitespace(result, "comments",
-                "required.comments", "Enter Comments");
     }
 }

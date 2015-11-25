@@ -39,26 +39,33 @@ $(document).ready(
                             supplierAliasName: request.term
                         }, function (data) {
                             response($.map(data, function (item) {
-                                return {label: item.aliasName, supplierAliasName: item.aliasName, emailAddress: item.emailAddress, phoneNumber: item.phoneNumber};
+                                return {label: item.aliasName, supplierAliasName: item.aliasName, emailAddress: item.emailAddress, phoneNumber: item.phoneNumber, supplierType: item.supplierType};
                             }))
                         });
                     },
                     select: function (event, ui) {
                         var supplierAliasName = ui.item.label;
-                        if (validateItemNameExistence(supplierAliasName)) {
+                        if (ui.item.supplierType == 'Direct' && validateItemNameExistence(supplierAliasName)) {
                             alert("Supplier already exists!");
                             event.preventDefault();
                             $(this).val('');
                         } else {
                             $(this).parents('tr:first').find('td:nth-child(2) input').val(ui.item.emailAddress);
                             $(this).parents('tr:first').find('td:nth-child(4) input').val('');
+                            $(this).parents('tr:first').find('td:nth-child(5) input').val('');
                             $(this).parents('tr:first').find('td:nth-child(3) input').val(ui.item.phoneNumber);
                             $(this).parents('tr:first').find('td:nth-child(1) input:nth-child(2)').val(ui.item.supplierAliasName);
+                            if (ui.item.supplierType == 'Direct') {
+                                $(this).parents('tr:first').find('td:nth-child(4) input').prop('disabled', true);
+                            }
 
                         }
                     }
                 });
             });
+
+
+
             <c:if test="${employeeObj.employeeRole eq 'General Manager'}">
             $('#approveBtn, #rejectBtn').attr("disabled", false);
             $('#submitedForApproval').show();
@@ -133,10 +140,11 @@ $(document).ready(
                 for (var i = 1; i <= len; i++) {
                     if (supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].checked) {
                         var supplierAliasName = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
-                        var approvedQty = supplierQuoteTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
+                        var approvedQty = supplierQuoteTable.rows[i].cells[6].getElementsByTagName('input')[0].value;
+                        var brandName = supplierQuoteTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
                         var itemName = document.getElementById('itemName').innerHTML.trim();
                         var itemType = document.getElementById('itemType').innerHTML.trim();
-                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType);
+                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType,brandName);
                         supplierDetails.push(obj);
                     }
                 }
@@ -203,7 +211,12 @@ function insertSupplierDetailRow() {
     phoneNumber.id += len;
     phoneNumber.value = '';
 
-    var quotedPrice = new_row.cells[3].getElementsByTagName('input')[0];
+    var brandName = new_row.cells[3].getElementsByTagName('input')[0];
+    brandName.id += len;
+    brandName.value = '';
+    brandName.disabled = false;
+
+    var quotedPrice = new_row.cells[4].getElementsByTagName('input')[0];
     quotedPrice.id += len;
     quotedPrice.value = '';
 
@@ -211,17 +224,19 @@ function insertSupplierDetailRow() {
     $('#Submit').hide();
 }
 
-function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice) {
+function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName) {
     this.supplierAliasName = supplierAliasName;
     this.emailAddress = emailAddress;
     this.phoneNumber = phoneNumber;
     this.quotedPrice = quotedPrice;
+    this.brandName = brandName;
 }
-function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType) {
+function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType,brandName) {
     this.supplierAliasName = supplierAliasName;
     this.itemName = itemName;
     this.itemQty = approvedQty;
     this.itemType = itemType;
+    this.brandName = brandName;
 }
 
 
@@ -235,9 +250,10 @@ function getTableData() {
         var supplierAliasName = supplierQuoteTable.rows[1].cells[0].getElementsByTagName('input')[0].value;
         var emailAddress = supplierQuoteTable.rows[1].cells[1].getElementsByTagName('input')[0].value;
         var phoneNumber = supplierQuoteTable.rows[1].cells[2].getElementsByTagName('input')[0].value;
-        var quotedPrice = supplierQuoteTable.rows[1].cells[3].getElementsByTagName('input')[0].value;
-        var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice);
-        if (supplierAliasName && emailAddress && phoneNumber && quotedPrice || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice)) {
+        var brandName = supplierQuoteTable.rows[1].cells[3].getElementsByTagName('input')[0].value;
+        var quotedPrice = supplierQuoteTable.rows[1].cells[4].getElementsByTagName('input')[0].value;
+        var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName);
+        if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName)) {
             itemObjArray.push(obj);
         } else {
             err = true;
@@ -247,9 +263,10 @@ function getTableData() {
             var supplierAliasName = supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].value;
             var emailAddress = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
             var phoneNumber = supplierQuoteTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
-            var quotedPrice = supplierQuoteTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
-            var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice);
-            if (supplierAliasName && emailAddress && phoneNumber && quotedPrice || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice)) {
+            var brandName = supplierQuoteTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
+            var quotedPrice = supplierQuoteTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
+            var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName);
+            if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName)) {
                 itemObjArray.push(obj);
             } else {
                 err = true;
@@ -380,6 +397,10 @@ function fillSupplierQuoteDetail(item) {
     phoneNumber.id += len;
     phoneNumber.value = item.phoneNumber;
     i++;
+    var brandName = row.cells[i].getElementsByTagName('input')[0];
+    brandName.id += len;
+    brandName.value = item.brandName;
+    i++
     var quotedPrice = row.cells[i].getElementsByTagName('input')[0];
     quotedPrice.id += len;
     if (item.quotedPrice)
@@ -463,6 +484,7 @@ function deleteItemRow(row) {
                         <th width="50px">Supplier Alias Name</th>
                         <th width="50px">Email Address</th>
                         <th width="50px">Phone Number</th>
+                        <th width="50px">Brand</th>
                         <th width="50px">Quoted Price</th>
                         <th width="50px">Action</th>
                     </tr>
@@ -479,6 +501,8 @@ function deleteItemRow(row) {
                                    readonly="true"/></td>
                         <td><input class="quoteDetailStyle" name="totalQuantity" id="phoneNumber" type="text"
                                    readonly="true"/></td>
+                        <td><input class="quoteDetailStyle" name="brandName" id="brandName" type="text"
+                                   placeholder="Enter Brand Name For Dealers"/></td>
                         <td><input class="quoteDetailStyle" name="quotedPrice" id="quotedPrice" type="text"
                                    placeholder="Enter Quoted Price"/></td>
 

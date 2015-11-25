@@ -119,8 +119,8 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
-    public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName) {
-        return purchaseDAO.getSupplierDetails(projName, itemName, itemType, supplierName);
+    public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName, String brandName) {
+        return purchaseDAO.getSupplierDetails(projName, itemName, itemType, supplierName,brandName);
     }
 
     @Override

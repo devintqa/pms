@@ -40,7 +40,7 @@ public interface PurchaseDAO {
 
     List<SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
 
-    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName);
+    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName, String brandName);
 
     void updateIndentDescStatusForPurchase(String indentStatus, String itemName, String itemType, Integer projectId);
 

@@ -55,6 +55,13 @@
                             <td><form:errors path="aliasName" cssClass="error"/></td>
                         </tr>
                         <tr>
+                            <td>Supplier Type <span id="colon">:</span></td>
+                            <td><form:radiobutton path="supplierType" value="Direct"
+                                                  id="direct" checked="true" />Direct</td>
+                            <td><form:radiobutton path="supplierType" value="Dealer"
+                                                  id="dealer" />Dealer</td>
+                        </tr>
+                        <tr>
                             <td>TIN Number <span id="colon">:</span>
                             </td>
                             <td><form:input path="tinNumber"
