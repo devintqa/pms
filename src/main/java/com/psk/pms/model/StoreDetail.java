@@ -8,9 +8,11 @@ import java.util.Date;
 public class StoreDetail {
 
 	private int projId;
+	private String aliasProjName;
 	private String recievedDate;
 	private Date sqlRecievedDate;
 	private String itemType;
+	private String itemQty;
 	private String employeeId;
 	private String itemName;
 	private String vehicleNumber;
@@ -21,6 +23,24 @@ public class StoreDetail {
 	private String checkedBy;
 	private String tripSheetNumber;
 	private String storeType;
+	private String storeDetailsValue;
+	
+	
+	public String getStoreDetailsValue() {
+		return storeDetailsValue;
+	}
+
+	public void setStoreDetailsValue(String storeDetailsValue) {
+		this.storeDetailsValue = storeDetailsValue;
+	}
+
+	public String getAliasProjName() {
+		return aliasProjName;
+	}
+
+	public void setProjName(String aliasProjName) {
+		this.aliasProjName = aliasProjName;
+	}
 
 	public int getProjId() {
 		return projId;
@@ -40,6 +60,14 @@ public class StoreDetail {
 
 	public Date getSqlRecievedDate() {
 		return sqlRecievedDate;
+	}
+
+	public String getItemQty() {
+		return itemQty;
+	}
+
+	public void setItemQty(String itemQty) {
+		this.itemQty = itemQty;
 	}
 
 	public void setSqlRecievedDate(Date sqlRecievedDate) {

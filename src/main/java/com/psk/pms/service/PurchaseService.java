@@ -35,7 +35,14 @@ public interface PurchaseService {
 
     SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName, String brandName);
 
-    boolean isTinNumberExists(String tinNumber);
+    boolean isTinNumberExists(String tinNumber);  void rejectSuppliers(String projName, String itemType, String itemName);
+    
+    List<QuoteDetails.SupplierQuoteDetails> getPurchasesByStatus(String supplierStatus);
+    
+    Integer getProjectId(String projName);
+    
+    SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status);
 
-    void rejectSuppliers(String projName, String itemType, String itemName);
+
+  
 }

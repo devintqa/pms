@@ -222,4 +222,6 @@ public class PmsMasterQuery {
 
     public static final String UPDATE_INDENT_DESC_STATUS_FOR_PURCHASE = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus in ('APPROVED','PARTIALLY PURCHASED')" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
+    
+    public static final String GET_SUPPLIER_DETAIL_BY_STATUS = "select * from supplierQuoteDetails where AliasProjName = ? and itemName= ? and supplierAliasName = ? and supplierQuoteStatus = ?";
 }

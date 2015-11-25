@@ -343,6 +343,45 @@
 				</tbody>
 			</table>
 		</c:if>
+		
+		
+		<c:if test="${employeeObj.employeeTeam eq 'Store'}">
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">Purchases
+				that require immediate attention</h1>
+			<table id="indentList" class="display">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Supplier Name</th>
+						<th>Item Type</th>
+						<th>Item Name</th>
+						<th>Status</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<c:if test="${not empty purchaseList}">
+						<c:forEach var="purchaseItem" items="${purchaseList}">
+							<tr>
+								<td>${purchaseItem.aliasProjName}</td>
+								<td>${purchaseItem.supplierAliasName}</td>
+								<td>${purchaseItem.itemType}</td>
+								<td>${purchaseItem.itemName}</td>
+								<td>${purchaseItem.supplierQuoteStatus}</td>
+  								<td><a href="/pms/emp/myview/buildStoreDetail/${employeeObj.employeeId}?aliasProjName=${purchaseItem.aliasProjName}&supplierAliasName=${purchaseItem.supplierAliasName}&itemName=${purchaseItem.itemName}&supplierQuoteStatus=${purchaseItem.supplierQuoteStatus}">Store Details</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+				
+			</table>
+			<br>
+			<br>
+			
+			
+		</c:if>
+		
+		
 	</div>
 	<footer>
 		<jsp:include page="Footer.jsp" />

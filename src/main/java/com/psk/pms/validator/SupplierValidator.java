@@ -91,7 +91,7 @@ public class SupplierValidator extends BaseValidator implements Validator {
             throw new ValidationException("There are no Quote Details to be saved");
         }
         for (QuoteDetails.SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
-            if (supplierQuoteDetail.getSupplierAliasName().isEmpty() || supplierQuoteDetail.getEmailAddress().isEmpty()) {
+            if (supplierQuoteDetail.getSupplierAliasName().isEmpty()) {
                 throw new ValidationException("There are no Quote Details to be saved");
             }
             if (supplierQuoteDetail.getQuotedPrice().isEmpty()) {

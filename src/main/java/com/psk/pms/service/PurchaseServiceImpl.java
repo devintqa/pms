@@ -1,13 +1,11 @@
 package com.psk.pms.service;
 
 
-import com.psk.pms.Constants;
-import com.psk.pms.dao.PurchaseDAO;
-import com.psk.pms.model.QuoteDetails;
-import com.psk.pms.model.Supplier;
-import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
+import static com.psk.pms.Constants.APPROVED;
+import static com.psk.pms.Constants.PARTIALLY_PURCHASED;
+import static com.psk.pms.Constants.PENDING_PURCHASE;
+import static com.psk.pms.Constants.PURCHASED;
+import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,8 +13,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.psk.pms.Constants.*;
-import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.psk.pms.Constants;
+import com.psk.pms.dao.PurchaseDAO;
+import com.psk.pms.model.QuoteDetails;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.Supplier;
 
 
 public class PurchaseServiceImpl implements PurchaseService {
@@ -157,4 +162,20 @@ public class PurchaseServiceImpl implements PurchaseService {
         }
         return date;
     }
+
+    @Override
+    public List<SupplierQuoteDetails> getPurchasesByStatus(String purchaseStatus) {
+        return purchaseDAO.getPurchasesByStatus(purchaseStatus);
+    }
+
+	 @Override
+	    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status) {
+	        return purchaseDAO.getSupplierQuoteDetailsByStatus(projName,itemName,supplierName, status);
+	    }
+	 
+	 @Override
+	    public Integer getProjectId(String projName) {
+	       return purchaseDAO.getProjectId(projName);
+	    }
+
 }

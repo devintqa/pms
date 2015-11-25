@@ -12,86 +12,104 @@
 
 
 <script>
-	$(document)
-			.ready(
-					function() {
-						if ($('#itemType').val() == '--Please Select--') {
-							$("#itemNameField").hide();
-						} else {
-							$("#itemNameField").show();
-						}
-						$("#itemType")
-								.change(
-										function() {
-											var itemType = $('#itemType').val();
-											var projId = $('#projId').val();
-											var employeeId = $('#employeeId')
-													.val();
-											$
-													.ajax({
-														type : "GET",
-														url : "getItemNames.do",
-														cache : false,
-														data : "itemType="
-																+ itemType
-																+ "&projId="
-																+ projId
-																+ "&employeeId="
-																+ employeeId,
-														success : function(
-																response) {
-															if (response.success) {
-																var obj = jQuery
-																		.parseJSON(response.data);
-																var options = '';
-																for ( var key in obj) {
-																	var attrName = key;
-																	var attrValue = obj[key];
-																	options = options
-																			+ '<option value="' + attrValue + '">'
-																			+ attrValue
-																			+ '</option>';
-																}
-																$('#itemName')
-																		.html(
-																				options);
-															} else {
-																$(
-																		"#itemNameField")
-																		.hide();
-																$(
-																		"#dialog-confirm")
-																		.html(
-																				"Item name is not configured for the selected Item Type");
-																$(
-																		"#dialog-confirm")
-																		.dialog(
-																				{
-																					modal : true,
-																					title : "Warning!",
-																					height : 200,
-																					width : 300,
-																					buttons : {
-																						Ok : function() {
-																							$(
-																									this)
-																									.dialog(
-																											"close");
-																						}
-																					}
-																				});
-																$("#itemType")
-																		.prop(
-																				'selectedIndex',
-																				0);
-															}
-														}
 
-													});
-											$("#itemNameField").show();
-										});
 
-					});
+
+$(document).ready(
+
+        function () {
+      	$("#saveBtn").click(function() {
+        		
+        		 var storeDetails = [];
+        		 var storeDetailForm = {};
+        		     var aliasProjName = document.getElementById('aliasProjName').value;
+        		     var itemType = document.getElementById('itemType').value;
+        		     var itemName = document.getElementById('itemName').value;
+        		     var itemQty = document.getElementById('itemQty').value;
+        		     var supplierAliasName = document.getElementById('supplierName').value;
+        		     var vehicleNumber = document.getElementById('vehicleNumber').value;
+        		     var recievedQty = document.getElementById('recievedQuantity').value;
+        		     var recievedDate = document.getElementById('recievedDate').value;
+        		     var recievedBy = document.getElementById('recievedBy').value;
+        		     var checkedBy = document.getElementById('checkedBy').value;
+        		     var tripSheetNumber = document.getElementById('tripSheetNumber').value;
+        		     var storeType;     
+        		     if (document.getElementById('insideStore').checked) {
+        		    	 storeType = document.getElementById('insideStore').value;
+        		    	}
+        		     if (document.getElementById('outsideStore').checked) {
+        		    	 storeType = document.getElementById('outsideStore').value;
+        		    	}
+        		     var comments = document.getElementById('comments').value;
+   
+        		     var obj = new StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasName, vehicleNumber, recievedQty, recievedDate, recievedBy, checkedBy, tripSheetNumber, storeType, comments);
+        		     storeDetails.push(obj);
+        			
+        		     storeDetailForm["storeDetailsValue"] = JSON.stringify(storeDetails);
+        		     storeDetailForm["aliasProjName"] = document.getElementById('aliasProjName').value;
+        		     storeDetailForm["itemType"] = document.getElementById('itemType').value;
+        		     storeDetailForm["itemName"] = document.getElementById('itemName').value;
+        		     storeDetailForm["itemQty"] = document.getElementById('itemQty').value;
+        		     storeDetailForm["supplierName"] = document.getElementById('supplierName').value;
+        		     storeDetailForm["vehicleNumber"] = document.getElementById('vehicleNumber').value;
+        		     storeDetailForm["recievedQuantity"] = document.getElementById('recievedQuantity').value;
+        		     storeDetailForm["recievedDate"] = document.getElementById('recievedDate').value;
+        		     storeDetailForm["recievedBy"] = document.getElementById('recievedBy').value;
+        		     storeDetailForm["checkedBy"] = document.getElementById('checkedBy').value;
+        		     storeDetailForm["tripSheetNumber"] = document.getElementById('tripSheetNumber').value;
+        		     storeDetailForm["storeType"] = storeType
+        		     storeDetailForm["comments"] = document.getElementById('comments').value;
+        		     
+        		     $.ajax({
+        		              type: "POST",
+        		              url: "saveStoreDetail.do",
+        		             contentType: "application/json",
+        		              cache: false,
+        		              data: JSON.stringify(storeDetailForm),
+        		              success: function (response) {
+        		            	  if (response.success) {
+        			                	$("#dialog-confirm").html(${successMessage});
+        			                	$("#dialog-confirm").dialog({
+        			                         modal: true,
+        			                         title: "Message!",
+        			                         height: 200,
+        			                         width: 300,
+        			                         buttons: {
+        			                             Ok: function () {
+        			                                 $(this).dialog("close");
+        			                                
+        			                             }
+        			                         },
+        								 close: function( event, ui ) {
+        								 }
+        			                     });
+        								
+        			                } else {
+        			                	 $('#result').html(${errorMessage});
+        			                }
+        		              }        		               
+        			});
+        		    
+        		});	
+   });
+   
+function StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasName, vehicleNumber, recievedQty, recievedDate, recievedBy, checkedBy, tripSheetNumber, storeType, comments) {
+	this.aliasProjName = aliasProjName;
+	this.itemType = itemType;
+	this.itemName = itemName;
+	this.itemQty = itemQty;
+    this.supplierAliasName = supplierAliasName;
+    this.vehicleNumber= vehicleNumber;
+    this.recievedQty=recievedQty;
+    this.recievedDate = recievedDate;
+    this.recievedBy = recievedBy;
+    this.checkedBy = checkedBy;
+    this.tripSheetNumber = tripSheetNumber;
+    this.storeType = storeType;
+    this.comments = comments;
+    
+}
+
 </script>
 </head>
 
@@ -109,49 +127,53 @@
 
 		</div>
 		<div>
-			<form:form method="POST" commandName="storeDetailForm"
-				action="saveStoreDetail.do">
+			<form:form commandName="storeDetailForm" method="POST"
+				id="storeDetailForm">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Store Details</legend>
 						<table>
-							<tr id="showAliasProject">
+							<tr id="showAliasProjects">
 								<td>Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="projId" cssClass="inputText"
-										id="projId" items="${aliasProjectList}">
-									</form:select></td>
-								<td><form:errors path="projId" cssClass="error" /></td>
+								<td><form:input path="aliasProjName" cssClass="inputText"
+										id="aliasProjName"
+										value="${supplierQuoteDetails.aliasProjName}" readonly="true" /></td>
+								<td><form:errors path="aliasProjName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Item Type<span id="colon">:</span></td>
-								<td><form:select path="itemType" cssClass="inputText"
-										id="itemType" items="${itemTypes}" /></td>
+								<td><form:input path="itemType" cssClass="inputText"
+										id="itemType" value="${supplierQuoteDetails.itemType}"
+										readonly="true" /></td>
 								<td><form:errors path="itemType" cssClass="error" /></td>
-								<td>
-									<div id="itemNameField">
-										Item Name
-										<form:select path="itemName" cssClass="inputText"
-											id="itemName" items="${itemNames}">
+							</tr>
+							<tr>
+								<td>Item Name<span id="colon">:</span></td>
+								<td><form:input path="itemName" cssClass="inputText"
+										id="itemName" value="${supplierQuoteDetails.itemName}"
+										readonly="true" /></td>
+							</tr>
 
-											<option value="${storeDetailForm.itemName}"
-												selected="selected">${storeDetailForm.itemName}</option>
-
-										</form:select>
-									</div>
-								</td>
+							<tr>
+								<td>Item Quantity<span id="colon">:</span></td>
+								<td><form:input path="itemQty" cssClass="inputText"
+										id="itemQty" value="${supplierQuoteDetails.itemQty}"
+										readonly="true" /></td>
 							</tr>
 							<tr>
 								<td>Supplier Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="supplierName"
-										placeholder="Enter Supplier Name" cssClass="inputText" /></td>
+								<td><form:input path="supplierName" id="supplierName"
+										cssClass="inputText"
+										value="${supplierQuoteDetails.supplierAliasName}"
+										readonly="true" /></td>
 								<td><form:errors path="supplierName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Vehicle Number<span id="colon">:</span>
 								</td>
-								<td><form:input path="vehicleNumber"
+								<td><form:input path="vehicleNumber" id="vehicleNumber"
 										placeholder="Enter Vehicle Number" cssClass="inputText" /></td>
 								<td><form:errors path="vehicleNumber" cssClass="error" /></td>
 							</tr>
@@ -159,7 +181,8 @@
 								<td>Quantity Recieved<span id="colon">:</span>
 								</td>
 								<td><form:input path="recievedQuantity"
-										placeholder="Enter Recieved Quantity" cssClass="inputText" /></td>
+										id="recievedQuantity" placeholder="Enter Recieved Quantity"
+										cssClass="inputText" /></td>
 								<td><form:errors path="recievedQuantity" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -172,21 +195,21 @@
 							<tr>
 								<td>Recieved By<span id="colon">:</span>
 								</td>
-								<td><form:input path="recievedBy"
+								<td><form:input path="recievedBy" id="recievedBy"
 										placeholder="Enter Recieved By" cssClass="inputText" /></td>
 								<td><form:errors path="recievedBy" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Checked By<span id="colon">:</span>
 								</td>
-								<td><form:input path="checkedBy"
+								<td><form:input path="checkedBy" id="checkedBy"
 										placeholder="Enter Checked By" cssClass="inputText" /></td>
 								<td><form:errors path="checkedBy" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>TripSheet No<span id="colon">:</span>
 								</td>
-								<td><form:input path="tripSheetNumber"
+								<td><form:input path="tripSheetNumber" id="tripSheetNumber"
 										placeholder="Enter TripSheet Number" cssClass="inputText" /></td>
 								<td><form:errors path="tripSheetNumber" cssClass="error" /></td>
 							</tr>
@@ -195,13 +218,13 @@
 								<td>Store Type <span id="colon">:</span></td>
 								<td><form:radiobutton path="storeType" value="Inside Store"
 										id="insideStore" checked="true" />Inside Store</td>
-								<td><form:radiobutton path="storeType" value="Outside Store"
-										id="outsideStore" />Outside Store</td>
+								<td><form:radiobutton path="storeType"
+										value="Outside Store" id="outsideStore" />Outside Store</td>
 							</tr>
 							<tr>
 								<td>Comments<span id="colon">:</span>
 								</td>
-								<td><form:textarea path="comments"
+								<td><form:textarea path="comments" id="comments"
 										placeholder="Enter Comments" cssClass="inputText" rows="5"
 										cols="40" maxlength="2000" /></td>
 								<td><form:errors path="comments" cssClass="error" /></td>
@@ -212,11 +235,13 @@
 					</fieldset>
 
 					<form:hidden path="employeeId" />
+					<form:hidden path="storeDetailsValue" id="storeDetailsValue" />
 
 					<table>
 						<tr>
 							<td></td>
-							<td><input class="button" type="submit" /></td>
+							<td><input id="saveBtn" class="button" type="button"
+								value="Save" /></td>
 							<td></td>
 						</tr>
 					</table>
@@ -224,6 +249,10 @@
 				<br>
 			</form:form>
 		</div>
+		
+		<div id="result"
+                             style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
+                        <br>
 		<div id="dialog-confirm"></div>
 	</div>
 	<footer>

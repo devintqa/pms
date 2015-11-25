@@ -236,9 +236,14 @@ public class ResultTransformer {
     	supplierList.setItemType(row.get("itemType").toString());
     	supplierList.setAliasProjName(row.get("aliasProjName").toString());
     	supplierList.setSupplierQuoteStatus(row.get("supplierquotestatus").toString());
+    	if(row.containsKey("SupplierAliasName"))
+    	{
+    		supplierList.setSupplierAliasName(row.get("SupplierAliasName").toString());
+    	}
 		return supplierList;
 	}
-
+    
+  
 	IndentDesc buildIndentDesc(Map<String, Object> row) {
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setIndentId(row.get("IndentId").toString());

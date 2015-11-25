@@ -1,6 +1,7 @@
 package com.psk.pms.dao;
 
 import com.psk.pms.model.QuoteDetails;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.Supplier;
 
 import java.sql.Date;
@@ -49,4 +50,9 @@ public interface PurchaseDAO {
     void updateIndentStatus(String purchased, Date todayDate, String employeeId, Integer projectId);
 
     boolean isTinNumberExists(String tinNumber);
+
+	List<SupplierQuoteDetails> getPurchasesByStatus(String purchaseStatus);
+
+	SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName,
+			String itemName, String supplierName, String status);
 }

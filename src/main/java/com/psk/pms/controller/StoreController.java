@@ -2,6 +2,7 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.FIELD;
 import static com.psk.pms.Constants.ITEM_TYPE;
+import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -26,8 +28,10 @@ import com.google.gson.Gson;
 import com.psk.pms.Constants;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.JsonData;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.service.PurchaseService;
 import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.StoreValidator;
 
@@ -44,16 +48,42 @@ public class StoreController extends BaseController {
 	private StoreValidator storeValidator;
 
 	@Autowired
+	private PurchaseService purchaseService;
+
+	@Autowired
 	private StoreService storeService;
 
+	/*
+	 * @RequestMapping(value = "/emp/myview/buildStoreDetail/{employeeId}",
+	 * method = RequestMethod.GET) public String buildStoreDetail(@PathVariable
+	 * String employeeId, Model model) {
+	 * LOGGER.info("Store Controller : buildStoreDetail()"); Map<String, String>
+	 * aliasProjectList = getProjectDetails(employeeId); StoreDetail storeDetail
+	 * = new StoreDetail(); storeDetail.setEmployeeId(employeeId);
+	 * model.addAttribute("storeDetailForm", storeDetail);
+	 * model.addAttribute("aliasProjectList", aliasProjectList); return
+	 * "BuildStoreDetail"; }
+	 */
+
 	@RequestMapping(value = "/emp/myview/buildStoreDetail/{employeeId}", method = RequestMethod.GET)
-	public String buildStoreDetail(@PathVariable String employeeId, Model model) {
+	public String buildStoreDetail(
+			@PathVariable String employeeId,
+			@RequestParam(value = "aliasProjName", required = true) String aliasProjName,
+			@RequestParam(value = "supplierAliasName", required = true) String supplierAliasName,
+			@RequestParam(value = "itemName", required = true) String itemName,
+			@RequestParam(value = "supplierQuoteStatus", required = true) String supplierQuoteStatus,
+			Model model) {
 		LOGGER.info("Store Controller : buildStoreDetail()");
 		Map<String, String> aliasProjectList = getProjectDetails(employeeId);
 		StoreDetail storeDetail = new StoreDetail();
 		storeDetail.setEmployeeId(employeeId);
+		SupplierQuoteDetails supplierQuoteDetails = purchaseService
+				.getSupplierQuoteDetailsByStatus(aliasProjName, itemName,
+						supplierAliasName, supplierQuoteStatus);
 		model.addAttribute("storeDetailForm", storeDetail);
+		model.addAttribute("supplierQuoteDetails", supplierQuoteDetails);
 		model.addAttribute("aliasProjectList", aliasProjectList);
+
 		return "BuildStoreDetail";
 	}
 
@@ -93,7 +123,7 @@ public class StoreController extends BaseController {
 		String projId = httpServletRequest.getParameter("projId");
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		LOGGER.info("getItemNamesInStore for Project :" + projId);
-		return storeService.getItemsToReturn(projId,fieldUser);
+		return storeService.getItemsToReturn(projId, fieldUser);
 	}
 
 	@RequestMapping(value = "/emp/myview/dispatchTransaction/getTotalQuantity.do", method = RequestMethod.GET)
@@ -171,7 +201,7 @@ public class StoreController extends BaseController {
 									DispatchDetail.DispatchItems.class));
 			retuenDetail.setDispatchItems(returnedItemsList);
 			storeValidator.validateReturned(retuenDetail, Constants.RETURNED);
-			
+
 			storeService.saveReturnedDetail(retuenDetail);
 			model.addAttribute("successMessage",
 					"Returned Details saved successfully");
@@ -182,30 +212,35 @@ public class StoreController extends BaseController {
 	}
 
 	@RequestMapping(value = "/emp/myview/buildStoreDetail/saveStoreDetail.do", method = RequestMethod.POST)
-	public String saveStoreDetail(
-			@ModelAttribute("storeDetailForm") StoreDetail storeDetail,
-			BindingResult result, Model model, SessionStatus status) {
+	@ResponseBody
+	public String saveStoreDetail(@ModelAttribute("storeDetailForm") StoreDetail storeDetailModel,
+			@RequestBody StoreDetail storeDetail,
+			Model model, BindingResult result, SessionStatus status) {
+		JsonData jsonData = new JsonData();
+		LOGGER.info("Store Controller : submitForApproval()");
+        String response = "Store Detail Added";
 		try {
-			Map<String, String> aliasProjectList = getProjectDetails(storeDetail
-					.getEmployeeId());
-			storeValidator.validate(storeDetail, result);
+			 
+		        
+			storeValidator.validate(storeDetail,result);
 			model.addAttribute("storeDetailForm", storeDetail);
-			model.addAttribute("aliasProjectList", aliasProjectList);
-			List<String> itemNames = itemService.getItemNames(
-					storeDetail.getItemType(),
-					String.valueOf(storeDetail.getProjId()));
-			model.addAttribute("itemNames", itemNames);
-			if (result.hasErrors()) {
-				return "BuildStoreDetail";
-			}
-
+			 if (result.hasErrors()) {
+				 model.addAttribute("storeDetailForm", storeDetail);
+	                return "BuildStoreDetail";
+			 }
+			 Integer projectId = purchaseService.getProjectId(storeDetail.getAliasProjName());
+			 storeDetail.setProjId(projectId);
 			storeService.saveStoreDetail(storeDetail);
 			model.addAttribute("successMessage",
 					"Store Details saved successfully");
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", e.getMessage());
+			jsonData.setData(e.getMessage());
+			 return "BuildStoreDetail";
 		}
-		return "BuildStoreDetail";
+		jsonData.setSuccess(true);
+        jsonData.setData(response);
+        return "BuildStoreDetail";
 	}
 
 	@RequestMapping(value = "/emp/myview/viewStoreDetails/{employeeId}", method = RequestMethod.GET)
@@ -272,14 +307,15 @@ public class StoreController extends BaseController {
 		String fieldUser = httpServletRequest.getParameter("fieldUser");
 		String result = storeService.validateFieldUserForReturn(projId,
 				fieldUser);
-		List<StockDetail> items = storeService.getItemsToReturn(projId,fieldUser);
-		
+		List<StockDetail> items = storeService.getItemsToReturn(projId,
+				fieldUser);
+
 		Gson gson = new Gson();
-		if (Integer.parseInt(result) > 0 && items.size()>0) {
+		if (Integer.parseInt(result) > 0 && items.size() > 0) {
 
 			jsonData.setObject(gson.toJson(items));
 			jsonData.setSuccess(true);
-			
+
 		}
 		return jsonData;
 	}

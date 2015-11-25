@@ -1,5 +1,19 @@
 package com.psk.pms.dao;
 
+import static com.psk.pms.dao.PmsMasterQuery.ALIAS_SUPPLIER_NAME_EXIST;
+import static com.psk.pms.dao.PmsMasterQuery.CREATE_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.DELETE_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.INSERT_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_INDENT_DESC_STATUS;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_INDENT_DESC_STATUS_FOR_PURCHASE;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_DETAIL;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.GET_SUPPLIER_DETAIL_BY_STATUS;
+
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -21,8 +35,6 @@ import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.model.Supplier;
-
-import static com.psk.pms.dao.PmsMasterQuery.*;
 
 public class PurchaseDAOImpl implements PurchaseDAO {
 
@@ -320,5 +332,25 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         });
     }
 
+    @Override
+    public List<SupplierQuoteDetails> getPurchasesByStatus(String status) {
+        List<SupplierQuoteDetails> supplierList = new ArrayList<>();
+        String sql = null;
+        if (null != status) {
+            sql = "select * from supplierQuoteDetails where supplierQuoteStatus = '"+status+"'";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql);
+        for (Map<String, Object> row : rows) {
+            supplierList.add(transformer.buildSupplierList(row));
+        }
+        return supplierList;
+    }
 
+    
+    @Override
+    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status) {
+        Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL_BY_STATUS, projName, itemName, supplierName, status);
+        QuoteDetails.SupplierQuoteDetails detail = transformer.buildSupplierList(rows);
+        return detail;
+    }
 }

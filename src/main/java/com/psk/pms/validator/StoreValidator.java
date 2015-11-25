@@ -30,13 +30,9 @@ public class StoreValidator extends BaseValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         StoreDetail storeDetail = (StoreDetail) o;
-        if (storeDetail.getProjId() == 0) {
+        if (storeDetail.getAliasProjName().equals(null)) {
             errors.rejectValue("projId", "required.projId",
                     "Please Select Project Name.");
-        }
-        if ("--Please Select--".equalsIgnoreCase(storeDetail.getItemType())) {
-            errors.rejectValue("itemType", "required.itemType",
-                    "Please select a valid Item Type");
         }
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recievedDate",
                 "required.recievedDate", "Enter Recieved Date");
