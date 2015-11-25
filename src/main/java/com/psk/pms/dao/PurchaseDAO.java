@@ -54,5 +54,5 @@ public interface PurchaseDAO {
 	List<SupplierQuoteDetails> getPurchasesByStatus(String purchaseStatus);
 
 	SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName,
-			String itemName, String supplierName, String status);
+                                                         String itemName, String supplierName, String status, String brandName);
 }

@@ -30,7 +30,7 @@ public class StoreValidator extends BaseValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         StoreDetail storeDetail = (StoreDetail) o;
-        if (storeDetail.getAliasProjName().equals(null)) {
+        if (StringUtils.isNullOrEmpty(storeDetail.getAliasProjName())) {
             errors.rejectValue("projId", "required.projId",
                     "Please Select Project Name.");
         }

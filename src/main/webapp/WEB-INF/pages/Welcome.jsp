@@ -353,6 +353,7 @@
 					<tr>
 						<th>Project</th>
 						<th>Supplier Name</th>
+						<th>Brand Name</th>
 						<th>Item Type</th>
 						<th>Item Name</th>
 						<th>Status</th>
@@ -365,10 +366,11 @@
 							<tr>
 								<td>${purchaseItem.aliasProjName}</td>
 								<td>${purchaseItem.supplierAliasName}</td>
+								<td>${purchaseItem.brandName}</td>
 								<td>${purchaseItem.itemType}</td>
 								<td>${purchaseItem.itemName}</td>
 								<td>${purchaseItem.supplierQuoteStatus}</td>
-  								<td><a href="/pms/emp/myview/buildStoreDetail/${employeeObj.employeeId}?aliasProjName=${purchaseItem.aliasProjName}&supplierAliasName=${purchaseItem.supplierAliasName}&itemName=${purchaseItem.itemName}&supplierQuoteStatus=${purchaseItem.supplierQuoteStatus}">Store Details</a></td>
+  								<td><a href="/pms/emp/myview/buildStoreDetail/${employeeObj.employeeId}?aliasProjName=${purchaseItem.aliasProjName}&supplierAliasName=${purchaseItem.supplierAliasName}&itemName=${purchaseItem.itemName}&supplierQuoteStatus=${purchaseItem.supplierQuoteStatus}&brandName=${purchaseItem.brandName}">Store Details</a></td>
 							</tr>
 						</c:forEach>
 					</c:if>

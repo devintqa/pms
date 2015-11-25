@@ -348,8 +348,8 @@ public class PurchaseDAOImpl implements PurchaseDAO {
 
     
     @Override
-    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status) {
-        Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL_BY_STATUS, projName, itemName, supplierName, status);
+    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName) {
+        Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL_BY_STATUS, projName, itemName, supplierName, status,brandName);
         QuoteDetails.SupplierQuoteDetails detail = transformer.buildSupplierList(rows);
         return detail;
     }

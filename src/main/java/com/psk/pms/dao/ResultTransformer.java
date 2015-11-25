@@ -235,6 +235,7 @@ public class ResultTransformer {
     	supplierList.setItemName(row.get("itemName").toString());
     	supplierList.setItemType(row.get("itemType").toString());
     	supplierList.setAliasProjName(row.get("aliasProjName").toString());
+    	supplierList.setBrandName(row.get("brandName").toString());
     	supplierList.setSupplierQuoteStatus(row.get("supplierquotestatus").toString());
     	if(row.containsKey("SupplierAliasName"))
     	{

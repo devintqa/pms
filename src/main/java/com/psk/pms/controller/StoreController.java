@@ -72,6 +72,7 @@ public class StoreController extends BaseController {
 			@RequestParam(value = "supplierAliasName", required = true) String supplierAliasName,
 			@RequestParam(value = "itemName", required = true) String itemName,
 			@RequestParam(value = "supplierQuoteStatus", required = true) String supplierQuoteStatus,
+			@RequestParam(value = "brandName", required = true) String brandName,
 			Model model) {
 		LOGGER.info("Store Controller : buildStoreDetail()");
 		Map<String, String> aliasProjectList = getProjectDetails(employeeId);
@@ -79,7 +80,7 @@ public class StoreController extends BaseController {
 		storeDetail.setEmployeeId(employeeId);
 		SupplierQuoteDetails supplierQuoteDetails = purchaseService
 				.getSupplierQuoteDetailsByStatus(aliasProjName, itemName,
-						supplierAliasName, supplierQuoteStatus);
+						supplierAliasName, supplierQuoteStatus,brandName);
 		model.addAttribute("storeDetailForm", storeDetail);
 		model.addAttribute("supplierQuoteDetails", supplierQuoteDetails);
 		model.addAttribute("aliasProjectList", aliasProjectList);
