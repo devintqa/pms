@@ -75,15 +75,14 @@ public class StoreController extends BaseController {
 			@RequestParam(value = "brandName", required = true) String brandName,
 			Model model) {
 		LOGGER.info("Store Controller : buildStoreDetail()");
-		Map<String, String> aliasProjectList = getProjectDetails(employeeId);
 		StoreDetail storeDetail = new StoreDetail();
 		storeDetail.setEmployeeId(employeeId);
+		storeDetail.setAliasProjName(aliasProjName);
 		SupplierQuoteDetails supplierQuoteDetails = purchaseService
 				.getSupplierQuoteDetailsByStatus(aliasProjName, itemName,
 						supplierAliasName, supplierQuoteStatus,brandName);
 		model.addAttribute("storeDetailForm", storeDetail);
 		model.addAttribute("supplierQuoteDetails", supplierQuoteDetails);
-		model.addAttribute("aliasProjectList", aliasProjectList);
 
 		return "BuildStoreDetail";
 	}
@@ -211,37 +210,27 @@ public class StoreController extends BaseController {
 		}
 		return result;
 	}
-
+	
 	@RequestMapping(value = "/emp/myview/buildStoreDetail/saveStoreDetail.do", method = RequestMethod.POST)
-	@ResponseBody
-	public String saveStoreDetail(@ModelAttribute("storeDetailForm") StoreDetail storeDetailModel,
-			@RequestBody StoreDetail storeDetail,
-			Model model, BindingResult result, SessionStatus status) {
-		JsonData jsonData = new JsonData();
-		LOGGER.info("Store Controller : submitForApproval()");
-        String response = "Store Detail Added";
+	public String saveStoreDetail(
+			@ModelAttribute("storeDetailForm") StoreDetail storeDetail,
+			BindingResult result, Model model, SessionStatus status) {
 		try {
-			 
-		        
-			storeValidator.validate(storeDetail,result);
-			model.addAttribute("storeDetailForm", storeDetail);
-			 if (result.hasErrors()) {
-				 model.addAttribute("storeDetailForm", storeDetail);
-	                return "BuildStoreDetail";
-			 }
 			 Integer projectId = purchaseService.getProjectId(storeDetail.getAliasProjName());
 			 storeDetail.setProjId(projectId);
+			storeValidator.validate(storeDetail, result);
+			model.addAttribute("storeDetailForm", storeDetail);
+			if (result.hasErrors()) {
+				return "BuildStoreDetail";
+			}
+
 			storeService.saveStoreDetail(storeDetail);
 			model.addAttribute("successMessage",
 					"Store Details saved successfully");
 		} catch (Exception e) {
 			model.addAttribute("errorMessage", e.getMessage());
-			jsonData.setData(e.getMessage());
-			 return "BuildStoreDetail";
 		}
-		jsonData.setSuccess(true);
-        jsonData.setData(response);
-        return "BuildStoreDetail";
+		return "BuildStoreDetail";
 	}
 
 	@RequestMapping(value = "/emp/myview/viewStoreDetails/{employeeId}", method = RequestMethod.GET)

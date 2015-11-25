@@ -24,9 +24,9 @@ $(document).ready(
 
             if ($('#submittedForApproval').val() == 'Y') {
                 $('#submitedForApproval').hide();
-                $("#supplierQuoteDetailsTable").find("input,button,textarea,select,a").attr("disabled", "disabled");
+                $("#supplierQuoteDetailsTable").find("input,button,textarea,select,a").attr("readonly", "true");
                 $("#supplierQuoteDetailsTable").find("input:checkbox").attr("disabled", false);
-                $("#approvedQty").attr("disabled", false);
+                $("#approvedQty").attr("readonly", false);
                 $("#deleteItem").hide();
             }
             $('#Submit').hide();

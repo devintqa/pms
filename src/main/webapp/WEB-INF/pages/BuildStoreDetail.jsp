@@ -15,101 +15,6 @@
 
 
 
-$(document).ready(
-
-        function () {
-      	$("#saveBtn").click(function() {
-        		
-        		 var storeDetails = [];
-        		 var storeDetailForm = {};
-        		     var aliasProjName = document.getElementById('aliasProjName').value;
-        		     var itemType = document.getElementById('itemType').value;
-        		     var itemName = document.getElementById('itemName').value;
-        		     var itemQty = document.getElementById('itemQty').value;
-        		     var supplierAliasName = document.getElementById('supplierName').value;
-        		     var vehicleNumber = document.getElementById('vehicleNumber').value;
-        		     var recievedQty = document.getElementById('recievedQuantity').value;
-        		     var recievedDate = document.getElementById('recievedDate').value;
-        		     var recievedBy = document.getElementById('recievedBy').value;
-        		     var checkedBy = document.getElementById('checkedBy').value;
-        		     var tripSheetNumber = document.getElementById('tripSheetNumber').value;
-        		     var storeType;     
-        		     if (document.getElementById('insideStore').checked) {
-        		    	 storeType = document.getElementById('insideStore').value;
-        		    	}
-        		     if (document.getElementById('outsideStore').checked) {
-        		    	 storeType = document.getElementById('outsideStore').value;
-        		    	}
-        		     var comments = document.getElementById('comments').value;
-   
-        		     var obj = new StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasName, vehicleNumber, recievedQty, recievedDate, recievedBy, checkedBy, tripSheetNumber, storeType, comments);
-        		     storeDetails.push(obj);
-        			
-        		     storeDetailForm["storeDetailsValue"] = JSON.stringify(storeDetails);
-        		     storeDetailForm["aliasProjName"] = document.getElementById('aliasProjName').value;
-        		     storeDetailForm["itemType"] = document.getElementById('itemType').value;
-        		     storeDetailForm["itemName"] = document.getElementById('itemName').value;
-        		     storeDetailForm["itemQty"] = document.getElementById('itemQty').value;
-        		     storeDetailForm["supplierName"] = document.getElementById('supplierName').value;
-        		     storeDetailForm["vehicleNumber"] = document.getElementById('vehicleNumber').value;
-        		     storeDetailForm["recievedQuantity"] = document.getElementById('recievedQuantity').value;
-        		     storeDetailForm["recievedDate"] = document.getElementById('recievedDate').value;
-        		     storeDetailForm["recievedBy"] = document.getElementById('recievedBy').value;
-        		     storeDetailForm["checkedBy"] = document.getElementById('checkedBy').value;
-        		     storeDetailForm["tripSheetNumber"] = document.getElementById('tripSheetNumber').value;
-        		     storeDetailForm["storeType"] = storeType
-        		     storeDetailForm["comments"] = document.getElementById('comments').value;
-        		     
-        		     $.ajax({
-        		              type: "POST",
-        		              url: "saveStoreDetail.do",
-        		             contentType: "application/json",
-        		              cache: false,
-        		              data: JSON.stringify(storeDetailForm),
-        		              success: function (response) {
-        		            	  if (response.success) {
-        			                	$("#dialog-confirm").html(${successMessage});
-        			                	$("#dialog-confirm").dialog({
-        			                         modal: true,
-        			                         title: "Message!",
-        			                         height: 200,
-        			                         width: 300,
-        			                         buttons: {
-        			                             Ok: function () {
-        			                                 $(this).dialog("close");
-        			                                
-        			                             }
-        			                         },
-        								 close: function( event, ui ) {
-        								 }
-        			                     });
-        								
-        			                } else {
-        			                	 $('#result').html(${errorMessage});
-        			                }
-        		              }        		               
-        			});
-        		    
-        		});	
-   });
-   
-function StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasName, vehicleNumber, recievedQty, recievedDate, recievedBy, checkedBy, tripSheetNumber, storeType, comments) {
-	this.aliasProjName = aliasProjName;
-	this.itemType = itemType;
-	this.itemName = itemName;
-	this.itemQty = itemQty;
-    this.supplierAliasName = supplierAliasName;
-    this.vehicleNumber= vehicleNumber;
-    this.recievedQty=recievedQty;
-    this.recievedDate = recievedDate;
-    this.recievedBy = recievedBy;
-    this.checkedBy = checkedBy;
-    this.tripSheetNumber = tripSheetNumber;
-    this.storeType = storeType;
-    this.comments = comments;
-    
-}
-
 </script>
 </head>
 
@@ -128,12 +33,12 @@ function StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasN
 		</div>
 		<div>
 			<form:form commandName="storeDetailForm" method="POST"
-				id="storeDetailForm">
+				id="storeDetailForm" action="saveStoreDetail.do">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Store Details</legend>
 						<table>
-							<tr id="showAliasProjects">
+							<tr>
 								<td>Project Name <span id="colon">:</span>
 								</td>
 								<td><form:input path="aliasProjName" cssClass="inputText"
@@ -240,7 +145,7 @@ function StoreDetails(aliasProjName, itemType, itemName, itemQty, supplierAliasN
 					<table>
 						<tr>
 							<td></td>
-							<td><input id="saveBtn" class="button" type="button"
+							<td><input id="saveBtn2" class="button" type="submit"
 								value="Save" /></td>
 							<td></td>
 						</tr>

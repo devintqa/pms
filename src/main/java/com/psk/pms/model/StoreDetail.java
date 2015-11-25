@@ -7,7 +7,7 @@ import java.util.Date;
  */
 public class StoreDetail {
 
-	private int projId;
+	private Integer projId;
 	private String aliasProjName;
 	private String recievedDate;
 	private Date sqlRecievedDate;
@@ -34,19 +34,20 @@ public class StoreDetail {
 		this.storeDetailsValue = storeDetailsValue;
 	}
 
+
 	public String getAliasProjName() {
 		return aliasProjName;
 	}
 
-	public void setProjName(String aliasProjName) {
+	public void setAliasProjName(String aliasProjName) {
 		this.aliasProjName = aliasProjName;
 	}
 
-	public int getProjId() {
+	public Integer getProjId() {
 		return projId;
 	}
 
-	public void setProjId(int projId) {
+	public void setProjId(Integer projId) {
 		this.projId = projId;
 	}
 

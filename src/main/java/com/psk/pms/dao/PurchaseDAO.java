@@ -1,13 +1,11 @@
 package com.psk.pms.dao;
 
-import com.psk.pms.model.QuoteDetails;
-import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
-import com.psk.pms.model.Supplier;
-
 import java.sql.Date;
 import java.util.List;
 
-import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.QuoteDetails;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.Supplier;
 
 public interface PurchaseDAO {
 
