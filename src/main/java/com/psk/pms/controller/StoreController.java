@@ -53,17 +53,6 @@ public class StoreController extends BaseController {
 	@Autowired
 	private StoreService storeService;
 
-	/*
-	 * @RequestMapping(value = "/emp/myview/buildStoreDetail/{employeeId}",
-	 * method = RequestMethod.GET) public String buildStoreDetail(@PathVariable
-	 * String employeeId, Model model) {
-	 * LOGGER.info("Store Controller : buildStoreDetail()"); Map<String, String>
-	 * aliasProjectList = getProjectDetails(employeeId); StoreDetail storeDetail
-	 * = new StoreDetail(); storeDetail.setEmployeeId(employeeId);
-	 * model.addAttribute("storeDetailForm", storeDetail);
-	 * model.addAttribute("aliasProjectList", aliasProjectList); return
-	 * "BuildStoreDetail"; }
-	 */
 
 	@RequestMapping(value = "/emp/myview/buildStoreDetail/{employeeId}", method = RequestMethod.GET)
 	public String buildStoreDetail(
@@ -225,6 +214,7 @@ public class StoreController extends BaseController {
 			}
 
 			storeService.saveStoreDetail(storeDetail);
+			
 			model.addAttribute("successMessage",
 					"Store Details saved successfully");
 		} catch (Exception e) {

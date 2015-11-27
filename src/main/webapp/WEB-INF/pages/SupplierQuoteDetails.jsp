@@ -63,6 +63,45 @@ $(document).ready(
                     }
                 });
             });
+            
+			 $(document).on("keyup","input[name = 'approvedQty']",function(){
+        		
+        		var valid = /^[\d]+(\.[\d]{0,2})?$/.test(this.value);
+        		val = this.value;
+        			    
+        	    if(valid){
+        	        var qty = $(this).val()
+        			var price = $(this).parents('tr:first').find('td:nth-child(6) input').val();
+        			var cost = qty*price;
+        			$(this).parents('tr:first').find('td:nth-child(7) input').val(cost.toFixed(2));
+        	    }
+        	    else{
+        	    	 console.log("Invalid input!");
+        		     this.value = val.substring(0, val.length - 1);
+        	    }
+        	            		
+        	});
+
+ 			
+
+
+			$(document).on("keyup","input[name = 'quotedPrice']",function(){
+        		
+        		var valid = /^[\d]+(\.[\d]{0,2})?$/.test(this.value);
+        		val = this.value;
+        			    
+        	    if(valid){
+        	        var price = $(this).val()
+        			var qty = document.getElementById('itemQty').innerHTML.trim();
+        			var cost = qty*price;
+        			$(this).parents('tr:first').find('td:nth-child(6) input').val(cost.toFixed(2));
+        	    }
+        	    else{
+        	    	 console.log("Invalid input!");
+        		     this.value = val.substring(0, val.length - 1);
+        	    }
+        	            		
+        	});
 
 
 
@@ -140,11 +179,12 @@ $(document).ready(
                 for (var i = 1; i <= len; i++) {
                     if (supplierQuoteTable.rows[i].cells[0].getElementsByTagName('input')[0].checked) {
                         var supplierAliasName = supplierQuoteTable.rows[i].cells[1].getElementsByTagName('input')[0].value;
-                        var approvedQty = supplierQuoteTable.rows[i].cells[6].getElementsByTagName('input')[0].value;
+                        var approvedQty = supplierQuoteTable.rows[i].cells[7].getElementsByTagName('input')[0].value;
                         var brandName = supplierQuoteTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
+                        var totalPrice = supplierQuoteTable.rows[i].cells[6].getElementsByTagName('input')[0].value;
                         var itemName = document.getElementById('itemName').innerHTML.trim();
                         var itemType = document.getElementById('itemType').innerHTML.trim();
-                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType, brandName);
+                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType, brandName, totalPrice);
                         supplierDetails.push(obj);
                     }
                 }
@@ -219,24 +259,32 @@ function insertSupplierDetailRow() {
     var quotedPrice = new_row.cells[4].getElementsByTagName('input')[0];
     quotedPrice.id += len;
     quotedPrice.value = '';
+    
+    
+    var totalPrice = new_row.cells[5].getElementsByTagName('input')[0];
+    totalPrice.id += len;
+    totalPrice.value = '';
+
 
     supplierQuoteDetailsTable.appendChild(new_row);
     $('#Submit').hide();
 }
 
-function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName) {
+function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName, totalPrice) {
     this.supplierAliasName = supplierAliasName;
     this.emailAddress = emailAddress;
     this.phoneNumber = phoneNumber;
     this.quotedPrice = quotedPrice;
     this.brandName = brandName;
+    this.totalPrice = totalPrice;
 }
-function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType, brandName) {
+function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType,brandName, totalPrice) {
     this.supplierAliasName = supplierAliasName;
     this.itemName = itemName;
     this.itemQty = approvedQty;
     this.itemType = itemType;
     this.brandName = brandName;
+    this.totalPrice = totalPrice;
 }
 
 
@@ -252,8 +300,9 @@ function getTableData() {
         var phoneNumber = supplierQuoteTable.rows[1].cells[2].getElementsByTagName('input')[0].value;
         var brandName = supplierQuoteTable.rows[1].cells[3].getElementsByTagName('input')[0].value;
         var quotedPrice = supplierQuoteTable.rows[1].cells[4].getElementsByTagName('input')[0].value;
-        var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName);
-        if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName)) {
+        var totalPrice = supplierQuoteTable.rows[1].cells[5].getElementsByTagName('input')[0].value;
+        var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName, totalPrice);
+        if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName && totalPrice || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName && totalPrice)) {
             itemObjArray.push(obj);
         } else {
             err = true;
@@ -265,8 +314,9 @@ function getTableData() {
             var phoneNumber = supplierQuoteTable.rows[i].cells[2].getElementsByTagName('input')[0].value;
             var brandName = supplierQuoteTable.rows[i].cells[3].getElementsByTagName('input')[0].value;
             var quotedPrice = supplierQuoteTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
-            var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName);
-            if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName)) {
+            var totalPrice = supplierQuoteTable.rows[i].cells[5].getElementsByTagName('input')[0].value;
+            var obj = new SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quotedPrice, brandName, totalPrice);
+            if (supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName && totalPrice || !(supplierAliasName && emailAddress && phoneNumber && quotedPrice && brandName && totalPrice)) {
                 itemObjArray.push(obj);
             } else {
                 err = true;
@@ -414,6 +464,12 @@ function fillSupplierQuoteDetail(item) {
     quotedPrice.id += len;
     if (item.quotedPrice)
         quotedPrice.value = item.quotedPrice;
+    
+    i++
+    var totalPrice = row.cells[i].getElementsByTagName('input')[0];
+    totalPrice.id += len;
+    if (item.totalPrice)
+    	totalPrice.value = item.totalPrice;
 
     document.getElementById('supplierQuoteDetailsTable').appendChild(row);
 }
@@ -495,6 +551,7 @@ function deleteItemRow(row) {
                         <th width="50px">Phone Number</th>
                         <th width="50px">Brand</th>
                         <th width="50px">Quoted Price</th>
+                         <th width="50px">Total Price</th>
                         <th width="50px">Action</th>
                     </tr>
                     </thead>
@@ -514,7 +571,7 @@ function deleteItemRow(row) {
                                    placeholder="Enter Brand Name For Dealers"/></td>
                         <td><input class="quoteDetailStyle" name="quotedPrice" id="quotedPrice" type="text"
                                    placeholder="Enter Quoted Price"/></td>
-
+						<td><input type="text" name="totalPrice" id="totalPrice" readonly="true"/></td>
                         <c:choose>
                             <c:when test="${employeeObj.employeeRole eq 'General Manager'}">
                                 <td><input class="quoteDetailStyle" name="approvedQty" id="approvedQty" type="text"

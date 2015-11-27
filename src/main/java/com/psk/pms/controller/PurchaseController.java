@@ -139,25 +139,6 @@ public class PurchaseController {
     }
 
 
-   /* @RequestMapping(value = "/emp/myview/viewSupplierDetails/{projName}", method = RequestMethod.GET)
-    public String viewSupplierQuoteDetails(@PathVariable String projName,
-                                           @RequestParam(value = "itemName", required = true) String itemName,
-                                           Model model) {
-        LOGGER.info("Supplier detail update page for supplierId." + itemName);
-        QuoteDetails quoteDetails = new QuoteDetails();
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("projName", projName);
-        List<QuoteDetails.SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseSupplierDetails(projName, itemName, APPROVED);
-        quoteDetails.setSupplierQuoteDetails(purchaseList);
-        Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(purchaseList, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
-        }.getType());
-        JsonArray jsonArray = element.getAsJsonArray();
-        quoteDetails.setQuoteDetailsValue(jsonArray.toString());
-        model.addAttribute("quoteDetailsForm", quoteDetails);
-        return VIEW_SUPPLIER_QUOTE_DETAILS;
-    }
-*/
 
     @RequestMapping(value = "/emp/myview/viewPurchaseDetails/{projName}", method = RequestMethod.GET)
     public String viewPurchaseDetails(@PathVariable String projName,

@@ -134,8 +134,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                 ps.setString(6, supplierQuoteDetails.getEmailAddress());
                 ps.setString(7, supplierQuoteDetails.getPhoneNumber());
                 ps.setString(8, supplierQuoteDetails.getQuotedPrice());
-                ps.setString(9, status);
-                ps.setString(10, supplierQuoteDetails.getBrandName());
+                ps.setString(9, supplierQuoteDetails.getTotalPrice());
+                ps.setString(10, status);
+                ps.setString(11, supplierQuoteDetails.getBrandName());
             }
 
             @Override
@@ -144,6 +145,7 @@ public class PurchaseDAOImpl implements PurchaseDAO {
             }
         });
     }
+
 
     @Override
     public void updateSupplierDetails(final QuoteDetails quoteDetails, final String status) {
@@ -166,13 +168,14 @@ public class PurchaseDAOImpl implements PurchaseDAO {
                 }
 
                 ps.setString(1, supplierQuoteDetails.getItemQty());
-                ps.setString(2, status);
-                ps.setDate(3, temp);
-                ps.setString(4, StringUtils.isNullOrEmpty(quoteDetails.getComments()) ? null : quoteDetails.getComments());
-                ps.setString(5, quoteDetails.getItemName());
-                ps.setString(6, supplierQuoteDetails.getSupplierAliasName());
-                ps.setString(7, quoteDetails.getProjName());
-                ps.setString(8, supplierQuoteDetails.getBrandName());
+                ps.setString(2, supplierQuoteDetails.getTotalPrice());
+                ps.setString(3, status);
+                ps.setDate(4, temp);
+                ps.setString(5, StringUtils.isNullOrEmpty(quoteDetails.getComments()) ? null : quoteDetails.getComments());
+                ps.setString(6, quoteDetails.getItemName());
+                ps.setString(7, supplierQuoteDetails.getSupplierAliasName());
+                ps.setString(8, quoteDetails.getProjName());
+                ps.setString(9, supplierQuoteDetails.getBrandName());
 
             }
 
@@ -222,6 +225,11 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         supplierQuoteDetail.setBrandName((String) row.get("brandName"));
         Object quotePrice = row.get("quotePrice");
         supplierQuoteDetail.setQuotedPrice(quotePrice.toString());
+        Object totalPrice = row.get("totalPrice");
+        if(null!=totalPrice)
+        {
+        	supplierQuoteDetail.setTotalPrice(totalPrice.toString());
+        }
         return supplierQuoteDetail;
     }
 

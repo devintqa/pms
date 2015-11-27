@@ -32,4 +32,5 @@ public interface StoreService {
     List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
     
     void saveReturnedDetail(DispatchDetail dispatchDetail);
+    
 }

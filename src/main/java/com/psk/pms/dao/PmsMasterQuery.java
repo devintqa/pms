@@ -205,18 +205,18 @@ public class PmsMasterQuery {
     public static final String ALIAS_SUPPLIER_NAME_EXIST = "select count(*) from supplierdetails where SupplierAliasName = ?";
 
     public static final String CREATE_QUOTE_DETAILS = "insert into supplierQuoteDetails(AliasProjName, itemName, itemQty, ItemType," +
-            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,supplierQuoteStatus,brandName) values (?,?,?,?,?,?,?,?,?,?)";
+            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,totalPrice,supplierQuoteStatus,brandName) values (?,?,?,?,?,?,?,?,?,?,?)";
 
     public static final String GET_SUPPLIER_QUOTE_DETAILS = "select sq.AliasProjName,sq.ItemName,sq.ItemType,sq.ItemQty,sq.SupplierAliasName,sq.emailAddress,sq.PhoneNumber,\n" +
-            "sq.quotePrice,sq.supplierQuoteStatus,sq.brandName,sq.tentativeDeliveryDate,sd.supplierType,sq.comments from supplierquotedetails sq,supplierdetails sd \n" +
-            "where sq.AliasProjName= ? and sq.ItemType=? and sq.ItemName=? and sq.SupplierAliasName=sd.SupplierAliasName ;";
+            "sq.quotePrice,sq.totalPrice,sq.supplierQuoteStatus,sq.brandName,sq.tentativeDeliveryDate,sd.supplierType,sq.comments from supplierquotedetails sq,supplierdetails sd \n" +
+            "where sq.AliasProjName= ? and sq.ItemType=? and sq.ItemName=? and sq.SupplierAliasName=sd.SupplierAliasName";
 
     public static final String DELETE_SUPPLIER_QUOTE_DETAILS = "delete from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
 
     public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus =?" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
 
-    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?, tentativeDeliveryDate = ?, " +
+    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, totalPrice = ?, supplierQuoteStatus = ?, tentativeDeliveryDate = ?, " +
             "comments = ? where ItemName = ? and  SupplierAliasName = ? and aliasProjName=? and brandName=?";
 
 
