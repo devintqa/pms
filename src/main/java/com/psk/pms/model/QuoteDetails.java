@@ -129,6 +129,7 @@ public class QuoteDetails {
         private String itemQty;
         private String itemType;
         private String brandName;
+        private String supplierType;
 
 
         public String getItemType() {
@@ -223,6 +224,34 @@ public class QuoteDetails {
             this.brandName = brandName;
         }
 
+        public String getSupplierType() {
+            return supplierType;
+        }
+
+        public void setSupplierType(String supplierType) {
+            this.supplierType = supplierType;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            SupplierQuoteDetails that = (SupplierQuoteDetails) o;
+
+            if (!supplierAliasName.equals(that.supplierAliasName) && !brandName.equals(that.brandName)) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = supplierAliasName != null ? supplierAliasName.hashCode() : 0;
+            result = 31 * result + (brandName != null ? brandName.hashCode() : 0);
+            return result;
+        }
     }
 
 }

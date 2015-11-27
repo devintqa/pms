@@ -672,12 +672,11 @@ public class ItemDAOImpl implements ItemDAO {
             com.psk.pms.model.IndentDesc.ItemDetail itemDetail = new com.psk.pms.model.IndentDesc.ItemDetail();
             itemDetail.setItemName((String) row.get("ItemName"));
             itemDetail.setItemType((String) row.get("ItemType"));
-            itemDetail.setItemQty(((Double) row.get("ItemQty")).toString());
+            itemDetail.setItemQty(row.get("ItemQty").toString());
             itemDetail.setIndentList((String) row.get("IndentList"));
             itemDetail.setIndentStatus((String) row.get("indentitemstatus"));
             indentDescItemList.add(itemDetail);
         }
-        System.out.println("(indentDescItemList.size()" + indentDescItemList.size());
         return indentDescItemList;
     }
 

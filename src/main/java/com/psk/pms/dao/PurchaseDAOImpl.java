@@ -189,7 +189,9 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         List<SupplierQuoteDetails> supplierQuoteDetails = new ArrayList<SupplierQuoteDetails>();
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(GET_SUPPLIER_QUOTE_DETAILS, projName, itemType, itemName);
         for (Map<String, Object> row : rows) {
-            supplierQuoteDetails.add(buildSupplierQuoteDetails(row));
+            SupplierQuoteDetails detail = buildSupplierQuoteDetails(row);
+            detail.setSupplierType((String) row.get("supplierType"));
+            supplierQuoteDetails.add(detail);
         }
         return supplierQuoteDetails;
     }
@@ -352,5 +354,12 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         Map<String, Object> rows = jdbcTemplate.queryForMap(GET_SUPPLIER_DETAIL_BY_STATUS, projName, itemName, supplierName, status,brandName);
         QuoteDetails.SupplierQuoteDetails detail = transformer.buildSupplierList(rows);
         return detail;
+    }
+
+
+    @Override
+    public Supplier getSupplierDetail(String supplierAliasName) {
+        String GET_SUPPLIER_DETAIL = "select * from supplierdetails where SupplierAliasName = '" + supplierAliasName + "'";
+        return buildSupplier(GET_SUPPLIER_DETAIL);
     }
 }

@@ -100,11 +100,11 @@ public class BulkUploadDetailsValidator {
         }
     }
 
-    private StringBuilder getDuplicateValues(Set<String> duplicateAliasDescription) {
+    public static StringBuilder getDuplicateValues(Set<String> values) {
         StringBuilder buffer = new StringBuilder();
-        if (duplicateAliasDescription.size() > 0) {
+        if (values.size() > 0) {
             String delim = "";
-            for (String o : duplicateAliasDescription) {
+            for (String o : values) {
                 buffer.append(delim);
                 delim = ", ";
                 buffer.append(o);

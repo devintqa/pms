@@ -11,6 +11,8 @@ public interface PurchaseService {
 
     Supplier fetchSupplierDetails(String supplierId);
 
+    Supplier getSupplierDetail(String supplierAliasName);
+
     void deleteSupplier(String supplier);
 
     void saveSupplierDetail(Supplier supplier);
@@ -45,6 +47,4 @@ public interface PurchaseService {
     
     SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName);
 
-
-  
 }

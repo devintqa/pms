@@ -207,7 +207,9 @@ public class PmsMasterQuery {
     public static final String CREATE_QUOTE_DETAILS = "insert into supplierQuoteDetails(AliasProjName, itemName, itemQty, ItemType," +
             "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,supplierQuoteStatus,brandName) values (?,?,?,?,?,?,?,?,?,?)";
 
-    public static final String GET_SUPPLIER_QUOTE_DETAILS = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
+    public static final String GET_SUPPLIER_QUOTE_DETAILS = "select sq.AliasProjName,sq.ItemName,sq.ItemType,sq.ItemQty,sq.SupplierAliasName,sq.emailAddress,sq.PhoneNumber,\n" +
+            "sq.quotePrice,sq.supplierQuoteStatus,sq.brandName,sq.tentativeDeliveryDate,sd.supplierType,sq.comments from supplierquotedetails sq,supplierdetails sd \n" +
+            "where sq.AliasProjName= ? and sq.ItemType=? and sq.ItemName=? and sq.SupplierAliasName=sd.SupplierAliasName ;";
 
     public static final String DELETE_SUPPLIER_QUOTE_DETAILS = "delete from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
 

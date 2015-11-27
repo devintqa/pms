@@ -144,7 +144,7 @@ $(document).ready(
                         var brandName = supplierQuoteTable.rows[i].cells[4].getElementsByTagName('input')[0].value;
                         var itemName = document.getElementById('itemName').innerHTML.trim();
                         var itemType = document.getElementById('itemType').innerHTML.trim();
-                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType,brandName);
+                        var obj = new SupplierDetails(supplierAliasName, itemName, approvedQty, itemType, brandName);
                         supplierDetails.push(obj);
                     }
                 }
@@ -231,7 +231,7 @@ function SupplierQuoteDetails(supplierAliasName, emailAddress, phoneNumber, quot
     this.quotedPrice = quotedPrice;
     this.brandName = brandName;
 }
-function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType,brandName) {
+function SupplierDetails(supplierAliasName, itemName, approvedQty, itemType, brandName) {
     this.supplierAliasName = supplierAliasName;
     this.itemName = itemName;
     this.itemQty = approvedQty;
@@ -397,10 +397,19 @@ function fillSupplierQuoteDetail(item) {
     phoneNumber.id += len;
     phoneNumber.value = item.phoneNumber;
     i++;
-    var brandName = row.cells[i].getElementsByTagName('input')[0];
-    brandName.id += len;
-    brandName.value = item.brandName;
-    i++
+    if (item.supplierType == 'Dealer') {
+        var brandName = row.cells[i].getElementsByTagName('input')[0];
+        brandName.id += len;
+        brandName.value = item.brandName;
+        i++;
+    }else{
+        var brandName = row.cells[i].getElementsByTagName('input')[0];
+        brandName.id += len;
+        brandName.value = item.brandName;
+        brandName.disabled=true;
+        i++;
+    }
+
     var quotedPrice = row.cells[i].getElementsByTagName('input')[0];
     quotedPrice.id += len;
     if (item.quotedPrice)

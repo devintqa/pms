@@ -37,6 +37,11 @@ public class PurchaseServiceImpl implements PurchaseService {
     }
 
     @Override
+    public Supplier getSupplierDetail(String supplierAliasName) {
+        return purchaseDAO.getSupplierDetail(supplierAliasName);
+    }
+
+    @Override
     public List<Supplier> fetchSupplierDetail(String supplierAliasName) {
         return purchaseDAO.fetchSupplierDetails(supplierAliasName);
     }
