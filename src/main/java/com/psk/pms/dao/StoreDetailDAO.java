@@ -5,6 +5,7 @@ import java.util.List;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -34,5 +35,7 @@ public interface StoreDetailDAO {
 	void saveReturnedDetails(DispatchDetail dispatchDetail, String returned);
 
 	String validateFieldUserForReturn(String projId, String fieldUser);
+	
+	void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
 	
 }

@@ -169,4 +169,11 @@ public class StoreServiceImpl implements StoreService {
 		return storeDetailDAO.validateFieldUserForReturn(projId, fieldUser);
 	}
 
+	@Override
+	public void updateSupplierQuoteDetailStatus(StoreDetail storeDetail,
+			String status) {
+		storeDetailDAO.updateSupplierQuoteDetailStatus(storeDetail, status);
+		
+	}
+
 }

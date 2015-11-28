@@ -7,7 +7,9 @@ import static com.psk.pms.dao.PmsMasterQuery.GET_DISPATCH_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.GET_STOCK_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.UPDATE_STOCK_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_DETAIL;
 import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_STATUS;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -257,6 +259,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		Integer result = jdbcTemplate.queryForInt(sql);
 		return result.toString();
 	}
+	
+	 @Override
+	    public void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status) {
+		 jdbcTemplate.update(UPDATE_SUPPLIER_QUOTE_STATUS, status, storeDetail.getItemName(),
+				 storeDetail.getItemType(), storeDetail.getSupplierName(), storeDetail.getAliasProjName());
+	 }
+
 
 
 }

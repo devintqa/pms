@@ -342,7 +342,41 @@
 					</c:if>
 				</tbody>
 			</table>
+			
+			<br>
+			<br>
+			
+			<h1 style="text-align: center; color: #007399; font-size: 18px;">Items Ready For Payment</h1>
+			<table id="purchaseListForPayment" class="display">
+				<thead>
+					<tr>
+						<th>Project</th>
+						<th>Supplier Name</th>
+						<th>Brand Name</th>
+						<th>Item Type</th>
+						<th>Item Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:if test="${not empty purchaseListForPayment}">
+						<c:forEach var="purchaseListForPayment" items="${purchaseListForPayment}">
+							<tr>
+								<td>${purchaseListForPayment.aliasProjName}</td>
+								<td>${purchaseListForPayment.supplierAliasName}</td>
+								<td>${purchaseListForPayment.brandName}</td>
+								<td>${purchaseListForPayment.itemType}</td>
+								<td>${purchaseListForPayment.itemName}</td>
+  								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseListForPayment.aliasProjName}?itemName=${purchaseListForPayment.itemName}&itemType=${purchaseListForPayment.itemType}&supplierName=${purchaseListForPayment.supplierAliasName}&employeeId=${employeeObj.employeeId}&brandName=${purchaseListForPayment.brandName}">Make Payment</a></td>
+							</tr>
+						</c:forEach>
+					</c:if>
+				</tbody>
+			</table>
 		</c:if>
+		
+		
 		
 		
 		<c:if test="${employeeObj.employeeTeam eq 'Store'}">

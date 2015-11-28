@@ -3,7 +3,6 @@ package com.psk.pms.factory;
 import java.util.List;
 import java.util.Map;
 
-import com.psk.pms.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
@@ -15,8 +14,7 @@ import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.FieldDescriptionService;
-
-import static com.psk.pms.Constants.APPROVED;
+import com.psk.pms.service.PurchaseService;
 
 @Component
 public class PurchaseEmployeeTeam implements EmployeeTeam {
@@ -33,12 +31,16 @@ public class PurchaseEmployeeTeam implements EmployeeTeam {
     @Override
     public void performTeamActivity(Model model, String empId) {
         List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE,empId);
-        List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(APPROVED,empId);
+        List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(Constants.APPROVED,empId);
+        List<SupplierQuoteDetails> purchaseListForPayment = purchaseService.getPurchaseListByStatus(Constants.RECEIVED,empId);
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);
         }
         if (!purchaseList.isEmpty()) {
             model.addAttribute("purchaseList", purchaseList);
+        }
+        if (!purchaseListForPayment.isEmpty()) {
+            model.addAttribute("purchaseListForPayment", purchaseListForPayment);
         }
     }
 

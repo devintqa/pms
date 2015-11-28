@@ -214,7 +214,7 @@ public class StoreController extends BaseController {
 			}
 
 			storeService.saveStoreDetail(storeDetail);
-			
+			storeService.updateSupplierQuoteDetailStatus(storeDetail, Constants.RECEIVED);
 			model.addAttribute("successMessage",
 					"Store Details saved successfully");
 		} catch (Exception e) {

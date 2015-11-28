@@ -33,4 +33,6 @@ public interface StoreService {
     
     void saveReturnedDetail(DispatchDetail dispatchDetail);
     
+    void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
+    
 }

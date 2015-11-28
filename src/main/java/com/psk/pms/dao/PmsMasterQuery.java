@@ -226,4 +226,6 @@ public class PmsMasterQuery {
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
     
     public static final String GET_SUPPLIER_DETAIL_BY_STATUS = "select * from supplierQuoteDetails where AliasProjName = ? and itemName= ? and supplierAliasName = ? and supplierQuoteStatus = ? and brandName =?";
+    
+    public static final String UPDATE_SUPPLIER_QUOTE_STATUS = "update supplierQuoteDetails set supplierQuoteStatus = ? where ItemName = ? and itemType = ? and  SupplierAliasName = ? and aliasProjName=?";
 }

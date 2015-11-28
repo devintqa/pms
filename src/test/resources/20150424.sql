@@ -763,6 +763,7 @@ CREATE TABLE `supplierQuoteDetails` (
   `emailAddress` varchar(50) DEFAULT NULL,
   `PhoneNumber` varchar(20) NOT NULL,
   `quotePrice` decimal(15,2) DEFAULT NULL,
+  `totalPrice` varchar(25) NOT NULL,
   `supplierQuoteStatus` varchar(45) DEFAULT NULL,
   `brandName` varchar(45) DEFAULT NULL,
   `tentativeDeliveryDate` datetime DEFAULT NULL,
