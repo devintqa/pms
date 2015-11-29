@@ -388,7 +388,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
         String sql = null;
         if (null != status) {
             sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where" +
-                    " i.ProjId = p.ProjId and i.Status= ? and p.projId in (select projectId from authoriseproject where empId = ?) group by AliasProjName";
+                    " i.ProjId = p.ProjId and i.Status= ? and p.projId in (select projectId from authoriseproject where empId = ?)";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
 
