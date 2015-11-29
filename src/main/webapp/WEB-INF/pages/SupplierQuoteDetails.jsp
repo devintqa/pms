@@ -493,7 +493,7 @@ function deleteItemRow(row) {
 
 <style>
     .quoteDetailStyle {
-        width: 200px;
+        width: 140px;
     }
 
     .tdStyle {
