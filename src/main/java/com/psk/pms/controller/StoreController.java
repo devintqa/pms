@@ -2,7 +2,6 @@ package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.FIELD;
 import static com.psk.pms.Constants.ITEM_TYPE;
-import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
 
 import java.util.List;
 import java.util.Map;

@@ -7,13 +7,10 @@ import static com.psk.pms.dao.PmsMasterQuery.GET_DISPATCH_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.GET_STOCK_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.UPDATE_STOCK_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_DETAILS;
 import static com.psk.pms.dao.PmsMasterQuery.UPDATE_SUPPLIER_QUOTE_STATUS;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,13 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import com.mysql.jdbc.StringUtils;
 import com.psk.pms.model.DispatchDetail;
-import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
-import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.utils.DateFormatter;
 
 /**

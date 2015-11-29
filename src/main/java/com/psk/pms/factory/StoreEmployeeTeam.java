@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 
 import com.psk.pms.Constants;
 import com.psk.pms.model.DepositDetail;
-import com.psk.pms.model.Employee;
-import com.psk.pms.model.Indent;
 import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
 import com.psk.pms.service.EmployeeService;
