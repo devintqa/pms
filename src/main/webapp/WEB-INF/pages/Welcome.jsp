@@ -321,7 +321,7 @@
 						<th>Project</th>
 						<th>Supplier Name</th>
 						<th>Brand Name</th>
-						<th>Item Type</th>
+						<th>Approved Quantity</th>
 						<th>Item Name</th>
 						<th>Action</th>
 					</tr>
@@ -334,7 +334,7 @@
 								<td>${purchaseItem.aliasProjName}</td>
 								<td>${purchaseItem.supplierAliasName}</td>
 								<td>${purchaseItem.brandName}</td>
-								<td>${purchaseItem.itemType}</td>
+								<td>${purchaseItem.itemQty}</td>
 								<td>${purchaseItem.itemName}</td>
   								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseItem.aliasProjName}?itemName=${purchaseItem.itemName}&itemType=${purchaseItem.itemType}&supplierName=${purchaseItem.supplierAliasName}&employeeId=${employeeObj.employeeId}&brandName=${purchaseItem.brandName}">Purchase Details</a></td>
 							</tr>

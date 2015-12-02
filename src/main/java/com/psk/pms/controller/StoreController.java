@@ -209,9 +209,11 @@ public class StoreController extends BaseController {
 			storeValidator.validate(storeDetail, result);
 			model.addAttribute("storeDetailForm", storeDetail);
 			if (result.hasErrors()) {
+				if (storeDetail.getStoreFiles().size() == 0) {
+					model.addAttribute("errorMessage", "Please select one or more files");
+                }
 				return "BuildStoreDetail";
 			}
-
 			storeService.saveStoreDetail(storeDetail);
 			storeService.updateSupplierQuoteDetailStatus(storeDetail, Constants.RECEIVED);
 			model.addAttribute("successMessage",

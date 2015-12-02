@@ -2,8 +2,11 @@ package com.psk.pms.service;
 
 import static java.lang.Integer.parseInt;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -12,13 +15,17 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.psk.pms.Constants;
 import com.psk.pms.dao.EmployeeDAO;
 import com.psk.pms.dao.StoreDetailDAO;
 import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.FileUpload;
+import com.psk.pms.model.ProjectDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.model.SubProjectDetail;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -38,6 +45,11 @@ public class StoreServiceImpl implements StoreService {
 	public void saveStoreDetail(StoreDetail storeDetail) {
 
 		storeDetailDAO.saveStoreDetail(storeDetail);
+		try {
+			uploadFiles(storeDetail, storeDetail.getEmployeeId());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		saveStockDetails(storeDetail);
 	}
 
@@ -175,5 +187,51 @@ public class StoreServiceImpl implements StoreService {
 		storeDetailDAO.updateSupplierQuoteDetailStatus(storeDetail, status);
 		
 	}
+	
+	public void uploadFiles(StoreDetail fileUpload, String employeeId) throws IOException {
+		File files;
+		String saveDirectory;
+		LOGGER.info("method = uploadFiles() , Alias Project Name" + fileUpload.getAliasProjName());
+			files = new File("C:\\PMS\\" + fileUpload.getAliasProjName()+"\\StoreInvoice");
+			saveDirectory = "C:/PMS/" + fileUpload.getAliasProjName() + "/StoreInvoice/";
+		createFileDirectory(files);
+		List < MultipartFile > storeFiles = fileUpload.getStoreFiles();
+		saveFiles(saveDirectory, storeFiles);
+	}
+
+	private void createFileDirectory(File files) {
+		try {
+			if (!files.exists()) {
+				if (files.mkdirs()) {
+					LOGGER.info("Multiple directories are created!");
+				} else {
+					LOGGER.info("Failed to create multiple directories!");
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.info("Something went wrong!!", e);
+		}
+	}
+
+	private void saveFiles(String saveDirectory, List < MultipartFile > files) throws IOException {
+		List < String > fileNames = new ArrayList < String > ();
+		if (null != files && files.size() > 0) {
+			for (MultipartFile multipartFile: files) {
+				String fileName = multipartFile.getOriginalFilename();
+				if (!"".equalsIgnoreCase(fileName)) {
+					LOGGER.info("File Name: " + fileName);
+					multipartFile.transferTo(new File(saveDirectory + fileName));
+					fileNames.add(fileName);
+				}
+			}
+		}
+	}
+
+	@Override
+	public Integer isRecordExists(String attribute) {
+		return storeDetailDAO.isRecordExists(attribute);
+	}
+
+
 
 }

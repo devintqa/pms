@@ -12,8 +12,23 @@
 
 
 <script>
+$(document)
+.ready(
+function () {
+    //add more file components if Add is clicked
+    $('#addFile')
+            .click(
+            function () {debugger;
+                var fileIndex = $('#fileTable tr')
+                        .children().length - 1;
+                $('#fileTable')
+                        .append(
+                                '<tr><td></td>'
+                                + '<td>  <input type="file" name="storeFiles[' + fileIndex + ']" />'
+                                + '</td></tr>');
+            });
 
-
+});
 
 </script>
 </head>
@@ -33,11 +48,11 @@
 		</div>
 		<div>
 			<form:form commandName="storeDetailForm" method="POST"
-				id="storeDetailForm" action="saveStoreDetail.do">
+				id="storeDetailForm" action="saveStoreDetail.do" enctype="multipart/form-data">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Store Details</legend>
-						<table>
+						<table id = "fileTable">
 							<tr>
 								<td>Project Name <span id="colon">:</span>
 								</td>
@@ -66,6 +81,7 @@
 										id="itemQty" value="${supplierQuoteDetails.itemQty}"
 										readonly="true" /></td>
 							</tr>
+							
 							<tr>
 								<td>Supplier Name<span id="colon">:</span>
 								</td>
@@ -75,6 +91,15 @@
 										readonly="true" /></td>
 								<td><form:errors path="supplierName" cssClass="error" /></td>
 							</tr>
+							
+							<tr>
+								<td>Invoice Number<span id="colon">:</span>
+								</td>
+								<td><form:input path="invoiceNumber" id="invoiceNumber"
+										placeholder="Enter Invoice Number" cssClass="inputText" /></td>
+								<td><form:errors path="invoiceNumber" cssClass="error" /></td>
+							</tr>
+							 
 							<tr>
 								<td>Vehicle Number<span id="colon">:</span>
 								</td>
@@ -134,6 +159,14 @@
 										cols="40" maxlength="2000" /></td>
 								<td><form:errors path="comments" cssClass="error" /></td>
 							</tr>
+							
+							 <tr>
+				                    <td>Upload<span id="colon">:</span>
+				                    </td>
+				                    <td><form:input name="storeFiles[0]" type="file" path="storeFiles"
+				                                    id="storeFiles"/></td>
+				                    <td><form:errors path="storeFiles" cssClass="error"/></td>
+		                </tr>
 
 							<tr></tr>
 						</table>
@@ -145,8 +178,8 @@
 					<table>
 						<tr>
 							<td></td>
-							<td><input id="saveBtn2" class="button" type="submit"
-								value="Save" /></td>
+							<td><input class="button" type="submit"	value="Save" /></td>
+								<td> <input class="button" id="addFile" type="button" value="Add File"/></td>
 							<td></td>
 						</tr>
 					</table>

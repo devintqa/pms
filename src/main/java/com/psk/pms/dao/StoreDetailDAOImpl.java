@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
@@ -39,7 +40,8 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	public void saveStoreDetail(StoreDetail storeDetail) {
 		jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
 				storeDetail.getItemType(), storeDetail.getItemName(),
-				storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
+				storeDetail.getSupplierName(), storeDetail.getInvoiceNumber(),
+				storeDetail.getVehicleNumber(),
 				storeDetail.getRecievedQuantity(),
 				storeDetail.getRecievedDate(), storeDetail.getRecievedBy(),
 				storeDetail.getCheckedBy(), storeDetail.getTripSheetNumber(),
@@ -258,7 +260,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		 jdbcTemplate.update(UPDATE_SUPPLIER_QUOTE_STATUS, status, storeDetail.getItemName(),
 				 storeDetail.getItemType(), storeDetail.getSupplierName(), storeDetail.getAliasProjName());
 	 }
+	 
+	 
 
-
+	@Override
+	public Integer isRecordExists(String attribute) {
+		 String sql = "select count(*) from storedetail where invoiceNumber ='"+attribute+"' or tripSheetNumber='"+attribute+"'";
+	      return jdbcTemplate.queryForInt(sql);
+	}
 
 }

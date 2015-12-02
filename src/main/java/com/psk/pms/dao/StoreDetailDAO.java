@@ -37,4 +37,6 @@ public interface StoreDetailDAO {
 	
 	void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
 	
+	Integer isRecordExists(String attribute);
+	
 }

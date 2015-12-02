@@ -1,6 +1,9 @@
 package com.psk.pms.model;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Sony on 25-09-2015.
@@ -15,6 +18,7 @@ public class StoreDetail {
 	private String itemQty;
 	private String employeeId;
 	private String itemName;
+	private String invoiceNumber;
 	private String vehicleNumber;
 	private String recievedQuantity;
 	private String comments;
@@ -24,8 +28,43 @@ public class StoreDetail {
 	private String tripSheetNumber;
 	private String storeType;
 	private String storeDetailsValue;
+	private String fileName;
+	private String filePath;
+	private List<MultipartFile> storeFiles;
+
 	
-	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public List<MultipartFile> getStoreFiles() {
+		return storeFiles;
+	}
+
+	public void setStoreFiles(List<MultipartFile> storeFiles) {
+		this.storeFiles = storeFiles;
+	}
+
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+
 	public String getStoreDetailsValue() {
 		return storeDetailsValue;
 	}
@@ -33,7 +72,6 @@ public class StoreDetail {
 	public void setStoreDetailsValue(String storeDetailsValue) {
 		this.storeDetailsValue = storeDetailsValue;
 	}
-
 
 	public String getAliasProjName() {
 		return aliasProjName;

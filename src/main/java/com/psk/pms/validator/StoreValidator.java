@@ -1,17 +1,22 @@
 package com.psk.pms.validator;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.ValidationException;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StoreDetail;
+import com.psk.pms.service.PurchaseService;
+import com.psk.pms.service.StoreService;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -19,6 +24,9 @@ import com.psk.pms.model.StoreDetail;
 public class StoreValidator extends BaseValidator implements Validator {
 
 
+	@Autowired
+	private StoreService storeService;
+	
     private Pattern pattern;
     private Matcher matcher;
 
@@ -40,10 +48,10 @@ public class StoreValidator extends BaseValidator implements Validator {
                 "required.vehicleNumber", "Enter Vehicle Number");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recievedQuantity",
                 "required.recievedQuantity", "Enter Recieved Quantity");
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "comments",
-                "required.comments", "Enter Comments");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "supplierName",
                 "required.supplierName", "Enter the Supplier Name");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "invoiceNumber",
+                "required.supplierName", "Enter the Invoice Number");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recievedBy",
                 "required.supplierName", "Enter Revieved By Name");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "checkedBy",
@@ -59,7 +67,42 @@ public class StoreValidator extends BaseValidator implements Validator {
                         "Enter a numeric value");
             }
         }
+        
+        if (!StringUtils.isNullOrEmpty(storeDetail.getInvoiceNumber())) {
+            Integer invoiceNumber = storeService.isRecordExists(storeDetail.getInvoiceNumber());
+            if (invoiceNumber.intValue() > 0) {
+                errors.rejectValue("invoiceNumber", "invoiceNumber.incorrect", "Invoice number already exist");
+            }
 
+        }
+        
+        if (!StringUtils.isNullOrEmpty(storeDetail.getTripSheetNumber())) {
+        	Integer tripSheetNumber = storeService.isRecordExists(storeDetail.getInvoiceNumber());
+            if (tripSheetNumber.intValue() > 0) {
+                errors.rejectValue("tripSheetNumber", "tripSheetNumber.incorrect", "Trip Sheet Number number already exist");
+            }
+
+        }
+        
+        List<MultipartFile> files = storeDetail.getStoreFiles();
+        validateFileExistance(errors, files);
+
+    }
+    
+    public void validateFileExistance(Errors errors, List<MultipartFile> files) {
+        if (null != files) {
+            Iterator<MultipartFile> listOfFiles = files
+                    .listIterator();
+            while (listOfFiles.hasNext()) {
+                MultipartFile multipartFile = listOfFiles.next();
+                if (null == multipartFile || multipartFile.getSize() == 0) {
+                    listOfFiles.remove();
+                }
+            }
+            if (files.size() == 0) {
+                errors.reject("no files found");
+            }
+        }
     }
 
     public void validate(Object o, String dispatched) throws ValidationException {
