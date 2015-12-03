@@ -184,7 +184,8 @@ public class StoreValidator extends BaseValidator implements Validator {
                 if (totalQuantity == 0) {
                     throw new ValidationException("There are no " + returnedItem.getItemName() + " Dispatched to Return");
                 }
-                if (returnedQty > totalQuantity) {
+                int compare = Double.compare(returnedQty, totalQuantity);
+                if (compare>0) {
                     throw new ValidationException("Returned Quantity of " + returnedItem.getItemName() + " is more than Dispatched Quantity");
                 }
             }
