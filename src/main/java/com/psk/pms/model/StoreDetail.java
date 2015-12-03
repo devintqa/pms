@@ -23,6 +23,7 @@ public class StoreDetail {
 	private String recievedQuantity;
 	private String comments;
 	private String supplierName;
+	private String brandName;
 	private String recievedBy;
 	private String checkedBy;
 	private String tripSheetNumber;
@@ -201,4 +202,11 @@ public class StoreDetail {
 		this.storeType = storeType;
 	}
 
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
 }

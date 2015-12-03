@@ -154,8 +154,7 @@ public class PurchaseController {
         quoteDetails.setItemName(itemName);
         quoteDetails.setItemType(itemType);
         quoteDetails.setEmployeeId(employeeId);
-        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName,brandName);
-
+        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, supplierName,brandName);
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierDetails, new TypeToken<QuoteDetails.SupplierQuoteDetails>() {
         }.getType());

@@ -532,6 +532,8 @@ CREATE TABLE `storeDetail` (
   `itemType` varchar(10) NOT NULL,
   `itemName` varchar(30) NOT NULL,
   `supplierName` varchar(30) NOT NULL,
+  `brandName` varchar(30) NULL,
+  `invoiceNumber` varchar(30) NOT NULL,
   `vehicleNo` varchar(30) NOT NULL,
   `quantityRecieved` varchar(30) NOT NULL,
   `recievedDate` datetime NOT NULL,

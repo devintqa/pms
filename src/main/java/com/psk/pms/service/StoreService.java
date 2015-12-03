@@ -12,7 +12,7 @@ import com.psk.pms.model.StoreDetail;
  */
 public interface StoreService {
 	
-    void saveStoreDetail(StoreDetail storeDetail);
+    void saveStoreDetail(StoreDetail storeDetail) throws IOException;
 
     List<StoreDetail> getStoreDetails(int projId);
 
@@ -34,7 +34,7 @@ public interface StoreService {
     
     void saveReturnedDetail(DispatchDetail dispatchDetail);
     
-    void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
+    void updateSupplierQuoteDetailStatusAndIndentStatus(StoreDetail storeDetail, String status);
     
     Integer isRecordExists(String attribute);
     

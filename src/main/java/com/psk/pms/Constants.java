@@ -75,4 +75,5 @@ public interface Constants {
     String NEW= "New";
     String PENDING_LEVEL_2_APPROVAL = "PENDING LEVEL 2 APPROVAL";
     String RECEIVED= "RECEIVED";
+    String PARTIALLY_RECEIVED= "PARTIALLY RECEIVED";
 }

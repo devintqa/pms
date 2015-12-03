@@ -5,6 +5,7 @@ import java.util.List;
 import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
+import org.apache.poi.hssf.record.pivottable.StreamIDRecord;
 
 /**
  * Created by Sony on 26-09-2015.
@@ -38,5 +39,8 @@ public interface StoreDetailDAO {
 	void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
 	
 	Integer isRecordExists(String attribute);
-	
+
+    boolean isPendingToReceive(String aliasProjName);
+
+    void updateIndentDescStatusForStore(String indentStatus, String itemName, String itemType, Integer projId);
 }

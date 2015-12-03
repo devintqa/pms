@@ -24,7 +24,7 @@ public interface PurchaseService {
     List<Supplier> fetchSupplierDetail(String supplierAliasName);
 
     void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status);
-    
+
     void updateSupplierDetails(QuoteDetails quoteDetails, String status);
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
@@ -35,16 +35,16 @@ public interface PurchaseService {
 
     List<QuoteDetails.SupplierQuoteDetails> getSupplierByStatus(String supplierStatus);
 
-    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String itemType, String supplierName, String brandName);
+    SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String supplierName, String brandName);
 
     boolean isTinNumberExists(String tinNumber);
 
     void rejectSuppliers(String projName, String itemType, String itemName);
-    
+
     List<QuoteDetails.SupplierQuoteDetails> getPurchasesByStatus(String supplierStatus);
-    
+
     Integer getProjectId(String projName);
-    
+
     SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName);
 
 }

@@ -91,6 +91,15 @@ function () {
 										readonly="true" /></td>
 								<td><form:errors path="supplierName" cssClass="error" /></td>
 							</tr>
+                            <tr>
+                                <td>Brand Name<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="brandName" id="brandName"
+                                                cssClass="inputText"
+                                                value="${supplierQuoteDetails.brandName}"
+                                                readonly="true" /></td>
+                                <td><form:errors path="brandName" cssClass="error" /></td>
+                            </tr>
 							
 							<tr>
 								<td>Invoice Number<span id="colon">:</span>
