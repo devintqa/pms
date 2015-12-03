@@ -32,7 +32,7 @@ public class PurchaseEmployeeTeam implements EmployeeTeam {
     public void performTeamActivity(Model model, String empId) {
         List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE,empId);
         List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(Constants.APPROVED,empId);
-        List<SupplierQuoteDetails> purchaseListForPayment = purchaseService.getPurchaseListByStatus(Constants.RECEIVED,empId);
+        List<SupplierQuoteDetails> purchaseListForPayment = purchaseService.getSuppliersForPayment(Constants.RECEIVED,empId);
         if (!indentList.isEmpty()) {
             model.addAttribute("indentList", indentList);
         }

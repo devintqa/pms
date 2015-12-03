@@ -130,7 +130,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 
     @Override
     public SupplierQuoteDetails getSupplierDetails(String projName, String itemName, String supplierName, String brandName) {
-        return purchaseDAO.getSupplierDetails(projName, itemName, supplierName,brandName);
+        return purchaseDAO.getSupplierDetails(projName, itemName, supplierName, brandName);
     }
 
     @Override
@@ -173,14 +173,19 @@ public class PurchaseServiceImpl implements PurchaseService {
         return purchaseDAO.getPurchasesByStatus(purchaseStatus);
     }
 
-	 @Override
-	    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName) {
-	        return purchaseDAO.getSupplierQuoteDetailsByStatus(projName,itemName,supplierName, status,brandName);
-	    }
-	 
-	 @Override
-	    public Integer getProjectId(String projName) {
-	       return purchaseDAO.getProjectId(projName);
-	    }
+    @Override
+    public SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName) {
+        return purchaseDAO.getSupplierQuoteDetailsByStatus(projName, itemName, supplierName, status, brandName);
+    }
+
+    @Override
+    public List<SupplierQuoteDetails> getSuppliersForPayment(String status, String empId) {
+        return purchaseDAO.getSuppliersForPayment(status, empId);
+    }
+
+    @Override
+    public Integer getProjectId(String projName) {
+        return purchaseDAO.getProjectId(projName);
+    }
 
 }

@@ -47,4 +47,5 @@ public interface PurchaseService {
 
     SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName, String itemName, String supplierName, String status, String brandName);
 
+    List<SupplierQuoteDetails> getSuppliersForPayment(String received, String empId);
 }

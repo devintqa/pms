@@ -353,7 +353,7 @@
 						<th>Project</th>
 						<th>Supplier Name</th>
 						<th>Brand Name</th>
-						<th>Item Type</th>
+						<th>Received Qty</th>
 						<th>Item Name</th>
 						<th>Action</th>
 					</tr>
@@ -366,7 +366,7 @@
 								<td>${purchaseListForPayment.aliasProjName}</td>
 								<td>${purchaseListForPayment.supplierAliasName}</td>
 								<td>${purchaseListForPayment.brandName}</td>
-								<td>${purchaseListForPayment.itemType}</td>
+								<td>${purchaseListForPayment.itemQty}</td>
 								<td>${purchaseListForPayment.itemName}</td>
   								<td><a href="/pms/emp/myview/viewPurchaseDetails/${purchaseListForPayment.aliasProjName}?itemName=${purchaseListForPayment.itemName}&itemType=${purchaseListForPayment.itemType}&supplierName=${purchaseListForPayment.supplierAliasName}&employeeId=${employeeObj.employeeId}&brandName=${purchaseListForPayment.brandName}">Make Payment</a></td>
 							</tr>

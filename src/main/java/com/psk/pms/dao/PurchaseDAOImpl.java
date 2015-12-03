@@ -356,4 +356,29 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         String GET_SUPPLIER_DETAIL = "select * from supplierdetails where SupplierAliasName = '" + supplierAliasName + "'";
         return buildSupplier(GET_SUPPLIER_DETAIL);
     }
+
+    @Override
+    public List<SupplierQuoteDetails> getSuppliersForPayment(String status, String empId) {
+        String sql = null;
+        List<SupplierQuoteDetails> supplierList = new ArrayList<>();
+        if (null != status) {
+            sql = "select sq.aliasprojName,sq.SupplierAliasName,sq.brandName,sum(sd.quantityRecieved)receivedQty,sq.ItemName,sq.ItemType\n" +
+                    " from supplierquotedetails sq,storedetail sd where sq.itemName = sd.itemName and sq.brandName= sd.brandName\n" +
+                    " and sq.supplierAliasName=sd.supplierName and sq.supplierQuoteStatus=? group by sq.supplierAliasName,\n" +
+                    " sq.brandName,sq.itemName and sq.aliasProjName in (select aliasProjName from project where projId in(\n" +
+                    " select projectId from authoriseproject where empId = ?));";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
+        for (Map<String, Object> row : rows) {
+            SupplierQuoteDetails detail = new SupplierQuoteDetails();
+            detail.setAliasProjName((String) row.get("aliasprojName"));
+            detail.setSupplierAliasName((String) row.get("SupplierAliasName"));
+            detail.setBrandName((String) row.get("brandName"));
+            detail.setItemQty( row.get("receivedQty").toString()); // recieved qty is taken and itemQty for payment
+            detail.setItemName((String) row.get("ItemName"));
+            detail.setItemType((String) row.get("ItemType"));
+            supplierList.add(detail);
+        }
+        return supplierList;
+    }
 }

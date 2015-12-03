@@ -22,7 +22,7 @@ public interface PurchaseDAO {
     boolean isAliasSupplierNameAlreadyExist(String aliasSupplierName);
 
     void saveSupplierQuoteDetails(QuoteDetails quoteDetails, String status);
-    
+
     void updateSupplierDetails(QuoteDetails quoteDetails, String status);
 
     List<SupplierQuoteDetails> getSupplierQuoteDetails(String projName, String itemType, String itemName);
@@ -49,10 +49,12 @@ public interface PurchaseDAO {
 
     boolean isTinNumberExists(String tinNumber);
 
-	List<SupplierQuoteDetails> getPurchasesByStatus(String purchaseStatus);
+    List<SupplierQuoteDetails> getPurchasesByStatus(String purchaseStatus);
 
-	SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName,
+    SupplierQuoteDetails getSupplierQuoteDetailsByStatus(String projName,
                                                          String itemName, String supplierName, String status, String brandName);
 
     Supplier getSupplierDetail(String supplierAliasName);
+
+    List<SupplierQuoteDetails> getSuppliersForPayment(String status, String empId);
 }
