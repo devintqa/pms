@@ -183,7 +183,7 @@ public class StoreController extends BaseController {
         LOGGER.info("Store Controller : saveReturnedDetail()");
         String result = "Returned Details saved successfully";
         try {
-            ObjectMapper mapper = new ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper() ;
             List<DispatchDetail.DispatchItems> returnedItemsList = mapper
                     .readValue(
                             retuenDetail.getReturnItemsValue(),
