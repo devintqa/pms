@@ -1,6 +1,7 @@
 package com.psk.pms.controller;
 
 import static com.psk.pms.Constants.METRIC;
+import static com.psk.pms.constants.JSPFileNames.BASE_DESCRIPTION;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -188,13 +189,13 @@ public class DescriptionController extends BaseController {
             projDescDetail = projectDescriptionService.getBaseDescription(descId);
             projDescDetail.setIsUpdate("Y");
             model.addAttribute("baseDescForm", projDescDetail);
-            return "BaseDescription";
+            return BASE_DESCRIPTION;
         }
 
         projDescDetail.setEmployeeId(employeeId);
         projDescDetail.setQuantity("1");
         model.addAttribute("baseDescForm", projDescDetail);
-        return "BaseDescription";
+        return BASE_DESCRIPTION;
     }
 
     @RequestMapping(value = "/emp/myview/buildBaseDesc/createOrUpdate.do", method = RequestMethod.POST)
@@ -203,7 +204,7 @@ public class DescriptionController extends BaseController {
         baseDescriptionValidator.validate(projDescDetail, result);
         LOGGER.info("Result has errors ?? " + result.hasErrors() + result.toString());
         if (result.hasErrors()) {
-            return "BaseDescription";
+            return BASE_DESCRIPTION;
         }
         model.addAttribute("baseDescForm", projDescDetail);
         if ("Y".equalsIgnoreCase(projDescDetail.getIsUpdate())) {
@@ -214,7 +215,7 @@ public class DescriptionController extends BaseController {
                     "Base Description Created Successfully.");
         }
         projectDescriptionService.saveBaseProjectDescription(projDescDetail);
-        return "BaseDescription";
+        return BASE_DESCRIPTION;
     }
 
     @RequestMapping(value = "/emp/myview/searchBaseDescription/deleteGlobalProjectDescription.do", method = RequestMethod.POST)
