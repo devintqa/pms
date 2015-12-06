@@ -168,7 +168,7 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
 	}
 	
 		@Override
-	public Map<String, Object> getRequestedIndentQty(Integer projId, String userRole) {
+	public Map<String, Object> getRequestedIndentQty(Integer projId) {
 		Map < String, Object > descQty = new HashMap< String, Object>();
 		String status = "'NEW', 'PENDING PURCHASE'";
 		String sql = null;

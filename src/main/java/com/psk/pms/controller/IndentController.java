@@ -196,14 +196,13 @@ public class IndentController extends BaseController {
 	@ResponseBody public String validateIndentDescQty(
 			@RequestParam(value = "indentQty") String indentDescQty,
 			@RequestParam(value = "projDescId") String projDescId,
-			@RequestParam(value="role") String userRole,
 			Model model) {
 		String validation = "valid";
 		BigDecimal availedDescIndentQtyBigD = new BigDecimal(0);
 		Double askingIndentQty = new Double(indentDescQty);
 		if(askingIndentQty > 0){
 			ProjDescDetail projDesc = fieldDescriptionService.getPskFieldProjectDescription(projDescId);
-			Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId(), userRole);
+			Map<String, Object> availedDescIndentQty = fieldDescriptionService.getRequestedIndentQty(projDesc.getProjId());
 			Double fixedProjDescQty = new Double(projDesc.getQuantity());
 			if(askingIndentQty <= fixedProjDescQty){
 				if(availedDescIndentQty.size() > 0 && null!=availedDescIndentQty.get(projDescId))
@@ -220,6 +219,22 @@ public class IndentController extends BaseController {
 			validation = "Quantity cannot be zero";
 		}
 		return validation;
+	}
+	
+	@RequestMapping(value = "/emp/myview/indent/getSteelQty", method = RequestMethod.GET)
+	@ResponseBody public String getSteelQty(
+			@RequestParam(value = "indentQty") String indentQty,
+			@RequestParam(value = "projDescId") String projDescId,
+			Model model) {
+		List<ItemDetail> itemList= new ArrayList<ItemDetail>();
+		DescItemDetail descItemDetail = itemService.getPskFieldDescriptionItems(projDescId);
+		itemList = buildIndentedItem(indentQty, descItemDetail.getItemDetail());
+		for(ItemDetail detail : itemList){
+			if(detail.getItemName().equals("STEEL")){
+				return detail.getItemQty();
+			}
+		}
+		return null;
 	}
 
 

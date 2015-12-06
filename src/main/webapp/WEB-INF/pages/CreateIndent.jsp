@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!doctype html>
 <html>
 <head>
@@ -81,9 +82,6 @@ $(document).ready(function() {
         window.location = "/pms/emp/myview/indent/itemToRequest?employeeId=" + employeeId + "&indentId=" + indentId + "&status=" + indentStatus;
     });
 
-
-    
-
     function ItemDetail(itemType, itemName, itemUnit, itemQty) {
         this.itemType = itemType;
         this.itemName = itemName;
@@ -127,12 +125,20 @@ $(document).ready(function() {
                 var new_row = itemTable.rows[i];
                 var itemType = new_row.cells[0].innerHTML;
                 var itemUnit = new_row.cells[2].innerHTML;
-                var itemQty = new_row.cells[3].innerHTML;
+                
                 var itemName = new_row.cells[1].innerHTML;
                 
-                if (new_row.cells[1].getElementsByTagName('select')[0]) {
-                    var itemName = new_row.cells[1].getElementsByTagName('select')[0].value;
+                if(itemName.toUpperCase() == "STEEL 10MM" || itemName.toUpperCase() == "STEEL 12MM" || itemName.toUpperCase() == "STEEL 16MM"
+               		|| itemName.toUpperCase() == "STEEL 20MM" || itemName.toUpperCase() == "STEEL 25MM" || itemName.toUpperCase() == "STEEL 32MM"
+               		|| itemName.toUpperCase() == "BINDING WIRE"){
+                	var itemQty = new_row.cells[3].getElementsByTagName('input')[0].value;
+                }else{
+                	var itemQty = new_row.cells[3].innerHTML;
                 }
+                
+//                 if (new_row.cells[1].getElementsByTagName('select')[0]) {
+//                     var itemName = new_row.cells[1].getElementsByTagName('select')[0].value;
+//                 }
                 
                 var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
                 if (itemType && itemName && itemUnit && itemQty) {
@@ -195,6 +201,36 @@ $(document).ready(function() {
 });
 
 
+$(document).on("keyup", "input[class = 'steelClass']", function() {
+	
+	var userRole = $(this).val();
+	var tblId = $(this).closest("table").attr('id');
+	console.log("key press: "+tblId);
+	var projDescId = $("#"+tblId+"").attr('aria-projdesc-id');
+	var indentDescId =  $("#"+tblId+"").attr('aria-indentdesc-id');
+	var indentQty = $("#plannedQty"+projDescId+indentDescId).val();
+	var currentSteelQty = 0;
+	var expectedSteelQty =  $.ajax({	
+         type: "GET",
+         url: "getSteelQty",
+         contentType: "application/json",
+         cache: false,
+         data: "projDescId=" + projDescId + "&indentQty=" + indentQty,
+         success: function(response) {
+        	 var expectedSteelQty = response;
+        	 $("table[id= '"+tblId+"']").find("input[class='steelClass']").each(function() {
+        		 currentSteelQty = currentSteelQty + parseFloat($(this).val());
+        	 });
+        	 if(currentSteelQty > expectedSteelQty){
+        		 $('#error' + projDescId).text('Steel Quantity cannot exceed '+expectedSteelQty);
+        	 }else{
+        		 $('#error' + projDescId).text('');
+        	 }
+         }
+	 });
+	 
+});
+
 
 $(document).on("keyup", "input[name = 'plannedQty']", function() {
 
@@ -211,7 +247,6 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
 
         var itemTable = document.getElementById("itemTbl" + projDescId + indentDescId);
         var tableLength = itemTable.rows.length;
-       
 
         $.ajax({
             type: "GET",
@@ -236,26 +271,26 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
                             }
 
                             for (i = 0; i < response.length; i++) {
-
-                                var new_row = itemTable.insertRow(0);
-                                var cell1 = new_row.insertCell(0);
-                                var cell2 = new_row.insertCell(1);
-                                var cell3 = new_row.insertCell(2);
-                                var cell4 = new_row.insertCell(3);
-                                var cell5 = new_row.insertCell(4);
-
-                                new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
-                               
-                                if(response[i].itemName.toUpperCase() == "STEEL"){
-                                	new_row.cells[1].innerHTML = document.getElementById('dummyDrop').outerHTML;
-                                }else{
-                                	 new_row.cells[1].innerHTML = response[i].itemName;
-                                }
-                                new_row.cells[2].innerHTML = response[i].itemUnit;
-                                new_row.cells[3].innerHTML = response[i].itemQty;
-                                new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
-
-                                itemTable.appendChild(new_row);
+								
+                            	 if(response[i].itemName.toUpperCase() == "STEEL"){
+                            		 insertSteelTypes(itemTable, response[i]);
+                            	 }else{
+	                                var new_row = itemTable.insertRow(0);
+	                                var cell1 = new_row.insertCell(0);
+	                                var cell2 = new_row.insertCell(1);
+	                                var cell3 = new_row.insertCell(2);
+	                                var cell4 = new_row.insertCell(3);
+	                                var cell5 = new_row.insertCell(4);
+	
+	                                new_row.cells[0].innerHTML = response[i].itemType.toUpperCase();
+	                               
+	                                new_row.cells[1].innerHTML = response[i].itemName;
+	                                new_row.cells[2].innerHTML = response[i].itemUnit;
+	                                new_row.cells[3].innerHTML = response[i].itemQty;
+	                                new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
+	
+	                                itemTable.appendChild(new_row);
+                            	 }
                             }
                         }
                     });
@@ -269,10 +304,31 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
                 }
             }
         });
-
-
     }
 });
+
+function insertSteelTypes(itemTable, response){
+	var steel = ["STEEL 10MM", "STEEL 12MM", "STEEL 16MM", "STEEL 20MM", "STEEL 25MM", "STEEL 32MM", "BINDING WIRE"];
+	
+	for (j = 0; j < steel.length; j++) {
+		
+	   var new_row = itemTable.insertRow(0);
+	   var cell1 = new_row.insertCell(0);
+	   var cell2 = new_row.insertCell(1);
+	   var cell3 = new_row.insertCell(2);
+	   var cell4 = new_row.insertCell(3);
+	   var cell5 = new_row.insertCell(4);
+	
+	   new_row.cells[0].innerHTML = response.itemType.toUpperCase();
+	  
+	   new_row.cells[1].innerHTML = steel[j];
+	   new_row.cells[2].innerHTML = response.itemUnit;
+	   new_row.cells[3].innerHTML =  '<input id="steel" class="steelClass" type="input" value="0"></input>'	  
+	   new_row.cells[4].innerHTML = '<a id="deleteItem" onclick="deleteItemRow(this)"><img src="/pms/resources/images/delete.png" /></a>';
+	
+	   itemTable.appendChild(new_row);
+	}
+}
 
 function deleteItemRow(row) {
     var id = $(row).closest("table").attr('id');
@@ -336,7 +392,7 @@ function deleteItemRow(row) {
 								<tr><td></td></tr>
 							</table>
 							
-							<table id="itemTbl${indentDesc.projDescId}${indentDesc.indentDescId}" border="1" class="gridView">
+							<table aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" id="itemTbl${indentDesc.projDescId}${indentDesc.indentDescId}" border="1" class="gridView">
 								
 								<tr>
 									<th>Type</th>
@@ -351,7 +407,16 @@ function deleteItemRow(row) {
 										<td>${row.itemType}</td>
 										<td>${row.itemName}</td>
 										<td>${row.itemUnit}</td>
-										<td>${row.itemQty}</td>
+										<td>
+											<c:choose>
+												<c:when test="${fn:contains('STEEL 10MM, STEEL 12MM, STEEL 16MM, STEEL 20MM, STEEL 25MM, STEEL 32MM, BINDING WIRE', row.itemName)}">
+													<input id="steel" class="steelClass" type="input" value="${row.itemQty}"/>
+												</c:when>    
+												<c:otherwise>
+													${row.itemQty}
+												</c:otherwise>
+											</c:choose>
+										</td>
 										<td><a id="deleteItem" onclick="deleteItemRow(this)">
 												<img src="<c:url value="/resources/images/delete.png" />" />
 										</a></td>

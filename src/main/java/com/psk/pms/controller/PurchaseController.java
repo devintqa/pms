@@ -1,17 +1,17 @@
 package com.psk.pms.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
-import com.psk.exception.ValidationException;
-import com.psk.pms.Constants;
-import com.psk.pms.constants.JSPFileNames;
-import com.psk.pms.model.*;
-import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
-import com.psk.pms.service.EmployeeService;
-import com.psk.pms.service.PurchaseService;
-import com.psk.pms.validator.SupplierValidator;
+import static com.psk.pms.Constants.APPROVED;
+import static com.psk.pms.Constants.PENDING_PURCHASE;
+import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
+import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
+import static com.psk.pms.constants.JSPFileNames.SUPPLIER_QUOTE_DETAILS;
+import static com.psk.pms.constants.JSPFileNames.VIEW_SUPPLIER_QUOTE_DETAILS;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -20,19 +20,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.psk.pms.Constants.*;
-import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
-import static com.psk.pms.constants.JSPFileNames.SUPPLIER_QUOTE_DETAILS;
-import static com.psk.pms.constants.JSPFileNames.VIEW_SUPPLIER_QUOTE_DETAILS;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+import com.psk.exception.ValidationException;
+import com.psk.pms.Constants;
+import com.psk.pms.model.Employee;
+import com.psk.pms.model.JsonData;
+import com.psk.pms.model.QuoteDetails;
+import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.Supplier;
+import com.psk.pms.service.EmployeeService;
+import com.psk.pms.service.PurchaseService;
+import com.psk.pms.validator.SupplierValidator;
 
 @Controller
 public class PurchaseController {
