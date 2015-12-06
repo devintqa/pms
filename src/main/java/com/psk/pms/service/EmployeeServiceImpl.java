@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.scheduling.annotation.Async;
 
 import com.psk.pms.Constants;
 import com.psk.pms.dao.EmployeeDAO;
@@ -136,13 +137,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         employee.setEnabled(action);
         employee.setEmployeeId(accessDetails.get("user"));
-        LOGGER.info("Employee Id :" + employee.getEmployeeId()
-                + " Employee Enabled : " + employee.getEnabled()
-                + " Employee mail Id: " + employee.getEmployeeMail());
 		int status = employeeDAO.manageUserAccess(employee);
-		// mailClient.sendAccessMail(employee.getEmployeeMail(),
-		// employee.getEmployeeId(), employee.getEnabled());
+		sendAsyncEmployeeStatusMail(action, employee.getEmployeeId());
 		return status;
+	}
+	
+	@Async
+	private void sendAsyncEmployeeStatusMail(String action, String employeeId){
+		Employee employee = getEmployeeDetails(employeeId);
+        LOGGER.info("Employee Id :" + employee.getEmployeeId()
+        + " Employee Enabled : " + action
+        + " Employee mail Id: " + employee.getEmployeeMail());
+		mailClient.sendAccessMail(employee.getEmployeeMail(),
+		employee.getEmployeeId(), action);
 	}
 
 

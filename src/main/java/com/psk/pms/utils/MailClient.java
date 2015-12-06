@@ -47,7 +47,7 @@ public class MailClient {
 					+ "Now you can start using PMS Application to log into the system."
 					+ "<br><br>" + "Regards," + "<br>" + "PSK Team.";
 		} else if ("2".equalsIgnoreCase(action)) {
-			msg = "Dear User," + "<br><br>" + "Sorry !! Your account has been "
+			msg = "Dear User," + "<br><br>" + "Sorry, your account has been "
 					+ "<b>" + "DENIED" + "</b>" + " by the Admin." + "<br><br>"
 					+ "Regards," + "<br>" + "PSK Team.";
 		}
