@@ -11,7 +11,29 @@
 
 <script>
 $(document).ready(function () {
-	
+
+	if($('#projectType').val()=='Private') {
+        $('#workoutPercentage').attr("readonly", "readonly");
+	}
+
+	$('#workoutPercentage').click(
+	    function (event) {
+            if($("#workoutPercentage").prop("readonly")){
+                $("#workoutPercentage").notify("Not applicable for private project!", { position:"right" , className:"warn"});
+            }
+	    }
+	)
+
+	$('#projectType').change(
+	    function () {
+            if(this.value=='Private'){
+                $('#workoutPercentage').val('0');
+                $('#workoutPercentage').prop("readonly", true);
+            }else{
+                $('#workoutPercentage').prop("readonly", false);
+            }
+	    });
+
     if($('#isUpdate').val()=='Y') {
   	  	$("#aliasName").attr("readonly", "readonly");
   	    $("#mainAliasProjectName").attr("readonly", "readonly");
