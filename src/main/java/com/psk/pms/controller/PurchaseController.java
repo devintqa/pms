@@ -1,6 +1,5 @@
 package com.psk.pms.controller;
 
-import static com.psk.pms.Constants.APPROVED;
 import static com.psk.pms.Constants.PENDING_PURCHASE;
 import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
 import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
@@ -12,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -137,6 +137,7 @@ public class PurchaseController {
             quoteDetails.setSubmittedForApproval("Y");
         }
         quoteDetails.setSupplierQuoteDetails(supplierQuoteDetails);
+        quoteDetails.setEmployeeId(employeeId);
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierQuoteDetails, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
         }.getType());
@@ -148,40 +149,22 @@ public class PurchaseController {
     }
 
 
-    @RequestMapping(value = "/emp/myview/viewSupplierDetails/{projName}", method = RequestMethod.GET)
-    public String viewSupplierQuoteDetails(@PathVariable String projName,
-                                           @RequestParam(value = "itemName", required = true) String itemName,
-                                           Model model) {
-        LOGGER.info("Supplier detail update page for supplierId." + itemName);
-        QuoteDetails quoteDetails = new QuoteDetails();
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("projName", projName);
-        List<QuoteDetails.SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseSupplierDetails(projName, itemName, APPROVED);
-        quoteDetails.setSupplierQuoteDetails(purchaseList);
-        Gson gson = new Gson();
-        JsonElement element = gson.toJsonTree(purchaseList, new TypeToken<List<QuoteDetails.SupplierQuoteDetails>>() {
-        }.getType());
-        JsonArray jsonArray = element.getAsJsonArray();
-        quoteDetails.setQuoteDetailsValue(jsonArray.toString());
-        model.addAttribute("quoteDetailsForm", quoteDetails);
-        return VIEW_SUPPLIER_QUOTE_DETAILS;
-    }
-
 
     @RequestMapping(value = "/emp/myview/viewPurchaseDetails/{projName}", method = RequestMethod.GET)
     public String viewPurchaseDetails(@PathVariable String projName,
                                       @RequestParam(value = "itemName", required = true) String itemName,
                                       @RequestParam(value = "itemType", required = true) String itemType,
                                       @RequestParam(value = "supplierName", required = true) String supplierName,
+                                      @RequestParam(value = "employeeId", required = true) String employeeId,
+                                      @RequestParam(value = "brandName" ) String brandName,
                                       Model model) {
         LOGGER.info("Supplier detail update page for supplierId." + itemName);
         QuoteDetails quoteDetails = new QuoteDetails();
-        model.addAttribute("itemName", itemName);
-        model.addAttribute("projName", projName);
         quoteDetails.setProjName(projName);
         quoteDetails.setItemName(itemName);
-        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, itemType, supplierName);
-
+        quoteDetails.setItemType(itemType);
+        quoteDetails.setEmployeeId(employeeId);
+        QuoteDetails.SupplierQuoteDetails supplierDetails = purchaseService.getSupplierDetails(projName, itemName, supplierName,brandName);
         Gson gson = new Gson();
         JsonElement element = gson.toJsonTree(supplierDetails, new TypeToken<QuoteDetails.SupplierQuoteDetails>() {
         }.getType());
@@ -236,11 +219,10 @@ public class PurchaseController {
             validateAndStoreQuoteDetails(quoteDetails, PURCHASE_PENDING_APPROVAL);
             model.addAttribute("successMessage",
                     "Submitted for Approval");
+            jsonData.setSuccess(true);
         } catch (Exception e) {
-            jsonData.setData(e.getMessage());
-            return jsonData;
+            result = e.getMessage();
         }
-        jsonData.setSuccess(true);
         jsonData.setData(result);
         return jsonData;
     }
@@ -251,7 +233,7 @@ public class PurchaseController {
             @RequestBody QuoteDetails quoteDetails, Model model,
             SessionStatus status) {
         JsonData jsonData = new JsonData();
-        LOGGER.info("Store Controller : submitForApproval()");
+        LOGGER.info("Purchase Controller : submitForApproval()");
         String result = "Supplier Approved";
         try {
             quoteDetails.setSubmittedForApproval("Y");
@@ -268,26 +250,47 @@ public class PurchaseController {
         return jsonData;
     }
 
+
+    @RequestMapping(value = "/emp/myview/supplierQuoteDetails/rejectApproval.do", method = RequestMethod.POST)
+    @ResponseBody
+    public JsonData rejectApproval(
+            HttpServletRequest request, HttpServletResponse response) {
+        JsonData jsonData = new JsonData();
+        String projName = request.getParameter("projName");
+        String itemType = request.getParameter("itemType");
+        String itemName = request.getParameter("itemName");
+        LOGGER.info("Purchase Controller : rejectApproval()");
+        String result = "Supplier Details rejected successfully";
+        try {
+            purchaseService.rejectSuppliers(projName, itemType, itemName);
+            jsonData.setSuccess(true);
+        } catch (Exception e) {
+            result = e.getMessage();
+        }
+        jsonData.setData(result);
+        return jsonData;
+    }
+
     @RequestMapping(value = "/emp/myview/viewPurchaseDetails/savePurchaseDetails.do", method = RequestMethod.POST)
     public String savePurchaseDetails(
             @ModelAttribute("quoteDetailsForm") QuoteDetails quoteDetailsForm,
             Model model, BindingResult result, SessionStatus status)
             throws JsonParseException, JsonMappingException, IOException {
-
         try {
             model.addAttribute("quoteDetailsForm", quoteDetailsForm);
             quoteDetailsForm.setSubmittedForApproval("A");
-            model.addAttribute("successMessage",
-                    "Supplier Approved");
+            supplierValidator.validate(quoteDetailsForm, result, "SAVE");
             ObjectMapper mapper = new ObjectMapper();
             SupplierQuoteDetails supplierQuoteDetails = mapper.readValue(quoteDetailsForm.getQuoteDetailsValue(), SupplierQuoteDetails.class);
             model.addAttribute("supplierDetails", supplierQuoteDetails);
             quoteDetailsForm.setSupplierQuoteDetails(Arrays.asList(supplierQuoteDetails));
-            purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
-            model.addAttribute("actionMessage",
-                    "Purchase Indent raised Successfully");
-
-
+            if (!result.hasErrors()) {
+                model.addAttribute("actionMessage",
+                        "Purchase Indent raised Successfully");
+                purchaseService.updateSupplierDetails(quoteDetailsForm, Constants.PURCHASED);
+            } else {
+                return VIEW_SUPPLIER_QUOTE_DETAILS;
+            }
         } catch (Exception e) {
             LOGGER.error("Error occurred while saving supplier details");
             model.addAttribute("actionMessage",

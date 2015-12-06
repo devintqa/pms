@@ -18,7 +18,8 @@ public class QuoteDetails {
 	private String tentativeDeliveryDate;
 	private Date sqlTentativeDeliveryDate;
 	private String comments;
-	
+	private String employeeId;
+
 	public String getTentativeDeliveryDate() {
 		return tentativeDeliveryDate;
 	}
@@ -42,8 +43,6 @@ public class QuoteDetails {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
-
-	
 
 	public Integer getProjId() {
 		return projId;
@@ -110,9 +109,14 @@ public class QuoteDetails {
 		this.itemQty = itemQty;
 	}
 
+	public String getEmployeeId() {
+		return employeeId;
+	}
 
+	public void setEmployeeId(String employeeId) {
+		this.employeeId = employeeId;
+	}
 
-	
 	public static class SupplierQuoteDetails {
 		private String supplierAliasName;
 		private String emailAddress;
@@ -123,7 +127,17 @@ public class QuoteDetails {
 		private String itemName;
 		private String itemQty;
 		private String itemType;
-		
+		private String brandName;
+		private String supplierType;
+		private String totalPrice;
+
+		public String getTotalPrice() {
+			return totalPrice;
+		}
+
+		public void setTotalPrice(String totalPrice) {
+			this.totalPrice = totalPrice;
+		}
 
 		public String getItemType() {
 			return itemType;
@@ -207,6 +221,48 @@ public class QuoteDetails {
 
 		public void setSupplierQuoteStatus(String supplierQuoteStatus) {
 			this.supplierQuoteStatus = supplierQuoteStatus;
+		}
+
+		public String getBrandName() {
+			return brandName;
+		}
+
+		public void setBrandName(String brandName) {
+			this.brandName = brandName;
+		}
+
+		public String getSupplierType() {
+			return supplierType;
+		}
+
+		public void setSupplierType(String supplierType) {
+			this.supplierType = supplierType;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+
+			SupplierQuoteDetails that = (SupplierQuoteDetails) o;
+
+			if (!supplierAliasName.equals(that.supplierAliasName)
+					&& !brandName.equals(that.brandName)) {
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = supplierAliasName != null ? supplierAliasName
+					.hashCode() : 0;
+			result = 31 * result
+					+ (brandName != null ? brandName.hashCode() : 0);
+			return result;
 		}
 	}
 

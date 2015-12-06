@@ -660,8 +660,8 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public List<com.psk.pms.model.IndentDesc.ItemDetail> getIndentItemForRequestView(String projId) {
-        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<>();
-        String indentItemToRequestSql = "SELECT cast(group_concat(i.IndentId  ORDER BY i.IndentId ASC)as char) as \n" +
+        List<com.psk.pms.model.IndentDesc.ItemDetail> indentDescItemList = new ArrayList<com.psk.pms.model.IndentDesc.ItemDetail>();
+        String indentItemToRequestSql = "SELECT cast(group_concat(distinct(i.IndentId)  ORDER BY i.IndentId ASC)as char) as \n" +
                 "IndentList,idi.indentitemstatus, idi.ItemName, idi.ItemType, sum(idi.ItemQty) as ItemQty FROM project p,\n" +
                 "indentdescitem idi,indentdesc id, indent i where idi.indentDescId = id.indentdescid and p.projId = i.projId and idi.indentitemstatus in \n" +
                 "('PENDING PURCHASE','PENDING APPROVAL') and p.projId=? and  id.IndentId = i.indentid group by idi.ItemName,idi.indentitemstatus;";
@@ -672,12 +672,11 @@ public class ItemDAOImpl implements ItemDAO {
             com.psk.pms.model.IndentDesc.ItemDetail itemDetail = new com.psk.pms.model.IndentDesc.ItemDetail();
             itemDetail.setItemName((String) row.get("ItemName"));
             itemDetail.setItemType((String) row.get("ItemType"));
-            itemDetail.setItemQty(((Double) row.get("ItemQty")).toString());
+            itemDetail.setItemQty(row.get("ItemQty").toString());
             itemDetail.setIndentList((String) row.get("IndentList"));
             itemDetail.setIndentStatus((String) row.get("indentitemstatus"));
             indentDescItemList.add(itemDetail);
         }
-        System.out.println("(indentDescItemList.size()" + indentDescItemList.size());
         return indentDescItemList;
     }
 

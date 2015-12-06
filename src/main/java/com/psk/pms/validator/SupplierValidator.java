@@ -2,21 +2,25 @@ package com.psk.pms.validator;
 
 import com.mysql.jdbc.StringUtils;
 import com.psk.exception.ValidationException;
-import com.psk.pms.model.DispatchDetail;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.Supplier;
 import com.psk.pms.service.PurchaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
+import static com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import static com.psk.pms.validator.BulkUploadDetailsValidator.getDuplicateValues;
 
 public class SupplierValidator extends BaseValidator implements Validator {
 
@@ -46,6 +50,14 @@ public class SupplierValidator extends BaseValidator implements Validator {
 
         if (isNullOrEmpty(supplier.getTinNumber()) && isNullOrEmpty(supplier.getReason())) {
             errors.rejectValue("tinNumber", "tinNumber.incorrect", "Enter Tin number or Reason for not entering the Tin Number");
+        }
+
+        if (!StringUtils.isNullOrEmpty(supplier.getTinNumber())) {
+            boolean tinNumberExists = purchaseService.isTinNumberExists(supplier.getTinNumber());
+            if (tinNumberExists) {
+                errors.rejectValue("tinNumber", "tinNumber.incorrect", "Tin number already exist");
+            }
+
         }
 
         if (!"Y".equalsIgnoreCase(supplier.getIsUpdate())) {
@@ -78,16 +90,21 @@ public class SupplierValidator extends BaseValidator implements Validator {
     }
 
     public void validate(QuoteDetails quoteDetails) throws ValidationException {
-        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
+        List<SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
         if (null == supplierQuoteDetails || supplierQuoteDetails.isEmpty()) {
             throw new ValidationException("There are no Quote Details to be saved");
         }
-        for (QuoteDetails.SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
-            if (supplierQuoteDetail.getSupplierAliasName().isEmpty() || supplierQuoteDetail.getEmailAddress().isEmpty()) {
+        for (SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
+            if (supplierQuoteDetail.getSupplierAliasName().isEmpty()) {
                 throw new ValidationException("There are no Quote Details to be saved");
             }
             if (supplierQuoteDetail.getQuotedPrice().isEmpty()) {
                 throw new ValidationException("Quote price is not available for " + supplierQuoteDetail.getSupplierAliasName());
+            }
+            Supplier supplierDetail = purchaseService.getSupplierDetail(supplierQuoteDetail.getSupplierAliasName());
+            if("Dealer".equalsIgnoreCase(supplierDetail.getSupplierType())){
+                validateDealerDetails(supplierQuoteDetail,quoteDetails);
+
             }
             if (!StringUtils.isNullOrEmpty(supplierQuoteDetail.getQuotedPrice())) {
                 pattern = Pattern.compile(AMOUNT_PATTERN);
@@ -100,27 +117,51 @@ public class SupplierValidator extends BaseValidator implements Validator {
             }
         }
     }
-    
+
+    private void validateDealerDetails(SupplierQuoteDetails supplierQuoteDetail, QuoteDetails quoteDetails) throws ValidationException {
+        if(StringUtils.isNullOrEmpty(supplierQuoteDetail.getBrandName())){
+            throw new ValidationException("Brand name cant be empty for" + supplierQuoteDetail.getSupplierAliasName());
+        }
+        int size = quoteDetails.getSupplierQuoteDetails().size();
+        Set<SupplierQuoteDetails> supplierQuoteDetails = new HashSet<>();
+        Set<String> duplicateItems = new HashSet<>();
+        for (SupplierQuoteDetails details : quoteDetails.getSupplierQuoteDetails()) {
+            if (!supplierQuoteDetails.add(details)) {
+                duplicateItems.add(details.getSupplierAliasName());
+            }
+        }
+
+        StringBuilder duplicateValues = getDuplicateValues(duplicateItems);
+        if(size>supplierQuoteDetails.size()){
+            throw new ValidationException("Brand name cant Same for "+duplicateValues.toString());
+        }
+    }
+
     public void validateSupplier(QuoteDetails quoteDetails) throws ValidationException {
-        List<QuoteDetails.SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
+        List<SupplierQuoteDetails> supplierQuoteDetails = quoteDetails.getSupplierQuoteDetails();
         if (null == supplierQuoteDetails || supplierQuoteDetails.isEmpty()) {
             throw new ValidationException("There are no Supplier Details to Approve");
         }
-        for (QuoteDetails.SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
+        for (SupplierQuoteDetails supplierQuoteDetail : supplierQuoteDetails) {
             if (supplierQuoteDetail.getSupplierAliasName().isEmpty()) {
                 throw new ValidationException("There are no Supplier Details to Approve");
             }
             if (StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
-                
-                    throw new ValidationException("Enter Approving Quantity");
+
+                throw new ValidationException("Enter Approving Quantity");
             }
             if (!StringUtils.isNullOrEmpty(supplierQuoteDetail.getItemQty())) {
                 pattern = Pattern.compile(AMOUNT_PATTERN);
                 matcher = pattern.matcher(supplierQuoteDetail.getItemQty());
                 if (!matcher.matches()) {
                     throw new ValidationException("Enter a numeric value and only a single dot is allowed for Approving Quantity field");
-                } 
+                }
             }
         }
+    }
+
+    public void validate(QuoteDetails quoteDetailsForm, BindingResult result, String save) {
+        ValidationUtils.rejectIfEmptyOrWhitespace(result, "tentativeDeliveryDate",
+                "required.tentativeDeliveryDate", "Enter Tentative Delivery Date");
     }
 }

@@ -15,6 +15,7 @@ public class Supplier {
     private String reason;
     private Date lastUpdatedAt;
     private String isUpdate;
+    private String supplierType;
 
     public Integer getSupplierId() {
         return supplierId;
@@ -102,5 +103,13 @@ public class Supplier {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public String getSupplierType() {
+        return supplierType;
+    }
+
+    public void setSupplierType(String supplierType) {
+        this.supplierType = supplierType;
     }
 }

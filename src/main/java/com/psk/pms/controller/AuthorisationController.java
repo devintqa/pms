@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static com.mysql.jdbc.StringUtils.isNullOrEmpty;
 import static com.psk.pms.Constants.TEAM;
+import static com.psk.pms.constants.JSPFileNames.AUTHORIZATION;
 
 @Controller
 public class AuthorisationController {
@@ -48,7 +49,7 @@ public class AuthorisationController {
         model.addAttribute(Constants.AUTHORIZE, authorize);
         Map<String, String> aliasProjectNames = projectService.getAliasProjectNames();
         model.addAttribute("projectList", aliasProjectNames);
-        return "Authorization";
+        return AUTHORIZATION;
     }
 
     @RequestMapping(value = "/emp/myview/manageAccess/getProjectUserPrivilege.do", method = RequestMethod.GET)

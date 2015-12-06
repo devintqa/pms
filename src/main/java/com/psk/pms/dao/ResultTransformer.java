@@ -235,10 +235,19 @@ public class ResultTransformer {
     	supplierList.setItemName(row.get("itemName").toString());
     	supplierList.setItemType(row.get("itemType").toString());
     	supplierList.setAliasProjName(row.get("aliasProjName").toString());
+    	if(row.containsKey("brandName"))
+    	{
+    		supplierList.setBrandName(row.get("brandName").toString());
+    	}
     	supplierList.setSupplierQuoteStatus(row.get("supplierquotestatus").toString());
+    	if(row.containsKey("SupplierAliasName"))
+    	{
+    		supplierList.setSupplierAliasName(row.get("SupplierAliasName").toString());
+    	}
 		return supplierList;
 	}
-
+    
+  
 	IndentDesc buildIndentDesc(Map<String, Object> row) {
 		IndentDesc indentDesc = new IndentDesc();
 		indentDesc.setIndentId(row.get("IndentId").toString());

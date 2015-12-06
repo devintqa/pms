@@ -1,5 +1,6 @@
 package com.psk.pms.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.psk.pms.model.DispatchDetail;
@@ -11,7 +12,7 @@ import com.psk.pms.model.StoreDetail;
  */
 public interface StoreService {
 	
-    void saveStoreDetail(StoreDetail storeDetail);
+    void saveStoreDetail(StoreDetail storeDetail) throws IOException;
 
     List<StoreDetail> getStoreDetails(int projId);
 
@@ -32,4 +33,9 @@ public interface StoreService {
     List<DispatchDetail> getDispatchedDetails(DispatchDetail dispatchDetail);
     
     void saveReturnedDetail(DispatchDetail dispatchDetail);
+    
+    void updateSupplierQuoteDetailStatusAndIndentStatus(StoreDetail storeDetail, String status);
+    
+    Integer isRecordExists(String attribute);
+    
 }

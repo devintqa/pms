@@ -1,13 +1,5 @@
 package com.psk.pms.dao;
 
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_STOCK_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_STORE_DETAIL;
-import static com.psk.pms.dao.PmsMasterQuery.CREATE_TRANSACTION_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_DISPATCH_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_STOCK_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.GET_STORE_DETAILS;
-import static com.psk.pms.dao.PmsMasterQuery.UPDATE_STOCK_DETAILS;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -26,6 +18,8 @@ import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 import com.psk.pms.utils.DateFormatter;
 
+import static com.psk.pms.dao.PmsMasterQuery.*;
+
 /**
  * Created by Sony on 26-09-2015.
  */
@@ -39,11 +33,12 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 	public void saveStoreDetail(StoreDetail storeDetail) {
 		jdbcTemplate.update(CREATE_STORE_DETAIL, storeDetail.getProjId(),
 				storeDetail.getItemType(), storeDetail.getItemName(),
-				storeDetail.getSupplierName(), storeDetail.getVehicleNumber(),
+				storeDetail.getSupplierName(), storeDetail.getInvoiceNumber(),
+				storeDetail.getVehicleNumber(),
 				storeDetail.getRecievedQuantity(),
 				storeDetail.getRecievedDate(), storeDetail.getRecievedBy(),
 				storeDetail.getCheckedBy(), storeDetail.getTripSheetNumber(),
-				storeDetail.getStoreType(), storeDetail.getComments());
+				storeDetail.getStoreType(), storeDetail.getComments(),storeDetail.getBrandName());
 	}
 
 	@Override
@@ -224,6 +219,7 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		Date recievedDate = (Date) row.get("recievedDate");
 		detail.setSqlRecievedDate(recievedDate);
 		detail.setRecievedDate(recievedDate.toString());
+        detail.setBrandName((String) row.get("brandName"));
 		return detail;
 	}
 
@@ -252,5 +248,34 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
 		Integer result = jdbcTemplate.queryForInt(sql);
 		return result.toString();
 	}
+	
+	 @Override
+	    public void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status) {
+		 jdbcTemplate.update(UPDATE_SUPPLIER_QUOTE_STATUS, status, storeDetail.getItemName(),
+				 storeDetail.getItemType(), storeDetail.getSupplierName(), storeDetail.getAliasProjName(),storeDetail.getBrandName());
+	 }
+	 
+	 
+
+	@Override
+	public Integer isRecordExists(String attribute) {
+		 String sql = "select count(*) from storedetail where invoiceNumber ='"+attribute+"' or tripSheetNumber='"+attribute+"'";
+	      return jdbcTemplate.queryForInt(sql);
+	}
+
+
+    @Override
+    public boolean isPendingToReceive(String aliasProjName) {
+        String sql = "select count(*) from indentdescitem where IndentDescId in (select IndentDescId from indentdesc where IndentId in (\n" +
+                "select IndentId from indent where ProjId in (select ProjId from project where AliasProjName= ?))) and IndentItemStatus not in ('RECEIVED')";
+        return jdbcTemplate.queryForObject(sql, Integer.class, aliasProjName) != 0;
+    }
+
+    @Override
+    public void updateIndentDescStatusForStore(String indentStatus, String itemName, String itemType, Integer projId) {
+        jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS_FOR_STORE, indentStatus, itemName, itemType, projId);
+    }
+
+
 
 }

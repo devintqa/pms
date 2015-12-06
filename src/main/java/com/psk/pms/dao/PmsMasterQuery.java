@@ -71,8 +71,8 @@ public class PmsMasterQuery {
             + "FROM projectdesc p INNER JOIN govprojectdesc pp on p.ProjId = pp.ProjId "
             + "and p.AliasDescription = pp.AliasDescription";
 
-	public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric, "
-			+ "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId , d.ConversionRate";
+    public static final String projDescDetail = "SELECT d.ProjId, d.SubProjId, d.SerialNumber, d.WorkType, d.Quantity, d.Metric, "
+            + "d.Description, d.AliasDescription, d.PricePerQuantity, d.TotalCost, d.ProjDescId , d.ConversionRate";
 
     public static final String baseDescDetail = "SELECT BaseDescId, WorkType, Metric, Quantity, PricePerQuantity, LastUpdatedBy, LastUpdatedAt, Description, BaseDescription FROM basedesc";
 
@@ -164,8 +164,8 @@ public class PmsMasterQuery {
     public static final String DEACTIVATE_EXISTING_LEAD_DETAILS = "update projectLeadDetail set active = 0 where projectId = ? and subProjectId = ?";
 
 
-    public static final String CREATE_STORE_DETAIL = "INSERT INTO storeDetail (ProjId , itemType , itemName , supplierName ,vehicleNo ,quantityRecieved, recievedDate , recievedBy, checkedBy, tripSheetNumber, storeType, comments)\n"
-			+ "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static final String CREATE_STORE_DETAIL = "INSERT INTO storeDetail (ProjId , itemType , itemName , supplierName, invoiceNumber, vehicleNo, quantityRecieved, recievedDate , recievedBy, checkedBy, tripSheetNumber, storeType, comments,brandName)\n"
+            + "VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
     public static final String GET_STORE_DETAILS = "select * from storeDetail where projId = ?";
 
@@ -196,27 +196,40 @@ public class PmsMasterQuery {
     public static final String DELETE_SUPPLIER_DETAIL = "delete from supplierdetails where SupplierId = ?";
 
     public static final String INSERT_SUPPLIER_DETAIL = "insert into supplierdetails ( TINNumber, Reason,SupplierName, SupplierAliasName," +
-            "PhoneNumber, Email, SupplierDescription, LastUpdatedBy, LastUpdatedAt) values ( ?, ?, ?, ?, ?,?, ?, ?, ?)";
+            "PhoneNumber, Email, SupplierDescription, LastUpdatedBy, LastUpdatedAt,SupplierType) values ( ?, ?, ?, ?, ?,?, ?, ?, ?,?)";
 
     public static final String UPDATE_SUPPLIER_DETAIL = "update supplierdetails set TINNumber = ?,Reason =?, SupplierName = ?," +
-            "SupplierAliasName = ?, PhoneNumber = ?, Email = ?, SupplierDescription = ?, LastUpdatedBy = ?, LastUpdatedAt = ?" +
+            "SupplierAliasName = ?, PhoneNumber = ?, Email = ?, SupplierDescription = ?, LastUpdatedBy = ?,SupplierType = ?, LastUpdatedAt = ?" +
             " where SupplierId = ?";
 
     public static final String ALIAS_SUPPLIER_NAME_EXIST = "select count(*) from supplierdetails where SupplierAliasName = ?";
 
     public static final String CREATE_QUOTE_DETAILS = "insert into supplierQuoteDetails(AliasProjName, itemName, itemQty, ItemType," +
-            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,supplierQuoteStatus) values (?,?,?,?,?,?,?,?,?)";
+            "SupplierAliasName,emailAddress,PhoneNumber,quotePrice,totalPrice,supplierQuoteStatus,brandName) values (?,?,?,?,?,?,?,?,?,?,?)";
 
-    public static final String GET_SUPPLIER_QUOTE_DETAILS = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
+    public static final String GET_SUPPLIER_QUOTE_DETAILS = "select sq.AliasProjName,sq.ItemName,sq.ItemType,sq.ItemQty,sq.SupplierAliasName,sq.emailAddress,sq.PhoneNumber,\n" +
+            "sq.quotePrice,sq.totalPrice,sq.supplierQuoteStatus,sq.brandName,sq.tentativeDeliveryDate,sd.supplierType,sq.comments from supplierquotedetails sq,supplierdetails sd \n" +
+            "where sq.AliasProjName= ? and sq.ItemType=? and sq.ItemName=? and sq.SupplierAliasName=sd.SupplierAliasName";
 
     public static final String DELETE_SUPPLIER_QUOTE_DETAILS = "delete from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=?";
 
     public static final String UPDATE_INDENT_DESC_STATUS = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus =?" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
-    
-    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, supplierQuoteStatus = ?, tentativeDeliveryDate = ?, "+
-    		"comments = ? where ItemName = ? and  SupplierAliasName = ? and aliasProjName=?";
+
+    public static final String UPDATE_SUPPLIER_QUOTE_DETAILS = "update supplierQuoteDetails set itemQty = ?, totalPrice = ?, supplierQuoteStatus = ?, tentativeDeliveryDate = ?, " +
+            "comments = ? where ItemName = ? and  SupplierAliasName = ? and aliasProjName=? and brandName=?";
 
 
-    public static final String GET_SUPPLIER_DETAIL = "select * from supplierQuoteDetails where AliasProjName = ? and itemType=? and itemName=? and supplierAliasName =?";
+    public static final String GET_SUPPLIER_DETAIL = "select * from supplierQuoteDetails where AliasProjName = ?  and itemName=? and supplierAliasName =? and brandName=?";
+
+    public static final String UPDATE_INDENT_DESC_STATUS_FOR_PURCHASE = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and IndentItemStatus in ('APPROVED','PARTIALLY PURCHASED')" +
+            "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
+
+    public static final String GET_SUPPLIER_DETAIL_BY_STATUS = "select * from supplierQuoteDetails where AliasProjName = ? and itemName= ? and supplierAliasName = ? and supplierQuoteStatus = ? and brandName =?";
+
+    public static final String UPDATE_SUPPLIER_QUOTE_STATUS = "update supplierQuoteDetails set supplierQuoteStatus = ? where ItemName = ? and itemType = ? and  SupplierAliasName = ? and aliasProjName=? and brandName =?";
+
+    public static final String UPDATE_INDENT_DESC_STATUS_FOR_STORE = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus in ('APPROVED','PARTIALLY PURCHASED')" +
+            "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
+
 }

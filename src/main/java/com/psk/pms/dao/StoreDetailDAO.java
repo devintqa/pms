@@ -34,4 +34,12 @@ public interface StoreDetailDAO {
 	void saveReturnedDetails(DispatchDetail dispatchDetail, String returned);
 
 	String validateFieldUserForReturn(String projId, String fieldUser);
+	
+	void updateSupplierQuoteDetailStatus(StoreDetail storeDetail, String status);
+	
+	Integer isRecordExists(String attribute);
+
+    boolean isPendingToReceive(String aliasProjName);
+
+    void updateIndentDescStatusForStore(String indentStatus, String itemName, String itemType, Integer projId);
 }

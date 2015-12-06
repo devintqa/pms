@@ -1,32 +1,92 @@
 package com.psk.pms.model;
 
 import java.util.Date;
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * Created by Sony on 25-09-2015.
  */
 public class StoreDetail {
 
-	private int projId;
+	private Integer projId;
+	private String aliasProjName;
 	private String recievedDate;
 	private Date sqlRecievedDate;
 	private String itemType;
+	private String itemQty;
 	private String employeeId;
 	private String itemName;
+	private String invoiceNumber;
 	private String vehicleNumber;
 	private String recievedQuantity;
 	private String comments;
 	private String supplierName;
+	private String brandName;
 	private String recievedBy;
 	private String checkedBy;
 	private String tripSheetNumber;
 	private String storeType;
+	private String storeDetailsValue;
+	private String fileName;
+	private String filePath;
+	private List<MultipartFile> storeFiles;
 
-	public int getProjId() {
+	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public List<MultipartFile> getStoreFiles() {
+		return storeFiles;
+	}
+
+	public void setStoreFiles(List<MultipartFile> storeFiles) {
+		this.storeFiles = storeFiles;
+	}
+
+	public String getInvoiceNumber() {
+		return invoiceNumber;
+	}
+
+	public void setInvoiceNumber(String invoiceNumber) {
+		this.invoiceNumber = invoiceNumber;
+	}
+
+	public String getStoreDetailsValue() {
+		return storeDetailsValue;
+	}
+
+	public void setStoreDetailsValue(String storeDetailsValue) {
+		this.storeDetailsValue = storeDetailsValue;
+	}
+
+	public String getAliasProjName() {
+		return aliasProjName;
+	}
+
+	public void setAliasProjName(String aliasProjName) {
+		this.aliasProjName = aliasProjName;
+	}
+
+	public Integer getProjId() {
 		return projId;
 	}
 
-	public void setProjId(int projId) {
+	public void setProjId(Integer projId) {
 		this.projId = projId;
 	}
 
@@ -40,6 +100,14 @@ public class StoreDetail {
 
 	public Date getSqlRecievedDate() {
 		return sqlRecievedDate;
+	}
+
+	public String getItemQty() {
+		return itemQty;
+	}
+
+	public void setItemQty(String itemQty) {
+		this.itemQty = itemQty;
 	}
 
 	public void setSqlRecievedDate(Date sqlRecievedDate) {
@@ -134,4 +202,11 @@ public class StoreDetail {
 		this.storeType = storeType;
 	}
 
+    public String getBrandName() {
+        return brandName;
+    }
+
+    public void setBrandName(String brandName) {
+        this.brandName = brandName;
+    }
 }

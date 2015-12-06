@@ -12,86 +12,24 @@
 
 
 <script>
-	$(document)
-			.ready(
-					function() {
-						if ($('#itemType').val() == '--Please Select--') {
-							$("#itemNameField").hide();
-						} else {
-							$("#itemNameField").show();
-						}
-						$("#itemType")
-								.change(
-										function() {
-											var itemType = $('#itemType').val();
-											var projId = $('#projId').val();
-											var employeeId = $('#employeeId')
-													.val();
-											$
-													.ajax({
-														type : "GET",
-														url : "getItemNames.do",
-														cache : false,
-														data : "itemType="
-																+ itemType
-																+ "&projId="
-																+ projId
-																+ "&employeeId="
-																+ employeeId,
-														success : function(
-																response) {
-															if (response.success) {
-																var obj = jQuery
-																		.parseJSON(response.data);
-																var options = '';
-																for ( var key in obj) {
-																	var attrName = key;
-																	var attrValue = obj[key];
-																	options = options
-																			+ '<option value="' + attrValue + '">'
-																			+ attrValue
-																			+ '</option>';
-																}
-																$('#itemName')
-																		.html(
-																				options);
-															} else {
-																$(
-																		"#itemNameField")
-																		.hide();
-																$(
-																		"#dialog-confirm")
-																		.html(
-																				"Item name is not configured for the selected Item Type");
-																$(
-																		"#dialog-confirm")
-																		.dialog(
-																				{
-																					modal : true,
-																					title : "Warning!",
-																					height : 200,
-																					width : 300,
-																					buttons : {
-																						Ok : function() {
-																							$(
-																									this)
-																									.dialog(
-																											"close");
-																						}
-																					}
-																				});
-																$("#itemType")
-																		.prop(
-																				'selectedIndex',
-																				0);
-															}
-														}
+$(document)
+.ready(
+function () {
+    //add more file components if Add is clicked
+    $('#addFile')
+            .click(
+            function () {debugger;
+                var fileIndex = $('#fileTable tr')
+                        .children().length - 1;
+                $('#fileTable')
+                        .append(
+                                '<tr><td></td>'
+                                + '<td>  <input type="file" name="storeFiles[' + fileIndex + ']" />'
+                                + '</td></tr>');
+            });
 
-													});
-											$("#itemNameField").show();
-										});
+});
 
-					});
 </script>
 </head>
 
@@ -109,49 +47,72 @@
 
 		</div>
 		<div>
-			<form:form method="POST" commandName="storeDetailForm"
-				action="saveStoreDetail.do">
+			<form:form commandName="storeDetailForm" method="POST"
+				id="storeDetailForm" action="saveStoreDetail.do" enctype="multipart/form-data">
 				<center>
 					<fieldset style="margin: 1em; text-align: left;">
 						<legend>Store Details</legend>
-						<table>
-							<tr id="showAliasProject">
+						<table id = "fileTable">
+							<tr>
 								<td>Project Name <span id="colon">:</span>
 								</td>
-								<td><form:select path="projId" cssClass="inputText"
-										id="projId" items="${aliasProjectList}">
-									</form:select></td>
-								<td><form:errors path="projId" cssClass="error" /></td>
+								<td><form:input path="aliasProjName" cssClass="inputText"
+										id="aliasProjName"
+										value="${supplierQuoteDetails.aliasProjName}" readonly="true" /></td>
+								<td><form:errors path="aliasProjName" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Item Type<span id="colon">:</span></td>
-								<td><form:select path="itemType" cssClass="inputText"
-										id="itemType" items="${itemTypes}" /></td>
+								<td><form:input path="itemType" cssClass="inputText"
+										id="itemType" value="${supplierQuoteDetails.itemType}"
+										readonly="true" /></td>
 								<td><form:errors path="itemType" cssClass="error" /></td>
-								<td>
-									<div id="itemNameField">
-										Item Name
-										<form:select path="itemName" cssClass="inputText"
-											id="itemName" items="${itemNames}">
-
-											<option value="${storeDetailForm.itemName}"
-												selected="selected">${storeDetailForm.itemName}</option>
-
-										</form:select>
-									</div>
-								</td>
 							</tr>
+							<tr>
+								<td>Item Name<span id="colon">:</span></td>
+								<td><form:input path="itemName" cssClass="inputText"
+										id="itemName" value="${supplierQuoteDetails.itemName}"
+										readonly="true" /></td>
+							</tr>
+
+							<tr>
+								<td>Item Quantity<span id="colon">:</span></td>
+								<td><form:input path="itemQty" cssClass="inputText"
+										id="itemQty" value="${supplierQuoteDetails.itemQty}"
+										readonly="true" /></td>
+							</tr>
+							
 							<tr>
 								<td>Supplier Name<span id="colon">:</span>
 								</td>
-								<td><form:input path="supplierName"
-										placeholder="Enter Supplier Name" cssClass="inputText" /></td>
+								<td><form:input path="supplierName" id="supplierName"
+										cssClass="inputText"
+										value="${supplierQuoteDetails.supplierAliasName}"
+										readonly="true" /></td>
 								<td><form:errors path="supplierName" cssClass="error" /></td>
 							</tr>
+                            <tr>
+                                <td>Brand Name<span id="colon">:</span>
+                                </td>
+                                <td><form:input path="brandName" id="brandName"
+                                                cssClass="inputText"
+                                                value="${supplierQuoteDetails.brandName}"
+                                                readonly="true" /></td>
+                                <td><form:errors path="brandName" cssClass="error" /></td>
+                            </tr>
+							
+							<tr>
+								<td>Invoice Number<span id="colon">:</span>
+								</td>
+								<td><form:input path="invoiceNumber" id="invoiceNumber"
+										placeholder="Enter Invoice Number" cssClass="inputText" /></td>
+								<td><form:errors path="invoiceNumber" cssClass="error" /></td>
+							</tr>
+							 
 							<tr>
 								<td>Vehicle Number<span id="colon">:</span>
 								</td>
-								<td><form:input path="vehicleNumber"
+								<td><form:input path="vehicleNumber" id="vehicleNumber"
 										placeholder="Enter Vehicle Number" cssClass="inputText" /></td>
 								<td><form:errors path="vehicleNumber" cssClass="error" /></td>
 							</tr>
@@ -159,7 +120,8 @@
 								<td>Quantity Recieved<span id="colon">:</span>
 								</td>
 								<td><form:input path="recievedQuantity"
-										placeholder="Enter Recieved Quantity" cssClass="inputText" /></td>
+										id="recievedQuantity" placeholder="Enter Recieved Quantity"
+										cssClass="inputText" /></td>
 								<td><form:errors path="recievedQuantity" cssClass="error" /></td>
 							</tr>
 							<tr>
@@ -172,21 +134,21 @@
 							<tr>
 								<td>Recieved By<span id="colon">:</span>
 								</td>
-								<td><form:input path="recievedBy"
+								<td><form:input path="recievedBy" id="recievedBy"
 										placeholder="Enter Recieved By" cssClass="inputText" /></td>
 								<td><form:errors path="recievedBy" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>Checked By<span id="colon">:</span>
 								</td>
-								<td><form:input path="checkedBy"
+								<td><form:input path="checkedBy" id="checkedBy"
 										placeholder="Enter Checked By" cssClass="inputText" /></td>
 								<td><form:errors path="checkedBy" cssClass="error" /></td>
 							</tr>
 							<tr>
 								<td>TripSheet No<span id="colon">:</span>
 								</td>
-								<td><form:input path="tripSheetNumber"
+								<td><form:input path="tripSheetNumber" id="tripSheetNumber"
 										placeholder="Enter TripSheet Number" cssClass="inputText" /></td>
 								<td><form:errors path="tripSheetNumber" cssClass="error" /></td>
 							</tr>
@@ -195,28 +157,38 @@
 								<td>Store Type <span id="colon">:</span></td>
 								<td><form:radiobutton path="storeType" value="Inside Store"
 										id="insideStore" checked="true" />Inside Store</td>
-								<td><form:radiobutton path="storeType" value="Outside Store"
-										id="outsideStore" />Outside Store</td>
+								<td><form:radiobutton path="storeType"
+										value="Outside Store" id="outsideStore" />Outside Store</td>
 							</tr>
 							<tr>
 								<td>Comments<span id="colon">:</span>
 								</td>
-								<td><form:textarea path="comments"
+								<td><form:textarea path="comments" id="comments"
 										placeholder="Enter Comments" cssClass="inputText" rows="5"
 										cols="40" maxlength="2000" /></td>
 								<td><form:errors path="comments" cssClass="error" /></td>
 							</tr>
+							
+							 <tr>
+				                    <td>Upload<span id="colon">:</span>
+				                    </td>
+				                    <td><form:input name="storeFiles[0]" type="file" path="storeFiles"
+				                                    id="storeFiles"/></td>
+				                    <td><form:errors path="storeFiles" cssClass="error"/></td>
+		                </tr>
 
 							<tr></tr>
 						</table>
 					</fieldset>
 
 					<form:hidden path="employeeId" />
+					<form:hidden path="storeDetailsValue" id="storeDetailsValue" />
 
 					<table>
 						<tr>
 							<td></td>
-							<td><input class="button" type="submit" /></td>
+							<td><input class="button" type="submit"	value="Save" /></td>
+								<td> <input class="button" id="addFile" type="button" value="Add File"/></td>
 							<td></td>
 						</tr>
 					</table>
@@ -224,6 +196,10 @@
 				<br>
 			</form:form>
 		</div>
+		
+		<div id="result"
+                             style="text-align: left; font-family: arial; color: #007399; font-size: 16px;"></div>
+                        <br>
 		<div id="dialog-confirm"></div>
 	</div>
 	<footer>
