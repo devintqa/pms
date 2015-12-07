@@ -132,6 +132,11 @@ $(document).ready(function() {
                 	|| itemName.toUpperCase() == "STEEL 16MM" || itemName.toUpperCase() == "STEEL 20MM" || itemName.toUpperCase() == "STEEL 25MM"
                 	|| itemName.toUpperCase() == "STEEL 32MM" || itemName.toUpperCase() == "BINDING WIRE"){
                 	var itemQty = new_row.cells[3].getElementsByTagName('input')[0].value;
+                	if(itemQty == 0){
+                		 e.stopImmediatePropagation();
+               	 		$('#error').text('Please delete the items having value as 0 & then click next to proceed further');
+               	 		throw "Item quantity is null";
+                	}
                 }else{
                 	var itemQty = new_row.cells[3].textContent.trim();
                 }
@@ -226,7 +231,7 @@ $(document).on("keyup", "input[class = 'steelClass']", function() {
 		        		 }
 		        	 });
 		        	 if(currentSteelQty > expectedSteelQty){
-		        		 $('#error' + projDescId).text('Steel Quantity cannot exceed '+expectedSteelQty);
+		        		 $('#error' + projDescId).text('Quantity of Steel cannot exceed '+expectedSteelQty);
 		        		 $($(steelObj)).val('');
 		        	 }else{
 		        		 $('#error' + projDescId).text('');
@@ -282,6 +287,7 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
 								
                             	 if(response[i].itemName.toUpperCase() == "STEEL"){
                             		 insertSteelTypes(itemTable, response[i]);
+                            		 $('#steelQty'+projDescId+indentDescId).text('Quantity of Steel: '+response[i].itemQty);
                             	 }else{
 	                                var new_row = itemTable.insertRow(0);
 	                                var cell1 = new_row.insertCell(0);
@@ -399,7 +405,8 @@ function deleteItemRow(row) {
 								</tr>
 								<tr><td></td></tr>
 							</table>
-							
+							<p id="steelQty${indentDesc.projDescId}${indentDesc.indentDescId}"></p>
+							<br>
 							<table aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" id="itemTbl${indentDesc.projDescId}${indentDesc.indentDescId}" border="1" class="gridView">
 								
 								<tr>
