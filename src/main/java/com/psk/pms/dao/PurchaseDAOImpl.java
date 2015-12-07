@@ -362,11 +362,10 @@ public class PurchaseDAOImpl implements PurchaseDAO {
         String sql = null;
         List<SupplierQuoteDetails> supplierList = new ArrayList<>();
         if (null != status) {
-            sql = "select sq.aliasprojName,sq.SupplierAliasName,sq.brandName,sum(sd.quantityRecieved)receivedQty,sq.ItemName,sq.ItemType\n" +
+            sql = "select sq.aliasprojName,sq.SupplierAliasName,sq.brandName,sd.quantityRecieved receivedQty,sq.ItemName,sq.ItemType\n" +
                     " from supplierquotedetails sq,storedetail sd where sq.itemName = sd.itemName and sq.brandName= sd.brandName\n" +
-                    " and sq.supplierAliasName=sd.supplierName and sq.supplierQuoteStatus=? group by sq.supplierAliasName,\n" +
-                    " sq.brandName,sq.itemName and sq.aliasProjName in (select aliasProjName from project where projId in(\n" +
-                    " select projectId from authoriseproject where empId = ?));";
+                    " and sq.supplierAliasName=sd.supplierName and sq.supplierQuoteStatus = ?  and sq.aliasProjName in (select aliasProjName from project where projId in(\n" +
+                    " select projectId from authoriseproject where empId = ?))";
         }
         List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
         for (Map<String, Object> row : rows) {

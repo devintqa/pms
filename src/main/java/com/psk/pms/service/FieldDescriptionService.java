@@ -34,4 +34,5 @@ public interface FieldDescriptionService {
 
 	Map<String, String> isActiveIndentExistForDescription(String projId);
 
+	List<Indent> getIndentListByStatusForPurchaseTeam(String pendingPurchase, String empId);
 }

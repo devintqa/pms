@@ -30,7 +30,7 @@ public class PurchaseEmployeeTeam implements EmployeeTeam {
 
     @Override
     public void performTeamActivity(Model model, String empId) {
-        List<Indent> indentList = fieldDescriptionService.getIndentListByStatus(Constants.PENDING_PURCHASE,empId);
+        List<Indent> indentList = fieldDescriptionService.getIndentListByStatusForPurchaseTeam(Constants.PENDING_PURCHASE,empId);
         List<SupplierQuoteDetails> purchaseList = purchaseService.getPurchaseListByStatus(Constants.APPROVED,empId);
         List<SupplierQuoteDetails> purchaseListForPayment = purchaseService.getSuppliersForPayment(Constants.RECEIVED,empId);
         if (!indentList.isEmpty()) {

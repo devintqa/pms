@@ -399,6 +399,22 @@ public class FieldDescriptionDAOImpl implements FieldDescriptionDAO {
     }
 
     @Override
+    public List<Indent> getIndentListByStatusForPurchaseTeam(String status, String empId) {
+        List<Indent> indentList = new ArrayList<Indent>();
+        String sql = null;
+        if (null != status) {
+            sql = "SELECT i.IndentId, i.StartDate, i.EndDate, i.Status, i.ProjId, p.aliasProjName from Indent i, Project p where" +
+                    " i.ProjId = p.ProjId and i.Status= ? and p.projId in (select projectId from authoriseproject where empId = ?)  group by AliasProjName";
+        }
+        List<Map<String, Object>> rows = jdbcTemplate.queryForList(sql, status, empId);
+
+        for (Map<String, Object> row : rows) {
+            indentList.add(transformer.buildIndent(row));
+        }
+        return indentList;
+    }
+
+    @Override
     public Integer updateIndentDescription(Indent indent) {
         Integer indentId = new Integer(indent.getIndentId());
         try {

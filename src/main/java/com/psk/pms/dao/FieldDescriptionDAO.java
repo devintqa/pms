@@ -38,4 +38,5 @@ public interface FieldDescriptionDAO {
 
 	Map<String, String> isActiveIndentExistForDescription(String projId);
 
+    List<Indent> getIndentListByStatusForPurchaseTeam(String pendingPurchase, String empId);
 }
