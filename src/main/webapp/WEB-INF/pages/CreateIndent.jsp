@@ -11,11 +11,11 @@
 var initDocHash = '';
 function makeHashOnLoad(){
 	$("div[name = 'collapse']").each(function() {
-		var tmp = $(this).children('fieldset').text();
+		var tmp = $($(this).children('fieldset').children()[1]).html();
 		tmp = CryptoJS.MD5(tmp);
 		initDocHash = initDocHash + tmp;
 	});
-	console.log(initDocHash);
+	console.log("initDocHash: "+initDocHash);
 }
 </script>
 <title>PMS :: Create Indent</title>
@@ -117,28 +117,24 @@ $(document).ready(function() {
             //console.log(itemTable);
             var tableLength = $("#itemTbl" + projDescId + indentDescId).rowCount();
             //console.log("tableLength="+tableLength);
-            var tmp = $(this).children('fieldset').text();
+            var tmp = $($(this).children('fieldset').children()[1]).html();
             tmp = CryptoJS.MD5(tmp);
             currentDocHash = currentDocHash + tmp;
 
             for (i = 1; i < tableLength; i++) {
                 var new_row = itemTable.rows[i];
-                var itemType = new_row.cells[0].innerHTML;
-                var itemUnit = new_row.cells[2].innerHTML;
+                var itemType = new_row.cells[0].textContent;
+                var itemUnit = new_row.cells[2].textContent;
                 
                 var itemName = new_row.cells[1].innerHTML;
                 
-                if(itemName.toUpperCase() == "STEEL 10MM" || itemName.toUpperCase() == "STEEL 12MM" || itemName.toUpperCase() == "STEEL 16MM"
-               		|| itemName.toUpperCase() == "STEEL 20MM" || itemName.toUpperCase() == "STEEL 25MM" || itemName.toUpperCase() == "STEEL 32MM"
-               		|| itemName.toUpperCase() == "BINDING WIRE"){
+                if(itemName.toUpperCase() == "STEEL 8MM" || itemName.toUpperCase() == "STEEL 10MM" || itemName.toUpperCase() == "STEEL 12MM" 
+                	|| itemName.toUpperCase() == "STEEL 16MM" || itemName.toUpperCase() == "STEEL 20MM" || itemName.toUpperCase() == "STEEL 25MM"
+                	|| itemName.toUpperCase() == "STEEL 32MM" || itemName.toUpperCase() == "BINDING WIRE"){
                 	var itemQty = new_row.cells[3].getElementsByTagName('input')[0].value;
                 }else{
-                	var itemQty = new_row.cells[3].innerHTML;
+                	var itemQty = new_row.cells[3].textContent.trim();
                 }
-                
-//                 if (new_row.cells[1].getElementsByTagName('select')[0]) {
-//                     var itemName = new_row.cells[1].getElementsByTagName('select')[0].value;
-//                 }
                 
                 var obj = new ItemDetail(itemType, itemName, itemUnit, itemQty);
                 if (itemType && itemName && itemUnit && itemQty) {
@@ -171,9 +167,9 @@ $(document).ready(function() {
         indent['indentDescList'] = indentDescArray;
         indent['indentId'] = indentId;
         indent['status'] = indentStatus;
-        console.log(currentDocHash);
-        console.log(JSON.stringify(indent));
-
+        console.log(currentDocHash +"="+ initDocHash);
+//         console.log(JSON.stringify(indent));
+		
         if (startDate && endDate) {
         	if (currentDocHash != initDocHash) {
                 $.ajax({
@@ -191,7 +187,7 @@ $(document).ready(function() {
                     }
                 });
             } else {
-		            window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus;
+		           window.location = "/pms/emp/myview/indent/itemToRequest?employeeId="+employeeId+"&indentId="+indentId+"&status="+indentStatus;
             }
         } else {
                 $('#error').text('Date field value is missing!');
@@ -203,31 +199,43 @@ $(document).ready(function() {
 
 $(document).on("keyup", "input[class = 'steelClass']", function() {
 	
-	var userRole = $(this).val();
-	var tblId = $(this).closest("table").attr('id');
-	console.log("key press: "+tblId);
-	var projDescId = $("#"+tblId+"").attr('aria-projdesc-id');
-	var indentDescId =  $("#"+tblId+"").attr('aria-indentdesc-id');
-	var indentQty = $("#plannedQty"+projDescId+indentDescId).val();
-	var currentSteelQty = 0;
-	var expectedSteelQty =  $.ajax({	
-         type: "GET",
-         url: "getSteelQty",
-         contentType: "application/json",
-         cache: false,
-         data: "projDescId=" + projDescId + "&indentQty=" + indentQty,
-         success: function(response) {
-        	 var expectedSteelQty = response;
-        	 $("table[id= '"+tblId+"']").find("input[class='steelClass']").each(function() {
-        		 currentSteelQty = currentSteelQty + parseFloat($(this).val());
-        	 });
-        	 if(currentSteelQty > expectedSteelQty){
-        		 $('#error' + projDescId).text('Steel Quantity cannot exceed '+expectedSteelQty);
-        	 }else{
-        		 $('#error' + projDescId).text('');
-        	 }
-         }
-	 });
+    var valid = /^\d+(\.\d{0,2})?$/.test($(this).val());
+    var val = $(this).val();
+    if (!valid) {
+        console.log("Invalid input!");
+        $(this).val('');
+    } else {
+			var steelObj = $(this);
+			var tblId = $(this).closest("table").attr('id');
+			console.log("key press: "+tblId);
+			var projDescId = $("#"+tblId+"").attr('aria-projdesc-id');
+			var indentDescId =  $("#"+tblId+"").attr('aria-indentdesc-id');
+			var indentQty = $("#plannedQty"+projDescId+indentDescId).val();
+			var currentSteelQty = 0;
+			var expectedSteelQty =  $.ajax({	
+		         type: "GET",
+		         url: "getSteelQty",
+		         contentType: "application/json",
+		         cache: false,
+		         data: "projDescId=" + projDescId + "&indentQty=" + indentQty,
+		         success: function(response) {
+		        	 var expectedSteelQty = response;
+		        	 $("table[id= '"+tblId+"']").find("input[class='steelClass']").each(function() {
+		        		 if($(this).val()){
+		        		 	currentSteelQty = currentSteelQty + parseFloat($(this).val());
+		        		 }
+		        	 });
+		        	 if(currentSteelQty > expectedSteelQty){
+		        		 $('#error' + projDescId).text('Steel Quantity cannot exceed '+expectedSteelQty);
+		        		 $($(steelObj)).val('');
+		        	 }else{
+		        		 $('#error' + projDescId).text('');
+		        		 $(steelObj).attr('value',$($(steelObj)).val());
+		        	 }
+		         }
+			 });
+			
+    }
 	 
 });
 
@@ -308,7 +316,7 @@ $(document).on("keyup", "input[name = 'plannedQty']", function() {
 });
 
 function insertSteelTypes(itemTable, response){
-	var steel = ["STEEL 10MM", "STEEL 12MM", "STEEL 16MM", "STEEL 20MM", "STEEL 25MM", "STEEL 32MM", "BINDING WIRE"];
+	var steel = ["STEEL 8MM", "STEEL 10MM", "STEEL 12MM", "STEEL 16MM", "STEEL 20MM", "STEEL 25MM", "STEEL 32MM", "BINDING WIRE"];
 	
 	for (j = 0; j < steel.length; j++) {
 		
@@ -409,7 +417,7 @@ function deleteItemRow(row) {
 										<td>${row.itemUnit}</td>
 										<td>
 											<c:choose>
-												<c:when test="${fn:contains('STEEL 10MM, STEEL 12MM, STEEL 16MM, STEEL 20MM, STEEL 25MM, STEEL 32MM, BINDING WIRE', row.itemName)}">
+												<c:when test="${fn:contains('STEEL 8MM, STEEL 10MM, STEEL 12MM, STEEL 16MM, STEEL 20MM, STEEL 25MM, STEEL 32MM, BINDING WIRE', row.itemName)}">
 													<input id="steel" class="steelClass" type="input" value="${row.itemQty}"/>
 												</c:when>    
 												<c:otherwise>
