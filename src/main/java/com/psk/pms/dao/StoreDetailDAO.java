@@ -42,4 +42,6 @@ public interface StoreDetailDAO {
     boolean isPendingToReceive(String aliasProjName);
 
     void updateIndentDescStatusForStore(String indentStatus, String itemName, String itemType, Integer projId);
+    
+    StoreDetail getStoreDetails( String itemName, String itemType, String supplierName, String brandName, Integer projId);
 }

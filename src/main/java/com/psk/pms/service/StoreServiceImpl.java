@@ -16,6 +16,7 @@ import java.util.List;
 
 import com.psk.pms.dao.PurchaseDAO;
 import com.psk.pms.model.*;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -204,12 +205,37 @@ public class StoreServiceImpl implements StoreService {
         File files;
         String saveDirectory;
         LOGGER.info("method = uploadFiles() , Alias Project Name" + fileUpload.getAliasProjName());
-        files = new File("C:\\PMS\\" + fileUpload.getAliasProjName() + "\\StoreInvoice");
-        saveDirectory = "C:/PMS/" + fileUpload.getAliasProjName() + "/StoreInvoice/";
+        files = new File("C:\\PMS\\" + fileUpload.getAliasProjName() + "\\StoreInvoice\\" + fileUpload.getInvoiceNumber());
+        saveDirectory = "C:/PMS/" + fileUpload.getAliasProjName() + "/StoreInvoice/"+ fileUpload.getInvoiceNumber() +"/";
         createFileDirectory(files);
         List<MultipartFile> storeFiles = fileUpload.getStoreFiles();
         saveFiles(saveDirectory, storeFiles);
     }
+    
+    @Override
+	public List <StoreDetail> downloadFiles(StoreDetail downloadForm, String employeeId) {
+		String path = null;
+		String fileName;
+		List < StoreDetail > invoiceFileList = new ArrayList < StoreDetail > ();
+
+			path = "C:\\PMS\\" + downloadForm.getAliasProjName() + "\\StoreInvoice\\" + downloadForm.getInvoiceNumber();
+
+		File folder = new File(path);
+		File[] listOfFiles = folder.listFiles();
+		if (listOfFiles != null) {
+			for (int i = 0; i < listOfFiles.length; i++) {
+				StoreDetail fileUpload = new StoreDetail();
+				if (listOfFiles[i].isFile()) {
+					fileName = listOfFiles[i].getName();
+					fileUpload.setFileName(fileName);
+					fileUpload.setFilePath(listOfFiles[i].getAbsolutePath());
+					invoiceFileList.add(fileUpload);
+					LOGGER.info("File name : " + fileName);
+				}
+			}
+		}
+		return invoiceFileList;
+	}
 
     private void createFileDirectory(File files) {
         try {
@@ -243,6 +269,14 @@ public class StoreServiceImpl implements StoreService {
     public Integer isRecordExists(String attribute) {
         return storeDetailDAO.isRecordExists(attribute);
     }
+    
+    @Override
+    public StoreDetail getStoreDetails(String aliasProjName, String itemName, String itemType, String supplierName, String brandName) {
+    	Integer projectId = purchaseDAO.getProjectId(aliasProjName);
+        return storeDetailDAO.getStoreDetails( itemName, itemType, supplierName, brandName, projectId);
+    }
+    
+    
 
 
 }

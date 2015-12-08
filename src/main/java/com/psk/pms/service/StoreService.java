@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.psk.pms.model.DispatchDetail;
+import com.psk.pms.model.FileUpload;
 import com.psk.pms.model.StockDetail;
 import com.psk.pms.model.StoreDetail;
 
@@ -37,5 +38,9 @@ public interface StoreService {
     void updateSupplierQuoteDetailStatusAndIndentStatus(StoreDetail storeDetail, String status);
     
     Integer isRecordExists(String attribute);
+    
+    StoreDetail getStoreDetails(String aliasProjName, String itemName, String itemType, String supplierName, String brandName);
+
+	List<StoreDetail> downloadFiles(StoreDetail downloadForm, String employeeId);
     
 }

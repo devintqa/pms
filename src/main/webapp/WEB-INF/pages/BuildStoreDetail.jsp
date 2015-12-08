@@ -16,7 +16,7 @@ $(document)
 .ready(
 function () {
     //add more file components if Add is clicked
-    $('#addFile')
+    $('#addFileBtn')
             .click(
             function () {debugger;
                 var fileIndex = $('#fileTable tr')
@@ -27,8 +27,22 @@ function () {
                                 + '<td>  <input type="file" name="storeFiles[' + fileIndex + ']" />'
                                 + '</td></tr>');
             });
+    
+    <c:if test="${employeeObj.employeeTeam eq 'Purchase'}">
+    $('#itemRow').hide();
+    $('#uploadRow').hide();
+    $('#addFileBtn').hide();
+    $('#saveBtn').hide();
+    $('#recievedDate').attr("disabled", "true");
+    $("#storeDetailForm").find("input,textarea,select,a,radiobutton").attr("disabled", "true");
+    </c:if>
+    
+    $(function() {
+		var table = $("#projectFileList").dataTable();
+	})
 
 });
+
 
 </script>
 </head>
@@ -75,7 +89,7 @@ function () {
 										readonly="true" /></td>
 							</tr>
 
-							<tr>
+							<tr id="itemRow">
 								<td>Item Quantity<span id="colon">:</span></td>
 								<td><form:input path="itemQty" cssClass="inputText"
 										id="itemQty" value="${supplierQuoteDetails.itemQty}"
@@ -169,7 +183,7 @@ function () {
 								<td><form:errors path="comments" cssClass="error" /></td>
 							</tr>
 							
-							 <tr>
+							 <tr id="uploadRow">
 				                    <td>Upload<span id="colon">:</span>
 				                    </td>
 				                    <td><form:input name="storeFiles[0]" type="file" path="storeFiles"
@@ -187,11 +201,42 @@ function () {
 					<table>
 						<tr>
 							<td></td>
-							<td><input class="button" type="submit"	value="Save" /></td>
-								<td> <input class="button" id="addFile" type="button" value="Add File"/></td>
+							<td><input class="button" id="saveBtn" type="submit"	value="Save" /></td>
+								<td> <input class="button" id="addFileBtn" type="button" value="Add File"/></td>
 							<td></td>
 						</tr>
 					</table>
+		<div>
+			<c:if test="${invoiceFileSize gt 0}">
+			<h1 style="text-align: center; color: #007399; font-size: 24px;">Uploaded 
+				File Details</h1>
+	
+				<table id="projectFileList" class="gridView">
+					<thead>
+						<tr>
+							<th>File Name</th>
+							<th>File Path</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:if test="${not empty invoiceFileList}">
+							<c:forEach var="fileDoc" items="${invoiceFileList}">
+								<tr>
+									<td>${fileDoc.fileName}</td>
+									<td>${fileDoc.filePath}</td>
+									<td><a
+										href="/pms/emp/myview/downloadFile/downloadFiles.web?path=${fileDoc.filePath}">
+											Download File </a></td>
+								</tr>
+							</c:forEach>
+						</c:if>
+					</tbody>
+				</table>
+				<br>
+				<br>
+			</c:if>
+		</div>
 				</center>
 				<br>
 			</form:form>

@@ -3,10 +3,12 @@ package com.psk.pms.controller;
 import static com.psk.pms.Constants.PENDING_PURCHASE;
 import static com.psk.pms.Constants.PURCHASE_PENDING_APPROVAL;
 import static com.psk.pms.constants.JSPFileNames.BUILD_SUPPLIER;
+import static com.psk.pms.constants.JSPFileNames.BUILD_STORE_DETAIL;
 import static com.psk.pms.constants.JSPFileNames.SUPPLIER_QUOTE_DETAILS;
 import static com.psk.pms.constants.JSPFileNames.VIEW_SUPPLIER_QUOTE_DETAILS;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.List;
 
@@ -32,16 +34,20 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.psk.exception.ValidationException;
 import com.psk.pms.Constants;
 import com.psk.pms.model.Employee;
+import com.psk.pms.model.FileUpload;
 import com.psk.pms.model.JsonData;
 import com.psk.pms.model.QuoteDetails;
 import com.psk.pms.model.QuoteDetails.SupplierQuoteDetails;
+import com.psk.pms.model.StoreDetail;
 import com.psk.pms.model.Supplier;
 import com.psk.pms.service.EmployeeService;
 import com.psk.pms.service.PurchaseService;
+import com.psk.pms.service.StoreService;
 import com.psk.pms.validator.SupplierValidator;
 
 @Controller
@@ -49,6 +55,9 @@ public class PurchaseController {
 
     @Autowired
     private PurchaseService purchaseService;
+    
+    @Autowired
+    private StoreService storeService;
 
     @Autowired
     EmployeeService employeeService;
@@ -146,6 +155,40 @@ public class PurchaseController {
         model.addAttribute("employeeobj", employee);
         model.addAttribute("quoteDetailsForm", quoteDetails);
         return SUPPLIER_QUOTE_DETAILS;
+    }
+    
+    
+    @RequestMapping(value = "/emp/myview/storeDetails/{employeeId}", method = RequestMethod.GET)
+    public String getStoreDetails(@PathVariable String employeeId,
+							    	   @RequestParam(value = "aliasProjName", required = true) String aliasProjName,
+							           @RequestParam(value = "supplierName", required = true) String supplierName,
+                                       @RequestParam(value = "itemName", required = true) String itemName,
+                                       @RequestParam(value = "itemType", required = true) String itemType,
+                                       @RequestParam(value = "brandName", required = true) String brandName,
+                                       Model model) {
+        LOGGER.info("Supplier detail update page for supplierId." + itemName);
+        model.addAttribute("itemName", itemName);
+        model.addAttribute("aliasProjName", aliasProjName);
+        model.addAttribute("itemType", itemType);
+        Employee employee = employeeService.getEmployeeDetails(employeeId);
+        StoreDetail storeDetails = storeService.getStoreDetails(aliasProjName, itemName, itemType, supplierName, brandName);
+        storeDetails.setEmployeeId(employeeId);
+        storeDetails.setAliasProjName(aliasProjName);
+        Gson gson = new Gson();
+        JsonElement element = gson.toJsonTree(storeDetails, new TypeToken<StoreDetail>() {
+        }.getType());
+        JsonObject jsonArray = element.getAsJsonObject();
+        storeDetails.setStoreDetailsValue(jsonArray.toString());
+        
+        List<StoreDetail> invoiceFileList = storeService.downloadFiles(storeDetails, employeeId);
+        
+        model.addAttribute("invoiceFileList", invoiceFileList);
+        model.addAttribute("invoiceFileSize", invoiceFileList.size());
+        
+        model.addAttribute("employeeobj", employee);
+        model.addAttribute("storeDetailsValue", jsonArray.toString());
+        model.addAttribute("storeDetailForm", storeDetails);
+        return BUILD_STORE_DETAIL;
     }
 
 
