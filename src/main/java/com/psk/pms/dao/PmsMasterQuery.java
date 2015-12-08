@@ -231,5 +231,7 @@ public class PmsMasterQuery {
 
     public static final String UPDATE_INDENT_DESC_STATUS_FOR_STORE = "update indentdescitem set IndentItemStatus= ? where ItemName = ? and itemType =? and IndentItemStatus in ('APPROVED','PARTIALLY PURCHASED')" +
             "and IndentDescId in (select IndentDescId from indentdesc where IndentId in ( select IndentId from indent where projid = ?)) ";
+    
+    public static final String GET_FULL_STORE_DETAILS = "select * from storeDetail where itemname = ? and ItemType = ? and supplierName = ? and brandName = ? and ProjId = ? group by supplierName";
 
 }

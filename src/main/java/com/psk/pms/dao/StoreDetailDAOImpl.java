@@ -222,6 +222,26 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         detail.setBrandName((String) row.get("brandName"));
 		return detail;
 	}
+	
+	private StoreDetail buildFullStoreDetails(Map<String, Object> row) {
+		StoreDetail detail = new StoreDetail();
+		detail.setItemType((String) row.get("itemType"));
+		detail.setItemName((String) row.get("itemName"));
+		detail.setSupplierName((String) row.get("supplierName"));
+		detail.setRecievedQuantity((String) row.get("quantityRecieved"));
+		Date recievedDate = (Date) row.get("recievedDate");
+		detail.setSqlRecievedDate(recievedDate);
+		detail.setRecievedDate(recievedDate.toString());
+        detail.setAliasProjName((String) row.get("aliasProjName"));
+        detail.setInvoiceNumber((String) row.get("invoiceNumber"));
+        detail.setVehicleNumber((String) row.get("vehicleNo"));
+        detail.setRecievedBy((String) row.get("recievedBy"));
+        detail.setCheckedBy((String) row.get("checkedBy"));
+        detail.setTripSheetNumber((String) row.get("tripSheetNumber"));
+        detail.setComments((String) row.get("comments"));
+        detail.setStoreType((String) row.get("storeType"));
+		return detail;
+	}
 
 	private DispatchDetail buildDispatchDetail(Map<String, Object> row) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -276,6 +296,13 @@ public class StoreDetailDAOImpl implements StoreDetailDAO {
         jdbcTemplate.update(UPDATE_INDENT_DESC_STATUS_FOR_STORE, indentStatus, itemName, itemType, projId);
     }
 
+    @Override
+	public StoreDetail getStoreDetails(String itemName, String itemType, String supplierName, String brandName, Integer projId) {
+    	Map<String, Object> row = jdbcTemplate.queryForMap(GET_FULL_STORE_DETAILS, itemName, itemType, supplierName, brandName, projId);
+        
+		return  buildFullStoreDetails(row);
+		
+	}
 
 
 }
