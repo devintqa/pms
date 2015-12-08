@@ -61,7 +61,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     public boolean saveItem(Item item) {
         jdbcTemplate.update(
-                SAVEITEMS, item.getItemName(), item.getItemUnit(), item.getItemType());
+                SAVEITEMS, item.getItemName().toUpperCase(), item.getItemUnit(), item.getItemType());
         return true;
     }
 
@@ -713,7 +713,7 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public void updateItem(Item item) {
-        jdbcTemplate.update(UPDATE_ITEM, item.getItemUnit(), item.getItemName(), item.getItemType());
+        jdbcTemplate.update(UPDATE_ITEM, item.getItemUnit(), item.getItemName().toUpperCase(), item.getItemType());
     }
 
     @Override

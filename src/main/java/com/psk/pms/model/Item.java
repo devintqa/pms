@@ -40,7 +40,7 @@ public class Item {
 	}
 
 	public void setItemName(String itemName) {
-		this.itemName = itemName;
+		this.itemName = itemName.toUpperCase();
 	}
 
 	public String getItemUnit() {
@@ -48,7 +48,7 @@ public class Item {
 	}
 
 	public void setItemUnit(String itemUnit) {
-		this.itemUnit = itemUnit;
+		this.itemUnit = itemUnit.toUpperCase();
 	}
 
 	public String getItemType() {
@@ -56,7 +56,7 @@ public class Item {
 	}
 
 	public void setItemType(String itemType) {
-		this.itemType = itemType;
+		this.itemType = itemType.toUpperCase();
 	}
 
 	public boolean isBaseItem() {
