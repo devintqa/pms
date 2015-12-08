@@ -230,7 +230,7 @@ public class IndentController extends BaseController {
 		DescItemDetail descItemDetail = itemService.getPskFieldDescriptionItems(projDescId);
 		itemList = buildIndentedItem(indentQty, descItemDetail.getItemDetail());
 		for(ItemDetail detail : itemList){
-			if(detail.getItemName().equals("STEEL")){
+			if("STEEL".equalsIgnoreCase(detail.getItemName())){
 				return detail.getItemQty();
 			}
 		}
