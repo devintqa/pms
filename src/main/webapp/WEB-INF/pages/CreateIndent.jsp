@@ -44,6 +44,16 @@ function makeHashOnLoad(){
     cursor: pointer;
     padding: 5px 15px;
     }
+ 
+.hideIndentButton{
+ 	background: #007399 none repeat scroll 0 0;
+    border: 0 none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    padding: 5px 15px;
+    display:none;
+    }
     
 .viewIndentButton{
  	background: #007399 none repeat scroll 0 0;
@@ -209,7 +219,7 @@ $(document).on("keyup", "input[class = 'steelClass']", function() {
     if (!valid) {
         console.log("Invalid input!");
         $(this).val('');
-    } else {
+    }
 			var steelObj = $(this);
 			var tblId = $(this).closest("table").attr('id');
 			console.log("key press: "+tblId);
@@ -231,16 +241,22 @@ $(document).on("keyup", "input[class = 'steelClass']", function() {
 		        		 }
 		        	 });
 		        	 if(currentSteelQty > expectedSteelQty){
-		        		 $('#error' + projDescId).text('Quantity of Steel cannot exceed '+expectedSteelQty);
+		        		 $('#error' + projDescId).text('Total Quantity of Steel: '+currentSteelQty+', and cannot be greater than '+expectedSteelQty);
 		        		 $($(steelObj)).val('');
+		        		 $('.saveIndentButton').attr('class','hideIndentButton');
+		        		 $('.viewIndentButton').attr('class','hideIndentButton');
+		        	 }else if(currentSteelQty < expectedSteelQty){
+		        		 $('#error' + projDescId).text('Total Quantity of Steel: '+currentSteelQty+', and cannot be lesser than '+expectedSteelQty);
+		        		 $('.saveIndentButton').attr('class','hideIndentButton');
+		        		 $('.viewIndentButton').attr('class','hideIndentButton');
 		        	 }else{
 		        		 $('#error' + projDescId).text('');
 		        		 $(steelObj).attr('value',$($(steelObj)).val());
+		        		 $('.hideIndentButton').attr('class','saveIndentButton');
+		        		 $('.hideIndentButton').attr('class','viewIndentButton');
 		        	 }
 		         }
 			 });
-			
-    }
 	 
 });
 
@@ -348,9 +364,12 @@ function deleteItemRow(row) {
     var id = $(row).closest("table").attr('id');
     var itemTable = document.getElementById(id);
     var noOfRow = itemTable.rows.length;
+    
+    
     if (noOfRow > 1) {
         $(row).closest("tr").remove();
     }
+    
 }
 </script>
 </head>
@@ -432,7 +451,7 @@ function deleteItemRow(row) {
 												</c:otherwise>
 											</c:choose>
 										</td>
-										<td><a id="deleteItem" onclick="deleteItemRow(this)">
+										<td><a id="deleteItem" aria-projdesc-id="${indentDesc.projDescId}" aria-indentdesc-id="${indentDesc.indentDescId}" onclick="deleteItemRow(this)">
 												<img src="<c:url value="/resources/images/delete.png" />" />
 										</a></td>
 									</tr>
@@ -485,19 +504,6 @@ function deleteItemRow(row) {
 						</tr>
 					</table>
 					</center>
-					
-					<div id="dummyDropWrapper" style="display:none;">
-						<select id="dummyDrop" class="inputText">
-							<option value="Steel 8MM">Steel 8MM</option>
-							<option value="Steel 10MM">Steel 10MM</option>
-							<option value="Steel 12MM">Steel 12MM</option>
-							<option value="Steel 16MM">Steel 16MM</option>
-							<option value="Steel 20MM">Steel 20MM</option>
-							<option value="Steel 25MM">Steel 25MM</option>
-							<option value="Steel 32MM">Steel 32MM</option>
-							<option value="Binding Wire">Binding Wire</option>
-						</select>
-					</div>
 
 			</form:form>
 
